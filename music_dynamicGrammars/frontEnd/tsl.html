@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>dynamicGrammars</title>
+    <style>
+        select {
+            margin: 5px;
+        }
+        span {
+            margin: 2px;
+        }
+        .add {
+            background-color: darkseagreen;
+        }
+        .remove {
+            background-color: indianred;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Structured Editor</h1>
+</header>
+
+<main>
+<p>Structured editor for TSL</p>
+<button class="add" id="addButton1"></button>
+
+<div id="assume">
+    <p>always assume {</p>
+    <div id="assumeSelector"></div>
+    <p>}</p>
+</div>
+
+<button class="add" id="addButton2"></button>
+
+<div id="guarantee">
+    <p>always guarantee {</p>
+    <div id="guaranteeSelector"></div>
+    <p>}</p>
+</div>
+
+<button id="extract"></button>
+<p></p>
+<a href="" id="a" style="visibility: hidden">Download Your TSL File</a>
+
+<script>
+    grammarFile = "../grammarDef/tsl_grammar.ne"
+</script>
+<script src="logicDropdowns.js"></script>
+<script>
+    let extract = document.getElementById("extract")
+    extract.innerHTML = "Extract formula";
+    extract.onclick = function () {
+    download(
+        delDel(extractContents(
+            document.getElementById("assume").innerText,
+            document.getElementById("guarantee").innerText
+        )),
+        'logicspecs.tsl',
+        'text/plain'
+    )}
+</script>
+</main>
+</body>
+</html>

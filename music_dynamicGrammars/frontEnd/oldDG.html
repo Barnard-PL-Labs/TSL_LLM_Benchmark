@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="generator" content="Hugo 0.88.1">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/tone"></script>
+    <title>dynamicGrammars</title>
+    <link href="oldDG.css" rel="stylesheet">
+</head>
+<script>
+    var editorNum=0;
+</script>
+
+<body>
+<main>
+    <h1>Structured Editor for TSL</h1>
+
+    <p id="intro">Run TSL Synthesis from your browser</p>
+    <div class="center">
+        <main>
+            <button type="submit" onclick="callSynth(editorNum)">Run Synthesis</button>
+            <select id="targetLang" aria-label="target language">
+                <option value="js">javascript</option>
+                <option value="python">python</option>
+                <option value="xstate">xstate</option>
+            </select>
+            <button id="play-button" style="background-color:lightskyblue">Play Music!</button>
+        </main>
+    </div>
+    <div class="row" style="padding: 10px;margin-left: -23px;">
+    <div id="tslEditor" class="column SE">
+        <p>Build TSL Formula
+            <button style="background-color:lightskyblue">Structured Editor</button>
+            <button onclick="toTE()">Text Editor</button>
+        </p>
+
+        <div class="scroll">
+            <button class="add" id="addButton1"></button>
+            <div id="assume">
+                <p>always assume {</p>
+                <div id="assumeSelector"></div>
+                <p>}</p>
+            </div>
+            <button class="add" id="addButton2"></button>
+            <div id="guarantee">
+                <p>always guarantee {</p>
+                <div id="guaranteeSelector"></div>
+                <p>}</p>
+            </div>
+        </div>
+    </div>
+        <div class="column TE" style="display: none">
+            <p></p>
+            <label for="specBox">Enter TSL Formula</label>
+                <button onclick="toSE()">Structured Editor</button>
+                <button style="background-color:lightskyblue">Text Editor</button>
+            <p></p>
+            <textarea class="scroll" id="specBox" rows="10" spellcheck="false" style="..." >
+            </textarea>
+        </div>
+
+    <div class="column">
+        <p></p>
+        <label for="codeBox">Get the code here</label>
+        <p></p>
+        <textarea id="codeBox" rows="10" spellcheck="false" style="width:100%;height:300px;padding:10px"></textarea>
+    </div>
+    </div>
+
+    <button id="tsl-button" onclick=pressed()>buttonPress</button>
+    <script>
+        document.getElementById("tsl-button").onmousedown = function() {
+            this.style.backgroundColor = "gray";
+            pressed();
+        };
+        document.getElementById("tsl-button").onmouseup = function() {
+            this.style.backgroundColor = "darkgray";
+            released();
+        };
+    </script>
+
+    <script>grammarFile = "../grammarDef/oldDGGrammar.ne"</script>
+    <script src="oldDG.js"></script>
+    <script src="oldDGDropdowns.js"></script>
+</main>
+</body>
+</html>
+
