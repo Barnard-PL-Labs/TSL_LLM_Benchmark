@@ -1,0 +1,23 @@
+
+A system environment has the following API. Using the API, implement the following methods in JavaScript.
+
+There are some special restrictions on how you can implement the functions. The functions must be pure functions, having no side effecs. Their only effect can be to return a value. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean. The variables are divided into three categories: inputs, outputs, and cells. In function bodies, you can use "inputs" and "cells", but you should not use "outputs".
+
+### High level description:
+
+A ball is bouncing between two walls. The position of the ball can be represented as a number between 0 and 10, where 0 represents that the ball is against the leftmost wall and 10 represents that it is against the rightmost wall.
+
+### Functions and predicates to implement:
+
+Cells:
+  "ball.pos" is a cell that represents the position of the ball. the position of the ball is changed by setting this cell
+Functions:
+  moveLeft(ball.pos) => returns a signal to move the ball to the left
+  moveRight(ball.pos) => returns a signal to move the ball to the right
+Predicates:
+  leftmost(ball.pos) => is the ball against the leftmost wall?
+  rightmost(ball.pos) => is the ball against the rightmost wall?
+
+### System API:
+
+Get or set the position of the ball by changing "ball.pos"

@@ -1,0 +1,9 @@
+
+Cells:
+  "ball" is a cell that represents the state of the signal that determines how the ball should move
+Functions:
+  moveLeft(ball) => returns a signal to move the ball to the left
+  moveRight(ball) => returns a signal to move the ball to the right
+Predicates:
+  leftmost(ball) => is the ball against the leftmost wall?
+  rightmost(ball) => is the ball against the rightmost wall?

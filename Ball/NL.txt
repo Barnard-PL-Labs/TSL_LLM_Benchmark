@@ -1,0 +1,22 @@
+
+A ball is bouncing between two walls. The position of the ball can be represented as a number between 0 and 10, where 0 represents that the ball is against the leftmost wall and 10 represents that it is against the rightmost wall.
+
+Assumptions:
+
+1. If the ball is moved to the left, then in the next moment, it is guaranteed that the ball is not at the rightmost wall.
+
+2. If the ball is moved to the right, then in the next moment, it is ensured that the ball is not at the leftmost wall.
+
+3. It is always the case that the ball cannot be at both the leftmost and the rightmost wall at the same time.
+
+Guarantees:
+
+4. If the ball is at the rightmost wall, eventually it must be moved to the left.
+
+5. If the ball is at the leftmost wall, eventually it must be moved to the right.
+
+6. If the ball is neither at the leftmost nor at the rightmost wall, then eventually, it must be moved either to the left or to the right.
+
+7. If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall.
+
+8. If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall.
