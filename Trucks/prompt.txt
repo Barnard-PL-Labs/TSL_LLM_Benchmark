@@ -1,0 +1,52 @@
+Write an instruction for a scenario where a scheduler schedules trucks on a bridge. Here are the instructions:
+
+There are n number of trucks that have to fetch items from across a bridge. The trucks start at a terminal with distance d1 from a bridge that is of length d2. From the end of the bridge to the pick up location the distance is d3. Trucks can cross each other on the road, but not on the bridge. 
+
+You are implementing a scheduler that knows the locations of all trucks and can dispatch trucks when requests come in. The scheduler should tell trucks when to wait at the bridge whilst another truck crosses. 
+
+Assumptions: 
+
+1. Trucks move at constant speed
+
+2. No two trucks can be on the bridge at the same time
+
+3. The scheduler can make trucks wait only before crossing the bridge
+
+4. There are N trucks
+
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume {
+  (room.somebodyEnters
+    -> (! room.empty W room.somebodyLeaves)) ;
+  ((room.somebodyLeaves && room.empty)
+    -> (room.empty W room.somebodyEnters)) ;
+  (cm.ready || cm.standby || cm.busy) ;
+  (cm.ready -> (!cm.standby && !cm.busy)) ;
+  (cm.standby -> (!cm.busy && !cm.ready)) ;
+  (cm.busy -> (!cm.ready && !cm.standby)) ;
+  ([ cm <- turnOn() ] && cm.standby
+    -> X cm.busy U ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)) ;
+  ([ cm <- turnOff() ] && cm.ready
+    -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
+  ([ cm <- makeCoffee() ] && cm.ready
+    -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
+}
+
+always guarantee {
+  room.somebodyEnters
+    -> F (cm.ready W (room.somebodyLeaves && room.empty));
+}
+```
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+
+[[FUNCTIONS_AND_PREDICATES_GO_HERE]]
+
+Natural language description:
+
+[[NATURAL_LANGUAGE_SUMMARY_GOES_HERE]]
+
+[[NATURAL_LANGUAGE_DESCRIPTION_GOES_HERE]]
