@@ -1,0 +1,17 @@
+
+At each point in time, it is either bright outside or dark. One the side of a room, there is a window with a shade covering it, which can be covering between 0% and 100% of the window.
+
+Inputs
+	outside.brightness - a boolean that represents whether it is bright outside
+	room.shades.open - a boolean representing that the window is 0% covered by the shade
+	room.shades.closed - a boolean representing that the window is 100% covered by the shade
+
+Outputs
+	room.shades.ctrl - a variable that accepts a signal from "moveTo" of how to move the window
+
+Functions
+	moveTo - this takes a value to set the shade at and converts it into a signal to set "room.shades.ctrl" to
+	percent0() - this indicates a desire to move the shade to cover 0% of the window (open)
+	percent100() - this indicates a desire to move the shade to cover 100% of the window (closed)
+
+Generate a TSL spec that guarantees that whenever it is bright outside, at some point in the future the window will be 100% covered by the shade. Define any necessary assumptions you would infer about the operation of a real room based on logic.

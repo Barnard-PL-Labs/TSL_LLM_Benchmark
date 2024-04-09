@@ -1,0 +1,9 @@
+
+Inputs
+	y
+	z
+
+Outputs
+	x
+
+Guarantee that at some point, "x" will be set to "y", and also that at some point, "x" will be set to "z".

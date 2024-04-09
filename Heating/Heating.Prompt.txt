@@ -1,0 +1,22 @@
+
+Inputs:
+	room.heating.on - a boolean representing that "the heating is on"
+	room.heating.off - a boolean representing that "the heating is off". always the opposite of "room.heating.on"
+	inside.temperature - an argument whose sole purpose is to be passed to "gt"
+	outside.temperature - an argument whose sole purpose is to be passed to "gt"
+
+Outputs:
+	room.heating.ctrl - receives signals from "turnOn" and "turnOff"
+
+Predicates:
+	gt - "gt A B" has the natural language meaning "A is greater than B"
+
+Functions:
+	turnOn - create a signal that means "turn on the heating" when sent to "room.heating.ctrl"
+	turnOff - create a signal that means "turn off the heating" when sent to "room.heating.ctrl"
+
+Write a TSL spec to guarantee that whenever the "outside.temperature" is greater than the "room.temperature", then eventually "room.heating.off" will be true.
+
+You may need to encode the commonly-understood semantic meaning of some of the variables, functions, and predicates as described above.
+
+// Comment: the hard part is to get the LLM to encode in the assumptions that "ctrl <- turnOff()" means eventually "room.heating.off"
