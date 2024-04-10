@@ -1,6 +1,4 @@
 
-A ball is bouncing between two walls. The position of the ball can be represented as a number between 0 and 10, where 0 represents that the ball is against the leftmost wall and 10 represents that it is against the rightmost wall.
-
 Assumptions:
 
 1. If the ball is moved to the left, then in the next moment, it is guaranteed that the ball is not at the rightmost wall.

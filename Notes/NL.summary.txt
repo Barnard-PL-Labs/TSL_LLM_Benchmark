@@ -1,0 +1,2 @@
+
+Use the metaphor of a user pushing buttons with the result that sounds are produced. The possible musical notes that can be played are E4, G4, and A4, and they are played when their value is written to the variable "noteToPlay" or "noteToPlay2". Two possibly notes can be played at the same time.
