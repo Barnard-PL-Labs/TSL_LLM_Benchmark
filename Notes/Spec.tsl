@@ -1,3 +1,4 @@
+
 always assume {
     F r1;
     F r2;
@@ -13,5 +14,4 @@ always guarantee {
     ([noteToPlay2 <- A4] <-> !([noteToPlay <- E4]));
     !([noteToPlay2 <- A4]) U !([noteToPlay <- E4]);
     [noteToPlay <- E4] -> F ([noteToPlay2 <- A4] && [noteToPlay <- G4]);
-
 }
