@@ -25,6 +25,9 @@ to_interpolate = {
     'wrapper_api': 'Wrapper_api.js'
 }
 
+if not os.path.exists(args.dir + '/computed'):
+    os.makedirs(args.dir + '/computed')
+
 def load_file_and_interpolate(filename):
     with open(filename) as file:
         result = file.read()
@@ -32,8 +35,9 @@ def load_file_and_interpolate(filename):
             path = args.dir + '/' + filename
             with open(path) as file:
                 replacement = file.read()
-            for to_replace in [ name.upper() + '_GO_HERE', name.upper() + '_GOES_HERE' ]:
-                result.replace(to_replace, replacement)
+            for to_replace in [ '[[' + name.upper() + '_GO_HERE]]', '[[' + name.upper() + '_GOES_HERE]]' ]:
+                print(to_replace)
+                result = result.replace(to_replace, replacement)
     return result
 
 if args.method == 'nl':
