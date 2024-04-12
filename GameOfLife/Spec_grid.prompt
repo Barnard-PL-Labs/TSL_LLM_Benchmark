@@ -70,11 +70,10 @@ This is a complete listing of all functions and predicates you will need to use 
 Cells:
   "grid" is a cell that stores the entire grid that the game of life is played on as a 2d array where cells are either 1 or 0. Each round the grid is updated as the game progresses.
   "grid.index" is a cell that stores the current index that the state machine is observing on the grid.
-  "grid.rounds" is a cell that stores how many rounds the game has been played
+  "grid.index.alive" encodes if a cell is alive or not
 Functions:
   nextIndex(grid.index) => moves the index variable to the next valid index in the grid
   changeAlive(grid.index) => changes a the state of a specific index at the grid
-  newRound(rounds) => increments the number of rounds by 1 may be called after checking if we are at the last index of the grid
   resetIndex(index) => resets the index cell to point to the start of the grid for the next round
 Predicates:
   comeAlive(grid.index) => are exactly 3 neighbours are living?
@@ -86,6 +85,8 @@ Natural language description: Game of Life
 
 Every cell observes its surrounding neighbours to check whether its living area is underpopulated, overpopulated or suitable to live in. Each cell has 8 neighbours (except for the ones at the edge of the canvas).
 
+Make sure that the spec you generate is realizable by TSL
+
 Assumptions:
 
 1. The grid is iterated over using nextIndex
@@ -93,10 +94,6 @@ Assumptions:
 2. If the current index is the last index of the grid, then the index pointer is reset to the beginning
 
 3. At each grid index a cell can use the predicate functions to check what it's new state should be
-
-4. The current grid cell looks at all of it's neighbors to determine it's own state
-
-5. Rounds is incremented using newRound at the end of each round
 
 Guarantees:
 

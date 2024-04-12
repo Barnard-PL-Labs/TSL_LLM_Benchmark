@@ -1,0 +1,92 @@
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume {
+  (room.somebodyEnters
+    -> (! room.empty W room.somebodyLeaves)) ;
+  ((room.somebodyLeaves && room.empty)
+    -> (room.empty W room.somebodyEnters)) ;
+  (cm.ready || cm.standby || cm.busy) ;
+  (cm.ready -> (!cm.standby && !cm.busy)) ;
+  (cm.standby -> (!cm.busy && !cm.ready)) ;
+  (cm.busy -> (!cm.ready && !cm.standby)) ;
+  ([ cm.ctrl <- turnOn() ] && cm.standby
+    -> X cm.busy U ([ cm.ctrl <- makeCoffee() ] || [ cm.ctrl <- turnOff() ] R cm.ready)) ;
+  ([ cm.ctrl <- turnOff() ] && cm.ready
+    -> X cm.busy U ([ cm.ctrl <- turnOn() ] R cm.standby)) ;
+  ([ cm.ctrl <- makeCoffee() ] && cm.ready
+    -> X cm.busy U (cm.finished && ([ cm.ctrl <- makeCoffee() ] || [ cm.ctrl <- turnOff() ] R cm.ready)));
+ }
+always guarantee {
+  room.somebodyEnters
+    -> F (cm.ready W (room.somebodyLeaves && room.empty));
+}
+```
+
+```
+  always assume {
+    //mutual exculsion for all key inputs
+   ! (pressL(e) && pressR(e));
+   ! (pressL(e) && pressUp(e));
+   ! (pressL(e) && pressDown(e));
+   ! (pressR(e) && pressUp(e));
+   ! (pressR(e) && pressDown(e));
+   ! (pressUp(e) && pressDown(e));
+  }
+
+always guarantee {
+    //mutual exclusion for X and Y pos updates, only one is updated at a time
+    pressL(e) -> (([ headX <- headX - 1] && [headY <- headY]) W (pressR(e) || pressDown(e) || pressUp(e)));
+    pressR(e) -> (([ headX <- headX + 1] && [headY <- headY]) W (pressL(e) || pressDown(e) || pressUp(e)));
+    pressUp(e) -> (([ headY <- headY - 1] && [headX <- headX]) W (pressR(e) || pressL(e) || pressDown(e)));
+    pressDown(e) -> (([ headY <- headY + 1] && [headX <- headX]) W (pressR(e) || pressL(e) || pressUp(e))); 
+}
+```
+
+```
+always assume {
+  //mutual exclusion for inputs
+  !(eatFood && hitSelf && hitWall);
+}
+
+always guarantee {
+  //if an apple is eaten: increment the score and snake length, also reset apple position to a random value
+  eatFood -> ([score <- score + 1] && [tailLength <- tailLength + 1] && [appleX <- randX] && [appleY <- randY]);
+	
+  //if self or wall is hit: signal game over
+  (hitSelf || hitWall) -> [command <- die];
+	
+  //if there are no collisions, nothing should change
+  ! (eatFood || hitSelf || hitWall) -> ([score <- score] && [tailLength <- tailLength] && [appleX <- appleX] && [appleY <- appleY] && [command <- idle]);
+}
+```
+
+Remember this is the documentation for TSL: https://www.notion.so/flaneurnah/TSL-Documentation-90fec2187e7042b2ad16a53f59251c53#5361d4438fad4c5aba36be03f52ef20a
+You should not need to use '==' in the TSL spec.
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators. At a high level you are writing a tsl spec for an individual cell. 
+
+Cells:
+  "alive" is the cell alive
+  "index" index of the cell on the grid. This is initialized in the function terms 
+Functions:
+  changeAlive(index) => changes a the state of a specific index at the grid
+Predicates:
+  comeAlive(index) => are exactly 3 neighbours are living or are 2 or 3 neighbours are living?
+  comeDead(index) => does the cell have less than 2 neighbours or more than 3 neighbours?
+  
+Natural language description: Game of Life
+
+Every cell observes its surrounding neighbours to check whether its living area is underpopulated, overpopulated or suitable to live in. Each cell has 8 neighbours (except for the ones at the edge of the canvas). Treat each cell as a state machine. The game itself will be implemented using an external wrapper.
+
+Assumptions:
+
+1. comAlive and comeDead cannot both be true at the same time
+
+
+Guarantees:
+
+2. If comeAlive is true the cell comes alive 
+
+3. If comeDead is true it dies

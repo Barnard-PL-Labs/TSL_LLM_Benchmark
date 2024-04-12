@@ -1,0 +1,20 @@
+### This is the spec for a FSM that models a cell class
+## At a high level, we can use this to show that LLMs + TSL can better implement complex programs by outsourcing temporal classes to TSL
+
+
+always assume {
+  // No assumptions for Conway's Game of Life
+  !(comeAlive(idx) && comeDead(idx));
+}
+
+always guarantee { 
+  comeAlive(idx) -> [alive <- True];
+  comeDead(idx) -> [alive <- False];
+}
+
+always guarantee {
+  comeAlive(idx) -> [ alive <- true ];
+  comeDead(idx) -> [ alive <- false ];
+}
+
+## Notes, when we add in the round brackets it doesn't work
