@@ -9,8 +9,8 @@ always guarantee {
     r1 -> F [noteToPlay <- E4];
     r2 -> F [noteToPlay <- G4];
     r3 -> F [noteToPlay2 <- A4];
-    F (r1 -> [noteToPlay <- E4]);
-    F (r2 -> [noteToPlay <- G4]);
+    (r1 -> X [noteToPlay <- E4] || X X [noteToPlay <- E4]);
+    (r2 -> X [noteToPlay <- G4] || X X [noteToPlay <- G4]);
     ([noteToPlay2 <- A4] <-> !([noteToPlay <- E4]));
     !([noteToPlay2 <- A4]) U !([noteToPlay <- E4]);
     [noteToPlay <- E4] -> F ([noteToPlay2 <- A4] && [noteToPlay <- G4]);
