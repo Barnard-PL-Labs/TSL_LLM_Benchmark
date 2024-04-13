@@ -1,0 +1,11 @@
+
+Cells:
+    "total" is a cell that represents the state of the signal that determines whether or not the vending machine can perform certain tasks.
+    "e" is a cell that represents the state of the signal that determines how the vending machine should act.
+Functions:
+
+Predicates:
+    isLessThanTwo(total) => is the total less than 2?
+    pressShift(e) => did the user press the Shift key?
+    pressEnter(e) => did the user press the Enter (or Return) key?
+    pressDelete(e) => did the user press the Delete key?

@@ -1,0 +1,21 @@
+
+always assume {
+    // define being unable to press more than one key at a time
+    !(pressShift(e) && pressEnter(e));
+    !(pressShift(e) && pressDelete(e));
+    !(pressEnter(e) && pressDelete(e));
+}
+
+always guarantee {
+    // if you press the Shift key: increment the total by 1
+    pressShift(e) -> ([total <- total + 1]);
+    
+    // if you press the Enter key: decrement the total by 2 if and only if the total is not less than 2 (buy a product)
+    pressEnter(e) -> ([total <- total - 2] <-> !(isLessThanTwo total));
+
+    // if you press the Delete key: set the total to 0
+    pressDelete(e) -> ([total <- 0]);
+
+    // if no buttons are clicked: the total shouldn't change
+    !(pressShift(e) || pressEnter(e) || pressDelete(e)) -> ([total <- total]);
+}

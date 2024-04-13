@@ -1,0 +1,2 @@
+
+Use the metaphor of a user pushing buttons with the result that choices in operating a vending machine are produced. The choices for operating the vending machine are: purchasing a product by pressing Enter as long as the machine's total dollar amount is 2 or greater, inserting a dollar into the machine by pressing Shift, or refunding your money by pressing Delete. No two machine operations can be performed at the same time.
