@@ -34,28 +34,42 @@ Cells:
 Functions:
 
 Predicates:
-    isLessThanTwo(total) => is the total less than 2?
-    pressShift(e) => did the user press the Shift key?
-    pressEnter(e) => did the user press the Enter (or Return) key?
-    pressDelete(e) => did the user press the Delete key?
+    isLessThanPoint75(total) => is the total less than 0.75?
+    isLessThanOne(total) => is the total less than 1?
+    isLessThanOnePoint25(total) => is the total less than 1.25?
+    pressD(e) => did the user press the d key?
+    pressQ(e) => did the user press the q key?
+    pressO(e) => did the user press the o key?
+    press1(e) => did the user press the 1 key?
+    press2(e) => did the user press the 2 key?
+    press3(e) => did the user press the 3 key?
+    pressR(e) => did the user press the r key?
 
 
 Natural language description:
 
 
-Use the metaphor of a user pushing buttons with the result that choices in operating a vending machine are produced. The choices for operating the vending machine are: purchasing a product by pressing Enter as long as the machine's total dollar amount is 2 or greater, inserting a dollar into the machine by pressing Shift, or refunding your money by pressing Delete. No two machine operations can be performed at the same time.
+Use the metaphor of a user pushing buttons with the result that choices in operating a vending machine are produced. The choices for operating the vending machine are: purchasing product option 1 by pressing the 1 key/button as long as the machine's total dollar amount is 0.75 or greater, purchasing product option 2 by pressing the 2 key/button as long as the machine's total dollar maount is 1 or greater, purchasing product option 3 by pressing the 3 key/button as long as the machine's total dollar amount is 1.25 or greater, inserting a dime into the machine by pressing the d key/button, inserting a quarter into the machine by pressing the q key/button, inserting a dollar into the machine by pressing the o key/button, or refunding your money by pressing the r key/button. No two machine operations can be performed at the same time.
 
 
 
 Assumptions:
 
-1. There are three buttons, named pressShift, pressEnter, and pressDelete, which can be pushed by the user.
+1. There are seven buttons, named pressD, pressQ, pressO, press1, press2, press3, and pressR, which can be pushed by the user.
 
 Guarantees:
 
-2. When pressShift is pushed, the system ensures that the vending machine's value will be incremented by one. This is achieved by writing the value "total + 1" to the variable "total".
+2. When pressD is pushed, the system ensures that the vending machine's value will be incremented by 0.1. This is achieved by writing the value "total + 0.1" to the variable "total".
 
-3. When pressEnter is pushed, the system ensures that the vending machine's value will be decremented by two if and only if the vending machine's value is two or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 2" to the variable "total".
+3. When pressQ is pushed, the system ensures that the vending machine's value will be incremented by 0.25. This is achieved by writing the value "total + 0.25" to the variable "total".
 
-4. When pressDelete is pushed, the system ensures that the vending machine's value will be set to zero. This is achieved by writing the value of "0" to the variable "total".
+4. When pressO is pushed, the system ensures that the vending machine's value will be incremented by 1. This is achieved by writing the value "total + 1" to the variable "total".
+
+5. When press1 is pushed, the system ensures that the vending machine's value will be decremented by 0.75 if and only if the vending machine's value is 0.75 or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 0.75" to the variable "total".
+
+6. When press2 is pushed, the system ensures that the vending machine's value will be decremented by 1 if and only if the vending machine's value is 1 or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 1" to the variable "total".
+
+7. When press3 is pushed, the system ensures that the vending machine's value will be decremented by 1.25 if and only if the vending machine's value is 1.25 or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 1.25" to the variable "total".
+
+8. When pressR is pushed, the system ensures that the vending machine's value will be set to zero. This is achieved by writing the value of "0" to the variable "total". 
 

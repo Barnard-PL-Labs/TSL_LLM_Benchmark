@@ -1,12 +1,20 @@
 
 Assumptions:
 
-1. There are three buttons, named pressShift, pressEnter, and pressDelete, which can be pushed by the user.
+1. There are seven buttons, named pressD, pressQ, pressO, press1, press2, press3, and pressR, which can be pushed by the user.
 
 Guarantees:
 
-2. When pressShift is pushed, the system ensures that the vending machine's value will be incremented by one. This is achieved by writing the value "total + 1" to the variable "total".
+2. When pressD is pushed, the system ensures that the vending machine's value will be incremented by 0.1. This is achieved by writing the value "total + 0.1" to the variable "total".
 
-3. When pressEnter is pushed, the system ensures that the vending machine's value will be decremented by two if and only if the vending machine's value is two or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 2" to the variable "total".
+3. When pressQ is pushed, the system ensures that the vending machine's value will be incremented by 0.25. This is achieved by writing the value "total + 0.25" to the variable "total".
 
-4. When pressDelete is pushed, the system ensures that the vending machine's value will be set to zero. This is achieved by writing the value of "0" to the variable "total".
+4. When pressO is pushed, the system ensures that the vending machine's value will be incremented by 1. This is achieved by writing the value "total + 1" to the variable "total".
+
+5. When press1 is pushed, the system ensures that the vending machine's value will be decremented by 0.75 if and only if the vending machine's value is 0.75 or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 0.75" to the variable "total".
+
+6. When press2 is pushed, the system ensures that the vending machine's value will be decremented by 1 if and only if the vending machine's value is 1 or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 1" to the variable "total".
+
+7. When press3 is pushed, the system ensures that the vending machine's value will be decremented by 1.25 if and only if the vending machine's value is 1.25 or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 1.25" to the variable "total".
+
+8. When pressR is pushed, the system ensures that the vending machine's value will be set to zero. This is achieved by writing the value of "0" to the variable "total". 

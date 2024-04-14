@@ -1,0 +1,28 @@
+always assume {
+  // Handling button presses and ensuring only one button action occurs at a time
+  (pressD(e) -> ! (pressQ(e) || pressO(e) || press1(e) || press2(e) || press3(e) || pressR(e))) ;
+  (pressQ(e) -> ! (pressD(e) || pressO(e) || press1(e) || press2(e) || press3(e) || pressR(e))) ;
+  (pressO(e) -> ! (pressD(e) || pressQ(e) || press1(e) || press2(e) || press3(e) || pressR(e))) ;
+  (press1(e) -> ! (pressD(e) || pressQ(e) || pressO(e) || press2(e) || press3(e) || pressR(e))) ;
+  (press2(e) -> ! (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press3(e) || pressR(e))) ;
+  (press3(e) -> ! (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press2(e) || pressR(e))) ;
+  (pressR(e) -> ! (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press2(e) || press3(e))) ;
+
+  // Check the conditions for allowing a purchase
+  (press1(e) -> isLessThanPoint75(total)) ;
+  (press2(e) -> isLessThanOne(total)) ;
+  (press3(e) -> isLessThanOnePoint25(total)) ;
+}
+
+always guarantee {
+  // Updating the total value based on button presses
+  pressD(e) -> [ total <- total + 0.1 ] ;
+  pressQ(e) -> [ total <- total + 0.25 ] ;
+  pressO(e) -> [ total <- total + 1 ] ;
+
+  // Handling product selection and refunds
+  press1(e) && isLessThanPoint75(total) -> [ total <- total - 0.75 ] ;
+  press2(e) && isLessThanOne(total) -> [ total <- total - 1 ] ;
+  press3(e) && isLessThanOnePoint25(total) -> [ total <- total - 1.25 ] ;
+  pressR(e) -> [ total <- 0 ] ;
+}
