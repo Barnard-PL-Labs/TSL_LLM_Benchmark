@@ -1,0 +1,61 @@
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume {
+  (room.somebodyEnters
+    -> (! room.empty W room.somebodyLeaves)) ;
+  ((room.somebodyLeaves && room.empty)
+    -> (room.empty W room.somebodyEnters)) ;
+  (cm.ready || cm.standby || cm.busy) ;
+  (cm.ready -> (!cm.standby && !cm.busy)) ;
+  (cm.standby -> (!cm.busy && !cm.ready)) ;
+  (cm.busy -> (!cm.ready && !cm.standby)) ;
+  ([ cm <- turnOn() ] && cm.standby
+    -> X cm.busy U ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)) ;
+  ([ cm <- turnOff() ] && cm.ready
+    -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
+  ([ cm <- makeCoffee() ] && cm.ready
+    -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
+}
+
+always guarantee {
+  room.somebodyEnters
+    -> F (cm.ready W (room.somebodyLeaves && room.empty));
+}
+```
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+
+
+Cells:
+    "total" is a cell that represents the state of the signal that determines whether or not the vending machine can perform certain tasks.
+    "e" is a cell that represents the state of the signal that determines how the vending machine should act.
+Functions:
+
+Predicates:
+    isLessThanTwo(total) => is the total less than 2?
+    pressShift(e) => did the user press the Shift key?
+    pressEnter(e) => did the user press the Enter (or Return) key?
+    pressDelete(e) => did the user press the Delete key?
+
+
+Natural language description:
+
+
+Use the metaphor of a user pushing buttons with the result that choices in operating a vending machine are produced. The choices for operating the vending machine are: purchasing a product by pressing Enter as long as the machine's total dollar amount is 2 or greater, inserting a dollar into the machine by pressing Shift, or refunding your money by pressing Delete. No two machine operations can be performed at the same time.
+
+
+
+Assumptions:
+
+1. There are three buttons, named pressShift, pressEnter, and pressDelete, which can be pushed by the user.
+
+Guarantees:
+
+2. When pressShift is pushed, the system ensures that the vending machine's value will be incremented by one. This is achieved by writing the value "total + 1" to the variable "total".
+
+3. When pressEnter is pushed, the system ensures that the vending machine's value will be decremented by two if and only if the vending machine's value is two or greater, otherwise nothing happens. This decrementing is achieved by writing the value "total - 2" to the variable "total".
+
+4. When pressDelete is pushed, the system ensures that the vending machine's value will be set to zero. This is achieved by writing the value of "0" to the variable "total".
+
