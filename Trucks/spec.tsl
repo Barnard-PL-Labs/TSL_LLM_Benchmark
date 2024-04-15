@@ -1,0 +1,25 @@
+always assume {
+  // If a truck is dispatched, it eventually reaches the bridge entry
+  ([ dispatchTruck(truckId) ] -> F isAtBridgeEntry(truckId)) ;
+  // A truck can be on the bridge only if it was at the bridge entry and the bridge was empty
+  (isAtBridgeEntry(truckId) && bridgeIsEmpty()
+    -> X isOnBridge(truckId)) ;
+  // A truck that has been dispatched and is not on the bridge must be either at the bridge entry or has crossed
+  (hasDispatched(truckId) && !isOnBridge(truckId)
+    -> isAtBridgeEntry(truckId) || hasCrossed(truckId)) ;
+  // If a truck is on the bridge, it cannot be at the bridge entry
+  (isOnBridge(truckId) -> !isAtBridgeEntry(truckId)) ;
+  // If the bridge is not empty, then there is a truck on the bridge
+  (!bridgeIsEmpty() -> exists truckId. isOnBridge(truckId)) ;
+}
+
+always guarantee {
+  // If a truck reaches the bridge entry and the bridge is empty, it should next be on the bridge
+  (isAtBridgeEntry(truckId) && bridgeIsEmpty()
+    -> X ([ crossBridge(truckId) ] && isOnBridge(truckId))) ;
+  // If a truck is on the bridge, it should eventually cross and continue to the destination
+  (isOnBridge(truckId) -> F ([ continueToDestination(truckId) ] && hasCrossed(truckId))) ;
+  // Trucks must wait at the bridge entry if the bridge is not empty
+  (isAtBridgeEntry(truckId) && !bridgeIsEmpty()
+    -> X [ waitAtBridge(truckId) ]) ;
+}
