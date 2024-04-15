@@ -1,0 +1,9 @@
+
+Assumptions:
+
+1. There are two functions, comeAlive and comeDead that determine the state of the cell. comAlive and comeDead cannot both be true at the same time
+
+Guarantees:
+
+1. If comeAlive is true the cell comes alive 
+2. If comeDead is true the cell dies
