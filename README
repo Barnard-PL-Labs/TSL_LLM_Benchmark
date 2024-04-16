@@ -22,3 +22,5 @@ Within each directory:
 3. Headers.txt - function+pred term headers to define
 4. Wrapper_api.js - the wrapper api (javascript functions) that the LLM is supposed to use to implement the body of the functions + predicates
 5. Spec.tsl - the hand-written spec (to be compared against the computer-generated one)
+
+In order to use run.py, you need to have tsl installed in your machine. Please refer to https://github.com/Barnard-PL-Labs/tsltools/tree/master

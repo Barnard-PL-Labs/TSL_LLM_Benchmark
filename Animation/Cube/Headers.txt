@@ -1,0 +1,11 @@
+
+Cells:
+  "cube" is a cell that represents the state of the signal that determines how the cube should move
+
+Functions:
+  rotateLeft(cube) => returns a signal to rotate the cube to the left
+  rotateRight(cube) => returns a signal to rotate the cube to the right
+
+Predicates:
+  pressL(e) => does the user press the left arrow key on their keyboard?
+  pressR(e) => does the user press the right arrow key on their keyboard?

@@ -1,0 +1,10 @@
+
+Assumptions:
+
+1. The user will never press the left key and the right key at the same time.
+
+Guarantees:
+
+2. When the user presses the left key, the cube will rotate to the left by its y axis until the user press the right key.
+
+3. When the user presses the right key, the cube will rotate to the right by its y axis until the user press the left key.
