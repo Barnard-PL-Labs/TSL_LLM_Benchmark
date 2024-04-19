@@ -32,7 +32,7 @@ Cells:
   "alive" is the cell alive
   "index" index of the cell on the grid. This is initialized in the function terms 
 Functions:
-  changeState
+  There are no functions 
 Predicates:
   comeAlive(index) => are exactly 3 neighbours are living or are 2 or 3 neighbours are living?
   comeDead(index) => does the cell have less than 2 neighbours or more than 3 neighbours?
@@ -49,5 +49,5 @@ Assumptions:
 
 Guarantees:
 
-1. If comeAlive is true the cell uses changeState(1) to come alive
-2. If comeDead is true the cell uses changeState(0) to die
+1. If comeAlive is true the cell comes alive 
+2. If comeDead is true the cell dies
