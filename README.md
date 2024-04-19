@@ -8,8 +8,6 @@ This README serves as an overview of the file organization of this repository an
 - *run.py*: Runs the program. Takes files from a benchmark folder which aren't in the *computed* folder and creates the files of the *computed* folder. 
 - *shotPrompt.txt*: A text file which is used to fine-tune GPT-4 in order for it to learn NL to TSL translation.
 - *Spec_template.prompt*: The prompt template which is used as the query to the LLM in order to generate the TSL specification.
-- *README.md*: This README.
-- *README.mov*: A tutorial of the README. **TODO: DOES THIS NEED TO BE CHANGED?**
 
 **Benchmark Folders:** The files within each folder (e.g. Ball, GameOfLife, etc.) are used to create that benchmark.
 - *NL.summary.txt*: The natural language, high-level summary of the benchmark.
