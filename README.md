@@ -22,7 +22,7 @@ This README serves as an overview of the file organization of this repository an
     - *Impl.prompt*:
     - *Synth.js*:
     - *Impl.js*:
-    - ***<BENCMARK_NAME>**.html*:
+    - *<BENCMARK_NAME>.html*:
 
 
 
