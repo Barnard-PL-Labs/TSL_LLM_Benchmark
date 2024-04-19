@@ -5,7 +5,7 @@ This README serves as an overview of the file organization of this repository an
 ## File Organization
 **Root Directory:** The files in the root directory are used for the generation of any state machine. For each particular state machine, there is a folder with the model-specific files. The state machines created each serve as a benchmark.
 - *Impl_template.prompt*: The template to be filled in by *wrapper_template.html* and *Headers.txt* to create *Impl.prompt*.
-- *run.py*: The brain. It gives the specification prompt *Spec_template.prompt* to the LLM and obtains *Spec.tsl*. It then 
+- *run.py*: Runs the program. Takes files from a benchmark folder which aren't in the *computed* folder and creates the files of the *computed* folder. 
 - *shotPrompt.txt*: A text file which is used to fine-tune GPT-4 in order for it to learn NL to TSL translation.
 - *Spec_template.prompt*: The prompt which is used as the query to the LLM in order to generate the TSL specification.
 - *README.md*: This README.
