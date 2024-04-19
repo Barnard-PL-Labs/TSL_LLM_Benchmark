@@ -4,7 +4,7 @@ This README serves as an overview of the file organization of this repository an
 
 ## File Organization
 **Root Directory:** The files in the root directory are used for the generation of any state machine. For each particular state machine, there is a folder with the model-specific files. The state machines created each serve as a benchmark.
-- *Impl_template.prompt*: Here
+- *Impl_template.prompt*: The template to be filled in by *wrapper_template.html* and *Headers.txt* to create *Impl.prompt*.
 - *run.py*: The brain. It gives the specification prompt *Spec_template.prompt* to the LLM and obtains *Spec.tsl*. It then 
 - *shotPrompt.txt*: A text file which is used to fine-tune GPT-4 in order for it to learn NL to TSL translation.
 - *Spec_template.prompt*: The prompt which is used as the query to the LLM in order to generate the TSL specification.
@@ -25,4 +25,11 @@ This README serves as an overview of the file organization of this repository an
 
 
 ## Benchmark Walkthrough
-*NL.txt*, *NL.summary.txt*, and *Headers.txt* are handmade and used to fill in *Spec_template.prompt* and create *Spec.prompt*, which is fed into the LLM. The LLM outputs *Spec.tsl*, its formulation of TSL. This TSL specification is passed into the [TSL API](https://barnard-pl-labs.github.io/tsl-api/) and a javascript translation is stored in *Synth.js*. This javascript, coupled with the handmade *wrapper_template.html* are used to fill in *Impl_template.prompt* and create *Impl.prompt*, which is fed into the LLM. The LLM outputs *Impl.js*, its javascript implementation of the functions and predicates. Finally, using *wrapper_template.html* and *Synth.js*, the LLM implements *<BENCHMARK_NAME>.html* for the final benchmark implementation.
+1. *NL.txt*, *NL.summary.txt*, and *Headers.txt* are handmade and used to fill in *Spec_template.prompt* and create *Spec.prompt*, which is fed into the LLM. 
+2. The LLM outputs *Spec.tsl*, its formulation of TSL.
+3. This TSL specification is passed into the [TSL API](https://barnard-pl-labs.github.io/tsl-api/) and a javascript translation is stored in *Synth.js*. 
+4. The handmade *Headers.txt* and *wrapper_template.html* are used to fill in *Impl_template.prompt* and create *Impl.prompt*, which is fed into the LLM, which outputs *Impl.js*, its javascript implementation of the functions and predicates. 
+6. Finally, using *wrapper_template.html*, *Synth.js*, and *Impl.js*, the LLM fills in *<BENCHMARK_NAME>.html* for the final benchmark implementation.
+
+
+### TODO: How are *wrapper_template.html* and *Headers.txt* used in *Impl_template.prompt* to create *Impl.prompt*? 
