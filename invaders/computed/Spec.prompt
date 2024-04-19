@@ -1,0 +1,69 @@
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume {
+  (room.somebodyEnters
+    -> (! room.empty W room.somebodyLeaves)) ;
+  ((room.somebodyLeaves && room.empty)
+    -> (room.empty W room.somebodyEnters)) ;
+  (cm.ready || cm.standby || cm.busy) ;
+  (cm.ready -> (!cm.standby && !cm.busy)) ;
+  (cm.standby -> (!cm.busy && !cm.ready)) ;
+  (cm.busy -> (!cm.ready && !cm.standby)) ;
+  ([ cm <- turnOn() ] && cm.standby
+    -> X cm.busy U ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)) ;
+  ([ cm <- turnOff() ] && cm.ready
+    -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
+  ([ cm <- makeCoffee() ] && cm.ready
+    -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
+}
+
+always guarantee {
+  room.somebodyEnters
+    -> F (cm.ready W (room.somebodyLeaves && room.empty));
+}
+```
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+
+
+Cells:
+  "ship" represents the state of the space ship
+Functions:
+  moveLeft(ship) => returns a signal to move ship to the left by one unit
+  moveRight(ship) => returns a signal to move ship to the right by one unit
+  shoot(ship) => returns a signal to shoot 
+Predicates:
+  leftmost(ship) => is the ship against the leftmost wall?
+  rightmost(ship) => is the ship against the rightmost wall?
+  hit(ship) => has the ship been hit by an incoming enemy?
+  
+
+Natural language description:
+
+This state machine simulates the ship in space invaders. 
+
+
+Assumptions:
+
+1. The ship cannot move left and right most bound at the same time
+
+2. The ship can only do one action each round
+
+3. The d key corresponds to right movement
+
+4. The a key corresponds to left movement
+
+5. The space key corresponds to shoot
+
+6. Only one key press can be registered at a time
+
+Guarantees:
+
+1. when a is pressed move change ship.position using moveRight()
+
+2. when d is pressed move change ship.position using moveLeft()
+
+3. when space is pressed use shoot()
+

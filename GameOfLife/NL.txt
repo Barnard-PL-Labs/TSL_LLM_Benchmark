@@ -5,6 +5,6 @@ Assumptions:
 
 Guarantees:
 
-1. If comeAlive is true the cell uses changeState(1) to come alive
-2. If comeDead is true the cell uses changeState(0) to die
+1. If comeAlive is true the cell uses changeState() to come alive
+2. If comeDead is true the cell uses changeState() to die
 

@@ -38,18 +38,20 @@ if not os.path.exists(args.dir + "/computed"):
 
 
 def load_file_and_interpolate(filename):
+    print('hehehehehehe')
     with open(filename) as file:
         result = file.read()
         for name, filename in to_interpolate.items():
             path = args.dir + "/" + filename
             with open(path) as file:
                 replacement = file.read()
+                print(replacement)
             for to_replace in [
                 "[[" + name.upper() + "_GO_HERE]]",
                 "[[" + name.upper() + "_GOES_HERE]]",
             ]:
-                print(to_replace)
                 result = result.replace(to_replace, replacement)
+        
     return result
 
 
