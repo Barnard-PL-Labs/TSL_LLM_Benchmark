@@ -25,8 +25,4 @@ This README serves as an overview of the file organization of this repository an
     - *<BENCMARK_NAME>.html*: The LLM generated html implementation 
 
 
-
-
-5. Spec.tsl - the hand-written spec (to be compared against the computer-generated one)
-
 ## Creating a Benchmark
