@@ -3,7 +3,7 @@ This README serves as an overview of the file organization of this repository an
 
 
 ## File Organization
-**Root Directory:** The files in the root directory are used for the generation of any state machine. For each particular state machine, there is a folder with the model-specific files.
+**Root Directory:** The files in the root directory are used for the generation of any state machine. For each particular state machine, there is a folder with the model-specific files. The state machines created each serve as a benchmark.
 - *Impl_template.prompt*: Here
 - *run.py*: Here
 - *shotPrompt.txt*: Here
