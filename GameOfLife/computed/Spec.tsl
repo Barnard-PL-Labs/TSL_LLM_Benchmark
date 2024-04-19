@@ -1,0 +1,9 @@
+always assume {
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+    comeAlive(index) -> [alive <- True];
+    comeDead(index) -> [alive <- False];
+}
+

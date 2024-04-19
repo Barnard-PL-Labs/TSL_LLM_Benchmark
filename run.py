@@ -26,7 +26,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 to_interpolate = {
-    "few_shot_header": "shotPrompt.txt",
+    "few_shot_header": "../shotPrompt.txt",
     "functions_and_predicates": "Headers.txt",
     "natural_language_summary": "NL.summary.txt",
     "natural_language_description": "NL.txt",
