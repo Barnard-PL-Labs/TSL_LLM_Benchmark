@@ -12,24 +12,21 @@ This README serves as an overview of the file organization of this repository an
 - *README.mov*: A tutorial of the README. **TODO: DOES THIS NEED TO BE CHANGED?**
 
 **Within Each Benchmark Folder:** The files within each folder (e.g. Ball, GameOfLife, etc.) are used to create that benchmark.
-- *NL.summary.txt*: Here
-- *NL.txt*: Here
-- *Headers.txt*:
-- *wrapper_template.html*:
+- *NL.summary.txt*: The natural language, high-level summary of the benchmark.
+- *NL.txt*: The natural language description of the benchmark with a clear list of requirements (Assumptions & Guarantees).
+- *Headers.txt*: The function and predicate term header definitions.
+- *wrapper_template.html*: The template html file that the LLM will implement from the *Impl.js* and *Synth.js* files that it generates.
 - *computed*
-    - *Spec.tsl*:
-    - *Spec.prompt*:
-    - *Impl.prompt*:
-    - *Synth.js*:
-    - *Impl.js*:
-    - *<BENCMARK_NAME>.html*:
+    - *Spec.tsl*: The TSL specification that the LLM generates.
+    - *Spec.prompt*: The prompt which is used to query the LLM for a TSL specification. It uses a template created in *run.py* and filled in by the information found in by *Headers.txt*, *NL.summary.txt*, and *NL.txt* in run.py.
+    - *Impl.prompt*: The prompt which is used to query the LLM for a javascript implementation of the function and predicates. It uses a template created in *run.py* and filled in by the information found in *Headers.txt* and *wrapper_template.html*.
+    - *Synth.js*: The javascript translation from the LLM generated TSL specification. This translation is performed by the [TSL API](https://barnard-pl-labs.github.io/tsl-api/).
+    - *Impl.js*: The javascript function and predicate implementation generated from the LLM given the *Impl.prompt* prompt.
+    - *<BENCMARK_NAME>.html*: The LLM generated html implementation 
 
 
 
-1. NL.summary.txt - natural language high-level summary
-2. NL.txt - natural language description with clear list of requirements
-3. Headers.txt - function+pred term headers to define
-4. Wrapper_api.js - the wrapper api (javascript functions) that the LLM is supposed to use to implement the body of the functions + predicates
+
 5. Spec.tsl - the hand-written spec (to be compared against the computer-generated one)
 
 ## Creating a Benchmark
