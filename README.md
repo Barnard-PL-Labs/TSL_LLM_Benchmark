@@ -28,7 +28,8 @@ This README serves as an overview of the file organization of this repository an
 1. *NL.txt*, *NL.summary.txt*, and *Headers.txt* are handmade and used to fill in *Spec_template.prompt* and create *Spec.prompt*, which is fed into the LLM. 
 2. The LLM outputs *Spec.tsl*, its formulation of TSL.
 3. This TSL specification is passed into the [TSL API](https://barnard-pl-labs.github.io/tsl-api/) and a javascript translation is stored in *Synth.js*. 
-4. The handmade *Headers.txt* and *wrapper_template.html* are used to fill in *Impl_template.prompt* and create *Impl.prompt*, which is fed into the LLM, which outputs *Impl.js*, its javascript implementation of the functions and predicates. 
+4. The handmade *Headers.txt* and *wrapper_template.html* are used to fill in *Impl_template.prompt* and create *Impl.prompt*, which is fed into the LLM.
+5. The LLM outputs *Impl.js*, its javascript implementation of the functions and predicates. 
 6. Finally, using *wrapper_template.html*, *Synth.js*, and *Impl.js*, the LLM fills in *<BENCHMARK_NAME>.html* for the final benchmark implementation.
 
 
