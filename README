@@ -17,8 +17,8 @@ Files:
 
 Within each directory:
 
-1. NL.txt - natural language high-level summary
-2. NL.summary.txt - natural language description with clear list of requirements
+1. NL.summary.txt - natural language high-level summary
+2. NL.txt - natural language description with clear list of requirements
 3. Headers.txt - function+pred term headers to define
 4. Wrapper_api.js - the wrapper api (javascript functions) that the LLM is supposed to use to implement the body of the functions + predicates
 5. Spec.tsl - the hand-written spec (to be compared against the computer-generated one)

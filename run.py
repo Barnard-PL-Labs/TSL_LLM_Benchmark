@@ -50,13 +50,13 @@ if args.method == 'nl':
     input()
     check_call([ 'tsl', 'synthesize', '-i', spec_filename, '--js', '-o', synth_filename ])
 else:
-    spec_filename = args.dir + '/Spec.tsl'
+    spec_filename = args.dir + '/Spec_template.tsl'
     raise Exception('the only method implemented is "nl". the others are TODO.')
 
 impl_prompt_filename = args.dir + '/computed/Impl.prompt'
 impl_filename = args.dir + '/computed/Impl.js'
 with open(impl_prompt_filename, 'w') as file:
-    file.write(load_file_and_interpolate(file_dir + '/Impl.prompt'))
+    file.write(load_file_and_interpolate(file_dir + '/Impl_template.prompt'))
 
 print(f'Please paste the contents of this file into the TSL GPT:\n\n    {impl_prompt_filename}\n\nThen, paste the spec in the response into:\n\n    {impl_filename}\n\nWhen you have done this, press Enter')
 
