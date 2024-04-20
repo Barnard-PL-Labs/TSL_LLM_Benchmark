@@ -1,13 +1,15 @@
-// Define the basic Temporal Stream Logic (TSL) setup for a space invaders ship control system
-always assume {
-    !(pressA(e) && pressD(e));    
-    !(pressA(e) && pressSpace(e)); 
-    !(pressD(e) && pressSpace(e)); 
-}
-
+  always assume {
+    //mutual exculsion for all key inputs
+   ! (pressL(e) && pressR(e));
+   ! (pressL(e) && pressUp(e));
+   ! (pressL(e) && pressDown(e));
+   ! (pressR(e) && pressUp(e));
+   ! (pressR(e) && pressDown(e));
+   ! (pressUp(e) && pressDown(e));
+   hit(ship) -> [dead <- 1];
+  }
 always guarantee {
-    pressA(e) && !leftmost(ship) -> ([ship.position.x <- moveLeft(ship)]);
-    pressD(e) && !rightmost(ship) -> ([ship.position.x <- moveRight(ship)]);
-    pressSpace(e) -> X(shoot(ship));
-    hit(ship) -> [ship.state <- die(ship)];  
-}
+    pressL(e) -> [pos <- pos - 1];
+    pressR(e) -> [pos <- pos + 1];
+    pressS(e) -> [shoot <- shoot + 1] ;
+ }

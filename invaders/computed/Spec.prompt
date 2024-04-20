@@ -25,45 +25,32 @@ always guarantee {
 }
 ```
 
-This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
-
+Natural Language Description of Space Invaders Ship Control Logic:
+This specification outlines the behavior of a spaceship in a Space Invaders-style game. The state machine controls the ship’s movement and shooting capabilities while ensuring certain constraints to prevent conflicting actions.
 
 Cells:
-  "ship" represents the state of the space ship
+"ship" represents the current state of the spaceship, including its position and whether it has been hit.
 Functions:
-  moveLeft(ship) => returns a signal to move ship to the left by one unit
-  moveRight(ship) => returns a signal to move ship to the right by one unit
-  shoot(ship) => returns a signal to shoot 
+moveLeft(ship) moves the spaceship one unit to the left.
+moveRight(ship) moves the spaceship one unit to the right.
+shoot(ship) triggers the spaceship to fire a projectile.
+
 Predicates:
-  leftmost(ship) => is the ship against the leftmost wall?
-  rightmost(ship) => is the ship against the rightmost wall?
-  hit(ship) => has the ship been hit by an incoming enemy?
-  
-
-Natural language description:
-
-This state machine simulates the ship in space invaders. 
-
+leftmost(ship) checks if the spaceship is against the leftmost boundary of the playable area.
+rightmost(ship) checks if the spaceship is against the rightmost boundary.
+hit(ship) determines if the spaceship has been struck by an enemy projectile.
 
 Assumptions:
-
-1. The ship cannot move left and right most bound at the same time
-
-2. The ship can only do one action each round
-
-3. The d key corresponds to right movement
-
-4. The a key corresponds to left movement
-
-5. The space key corresponds to shoot
-
-6. Only one key press can be registered at a time
+Mutual Exclusion of Actions: The spaceship cannot perform more than one of the following actions simultaneously:
+Move left (moveLeft) and move right (moveRight).
+Move left (moveLeft) and move up (pressUp).
+Move left (moveLeft) and move down (pressDown).
+Move right (moveRight) and move up (pressUp).
+Move right (moveRight) and move down (pressDown).
+Move up (pressUp) and move down (pressDown).
+Collision Consequence: If the spaceship is hit by an enemy projectile (hit(ship)), it immediately becomes non-operational or "dead".
 
 Guarantees:
-
-1. when a is pressed move change ship.position using moveRight()
-
-2. when d is pressed move change ship.position using moveLeft()
-
-3. when space is pressed use shoot()
-
+Left Movement: When the 'A' key is pressed (mapped to pressL(e)), the spaceship will move left by invoking moveLeft(ship) unless it is at the leftmost boundary (leftmost(ship)).
+Right Movement: When the 'D' key is pressed (mapped to pressR(e)), the spaceship will move right by invoking moveRight(ship) unless it is at the rightmost boundary (rightmost(ship)).
+Shooting Action: When the spacebar is pressed (mapped to pressS(e)), the spaceship will shoot by invoking shoot(ship).
