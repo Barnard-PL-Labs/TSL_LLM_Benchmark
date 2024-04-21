@@ -1,0 +1,15 @@
+  always assume {
+    //mutual exculsion for all key inputs
+   ! (pressL(e) && pressR(e));
+   ! (pressL(e) && pressUp(e));
+   ! (pressL(e) && pressDown(e));
+   ! (pressR(e) && pressUp(e));
+   ! (pressR(e) && pressDown(e));
+   ! (pressUp(e) && pressDown(e));
+   hit(ship) -> [dead <- 1];
+  }
+always guarantee {
+    pressL(e) -> [pos <- pos - 1];
+    pressR(e) -> [pos <- pos + 1];
+    pressS(e) -> [shoot <- shoot + 1] ;
+ }

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game of Life Simulation</title>
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+            }
+
+            #gameOfLifeGrid {
+                display: grid;
+                border: 2px solid #333;
+            }
+
+            .cell {
+                width: 20px;
+                /* You can adjust size here */
+                height: 20px;
+                background-color: #fff;
+                border: 1px solid #666;
+            }
+
+            .alive {
+                background-color: #000;
+                /* Color for alive cells */
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="gameOfLifeGrid"></div>
+
+        <script>
+            function gameOfLife(N) {
+                let grid = new Array(N).fill().map(() => new Array(N).fill(0))
+                let nextGrid = new Array(N)
+                    .fill()
+                    .map(() => new Array(N).fill(0))
+                let gridContainer = document.getElementById('gameOfLifeGrid')
+                gridContainer.style.gridTemplateColumns = `repeat(${N}, 20px)` // Set the grid columns
+
+                // Initialize the grid with random values and HTML elements
+                for (let i = 0; i < N; i++) {
+                    for (let j = 0; j < N; j++) {
+                        grid[i][j] = Math.random() > 0.5 ? 1 : 0
+                        let cell = document.createElement('div')
+                        cell.className =
+                            'cell' + (grid[i][j] === 1 ? ' alive' : '')
+                        gridContainer.appendChild(cell)
+                    }
+                }
+
+                // Count live neighbors
+                function countLiveNeighbors(x, y) {
+                    let count = 0
+                    for (let i = -1; i <= 1; i++) {
+                        for (let j = -1; j <= 1; j++) {
+                            if (i === 0 && j === 0) continue
+                            let nx = x + i
+                            let ny = y + j
+                            if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+                                count += grid[nx][ny]
+                            }
+                        }
+                    }
+                    return count
+                }
+
+                function simulateStep() {
+                    let cells = document.getElementsByClassName('cell')
+                    let index = 0
+                    for (let i = 0; i < N; i++) {
+                        for (let j = 0; j < N; j++) {
+                            const currentState = grid[i][j]
+                            let nextState = currentState
+                            const neighbors = countLiveNeighbors(i, j)
+
+                            if (currentState === 0 && neighbors === 3) {
+                                nextState = 1
+                            } else if (
+                                currentState === 1 &&
+                                (neighbors < 2 || neighbors > 3)
+                            ) {
+                                nextState = 0
+                            }
+
+                            nextGrid[i][j] = nextState
+                            cells[index].className =
+                                'cell' + (nextState === 1 ? ' alive' : '')
+                            index++
+                        }
+                    }
+
+                    // Swap grids
+                    ;[grid, nextGrid] = [nextGrid, grid]
+                }
+
+                return {
+                    simulateStep,
+                }
+            }
+
+            const gol = gameOfLife(10) // Example for a 10x10 grid
+            setInterval(gol.simulateStep, 500) // Update every 500 ms
+        </script>
+    </body>
+</html>

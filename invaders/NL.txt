@@ -1,0 +1,22 @@
+
+Assumptions:
+
+1. The ship cannot move left and right most bound at the same time
+
+2. The ship can only do one action each round
+
+3. The d key corresponds to right movement
+
+4. The a key corresponds to left movement
+
+5. The space key corresponds to shoot
+
+6. Only one key press can be registered at a time
+
+Guarantees:
+
+1. when a is pressed move change ship.position using moveRight()
+
+2. when d is pressed move change ship.position using moveLeft()
+
+3. when space is pressed use shoot()

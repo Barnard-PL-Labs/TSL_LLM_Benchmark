@@ -1,0 +1,13 @@
+
+Cells:
+  "ship" represents the state of the space ship
+Functions:
+  moveLeft(ship) => returns a signal to move ship to the left by one unit
+  moveRight(ship) => returns a signal to move ship to the right by one unit
+  shoot(ship) => returns a signal to shoot 
+  die(ship) => does an action, end game or lose life.
+Predicates:
+  leftmost(ship) => is the ship against the leftmost wall?
+  rightmost(ship) => is the ship against the rightmost wall?
+  hit(ship) => has the ship been hit by an incoming enemy?
+  
