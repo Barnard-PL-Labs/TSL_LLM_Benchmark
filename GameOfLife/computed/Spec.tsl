@@ -3,7 +3,7 @@ always assume {
 }
 
 always guarantee {
-    comeAlive(index) -> [alive <- True];
-    comeDead(index) -> [alive <- False];
+    comeAlive(index) -> [alive <- alive + 1];
+    comeDead(index) -> [alive <- alive - 1];
 }
 
