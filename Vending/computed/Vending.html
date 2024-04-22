@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vending Machine Simulation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .vending-machine {
+            width: 300px;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .display {
+            background: #fff;
+            padding: 5px;
+            text-align: center;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .product-slot {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .product {
+            background: #fff;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="vending-machine">
+        <div class="display" id="balance-display">Balance: $0.00</div>
+        <div class="product-slot">
+            <div class="product" id="A1" onclick="vendProduct('1')">Product 1 ($0.75)</div>
+            <div class="product" id="A2" onclick="vendProduct('2')">Product 2 ($1)</div>
+            <div class="product" id="A3" onclick="vendProduct('3')">Product 3 ($1.25)</div>
+        </div>
+        <button onclick="insertMoney('d')">Insert Dime ($0.10)</button>
+        <button onclick="insertMoney('q')">Insert Quarter ($0.25)</button>
+        <button onclick="insertMoney('o')">Insert Dollar ($1.00)</button>
+        <button onclick="refund()">Refund</button>
+    </div>
+    <script>
+        let total = 0.00;
+
+        function updateDisplay() {
+            document.getElementById('balance-display').innerText = 'Balance: $' + total.toFixed(2);
+        }
+
+        function insertMoney(type) {
+            if (type === 'd') total += 0.10;
+            else if (type === 'q') total += 0.25;
+            else if (type === 'o') total += 1.00;
+            updateDisplay();
+        }
+
+        function vendProduct(product) {
+            if (product === '1' && total >= 0.75) {
+                total -= 0.75;
+                alert('Product 1 Dispensed');
+            } else if (product === '2' && total >= 1.00) {
+                total -= 1.00;
+                alert('Product 2 Dispensed');
+            } else if (product === '3' && total >= 1.25) {
+                total -= 1.25;
+                alert('Product 3 Dispensed');
+            } else {
+                alert('Insufficient funds for this product');
+            }
+            updateDisplay();
+        }
+
+        function refund() {
+            alert('Refunding: $' + total.toFixed(2));
+            total = 0;
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
