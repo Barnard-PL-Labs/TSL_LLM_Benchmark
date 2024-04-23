@@ -32,6 +32,6 @@ This README serves as an overview of the file organization of this repository an
 4. The handmade _Headers.txt_ is used to fill in _Impl_template.prompt_ and create _Impl.prompt_, which is fed into the LLM.
 5. The LLM outputs _Impl.js_, its javascript implementation of the functions and predicates.
 6. Finally, using _wrapper_template.html_, _Synth.js_, and _Impl.js_, the LLM fills in _<BENCHMARK_NAME>.html_ for the final benchmark implementation.
-7. OPTIONAL: Combined steps 4-6.
+7. OPTIONAL: Combine steps 4-6.
 
 ### TODO: How are _wrapper_template.html_ and _Headers.txt_ used in _Impl_template.prompt_ to create _Impl.prompt_?
