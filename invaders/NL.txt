@@ -1,22 +1,11 @@
-
-Assumptions:
-
-1. The ship cannot move left and right most bound at the same time
-
-2. The ship can only do one action each round
-
-3. The d key corresponds to right movement
-
-4. The a key corresponds to left movement
-
-5. The space key corresponds to shoot
-
-6. Only one key press can be registered at a time
-
-Guarantees:
-
-1. when a is pressed move change ship.position using moveRight()
-
-2. when d is pressed move change ship.position using moveLeft()
-
-3. when space is pressed use shoot()
+Mutual Exclusion for Key Inputs:
+- No two directional keys can be pressed simultaneously. This includes combinations of left (L) and right (R), left and up, left and down, right and up, right and down, and finally up and down. This ensures that only one directional input is processed at any given time, preventing conflicting movements.
+Ship Hit Detection:
+- If the ship is hit by an enemy or an obstacle, a specific condition or flag (dead) is set to 1, indicating that the ship has been hit and possibly triggering a game over or damage sequence.
+Guarantees
+Left Movement:
+- When the left key (L) is pressed, the position of an entity (such as a player or an object) is decremented by one unit. This moves the entity one step to the left in the game space.
+Right Movement:
+- When the right key (R) is pressed, the position of the entity is incremented by one unit. This moves the entity one step to the right.
+Shooting Action:
+- When the shoot key (S) is pressed, a shooting action is triggered, which could be represented by incrementing a shooting counter or activating a shooting mechanism in the game.

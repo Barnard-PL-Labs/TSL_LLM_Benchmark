@@ -1,1 +1,2 @@
  
+This specification models the behavior of a player's ship in the game Space Invaders, dictating how the ship responds to various key inputs and interaction with game elements:
