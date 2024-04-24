@@ -1,7 +1,5 @@
 
-A system environment has the following API. Using the API, implement the following methods in JavaScript. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
-
-Remember that you have sample code base and paper in your knowledge base.
+A system environment has the following API. Using the API, implement the following methods in [[LANGUAGE_GOES_HERE]]. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
 
 Functions and predicates to implement:
 
@@ -10,18 +8,18 @@ Cells:
   "cube" is a cell that represents the state of the signal that determines how the cube should move
 
 Functions:
-  rotateLeft(cube) => returns a new cube signal that has the cube.rotation.y value increased
-  rotateRight(cube) => returns a new cube signal that has the cube.rotation.y value decreased
+- rotateLeft(cube): Rotate the cube to the left.
+- rotateRight(cube): Rotate the cube to the right.
 
 Predicates:
-  pressL(e) => does the user press the left arrow key on their keyboard? You need to add an event listener in the function to listen for the keydown event.
-  pressR(e) => does the user press the right arrow key on their keyboard? You need to add an event listener in the function to listen for the keydown event.
+- pressL(e): A predicate that returns true when the left button is pressed. Event listener should be inside the function.
+- pressR(e): A predicate that returns true when the right button is pressed. Event listener should be inside the function.
 
 System API:
 
 
 /*
 
-Get or set the y position of the cube in 3D through three.js by changing "cube.rotation.y".
+Get or set the y position of the cube in 3D by changing "cube.rotation.y".
 
 */

@@ -1,6 +1,5 @@
-Translate the following into a TSL specification. Remember, this is what TSL code looks like:
 
-Remember the TSL documentation and code that you have in your knowledge base.
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
 
 ```
 always assume {
@@ -26,29 +25,35 @@ always guarantee {
 }
 ```
 
-This is a complete listing of all predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
 
-Do not use any functions or predicates that are not listed here. For example, do not use rotateLeft() or rotateRight().
 
 Cells:
   "cube" is a cell that represents the state of the signal that determines how the cube should move
 
+Functions:
+- rotateLeft(cube): Rotate the cube to the left.
+- rotateRight(cube): Rotate the cube to the right.
+
 Predicates:
-  pressL(e) => does the user press the left arrow key on their keyboard?
-  pressR(e) => does the user press the right arrow key on their keyboard?
+- pressL(e): A predicate that returns true when the left button is pressed. Event listener should be inside the function.
+- pressR(e): A predicate that returns true when the right button is pressed. Event listener should be inside the function.
 
 Natural language description:
 
 
-A cube is rotating by its y axis. The cube is reactive to the user input of left arrow key press and right arrow key press to change the direction it's rotating to.
+A control system for a cube where two buttons (left and right) influence the cube's rotation. The system ensures that both buttons are not pressed simultaneously and manages the cube's rotation based on the button pressed, maintaining the rotation direction until the opposite button is pressed.
+
 
 
 Assumptions:
 
-1. The user will never press the left key and the right key at the same time.
+1. The system must assume that the left and right buttons are never pressed at the same time.
 
 Guarantees:
 
-2. When the user presses the left key, the cube will rotate to the left by its y axis weak until the user press the right key.
+2. If the left button is pressed, the cube should begin rotating to the left. This rotation should continue until the right button is pressed.
 
-3. When the user presses the right key, the cube will rotate to the right by its y axis weak until the user press the left key.
+3. Similarly, if the right button is pressed, the cube should rotate to the right until the left button is pressed.
+
+4. This specification ensures that the cube's rotation direction can be controlled smoothly and accurately by the user, without conflicts between the controls.

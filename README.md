@@ -5,9 +5,9 @@ Code gen models struggle with long context generation, and have been shown to pe
 ## Benchmark Overview
 We propose a set of benchmarks to test the capability of LLMs in generating TSL specs for reactive synthesis. The benchmarks use a simple TSL spec to generate complex state machines, and are designed to test the ability of LLMs to generate specs as opposed to generating entire state machines. In this way performance of long context high risk code gen applications can be simplified and made more transparent. **The snake death is due to user error... The final death is due to illegal keypresses and not a bug.**
 
-| Ball | Game of Life | Vending Machine | Snake Game | Space Invaders (ship only) |
-|:--------:|:-------:|:-----------:|:---------:|:---------:|
-| ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) | ![Invaders](media/invaders.gif) |
+| Ball | Game of Life | Vending Machine | Snake Game | Space Invaders (ship only) |          Rotating Cube           |
+|:--------:|:-------:|:-----------:|:---------:|:---------:|:--------------------------------:|
+| ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) | ![Invaders](media/invaders.gif) | ![Cube](media/cube_rotation.gif) |
 
 ## Using the benckmarks and overview
 Each folder contains a set of files that make up a benchmark. Call run.py from the main dir to walk through the process of a benchmark.

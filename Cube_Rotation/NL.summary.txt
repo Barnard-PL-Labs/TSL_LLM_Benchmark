@@ -1,2 +1,2 @@
 
-A cube is rotating by its y axis. The cube is reactive to the user input of left arrow key press and right arrow key press to change the direction it's rotating to.
+A control system for a cube where two buttons (left and right) influence the cube's rotation. The system ensures that both buttons are not pressed simultaneously and manages the cube's rotation based on the button pressed, maintaining the rotation direction until the opposite button is pressed.
