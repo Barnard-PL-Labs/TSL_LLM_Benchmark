@@ -23,7 +23,7 @@ Further in the development process, I decided to split the reactive system up in
 ### Snake Position System
 <div align=left><img src="figs/positionSystem.png" width="30%" height="30%"></div>
 This reactive system controls the movement of the snake based on the up, down, left, and right arrow key presses.
-The arrow key presses (<code>pressLeft(e)</code>,<code>pressUp(e)</code>, etc.) are inputs from the environment, and the snake's head position, <code>headX</code> and <code>headY</code>, are cells that are either incremented or decremented based on the inputs.
+The arrow key presses (<code>pressLeft(e)</code>,<**code**>pressUp(e)</**code**>, etc.) are inputs from the environment, and the snake's head position, <code>headX</code> and <code>headY</code>, are cells that are either incremented or decremented based on the inputs.
 
 ### Snake Collisions System
 <div align=left><img src="figs/collisionSystem.png" width="40%" height="40%"></div>
@@ -39,7 +39,7 @@ After building the overall architecture for my systems, I then wrote the specifi
 
 ### Snake Position Specification
 ~~~js
-  always assume {
+**  always assume {
     //mutual exculsion for all key inputs
    ! (pressL(e) && pressR(e));
    ! (pressL(e) && pressUp(e));
@@ -55,7 +55,7 @@ always guarantee {
     pressR(e) -> (([ headX <- headX + 1] && [headY <- headY]) W (pressL(e) || pressDown(e) || pressUp(e)));
     pressUp(e) -> (([ headY <- headY - 1] && [headX <- headX]) W (pressR(e) || pressL(e) || pressDown(e)));
     pressDown(e) -> (([ headY <- headY + 1] && [headX <- headX]) W (pressR(e) || pressL(e) || pressUp(e))); 
-}
+}**
 ~~~
 This specification synthesizes a 4-state automaton. The 4 states are for the 4 different arrow key inputs.
 
