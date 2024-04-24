@@ -1,0 +1,11 @@
+Cells: 
+    "stepsize" is a cell that represent the state of the signal that determines how much pressing the "a" key/button will increment the counter by.
+    "e" is a cell that represents the state of the signal that determines how the counter should act (how much it should increment by).
+
+Functions:
+    multiplyByThree(stepsize) => multiply the stepsize by 3.
+
+Predicates:
+    pressA(e) => did the user press the a key?
+    pressB(e) => did the user press the b key?
+    pressC(e) => did the user press the c key?

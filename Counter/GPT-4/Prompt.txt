@@ -1,0 +1,21 @@
+Write an HTML and CSS program where there are 3 buttons:
+
+1. Button 1 is the 'a' key on the keyboard. When clicked, it adds 1 to the counter on the screen. 
+2. Button 2 is the 'b' key on the keyboard. When clicked, it adds 2 to the counter on the screen.
+3. Button 3 is the 'c' key on the keyboard. When clicked, it adds 3 to the counter on the screen.
+
+However, there is a caveat. If Button 1 (the 'a' key) is clicked 3 times in a row, then it will increment by 5 from now on if clicked again after that. If Button 1 (the 'a' key) is clicked 3 more times in a row again, then it will increment by 10 from now on if clicked again after that. If Button 1 (the 'a' key) is clicked 3 more times in a row again, then it will increment by 15 from now on if clicked again after that. This pattern continues infinitely (5, 10, 15, 20, 25, ...).
+
+Write this program in HTML and Javascript (in the same file, use the <style> tags).
+
+Example:
+program starts: counter = 0
+'a' is clicked: counter = 1
+'a' is clicked: counter = 2
+'a' is clicked: counter = 3
+'a' is clicked: counter = 8
+'a' is clicked: counter = 13
+'a' is clicked: counter = 18
+'a' is clicked: counter = 28
+'b' is clicked: counter = 30
+'a' is clicked: counter = 31
