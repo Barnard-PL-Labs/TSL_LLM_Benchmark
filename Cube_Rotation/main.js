@@ -107,24 +107,32 @@ function reset(c) {
 // Generated from TSL ChatGPT
 // Functions
 function rotateLeft(cube) {
-    cube += 0.1;  // Increment y rotation, adjust the value based on needed rotation speed
+    cube.rotation.y += 0.1;  // Increment y rotation, adjust the value based on needed rotation speed
     return cube;  // Return the new rotation for verification or further processing
 }
 
 function rotateRight(cube) {
-    cube -= 0.1;  // Decrement y rotation, adjust the value based on needed rotation speed
+    cube.rotation.y -= 0.1;  // Decrement y rotation, adjust the value based on needed rotation speed
     return cube;  // Return the new rotation for verification or further processing
 }
 
-function pressL(e) {
-    if (e instanceof KeyboardEvent) {
-        return e.keyCode === 37;
-        console.log('pressL');
-    }
+// Predicates
+function pressL() {
+    let isPressed = false;
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowLeft') {
+            isPressed = true;
+        }
+    });
+    return isPressed;
 }
-function pressR(e) {
-    if (e instanceof KeyboardEvent) {
-        return e.keyCode === 39;
-        console.log('pressR');
-    }
+
+function pressR() {
+    let isPressed = false;
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight') {
+            isPressed = true;
+        }
+    });
+    return isPressed;
 }

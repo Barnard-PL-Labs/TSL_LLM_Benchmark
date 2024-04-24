@@ -1,18 +1,3 @@
-This is previously called moveCube.
-
-Work in progress.
-
-Cube dir example spec:
-
-always assume{
-	! (pressL(e) && pressR(e));
-}
-
-always guarantee{
-	pressL(e) -> ([cube.rotation.y <- cube.rotation.y + 0.1] W pressR(e));
-    pressR(e) -> ([cube.rotation.y <- cube.rotation.y - 0.1] W pressL(e));
-}
-
 Cube_and_Polygon dir example spec:
 
 always assume{
