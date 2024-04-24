@@ -18,45 +18,46 @@
 <button id="buttonC">C</button>
 
 <script>
-  let count = 0;
+  let counter = 0;
   let stepsize = 1;
-  let consecutiveA = 0;
+  let aCount = 0; // to track consecutive 'A' key presses
 
-  const counterDisplay = document.getElementById('counter');
+  const updateDisplay = () => {
+    document.getElementById('counter').textContent = counter;
+  };
 
-  document.getElementById('buttonA').addEventListener('click', function() {
-    count += stepsize;
-    consecutiveA++;
-    if (consecutiveA === 3) {
+  const resetStepSize = () => {
+    stepsize = 1;
+    aCount = 0;
+  };
+
+  const buttonA = document.getElementById('buttonA');
+  const buttonB = document.getElementById('buttonB');
+  const buttonC = document.getElementById('buttonC');
+
+  buttonA.addEventListener('click', () => {
+    counter += stepsize;
+    aCount++;
+    if (aCount === 3) {
       stepsize *= 3;
-      consecutiveA = 0;
+      aCount = 0; // Reset A count after increasing stepsize
     }
     updateDisplay();
   });
 
-  document.getElementById('buttonB').addEventListener('click', function() {
-    count += 1;  // B always adds 1
+  buttonB.addEventListener('click', () => {
+    counter += 2;
     resetStepSize();
     updateDisplay();
   });
 
-  document.getElementById('buttonC').addEventListener('click', function() {
-    count += 1;  // C always adds 1
+  buttonC.addEventListener('click', () => {
+    counter += 3;
     resetStepSize();
     updateDisplay();
   });
 
-  function resetStepSize() {
-    stepsize = 1;
-    consecutiveA = 0;
-  }
-
-  function updateDisplay() {
-    counterDisplay.textContent = count;
-  }
-
-  // Initialize display
-  updateDisplay();
+  updateDisplay(); // Initial display update
 </script>
 </body>
 </html>

@@ -1,42 +1,36 @@
-// Assume the API provides certain functionalities which we need to wrap our implementation around.
+// Assuming `stepsize` and `e` are part of the environment where this code runs
+let stepsize = 1; // Default stepsize for incrementing the counter
+let e; // This will hold the event object from key presses
 
-// Function to multiply the value of 'stepsize' by three
-function multiplyByThree(stepsize) {
-    // Assuming an API function getCellValue to fetch the current value of a cell
-    const currentValue = getCellValue(stepsize);
-    // Assuming an API function setCellValue to set the value of a cell
-    setCellValue(stepsize, currentValue * 3);
+// Function to update the counter based on the key pressed
+function updateCounter(event) {
+    e = event; // Update the global `e` with the latest event
+
+    if (pressA(e)) {
+        counter += stepsize; // Increment counter by stepsize when 'a' is pressed
+    } else if (pressB(e)) {
+        counter += 2 * stepsize; // Example operation for 'b'
+    } else if (pressC(e)) {
+        counter -= stepsize; // Example operation for 'c'
+    }
+
+    console.log(`Counter updated to: ${counter}`);
 }
 
-// Predicate to check if 'a' key is pressed
-function pressA(e) {
-    // Assuming an API function getEventKey to get the key associated with an event
-    return getEventKey(e) === 'a';
+// Predicate to check if 'a' was pressed
+function pressA(event) {
+    return event.key === 'a';
 }
 
-// Predicate to check if 'b' key is pressed
-function pressB(e) {
-    return getEventKey(e) === 'b';
+// Predicate to check if 'b' was pressed
+function pressB(event) {
+    return event.key === 'b';
 }
 
-// Predicate to check if 'c' key is pressed
-function pressC(e) {
-    return getEventKey(e) === 'c';
+// Predicate to check if 'c' was pressed
+function pressC(event) {
+    return event.key === 'c';
 }
 
-// // Example usage of API functions:
-// // Set initial value for stepsize
-// setCellValue('stepsize', 1);
-
-// // Multiplying the stepsize by three
-// multiplyByThree('stepsize');
-
-// // Example event object for a key press
-// let event = {
-//     key: 'a'
-// };
-
-// // Checking if 'a' was pressed
-// if (pressA(event)) {
-//     console.log("'a' was pressed!");
-// }
+// // Example usage with an event listener for keyboard input
+// document.addEventListener('keydown', updateCounter);
