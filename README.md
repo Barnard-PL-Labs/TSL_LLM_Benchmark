@@ -1,6 +1,18 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+
 # TSL LLM Benchmark
 
-This README serves as an overview of the file organization of this repository and a walkthrough of how the benchmarks operate and the how the files are interrelated.
+This project explores the capabilities of LLMs in expediting code synthesis tasks. 
+
+## Benchmark Overview
+We propose a set of benchmarks to test the capability of LLMs in generating TSL specs for reactive synthesis. The benchmarks use a simple TSL spec to generate complex state machines, and are designed to test the ability of LLMs to generate specs as opposed to generating entire state machines. In this way performance of long context high risk code gen applications can be simplified and made more transparent.
+
+| Ball GIF | Gol GIF | Vending GIF | Snake GIF |
+|:--------:|:-------:|:-----------:|:---------:|
+| ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) |
 
 ## File Organization
 
