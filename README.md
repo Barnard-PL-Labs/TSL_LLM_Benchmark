@@ -9,7 +9,12 @@ We propose a set of benchmarks to test the capability of LLMs in generating TSL 
 |:--------:|:-------:|:-----------:|:---------:|
 | ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) |
 
-## File Organization
+## Using the benckmarks and overview
+Each folder contains a set of files that make up a benchmark. Call run.py from the main dir to walk through the process of a benchmark.
+
+### Demo:
+
+### File Organization
 
 **Root Directory:** The files in the root directory are used for the generation of any state machine. For each particular state machine, there is a folder with the model-specific files. The state machines created each serve as a benchmark.
 
@@ -31,7 +36,7 @@ We propose a set of benchmarks to test the capability of LLMs in generating TSL 
     -   _Synth.js_: The javascript translation from the LLM generated TSL specification. This translation is performed by the [TSL API](https://barnard-pl-labs.github.io/tsl-api/).
     -   _<BENCHMARK_NAME>.html_: The LLM generated html implementation.
 
-## Benchmark Walkthrough
+### Benchmark Walkthrough
 
 1. _NL.txt_, _NL.summary.txt_, and _Headers.txt_ are handmade and used to fill in _Spec_template.prompt_ and create _Spec.prompt_, which is fed into the LLM.
 2. The LLM outputs _Spec.tsl_, its formulation of TSL.
