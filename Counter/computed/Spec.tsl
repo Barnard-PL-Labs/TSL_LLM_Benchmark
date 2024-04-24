@@ -1,0 +1,16 @@
+always assume {
+  (pressA(e) -> !pressB(e) && !pressC(e)) ;
+  (pressB(e) -> !pressA(e) && !pressC(e)) ;
+  (pressC(e) -> !pressA(e) && !pressB(e)) ;
+}
+
+always guarantee {
+  pressA(e) -> ([ count <- count + stepsize ]) ;
+  pressB(e) -> ([ count <- count + 2 ]) ;
+  pressC(e) -> ([ count <- count + 3 ]) ;
+
+  (pressA(e) && pressA(last_e) && pressA(last_e2) -> X([ stepsize <- multiplyByThree(stepsize) ])) ;
+  (pressB(e) -> X([ stepsize <- 1 ])) ;
+  (pressC(e) -> X([ stepsize <- 1 ])) ;
+}
+

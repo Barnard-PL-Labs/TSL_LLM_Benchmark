@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Counter with Special Buttons</title>
+<style>
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+  }
+</style>
+</head>
+<body>
+<h1>Counter: <span id="counter">0</span></h1>
+<button id="buttonA">A</button>
+<button id="buttonB">B</button>
+<button id="buttonC">C</button>
+
+<script>
+  let count = 0;
+  let stepsize = 1;
+  let consecutiveA = 0;
+
+  const counterDisplay = document.getElementById('counter');
+
+  document.getElementById('buttonA').addEventListener('click', function() {
+    count += stepsize;
+    consecutiveA++;
+    if (consecutiveA === 3) {
+      stepsize *= 3;
+      consecutiveA = 0;
+    }
+    updateDisplay();
+  });
+
+  document.getElementById('buttonB').addEventListener('click', function() {
+    count += 1;  // B always adds 1
+    resetStepSize();
+    updateDisplay();
+  });
+
+  document.getElementById('buttonC').addEventListener('click', function() {
+    count += 1;  // C always adds 1
+    resetStepSize();
+    updateDisplay();
+  });
+
+  function resetStepSize() {
+    stepsize = 1;
+    consecutiveA = 0;
+  }
+
+  function updateDisplay() {
+    counterDisplay.textContent = count;
+  }
+
+  // Initialize display
+  updateDisplay();
+</script>
+</body>
+</html>
