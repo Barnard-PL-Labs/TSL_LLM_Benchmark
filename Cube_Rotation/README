@@ -1,6 +1,6 @@
-This is previously called moveCube.
+This is a complete benchmark for the Cube_Rotation example.
 
-Work in progress.
+However, it is not a working benchmark, as the generated spec and function and predicate terms have some errors that wasn't able to be resolved.
 
 Cube_Rotation dir example spec:
 
