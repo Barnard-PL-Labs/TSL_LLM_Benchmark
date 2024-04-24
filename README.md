@@ -1,16 +1,13 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
-<script>hljs.highlightAll();</script>
-
 
 # TSL LLM Benchmark
+Code gen models struggle with long context generation, and have been shown to perform better when using code snippets to condition output. We propose a novel approach that uses TSL to 
 
 This project explores the capabilities of LLMs in expediting code synthesis tasks. 
 
 ## Benchmark Overview
 We propose a set of benchmarks to test the capability of LLMs in generating TSL specs for reactive synthesis. The benchmarks use a simple TSL spec to generate complex state machines, and are designed to test the ability of LLMs to generate specs as opposed to generating entire state machines. In this way performance of long context high risk code gen applications can be simplified and made more transparent.
 
-| Ball GIF | Gol GIF | Vending GIF | Snake GIF |
+| Ball | Game of Life | Vending Machine | Snake Game |
 |:--------:|:-------:|:-----------:|:---------:|
 | ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) |
 
