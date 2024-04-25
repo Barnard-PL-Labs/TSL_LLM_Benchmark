@@ -7,8 +7,8 @@ We propose a set of benchmarks to test the capability of LLMs in generating TSL 
 
 | Ball | Game of Life | Vending Machine | Snake Game | Space Invaders (ship only) |          Rotating Cube           |
 |:--------:|:-------:|:-----------:|:---------:|:---------:|:--------------------------------:|
-| ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) | ![Invaders](media/invaders.gif) | ![Cube](media/cube_rotation.gif) |
-
+| ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) | ![Invaders](media/invaders.gif) | ![Cube](media/cube.gif) |
+<!-- Add future  -->
 ## Using the benckmarks and overview
 Each folder contains a set of files that make up a benchmark. Call run.py from the main dir to walk through the process of a benchmark.
 
