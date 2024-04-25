@@ -16,3 +16,10 @@ for file in *.mov; do
 done
 
 echo "Conversion complete."
+
+
+# ffmpeg -i slides_demo.mov -vf "fps=10,scale=320:-1:flags=lanczos,palettegen" palette.png
+# ffmpeg -i slides_demo.mov -i palette.png -filter_complex "fps=10,scale=320:-1:flags=lanczos[x];[x][1:v]paletteuse" slides_demo.gif
+
+# ffmpeg -i slides_demo.mov -vf "fps=10,scale=iw:-1:flags=lanczos,palettegen" palette.png
+# ffmpeg -i slides_demo.mov -i palette.png -filter_complex "fps=10,scale=iw:-1:flags=lanczos[x];[x][1:v]paletteuse" slides_demo.gif
