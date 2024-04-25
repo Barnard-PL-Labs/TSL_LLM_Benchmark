@@ -16,3 +16,11 @@ for file in *.mov; do
 done
 
 echo "Conversion complete."
+
+###### TOP ONE REFORMATS SQUARE SIZE TO MATCH THE OTHER EXAMPLES. BOTTOM ONE IS FOR LARGER ONES ######
+
+# ffmpeg -i cube.mov -vf "fps=10,scale=320:-1:flags=lanczos,palettegen" palette.png
+# ffmpeg -i cube.mov -i palette.png -filter_complex "fps=10,scale=320:-1:flags=lanczos[x];[x][1:v]paletteuse" cube.gif
+
+# ffmpeg -i cube.mov -vf "fps=10,scale=iw:-1:flags=lanczos,palettegen" palette.png
+# ffmpeg -i cube.mov -i palette.png -filter_complex "fps=10,scale=iw:-1:flags=lanczos[x];[x][1:v]paletteuse" cube.gif
