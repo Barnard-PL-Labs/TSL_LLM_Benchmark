@@ -1,0 +1,11 @@
+
+Assumptions:
+
+
+Guarantees:
+
+1. When the user press the up button, count increments every frame.
+
+2. When the user is not pressing the up button, count stays at 0.5.
+
+3. The scale value along the x axis is eventually updated with the count value

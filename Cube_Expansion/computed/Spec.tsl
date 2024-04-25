@@ -1,0 +1,13 @@
+always assume{
+}
+
+always guarantee{
+//when you press the up button, count increments every frame
+    pressUp(e) -> [count <- count + 1];
+//when you are not pressing the up button, count stays at 0.5
+    !(pressUp(e)) -> [count <- 0.5];
+//the scale value along the x axis is eventually updated with the count value
+    F [cube.scale.x <- count];
+}
+
+//in progress: this is not what I got, just for run.py testing

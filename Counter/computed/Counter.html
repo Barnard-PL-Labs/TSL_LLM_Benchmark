@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Counter with Special Buttons</title>
+<style>
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+  }
+</style>
+</head>
+<body>
+<h1>Counter: <span id="counter">0</span></h1>
+<button id="buttonA">A</button>
+<button id="buttonB">B</button>
+<button id="buttonC">C</button>
+
+<script>
+  let counter = 0;
+  let stepsize = 1;
+  let aCount = 0; // to track consecutive 'A' key presses
+
+  const updateDisplay = () => {
+    document.getElementById('counter').textContent = counter;
+  };
+
+  const resetStepSize = () => {
+    stepsize = 1;
+    aCount = 0;
+  };
+
+  const buttonA = document.getElementById('buttonA');
+  const buttonB = document.getElementById('buttonB');
+  const buttonC = document.getElementById('buttonC');
+
+  buttonA.addEventListener('click', () => {
+    counter += stepsize;
+    aCount++;
+    if (aCount === 3) {
+      stepsize *= 3;
+      aCount = 0; // Reset A count after increasing stepsize
+    }
+    updateDisplay();
+  });
+
+  buttonB.addEventListener('click', () => {
+    counter += 2;
+    resetStepSize();
+    updateDisplay();
+  });
+
+  buttonC.addEventListener('click', () => {
+    counter += 3;
+    resetStepSize();
+    updateDisplay();
+  });
+
+  updateDisplay(); // Initial display update
+</script>
+</body>
+</html>

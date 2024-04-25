@@ -1,0 +1,54 @@
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume {
+  (room.somebodyEnters
+    -> (! room.empty W room.somebodyLeaves)) ;
+  ((room.somebodyLeaves && room.empty)
+    -> (room.empty W room.somebodyEnters)) ;
+  (cm.ready || cm.standby || cm.busy) ;
+  (cm.ready -> (!cm.standby && !cm.busy)) ;
+  (cm.standby -> (!cm.busy && !cm.ready)) ;
+  (cm.busy -> (!cm.ready && !cm.standby)) ;
+  ([ cm <- turnOn() ] && cm.standby
+    -> X cm.busy U ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)) ;
+  ([ cm <- turnOff() ] && cm.ready
+    -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
+  ([ cm <- makeCoffee() ] && cm.ready
+    -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
+}
+
+always guarantee {
+  room.somebodyEnters
+    -> F (cm.ready W (room.somebodyLeaves && room.empty));
+}
+```
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+
+
+Cells:
+  "cube" is a cell that represents the state of the signal that determines how large is the cube
+
+Functions:
+
+Predicates:
+  pressUp(e) => does the user press the up arrow key on their keyboard? You need to add an event listener in the function to listen for the keydown event.
+
+Natural language description:
+
+
+A cube has cube.scale.x to be 0.5 when the user is not pressing the up key. The cube is reactive to the user pressing the up key. When the user presses the up key, the cube.scale.x updates to 1.0.
+
+
+Assumptions:
+
+
+Guarantees:
+
+1. When the user press the up button, count increments every frame.
+
+2. When the user is not pressing the up button, count stays at 0.5.
+
+3. The scale value along the x axis is eventually updated with the count value

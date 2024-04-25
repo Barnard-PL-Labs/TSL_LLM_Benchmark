@@ -1,0 +1,12 @@
+
+Assumptions:
+
+1. The system must assume that the left and right buttons are never pressed at the same time.
+
+Guarantees:
+
+2. If the left button is pressed, the cube should begin rotating to the left. This rotation should continue until the right button is pressed.
+
+3. Similarly, if the right button is pressed, the cube should rotate to the right until the left button is pressed.
+
+4. This specification ensures that the cube's rotation direction can be controlled smoothly and accurately by the user, without conflicts between the controls.

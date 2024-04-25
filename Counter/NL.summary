@@ -1,0 +1,2 @@
+
+Use the metaphor of a user pushing buttons with the result that clicking a certain button will increment the counter by a certain amount each time. The button choices are the A key, B key, and C key. Pressing the A key 3 times in a row changes its counter increment size by 3 times what it was before, unless the B or C key are pressed which resets the stepsize to 1. No two counter (button) operations can be performed at the same time.

@@ -1,0 +1,11 @@
+
+Cells:
+  "cube" is a cell that represents the state of the signal that determines how the cube should move
+
+Functions:
+- rotateLeft(cube): Rotate the cube to the left.
+- rotateRight(cube): Rotate the cube to the right.
+
+Predicates:
+- pressL(e): A predicate that returns true when the left button is pressed. Event listener should be inside the function.
+- pressR(e): A predicate that returns true when the right button is pressed. Event listener should be inside the function.

@@ -1,2 +1,0 @@
-
-A cube is rotating by its y axis. The cube is reactive to the user input of left arrow key press and right arrow key press to change the direction it's rotating to.

@@ -1,0 +1,16 @@
+
+Assumptions:
+
+1. There are three buttons, named pressA, pressB, and pressC, which can be pushed by the user.
+
+Guarantees:
+
+2. When pressA is pushed, the system ensures that the counter will be incremented by 1. This is achieved by writing the value "count + 1" to the variable "count".
+
+3. When pressB is pushed, the system ensures that the counter will be incremented by 2. This is achieved by writing the value "count + 2" to the variable "count".
+
+4. When pressC is pushed, the system ensures that the counter will be incremented by 3. This is achieved by writing the value "count + 3" to the variable "count".
+
+5. When pressA is pushed three times in a row, on the fourth time in a row that it is clicked, its increment size (stepsize) will increase by what it is times three. This is achieved by writing the value "multiplyByThree(stepsize)" to the variable "stepsize".
+
+6. When pressB or pressC is pushed, the systems ensures that the stepsize will be set back to 1. This is achieved by writing the value "1" to the variable "stepsize".

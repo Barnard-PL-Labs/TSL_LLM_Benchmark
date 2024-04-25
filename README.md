@@ -5,9 +5,9 @@ Code gen models struggle with long context generation, and have been shown to pe
 ## Benchmark Overview
 We propose a set of benchmarks to test the capability of LLMs in generating TSL specs for reactive synthesis. The benchmarks use a simple TSL spec to generate complex state machines, and are designed to test the ability of LLMs to generate specs as opposed to generating entire state machines. In this way performance of long context high risk code gen applications can be simplified and made more transparent. **The snake death is due to user error... The final death is due to illegal keypresses and not a bug.**
 
-| Ball | Game of Life | Vending Machine | Snake Game | Space Invaders (ship only) |
-|:--------:|:-------:|:-----------:|:---------:|:---------:|
-| ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) | ![Invaders](media/invaders.gif) |
+| Ball | Game of Life | Vending Machine | Snake Game | Space Invaders (ship only) |          Rotating Cube           |
+|:--------:|:-------:|:-----------:|:---------:|:---------:|:--------------------------------:|
+| ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | ![Snake](media/snake.gif) | ![Invaders](media/invaders.gif) | ![Cube](media/cube_rotation.gif) |
 
 ## Using the benckmarks and overview
 Each folder contains a set of files that make up a benchmark. Call run.py from the main dir to walk through the process of a benchmark.
@@ -41,8 +41,7 @@ Each folder contains a set of files that make up a benchmark. Call run.py from t
 1. _NL.txt_, _NL.summary.txt_, and _Headers.txt_ are handmade and used to fill in _Spec_template.prompt_ and create _Spec.prompt_, which is fed into the LLM.
 2. The LLM outputs _Spec.tsl_, its formulation of TSL.
 3. This TSL specification is passed into the [TSL API](https://barnard-pl-labs.github.io/tsl-api/) and a javascript translation is stored in _Synth.js_.
-4. The handmade _Headers.txt_ and _wrapper_template.html_ are used to fill in _Impl_template.prompt_ and create _Impl.prompt_, which is fed into the LLM.
+4. The handmade _Headers.txt_ is used to fill in _Impl_template.prompt_ and create _Impl.prompt_, which is fed into the LLM.
 5. The LLM outputs _Impl.js_, its javascript implementation of the functions and predicates.
 6. Finally, using _wrapper_template.html_, _Synth.js_, and _Impl.js_, the LLM fills in _<BENCHMARK_NAME>.html_ for the final benchmark implementation.
-
-### TODO: How are _wrapper_template.html_ and _Headers.txt_ used in _Impl_template.prompt_ to create _Impl.prompt_?
+7. OPTIONAL: Combine steps 4-6.

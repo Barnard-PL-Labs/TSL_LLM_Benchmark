@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Counter with Special Buttons</title>
+<style>
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+  }
+</style>
+</head>
+<body>
+<h1>Counter: <span id="counter">0</span></h1>
+<button id="buttonA">A</button>
+<button id="buttonB">B</button>
+<button id="buttonC">C</button>
+
+<script>
+  let count = 0;
+  let consecutiveA = 0;
+  let extraIncrement = 0;
+
+  const counterDisplay = document.getElementById('counter');
+  const updateCounter = (increment) => {
+    count += increment;
+    counterDisplay.textContent = count;
+  };
+
+  document.getElementById('buttonA').addEventListener('click', function() {
+    consecutiveA++;
+    if (consecutiveA >= 3) {
+      let timesFive = Math.floor((consecutiveA - 3) / 3) + 1;
+      extraIncrement = 5 * timesFive;
+    }
+    updateCounter(1 + extraIncrement);
+  });
+
+  document.getElementById('buttonB').addEventListener('click', function() {
+    consecutiveA = 0; // Reset consecutive count for A
+    updateCounter(2);
+  });
+
+  document.getElementById('buttonC').addEventListener('click', function() {
+    consecutiveA = 0; // Reset consecutive count for A
+    updateCounter(3);
+  });
+</script>
+</body>
+</html>

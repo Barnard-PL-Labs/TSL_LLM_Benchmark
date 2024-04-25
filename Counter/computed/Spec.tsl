@@ -1,0 +1,22 @@
+always assume {
+  // Ensure no two button presses can occur simultaneously
+  (pressA(e) -> !(pressB(e) || pressC(e)));
+  (pressB(e) -> !(pressA(e) || pressC(e)));
+  (pressC(e) -> !(pressA(e) || pressB(e)));
+
+  // Change step size after three consecutive presses of the 'A' key unless interrupted
+  ((pressA(e) && pressA(lastE) && pressA(lastLastE) && !pressB(e) && !pressC(e)) -> multiplyStepSize);
+}
+
+always guarantee {
+  // Set the stepsize to 1 if either 'B' or 'C' is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // Update the counter based on the pressed key
+  pressA(e) -> [count <- count + stepsize];
+  pressB(e) -> [count <- count + 2];
+  pressC(e) -> [count <- count + 3];
+
+  // Multiply the stepsize by 3 if 'A' is pressed three times consecutively without interruption
+  (pressA(e) && pressA(lastE) && pressA(lastLastE) && !pressB(e) && !pressC(e)) -> [stepsize <- stepsize * 3];
+}
