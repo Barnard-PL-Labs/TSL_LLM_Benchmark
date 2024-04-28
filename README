@@ -25,11 +25,11 @@ Files:
     from NL+TSL spec
     from NL+TSL spec+synthesized code 
 2. Spec_template.prompt - gen the TSL spec from NL and functions+pred term headers
-  a. Spec_withoutAssumptions_template: when there is no assumptions under the 'Assumptions:' section in NL.txt
-  b. Spec_withoutFunctions_template: when there is no functions under the 'Functions:' section in Headers.txt
-  c. Spec_withoutFA_template: when there is no functions and assumptions under the 'Functions:' and 'Assumptions:' sections in Headers.txt and NL.txt
+  a. Spec_withoutAssumptions_template.prompt: when there is no assumptions under the 'Assumptions:' section in NL.txt
+  b. Spec_withoutFunctions_template.prompt: when there is no functions under the 'Functions:' section in Headers.txt
+  c. Spec_withoutFA_template.prompt: when there is no functions and assumptions under the 'Functions:' and 'Assumptions:' sections in Headers.txt and NL.txt
 3. Impl_template.prompt - gen the implementation, from NL summary, function+pred term headers, and the wrapper API description
-  a. Impl_withoutFunctions_template: when there is no functions under the 'Functions:' section in Headers.txt
+  a. Impl_withoutFunctions_template.prompt: when there is no functions under the 'Functions:' section in Headers.txt
 
 Within each directory:
 
