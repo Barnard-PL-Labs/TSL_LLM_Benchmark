@@ -27,28 +27,10 @@ always guarantee {
 
 This is a complete listing of all predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
 
-
-Cells:
-  "cube" is a cell that represents the state of the signal that determines how large is the cube
-
-Functions:
-
-Predicates:
-  pressUp(e) => does the user press the up arrow key on their keyboard? You need to add an event listener in the function to listen for the keydown event.
+[[FUNCTIONS_AND_PREDICATES_GO_HERE]]
 
 Natural language description:
 
+[[NATURAL_LANGUAGE_SUMMARY_GOES_HERE]]
 
-A cube has cube.scale.x to be 0.5 when the user is not pressing the up key. The cube is reactive to the user pressing the up key. When the user presses the up key, the cube.scale.x updates to 1.0.
-
-
-Assumptions:
-
-
-Guarantees:
-
-1. When the user press the up button, count increments every frame.
-
-2. When the user is not pressing the up button, count stays at 0.5.
-
-3. The scale value along the x axis is eventually updated with the count value
+[[NATURAL_LANGUAGE_DESCRIPTION_GOES_HERE]]

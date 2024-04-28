@@ -1,0 +1,22 @@
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume{
+}
+
+always guarantee{
+//rotate the cube with the value of t (increments by 1 every frame)
+    [cube.rotation.y <- t];
+}
+```
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+
+[[FUNCTIONS_AND_PREDICATES_GO_HERE]]
+
+Natural language description:
+
+[[NATURAL_LANGUAGE_SUMMARY_GOES_HERE]]
+
+[[NATURAL_LANGUAGE_DESCRIPTION_GOES_HERE]]

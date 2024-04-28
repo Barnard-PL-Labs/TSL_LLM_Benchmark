@@ -2,6 +2,18 @@
 TSL LLM Benchmark
 =================
 
+usage: run.py [-h] -d DIR [-m {nl,nl+spec,nl+spec+synth}] [-l LANG]
+
+Generate a program using TSL
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DIR, --dir DIR     Directory of the prompts to generate from
+  -m {nl,nl+spec,nl+spec+synth}, --method {nl,nl+spec,nl+spec+synth}
+                        "nl" means generate using only the natural language promps, "nl+spec" means also use the TSL spec, and "nl+spec+synth" means also use the synthesized code.
+  -l LANG, --lang LANG  Target generated implementation programming language (default: JavaScript)
+
+
 The files in this root directory are used for the generation of any state machine. For each particular state machine, there is a folder with the model-specific files.
 
 Files:
@@ -12,8 +24,12 @@ Files:
     from NL, and functions+pred term headers  
     from NL+TSL spec
     from NL+TSL spec+synthesized code 
-1. Spec.prompt - gen the TSL spec from NL and functions+pred term headers
-2. Impl.spec - gen the implementation, from NL summary, function+pred term headers, and the wrapper API description
+2. Spec_template.prompt - gen the TSL spec from NL and functions+pred term headers
+  a. Spec_withoutAssumptions_template: when there is no assumptions under the 'Assumptions:' section in NL.txt
+  b. Spec_withoutFunctions_template: when there is no functions under the 'Functions:' section in Headers.txt
+  c. Spec_withoutFA_template: when there is no functions and assumptions under the 'Functions:' and 'Assumptions:' sections in Headers.txt and NL.txt
+3. Impl_template.prompt - gen the implementation, from NL summary, function+pred term headers, and the wrapper API description
+  a. Impl_withoutFunctions_template: when there is no functions under the 'Functions:' section in Headers.txt
 
 Within each directory:
 
@@ -21,6 +37,7 @@ Within each directory:
 2. NL.txt - natural language description with clear list of requirements
 3. Headers.txt - function+pred term headers to define
 4. Wrapper_api.js - the wrapper api (javascript functions) that the LLM is supposed to use to implement the body of the functions + predicates
-5. Spec.tsl - the hand-written spec (to be compared against the computer-generated one)
+5. Optional: wrapper_template.html - the template for the wrapper html file, include a line of comment //[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]] so that run.py will insert the generated code in Impl.js into this line for you.
+6. Optional: Spec.tsl - the hand-written spec (to be compared against the computer-generated one)
 
 In order to use run.py, you need to have tsl installed in your machine. Please refer to https://github.com/Barnard-PL-Labs/tsltools/tree/master

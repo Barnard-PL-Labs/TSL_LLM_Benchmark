@@ -1,0 +1,12 @@
+
+A system environment has the following API. Using the API, implement the following methods in [[LANGUAGE_GOES_HERE]]. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
+
+In this case, don't use and implement any functions.
+
+Predicates to implement:
+
+[[FUNCTIONS_AND_PREDICATES_GO_HERE]]
+
+System API:
+
+[[WRAPPER_API_GOES_HERE]]
