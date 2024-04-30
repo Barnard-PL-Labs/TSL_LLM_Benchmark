@@ -13,6 +13,10 @@ We propose a set of benchmarks to test the capability of LLMs in generating TSL 
 |:--------:|:-------:|:-----------:|
 |![Snake](media/snake.gif) | ![Invaders](media/invaders.gif) | ![Cube](media/cube.gif) |
 
+| **Expanding Cube** |
+|:-----------:|
+| ![Cube](media/cube2.gif) |
+
 ## Using the benckmarks and overview
 Each folder contains a set of files that make up a benchmark. Call run.py from the main dir to walk through the process of a benchmark.
 
