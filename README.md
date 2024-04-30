@@ -27,9 +27,13 @@ Each folder contains a set of files that make up a benchmark. Call run.py from t
 **Root Directory:** The files in the root directory are used for the generation of any state machine. For each particular state machine, there is a folder with the model-specific files. The state machines created each serve as a benchmark.
 
 -   _Impl_template.prompt_: The template to be filled in by _wrapper_template.html_ and _Headers.txt_ to create _Impl.prompt_.
+    - _Impl_withoutFunctions_template.prompt_: The template used when there is no functions under the 'Functions:' section in Headers.txt
 -   _run.py_: Runs the program. Takes files from a benchmark folder which aren't in the _computed_ folder and creates the files of the _computed_ folder.
 -   _shotPrompt.txt_: A text file which provides documentation for TSL and NL->TSL examples. This can help the model with ICL and improves NL to TSL translation.
 -   _Spec_template.prompt_: The prompt template which is used as the query to the LLM in order to generate the TSL specification.
+    - _Spec_withoutAssumptions_template.prompt_: The template used when there is no assumptions under the 'Assumptions:' section in NL.txt
+    - _Spec_withoutFunctions_template.prompt_: The template used when there is no functions under the 'Functions:' section in Headers.txt
+    - _Spec_withoutFA_template.prompt_: The template used when there is no functions and assumptions under the 'Functions:' and 'Assumptions:' sections in Headers.txt and NL.txt
 
 **Benchmark Folders:** The files within each folder (e.g. Ball, GameOfLife, etc.) are used to create that benchmark.
 
