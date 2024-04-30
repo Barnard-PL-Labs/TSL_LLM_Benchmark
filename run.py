@@ -40,7 +40,7 @@ def check_content_between_markers(filename, start_marker, end_marker):
         return False  # Markers not found or in the wrong order
     return content[start_index:end_index].strip() == ''
 
-use_no_assumptions = check_content_between_markers('NL.txt', 'Assumptions:', 'Guarantee:')
+use_no_assumptions = check_content_between_markers('NL.txt', 'Assumptions:', 'Guarantees:')
 use_no_functions = check_content_between_markers('Headers.txt', 'Functions:', 'Predicates:')
 
 if use_no_assumptions and use_no_functions:

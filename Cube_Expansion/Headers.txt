@@ -1,8 +1,8 @@
 
 Cells:
-  "cube" is a cell that represents the state of the signal that determines how large is the cube
+  Cube represents the state of the signal that determines the cube's scale along the x-axis.
 
 Functions:
 
 Predicates:
-  pressUp(e) => does the user press the up arrow key on their keyboard? You need to add an event listener in the function to listen for the keydown event.
+  pressUp(e) => Checks if the user presses the up arrow key on their keyboard. This requires adding an event listener in the function to listen for the keydown event. This predicate is true when the up key is pressed and false otherwise.

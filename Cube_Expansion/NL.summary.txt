@@ -1,2 +1,2 @@
 
-A cube has cube.scale.x to be 0.5 when the user is not pressing the up key. The cube is reactive to the user pressing the up key. When the user presses the up key, the cube.scale.x updates to 1.0.
+A cube's scale along the x-axis (cube.scale.x) starts at 0.5 when the user is not pressing the up key. The cube is reactive to user input on the up key. When the user presses the up key, the scale value updates incrementally according to a counter that increases each frame the key is pressed. When the key is released, the scale value immediately returns to 0.5.

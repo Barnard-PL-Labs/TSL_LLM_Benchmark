@@ -1,0 +1,11 @@
+
+Cells:
+  Cube represents the state of the signal that determines the cube's scale along the x-axis.
+
+Functions:
+    - sin(x): Returns the sine of x.
+    - saw(x): Returns the sawtooth wave of x.
+
+Predicates:
+    - pressL(e): A predicate that returns true when the left button is pressed. Event listener should be inside the function.
+    - pressR(e): A predicate that returns true when the right button is pressed. Event listener should be inside the function.

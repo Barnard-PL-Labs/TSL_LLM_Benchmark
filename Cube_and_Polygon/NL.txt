@@ -1,0 +1,18 @@
+
+Assumptions:
+
+1. The system must assume that the left and right buttons are never pressed at the same time.
+
+Guarantees:
+
+2. When the user presses the right key (pressR(e)), the count value increments by 0.1. This increment continues in each frame until the left key (pressL(e)) is pressed.
+
+3. When the user presses the left key (pressL(e)), the count value decrements by 0.1. This decrement continues in each frame until the right key (pressR(e)) is pressed.
+
+4. The rotation of the cube along the y-axis is set to the sine of twice the count value, continuously updating as count changes.
+
+5. The rotation of a polygon along the y-axis follows a sawtooth pattern, which is calculated as the saw of 0.5 times (1 plus the count value), continuously updating as count changes.
+
+6. The x-position of the cube is fixed at 1.
+
+7. The x-position of the polygon is fixed at 3.

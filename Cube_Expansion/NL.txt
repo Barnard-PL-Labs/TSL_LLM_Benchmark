@@ -4,8 +4,8 @@ Assumptions:
 
 Guarantees:
 
-1. When the user press the up button, count increments every frame.
+1. When the user presses the up button, the counter (count) increments by 1 every frame.
 
-2. When the user is not pressing the up button, count stays at 0.5.
+2. When the user is not pressing the up button, the counter (count) remains at 0.5.
 
-3. The scale value along the x axis is eventually updated with the count value
+3. The scale value along the x-axis (cube.scale.x) is eventually updated with the value of the counter (count).

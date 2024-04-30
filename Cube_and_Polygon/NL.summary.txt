@@ -1,0 +1,2 @@
+
+This specification manages a graphical interface where user inputs from the right and left keys affect a numerical count that directly influences the rotation of graphical objects (a cube and a polygon). The count changes the angular rotation of these objects, which are updated based on sinusoidal and sawtooth functions, respectively. Additionally, the specification defines static positions for these objects, establishing a visually dynamic yet geometrically static scene.

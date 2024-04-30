@@ -10,9 +10,6 @@ always guarantee{
     [cube.rotation.y <- sin (2*count)];
     [polygon.rotation.y <- saw (0.5 * (1 + count))];
 
-    [cubeColor <- color 255 0 0];
-    [polyColor <- color 0 0 255];
-
     [cube.position.x <- 1];
     [polygon.position.x <- 3];
 }
