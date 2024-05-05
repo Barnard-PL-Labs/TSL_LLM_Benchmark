@@ -9,6 +9,7 @@ This is a work in progress
 import re
 import os
 from copy import copy
+import json
 import argparse
 from subprocess import check_call
 
@@ -27,9 +28,9 @@ parser.add_argument('--num-iter', default=1, help='repeat the experiment [num-it
 
 args = parser.parse_args()
 
-import pdb; pdb.set_trace()
-
 def run_with_args(args):
+    print('Running with args', args)
+
     # handle repeated iterations
     if 1 < int(args.num_iter):
         for _ in range(int(args.num_iter)):
@@ -40,7 +41,7 @@ def run_with_args(args):
 
     # handle "run all benchmarks"
     if args.dir.lower() == 'all':
-        for benchmark in json.load(os.path.join(file_dir, 'benchmarks.json')):
+        for benchmark in json.load(open(os.path.join(file_dir, 'benchmarks.json'))):
             new_args = copy(args)
             new_args.dir = benchmark
             run_with_args(new_args)
@@ -66,7 +67,7 @@ def run_with_args(args):
     if not os.path.exists(computed_dir):
         os.makedirs(computed_dir)
 
-    with open(os.path.join(computed_dir, 'args.json')) as file:
+    with open(os.path.join(computed_dir, 'args.json'), 'w') as file:
         json.dump(args.__dict__, file)
 
     def check_content_between_markers(filename, start_marker, end_marker):
@@ -116,6 +117,7 @@ def run_with_args(args):
         log_results()
 
     def log_results():
+        log_dir = os.path.join(file_dir, 'results', datetime.datetime.now().isoformat())
         check_call([ 'mv', computed_dir, log_dir ])
 
     def extract_first_code_block(text):
@@ -204,6 +206,14 @@ def run_with_args(args):
                 file.write(modified_wrapper)
             print(f"The Impl.js contents have been successfully inserted into {output_html_path}.")
         else:
-            print("The placeholder comment does not match in the wrapper_template.html. Please ensure it is '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]'.")
+            output_error("The placeholder comment does not match in the wrapper_template.html. Please ensure it is '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]'.")
+            # exit
+            return
     else:
-        print("Please include a wrapper_template.html file with a line of comment '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]' inside the file to get the generated wrapper HTML.")
+        output_error("Please include a wrapper_template.html file with a line of comment '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]' inside the file to get the generated wrapper HTML.")
+        # exit
+        return
+
+    log_results()
+
+run_with_args(args)
