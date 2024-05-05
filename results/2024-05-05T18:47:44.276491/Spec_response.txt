@@ -1,0 +1,29 @@
+Here is the corresponding TSL specification derived from the given natural language description with the set assumptions and guarantees:
+
+```tsl
+always assume {
+    // No simultaneous button presses
+    !(pressA && pressB);
+    !(pressA && pressC);
+    !(pressB && pressC);
+}
+
+always guarantee {
+    // Increment counter by 1 on pressA
+    pressA -> ([count <- count + 1]);
+
+    // Increment counter by 2 on pressB
+    pressB -> ([count <- count + 2]);
+
+    // Increment counter by 3 on pressC
+    pressC -> ([count <- count + 3]);
+
+    // Handling the pressA three times in a row to change stepsize
+    (pressA && X(pressA && X(pressA))) -> X(X(X([stepsize <- multiplyByThree(stepsize)])));
+
+    // If pressB or pressC is pressed, reset the stepsize to 1
+    (pressB || pressC) -> ([stepsize <- 1]);
+}
+```
+
+This specification captures the behavior of the system where multiple button presses are not allowed simultaneously (exclusive button press assumption). It outlines the counter increments for each button and modifies the stepsize variable according to the specific rules laid out for the A button when pressed in succession, and when B or C are pressed, to reset the stepsize.

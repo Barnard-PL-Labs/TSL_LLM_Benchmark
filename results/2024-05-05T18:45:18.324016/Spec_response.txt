@@ -1,0 +1,32 @@
+The TSL specification for a bouncing ball between two walls, where the ball's position is represented by a number between 0 and 10, can be defined as follows. The actions of moving left or right will depend on whether the ball has reached either of the boundary walls.
+
+```
+always assume {
+    // Define initial state and mutual exclusiveness of directions
+    (ball == 0 -> leftmost(ball));
+    (ball == 10 -> rightmost(ball));
+}
+
+always guarantee {
+    // Move the ball to the left when it's at the rightmost wall and vice versa
+    rightmost(ball) -> [ball <- moveLeft(ball)] W !rightmost(ball);
+    leftmost(ball) -> [ball <- moveRight(ball)] W !leftmost(ball);
+
+    // If not at any wall, continue in the current direction
+    !rightmost(ball) && !leftmost(ball) -> 
+        (X (ball == prevBall + 1)) ||
+        (X (ball == prevBall - 1));
+}
+```
+
+Here's a breakdown of how this specification manages the ball's movement:
+
+1. **Assumptions**:
+   - The ball's position at either extremity (0 or 10) is defined by `leftmost(ball)` and `rightmost(ball)`, respectively.
+
+2. **Guarantees**:
+   - When the ball is at the rightmost wall (position 10), it will move left (`moveLeft(ball)`) until it is no longer at the rightmost wall.
+   - When the ball is at the leftmost wall (position 0), it will move right (`moveRight(ball)`) until it is no longer at the leftmost wall.
+   - If the ball is neither at the rightmost nor the leftmost wall, it continues in the current direction, incrementing or decrementing its position by 1 each time. This behavior assumes a continuous motion state based on the previous instructions, controlled by checking if it's at a wall.
+
+This setup ensures the ball bounces between positions 0 and 10, reversing at each extremity, while simulating a continuous movement between these points. Note that in actual TSL implementation, more mechanisms might be needed for precise state management and timing control depending on the execution environment's capabilities.

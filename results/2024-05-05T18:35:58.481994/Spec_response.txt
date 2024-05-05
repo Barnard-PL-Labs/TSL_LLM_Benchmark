@@ -1,0 +1,36 @@
+Here is the TSL translation based on the given natural language description involving the ball and walls:
+
+```tsl
+always assume {
+  ([ ball <- moveLeft(ball) ] -> X !(rightmost(ball))) ;
+  ([ ball <- moveRight(ball) ] -> X !(leftmost(ball))) ;
+  !(leftmost(ball) && rightmost(ball)) ;
+}
+
+always guarantee {
+  rightmost(ball)
+    -> F ([ ball <- moveLeft(ball) ]) ;
+  leftmost(ball)
+    -> F ([ ball <- moveRight(ball) ]) ;
+  !(leftmost(ball) || rightmost(ball))
+    -> F ([ ball <- moveLeft(ball) ] || [ ball <- moveRight(ball) ]) ;
+  (leftmost(ball) && X ([ ball <- moveRight(ball) ]))
+    -> ([ ball <- moveRight(ball) ] W rightmost(ball)) ;
+  (rightmost(ball) && X ([ ball <- moveLeft(ball) ]))
+    -> ([ ball <- moveLeft(ball) ] W leftmost(ball)) ;
+}
+```
+
+### Breakdown:
+
+**Assumptions:**
+1. When the ball is moved left, it will not be at the rightmost wall in the next state.
+2. When the ball is moved right, it will not be at the leftmost wall in the next state.
+3. The ball cannot be simultaneously at the leftmost and rightmost walls.
+
+**Guarantees:**
+4. If the ball is at the rightmost position, it should eventually receive a signal to move left.
+5. If the ball is at the leftmost position, it should eventually receive a signal to move right.
+6. If the ball is neither at the leftmost nor the rightmost position, it should eventually move in either direction.
+7. If the ball is to move away from the leftmost wall, it shouldn’t move left until it reaches the rightmost wall.
+8. If the ball is to move away from the rightmost wall, it shouldn’t move right until it reaches the leftmost wall.

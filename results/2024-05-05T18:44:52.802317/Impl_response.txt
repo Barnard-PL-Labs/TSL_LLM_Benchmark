@@ -1,0 +1,45 @@
+Given the API guidelines and the requirements for functions and predicates, the following JavaScript code can be implemented to handle the behavior of the "ball" in a hypothetical system. The code will cover movements and checks for boundary conditions.
+
+### JavaScript Implementation
+
+```javascript
+// Functions to manipulate the ball's state and movement
+function moveLeft(ball) {
+    // Assuming that there is a method to set the ball's movement direction in the ball object
+    if (!leftmost(ball)) {  // Check if it is not against the left wall
+        ball.direction = 'left';  // Set direction to left to move the ball left
+    }
+    return ball;
+}
+
+function moveRight(ball) {
+    // Similar to moveLeft, but for moving right
+    if (!rightmost(ball)) {  // Check if it is not against the right wall
+        ball.direction = 'right';  // Set direction to right to move the ball right
+    }
+    return ball;
+}
+
+// Predicates to check the ball's position against boundaries
+function leftmost(ball) {
+    // Assuming there is a way to get the ball's current position (e.g., ball.x)
+    // and there exists a defined leftmost boundary (e.g., LEFT_BOUND)
+    return ball.position === LEFT_BOUND;
+}
+
+function rightmost(ball) {
+    // Similar to leftmost, but checks against the rightmost boundary (e.g., RIGHT_BOUND)
+    return ball.position === RIGHT_BOUND;
+}
+```
+
+### Notes and Assumptions:
+- The `ball` object should have properties that represent its current position (e.g., `position`) and direction of movement (e.g., `direction`).
+- Constants like `LEFT_BOUND` and `RIGHT_BOUND` are assumed to be defined in the context, representing the boundaries within which the ball can move.
+- Functions `moveLeft` and `moveRight` modify the ball's direction only if the ball is not already at the respective boundaries, ensuring no invalid operations.
+- Predicates `leftmost` and `rightmost` simply return `true` or `false` based on the ball’s current position relative to predefined boundaries.
+
+### Exception Handling:
+Consider adding error handling or exceptional cases if the ball's properties like `position` or `direction` are not set or are out of expected range. This can prevent runtime errors and ensure the system's robustness. 
+
+With this code, you can effectively manage the ball's behavior within a system that respects defined boundaries and reacts to attempts to move beyond those limits. This setup allows for easy modifications to adapt to possible changes in system requirements or extensions of functionality.

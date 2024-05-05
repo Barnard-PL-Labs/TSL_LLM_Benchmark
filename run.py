@@ -10,6 +10,7 @@ import re
 import os
 from copy import copy
 import json
+import datetime
 import argparse
 from subprocess import check_call
 
@@ -29,7 +30,7 @@ parser.add_argument('--num-iter', default=1, help='repeat the experiment [num-it
 args = parser.parse_args()
 
 def run_with_args(args):
-    print('Running with args', args)
+    print(datetime.datetime.now(), 'Running with args', args)
 
     # handle repeated iterations
     if 1 < int(args.num_iter):
@@ -37,7 +38,7 @@ def run_with_args(args):
             new_args = copy(args)
             new_args.num_iter = 1
             run_with_args(new_args)
-            return
+        return
 
     # handle "run all benchmarks"
     if args.dir.lower() == 'all':
@@ -45,7 +46,7 @@ def run_with_args(args):
             new_args = copy(args)
             new_args.dir = benchmark
             run_with_args(new_args)
-            return
+        return
 
     # handle LOPSTR experiment
     if args.spec_prompt_file.lower() == 'lopstr':
@@ -53,7 +54,7 @@ def run_with_args(args):
             new_args = copy(args)
             new_args.spec_prompt_file = prompt_file
             run_with_args(new_args)
-            return            
+        return
 
     to_interpolate = {
         #'few_shot_header': 'shotPrompt.txt',
@@ -68,7 +69,7 @@ def run_with_args(args):
         os.makedirs(computed_dir)
 
     with open(os.path.join(computed_dir, 'args.json'), 'w') as file:
-        json.dump(args.__dict__, file)
+        json.dump(args.__dict__, file, indent = 2)
 
     def check_content_between_markers(filename, start_marker, end_marker):
         with open(os.path.join(args.dir, filename), 'r') as file:
@@ -110,7 +111,7 @@ def run_with_args(args):
             result = result.replace('[[LANGUAGE_GOES_HERE]]', args.lang)
         return result
 
-    def output_error_before_exit(message):
+    def output_error(message):
         print(message)
         with open(os.path.join(computed_dir, 'err.log'), 'a') as file:
             file.writelines([ message ])
@@ -147,9 +148,7 @@ def run_with_args(args):
             with open(spec_response_filename, 'w') as file:
                 file.write(response.choices[0].message.content)
             if code_block == None:
-                output_error_before_exit(f'No valid code block in response. See {spec_response_filename}')
-                # exit
-                return
+                return output_error(f'No valid code block in response. See {spec_response_filename}')
             else:
                 with open(spec_filename, 'w') as file:
                     file.write(code_block)
@@ -157,9 +156,7 @@ def run_with_args(args):
         try:
             check_call(['tsl', 'synthesize', '-i', spec_filename, '--js', '-o', synth_filename])
         except BaseException as e:
-            output_error_before_exit(str(e))
-            # exit
-            return
+            return output_error(str(e))
     else:
         spec_filename = os.path.join(args.dir, spec_template)
         raise Exception('the only method implemented is "nl". the others are TODO.')
@@ -181,9 +178,7 @@ def run_with_args(args):
         with open(impl_response_filename, 'w') as file:
             file.write(response.choices[0].message.content)
         if code_block == None:
-            output_error_before_exit(f'No valid code block in response. See {impl_response_filename}')
-            # exit
-            return
+            return output_error(f'No valid code block in response. See {impl_response_filename}')
         else:
             with open(impl_filename, 'w') as file:
                 file.write(code_block)
@@ -206,13 +201,9 @@ def run_with_args(args):
                 file.write(modified_wrapper)
             print(f"The Impl.js contents have been successfully inserted into {output_html_path}.")
         else:
-            output_error("The placeholder comment does not match in the wrapper_template.html. Please ensure it is '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]'.")
-            # exit
-            return
+            return output_error("The placeholder comment does not match in the wrapper_template.html. Please ensure it is '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]'.")
     else:
-        output_error("Please include a wrapper_template.html file with a line of comment '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]' inside the file to get the generated wrapper HTML.")
-        # exit
-        return
+        return output_error("Please include a wrapper_template.html file with a line of comment '//[[GENERATED_FUNCTIONS_AND_PREDICATES_GO_HERE]]' inside the file to get the generated wrapper HTML.")
 
     log_results()
 

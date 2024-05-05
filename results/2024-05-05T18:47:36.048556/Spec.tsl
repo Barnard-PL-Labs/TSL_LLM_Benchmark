@@ -1,0 +1,21 @@
+always assume {
+  // Each button press is mutually exclusive
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Define the action when pressA is pressed
+  pressA(e) -> ([count <- count + stepsize]);
+
+  // Define the action when pressB is pressed
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // Define the action when pressC is pressed
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // If pressA is pressed three times in a row, change stepsize on the fourth press
+  ((X (pressA(e)) && X (X (pressA(e))) && X (X (X (pressA(e))))) W (pressB(e) || pressC(e)))
+    -> [stepsize <- multiplyByThree(stepsize)];
+}

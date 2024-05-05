@@ -1,0 +1,35 @@
+Here is the TSL specification based on the natural language description provided:
+
+```tsl
+always assume {
+  // If the ball is moved left, the next moment it is not at the rightmost wall.
+  ([ball <- moveLeft(ball)]) -> X !(rightmost(ball));
+
+  // If the ball is moved right, the next moment it is not at the leftmost wall.
+  ([ball <- moveRight(ball)]) -> X !(leftmost(ball));
+
+  // The ball cannot be at both the leftmost and rightmost walls at the same time.
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, it must eventually move left.
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+
+  // If the ball is at the leftmost wall, it must eventually move right.
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+
+  // If the ball is neither at the leftmost nor the rightmost wall, it must eventually move left or right.
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+
+  // If the ball is at the leftmost wall and is going to move right, it must not move left until it reaches the rightmost wall.
+  (leftmost(ball) && X ([ball <- moveRight(ball)]))
+    -> ([ball <- moveRight(ball)] W rightmost(ball));
+
+  // If the ball is at the rightmost wall and is going to move left, it must not move right until it reaches the leftmost wall.
+  (rightmost(ball) && X ([ball <- moveLeft(ball)]))
+    -> ([ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+This specification uses transitions triggered by the ball reaching the boundary conditions (leftmost or rightmost positions) and provides rules for both assumptions about the state of the system and guarantees for actions that need to occur under certain conditions.
