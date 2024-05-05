@@ -1,3 +1,9 @@
+
+from openai import OpenAI
+client = OpenAI()
+
+PRE_PROMPT = """This GPT creates TSL templates from natural language descriptions.
+
 TSL bases of LTL (or Linear Temporal Logic). 
 
 Temporal logic is all about using logical expressions to describes the truth values of things over time, and each expression can be evaluated as either true or false. There are the constants:
@@ -162,51 +168,15 @@ always guarantee {
 }
 ```
 
-Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+"""
 
-```
-always assume {
-  (room.somebodyEnters
-    -> (! room.empty W room.somebodyLeaves)) ;
-  ((room.somebodyLeaves && room.empty)
-    -> (room.empty W room.somebodyEnters)) ;
-  (cm.ready || cm.standby || cm.busy) ;
-  (cm.ready -> (!cm.standby && !cm.busy)) ;
-  (cm.standby -> (!cm.busy && !cm.ready)) ;
-  (cm.busy -> (!cm.ready && !cm.standby)) ;
-  ([ cm <- turnOn() ] && cm.standby
-    -> X cm.busy U ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)) ;
-  ([ cm <- turnOff() ] && cm.ready
-    -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
-  ([ cm <- makeCoffee() ] && cm.ready
-    -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
-}
+def ask_chatgpt(prompt):
+  response = client.chat.completions.create(
+    model="gpt-4-turbo",
+    messages = [
+      { 'role': 'system', 'content': PRE_PROMPT },
+      { 'role': 'user', 'content': prompt },
+    ]
+  )
 
-always guarantee {
-  room.somebodyEnters
-    -> F (cm.ready W (room.somebodyLeaves && room.empty));
-}
-```
-
-This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
-
-
-Cells:
-  "alive" is the cell alive
-  "index" index of the cell on the grid. This is initialized in the function terms 
-Functions:
-  There are no functions 
-Predicates:
-  comeAlive(index) => are exactly 3 neighbours are living or are 2 or 3 neighbours are living?
-  comeDead(index) => does the cell have less than 2 neighbours or more than 3 neighbours?
-  
-
-This specification models the behavior of a cell in a computational simulation, such as the Game of Life, where a cell can either be alive or dead. The rules for cell behavior are governed by the following assumptions and guarantees:
-
-Assumptions:
-
-It is assumed that the conditions for a cell to become alive (comeAlive(index)) and for a cell to die (comeDead(index)) are mutually exclusive. This means that both conditions cannot be true simultaneously, preventing any conflicting state changes for a cell within a single simulation step.
-Guarantees:
-
-If the condition comeAlive(index) evaluates to true, it is guaranteed that the count of living cells will increase by one. This reflects the scenario where a cell transitions from being dead to alive.
-Conversely, if comeDead(index) evaluates to true, it is guaranteed that the count of living cells will decrease by one, indicating that a cell transitions from being alive to dead.
+  return response

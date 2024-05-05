@@ -1,9 +1,0 @@
-always assume {
-  !(comeAlive(index) && comeDead(index));
-}
-
-always guarantee {
-    comeAlive(index) -> [alive <- alive + 1];
-    comeDead(index) -> [alive <- alive - 1];
-}
-
