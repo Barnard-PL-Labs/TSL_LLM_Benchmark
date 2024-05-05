@@ -20,7 +20,7 @@ file_dir = os.path.dirname(__file__)
 
 parser = argparse.ArgumentParser(description="Generate a program using TSL")
 parser.add_argument('-d', '--dir', required=True, help='Directory of the prompts to generate from')
-parser.add_argument('-m', '--method', choices=['nl', 'nl+spec', 'nl+spec+synth'], help='"nl" means generate using only the natural language promps, "nl+spec" means also use the TSL spec, and "nl+spec+synth" means also use the synthesized code.')
+parser.add_argument('-m', '--method', default='nl', choices=['nl', 'nl+spec', 'nl+spec+synth'], help='"nl" means generate using only the natural language promps, "nl+spec" means also use the TSL spec, and "nl+spec+synth" means also use the synthesized code.')
 parser.add_argument('-l', '--lang', default='JavaScript', help='Target generated implementation programming language (default: JavaScript)')
 parser.add_argument('--no-openai', action='store_true', help='Do not query the openai api and instead output prompts for the user to paste into AI chats.')
 parser.add_argument('--spec-prompt-file', default='Spec_template.prompt', help='filename to use for the spec prompt')
@@ -118,7 +118,7 @@ def run_with_args(args):
         log_results()
 
     def log_results():
-        log_dir = os.path.join(file_dir, 'results', datetime.datetime.now().isoformat())
+        log_dir = os.path.join(file_dir, 'results', 'by_benchmark', args.dir, spec_template, datetime.datetime.now().isoformat())
         check_call([ 'mv', computed_dir, log_dir ])
 
     def extract_first_code_block(text):
