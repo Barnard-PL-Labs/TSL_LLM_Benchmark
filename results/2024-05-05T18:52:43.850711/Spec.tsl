@@ -1,0 +1,21 @@
+always assume {
+  // Ensure mutual exclusion between button presses
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Handling the press of button A
+  pressA(e) -> (
+    // If A is pressed three times consecutively without B or C being pressed, multiply stepsize by 3
+    (X (pressA(e) && X (pressA(e) && !pressB(e) && !pressC(e)))) -> [stepsize <- multiplyByThree(stepsize)]
+  );
+
+  // If button B or C is pressed, reset stepsize to 1
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // Ensure that the stepsize value persists unless altered by the conditions above
+  !(pressA(e) && X (pressA(e) && X (pressA(e) && !pressB(e) && !pressC(e)))) && !(pressB(e) || pressC(e)) -> [stepsize <- stepsize];
+}
+

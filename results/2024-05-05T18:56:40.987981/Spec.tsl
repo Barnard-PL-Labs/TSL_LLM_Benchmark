@@ -1,0 +1,12 @@
+always assume {
+  // Ensuring that comeAlive and comeDead conditions are mutually exclusive
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // When comeAlive is true, the cell state changes to alive
+  comeAlive(index) -> [alive <- changeState()];
+
+  // When comeDead is true, the cell state changes to dead
+  comeDead(index) -> [alive <- changeState()];
+}

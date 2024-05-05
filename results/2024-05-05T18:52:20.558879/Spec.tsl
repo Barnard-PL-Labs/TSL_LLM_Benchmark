@@ -1,0 +1,29 @@
+always assume {
+  // Mutual exclusivity: No two buttons can be pressed at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Guarantee for pressA: Increment the count by the current stepsize
+  pressA(e) -> [count <- count + stepsize];
+
+  // Guarantee for pressB: Increment the count by 2 and reset stepsize to 1
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // Guarantee for pressC: Increment the count by 3 and reset stepsize to 1
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // Handle stepsize modification on sequential pressA presses
+  // This pseudo code needs a way to detect "three times in a row"
+  // For simplification, we could use a counter for pressA:
+  // pressCountA, which should be reset on pressB or pressC
+  pressA(e) -> (
+    [pressCountA <- pressCountA + 1]
+    );
+  pressB(e) || pressC(e) -> [pressCountA <- 0];
+
+  // If pressA was pressed three times in a row, then increase stepsize by three times on the fourth press
+  (pressCountA == 3 && pressA(e)) -> [stepsize <- multiplyByThree(stepsize)];
+}

@@ -1,0 +1,8 @@
+always assume {
+  !(comeAlive && comeDead); // comeAlive and comeDead cannot be true at the same time
+}
+
+always guarantee {
+  comeAlive -> [cell.changeState <- alive]; // If comeAlive is true, the cell changes state to alive
+  comeDead -> [cell.changeState <- dead]; // If comeDead is true, the cell changes state to dead
+}

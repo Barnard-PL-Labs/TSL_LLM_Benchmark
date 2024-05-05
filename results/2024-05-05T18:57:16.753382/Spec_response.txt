@@ -1,0 +1,14 @@
+Here is the TSL specification for the given scenario simulating a single cell in the game of life, based on your natural language description. This assumes that `comeAlive` and `comeDead` are signals that are mapped to functions that dictate the desired state transition of a cell.
+
+```tsl
+always assume {
+  !(comeAlive && comeDead); // comeAlive and comeDead cannot be true at the same time
+}
+
+always guarantee {
+  comeAlive -> [cell.changeState <- alive]; // If comeAlive is true, the cell changes state to alive
+  comeDead -> [cell.changeState <- dead]; // If comeDead is true, the cell changes state to dead
+}
+``` 
+
+This reflects a very simplified model of a game of life cell and how it reacts based on the signals `comeAlive` and `comeDead`. The guarantee portions use hypothetical TSL actions `cell.changeState <- alive` and `cell.changeState <- dead` to represent the state change, which in actual implementation should connect with how cell state transitions are handled.

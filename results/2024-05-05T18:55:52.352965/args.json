@@ -1,0 +1,9 @@
+{
+  "dir": "Cube_and_Polygon",
+  "method": "nl",
+  "lang": "JavaScript",
+  "no_openai": false,
+  "spec_prompt_file": "Spec_onlyNlAndSummary_template.prompt",
+  "log_results": true,
+  "num_iter": 1
+}

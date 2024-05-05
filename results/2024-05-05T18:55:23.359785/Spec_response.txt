@@ -1,0 +1,30 @@
+Below is the TSL specification based on the provided natural language description, functions, predicates, and constraints:
+
+```tsl
+always assume {
+  //Mutual exclusion for key inputs: no simultaneous presses allowed
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  //When right key is pressed, increment count by 0.1 continuously until left key is pressed
+  pressR(e) -> ([count <- count + 0.1] W pressL(e));
+
+  //When left key is pressed, decrement count by 0.1 continuously until right key is pressed
+  pressL(e) -> ([count <- count - 0.1] W pressR(e));
+
+  //Set the rotation of the cube on the y-axis to the sine of twice the count value
+  [cube.rotation.y <- sin(2 * count)];
+
+  //Set the rotation of the polygon on the y-axis to the saw of half the count value incremented by 0.5
+  [polygon.rotation.y <- saw(0.5 * (1 + count))];
+
+  //Fix the x-position of the cube
+  [cube.position.x <- 1];
+
+  //Fix the x-position of the polygon
+  [polygon.position.x <- 3];
+}
+```
+
+This specification takes into account the requirements and constraints from the natural language description, utilizing the provided functions and predicates efficiently. It cycles the count value with continuous transcription changing rotation properties of the cube and polygon, while fixing their positions on the x-axis.

@@ -1,0 +1,33 @@
+Here's how the TSL specification could look like based on the natural language description provided:
+
+```
+always assume {
+  // A, B, and C keys cannot be pressed at the same time
+  ! (pressA(e) && pressB(e));
+  ! (pressA(e) && pressC(e));
+  ! (pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Incrementing counter based on which button is pressed
+  pressA(e) -> [count <- count + stepsize];
+  pressB(e) -> [count <- count + 2];
+  pressC(e) -> [count <- count + 3];
+
+  // Handling stepsize modifications when A is pressed three times consecutively
+  (pressA(e) && X(pressA(e)) && X(X(pressA(e))) && X(X(X(pressA(e))))) -> [stepsize <- multiplyByThree(stepsize)];
+
+  // Resetting the stepsize on pressing B or C
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // Ensure stepsize is initialized to 1 at the start
+  [initial(stepsize) <- 1];
+}
+```
+
+In this TSL setup:
+
+1. **Assumptions** ensure that no two button operations (`pressA`, `pressB`, `pressC`) can be performed simultaneously.
+2. **Guarantees** manage the logic of how the counter for each button press is incremented and how the stepsize is managed based on the sequence and type of button presses. 
+3. The `initial` function in TSL is used to set the initial value of `stepsize` to 1. 
+4. The `multiplyByThree` function (or equivalent logic) will need to be defined elsewhere in the system or assumed as a known function that multiplies its argument by three.

@@ -1,0 +1,26 @@
+To create a TSL specification for the scenario described, we will translate the behavior of a ball bouncing between two walls into logical predicates and functions provided:
+
+1. We need to define responses based on the ball's position relative to the walls:
+   - If the ball hits the leftmost wall (position 0), it should move towards the right.
+   - If the ball hits the rightmost wall (position 10), it should move towards the left.
+
+2. The ball continues in its current direction until it reaches one of the walls.
+
+Here is how the TSL specification might look:
+
+```TSL
+always assume {
+  // Locations of the ball at the extreme positions
+  (leftmost(ball) || rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the leftmost end, it should start moving right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+  
+  // If the ball is at the rightmost end, it should start moving left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+}
+```
+
+This specification ensures that the ball will move from one end to the other continuously, mimicking the bouncing behavior between the two constraints.

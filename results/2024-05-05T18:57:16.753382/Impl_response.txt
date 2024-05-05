@@ -1,0 +1,75 @@
+Given the task at hand, I'll provide the JavaScript implementation for the described methods under the "functions" and "predicates" categories, assuming some standard API methods of a typical game-of-life or cellular automata system. However, as the system API specifics weren't provided, I'll make reasonable assumptions to complete these methods.
+
+### Assumptions
+
+- The system has a grid of cells.
+- Each cell could be either alive or dead.
+- Cells are identified by their index in a grid.
+- There are functions to get the state of a cell and to set the state of a cell.
+- The grid has a function to get the neighbors of a cell based on its index.
+
+### JavaScript Implementation
+
+First, some additional helper functions might be necessary for operations such as updating cell states and checking the conditions for cells to come alive or die based on their neighbors. Below is a simple implementation of these:
+
+```javascript
+
+// Assume an object `grid` represents the grid of cells with methods to interact with it
+
+// Helper function to get the count of live neighbors
+function countLiveNeighbors(index) {
+    let liveCount = 0;
+    const neighbors = grid.getNeighbors(index); // Assuming grid has a method to get all neighboring cells' indices
+
+    neighbors.forEach(neighborIndex => {
+        if (grid.isAlive(neighborIndex)) { // Assuming grid has a method to check if a cell is alive
+            liveCount++;
+        }
+    });
+
+    return liveCount;
+}
+
+// Predicates
+function comeAlive(index) {
+    const liveNeighbors = countLiveNeighbors(index);
+    return liveNeighbors === 3 || (grid.isAlive(index) && (liveNeighbors === 2 || liveNeighbors === 3));
+}
+
+function comeDead(index) {
+    const liveNeighbors = countLiveNeighbors(index);
+    return liveNeighbors < 2 || liveNeighbors > 3;
+}
+
+// Function: Change the state of the cell
+function changeState(index) {
+    if (comeAlive(index)) {
+        grid.setAlive(index, true); // Assuming 'setAlive' method to set the state of a cell
+    } else if (comeDead(index)) {
+        grid.setAlive(index, false);
+    }
+}
+
+// Function to run one step of the cellular automaton
+function updateGrid() {
+    // Assuming some way to loop over all cells, pseudocode:
+    const cellsToUpdate = [];
+    for (let index = 0; index < grid.size(); index++) { // Assume grid.size() renders the total number of cells
+        if (comeAlive(index) && !grid.isAlive(index)) {
+            cellsToUpdate.push({index, state: true});
+        } else if (comeDead(index) && grid.isAlive(index)) {
+            cellsToUpdate.push({index, state: false});
+        }
+    }
+
+    // Perform the state updates
+    cellsToUpdate.forEach(cell => {
+        grid.setAlive(cell.index, cell.state);
+    });
+}
+```
+
+### Notes:
+- The `updateGrid` function was added as it often constitutes an essential aspect of running simulative environments like cellular automata where the entire grid may need to be updated based on the state of the cells.
+- This code assumes there's a way to get neighbors and that cells are simple boolean states managed by some system functions. Adjust the methods for actual system API interaction depending upon the concrete API available.
+- More optimized methods could be implemented particularly surrounding neighbor count and updating grid states to handle larger grids or minimize processing.

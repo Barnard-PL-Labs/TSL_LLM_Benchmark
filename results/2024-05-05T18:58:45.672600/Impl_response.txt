@@ -1,0 +1,51 @@
+To describe the translations for predicates in TSL, we would outline logical conditions and actions based on the description given about how the system should interpret the states using the API. Here's how we might specify each predicate in TSL:
+
+### TSL Template (`always assume` and `always guarantee`)
+
+```tsl
+always assume {
+}
+
+always guarantee {
+}
+```
+
+### Implementing Predicates in the Guarantee Section
+
+Here, we'll describe how each predicate operates in the context of a TSL template:
+
+```tsl
+always assume {
+    // Assumptions about the environment
+    // Define valid input domains
+    (total >= 0) ;  // Examples to assure that 'total' is always non-negative
+}
+
+always guarantee {
+    // Define event-based rules or conditions
+
+    // Total value less than different thresholds
+    isLessThanPoint75(total) <- (total < 0.75);
+    isLessThanOne(total) <- (total < 1);
+    isLessThanOnePoint25(total) <- (total < 1.25);
+
+    // User key press actions
+    pressD(e) <- e == 'D' ;                 // Check if the input 'e' is letter 'D'
+    pressQ(e) <- e == 'Q' ;                 // Check if the input 'e' is letter 'Q'
+    pressO(e) <- e == 'O' ;                 // Check if the input 'e' is letter 'O'
+    press1(e) <- e == '1' ;                 // Check if the input 'e' is number '1'
+    press2(e) <- e == '2' ;                 // Check if the input 'e' is number '2'
+    press3(e) <- e == '3' ;                 // Check if the input 'e' is number '3'
+    pressR(e) <- e == 'R' ;                 // Check if the input 'e' is letter 'R'
+}
+```
+
+### Explanation:
+
+1. **Assume Section**: We set our assumptions about the environment. For example, if there are ranges or conditions that are always true, like ensuring `total` is always non-negative as `total` represents some monetary value.
+
+2. **Guarantee Section**: We delineate the actual logic or syntactic sugar for translating API or predicate function into TSL. This is where the translation of predicates occurs based on the input conditions defined.
+   - Each predicate like `pressD(e)` translates to a condition checking if `e` (the event or input from the user) matches a specific value, which would depict pressing of a certain key.
+   - Predicates like `isLessThanPoint75(total)` check numeric conditions against the `total`. 
+
+This structure helps in converting the given natural language descriptions into a formal specification using TSL that can be checked or simulated in environments that support temporal logic.
