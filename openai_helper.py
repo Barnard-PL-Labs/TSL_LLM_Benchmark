@@ -176,7 +176,8 @@ def ask_chatgpt(prompt):
     messages = [
       { 'role': 'system', 'content': PRE_PROMPT },
       { 'role': 'user', 'content': prompt },
-    ]
+    ],
+    temperature = 0.8,
   )
 
   return response

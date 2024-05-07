@@ -118,7 +118,10 @@ def run_with_args(args):
         log_results()
 
     def log_results():
-        log_dir = os.path.join(file_dir, 'results', 'by_benchmark', args.dir, spec_template, datetime.datetime.now().isoformat())
+        log_outer_dir = os.path.join(file_dir, 'results', 'by_benchmark', args.dir, spec_template)
+        if not os.path.exists(log_outer_dir):
+            os.makedirs(log_outer_dir)
+        log_dir = os.path.join(log_outer_dir, datetime.datetime.now().isoformat())
         check_call([ 'mv', computed_dir, log_dir ])
 
     def extract_first_code_block(text):

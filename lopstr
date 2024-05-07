@@ -1,0 +1,3 @@
+#!/bin/bash -eu
+
+python3 run.py -d all --spec-prompt-file lopstr --log-results --num-iter 100
