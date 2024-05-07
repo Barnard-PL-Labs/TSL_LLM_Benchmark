@@ -5,6 +5,7 @@ Code gen models struggle with long context generation, and have been shown to pe
 ## Benchmark Overview
 We propose a set of benchmarks to test the capability of LLMs in generating TSL specs for reactive synthesis. The benchmarks use a simple TSL spec to generate complex state machines, and are designed to test the ability of LLMs to generate specs as opposed to generating entire state machines. In this way performance of long context high risk code gen applications can be simplified and made more transparent. **The snake death is due to user error... The final death is due to illegal keypresses and not a bug.**
 
+<!-- Three per line seems to be the sweet spot -->
 | **Ball** | **Game of Life** | **Vending Machine** | 
 |:--------:|:-------:|:-----------:|
 | ![Ball](media/ball.gif) | ![Gol](media/gol.gif) | ![Vending](media/vending.gif) | 
