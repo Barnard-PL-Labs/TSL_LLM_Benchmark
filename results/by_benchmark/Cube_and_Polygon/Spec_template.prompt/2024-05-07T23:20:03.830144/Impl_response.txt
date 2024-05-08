@@ -1,0 +1,54 @@
+To implement the requested functions and predicates in JavaScript, we will work with an imagined API that allows us to interact with the 3D object "cube". We'll create functions for calculating the sine and sawtooth wave values, and predicates that detect left and right button presses.
+
+First, let's define the functions for `sin(x)` and `saw(x)`. The sine function can be directly used from the JavaScript Math library, and for the sawtooth wave, we will implement it manually using a formula that provides the sawtooth wave characteristic.
+
+Next, for the predicates `pressL(e)` and `pressR(e)`, we will use JavaScript's event listener mechanism to listen for keyboard events and react accordingly.
+
+Here is the JavaScript code for these implementations:
+
+### Functions
+
+```javascript
+// Function to calculate the sine of x
+function sin(x) {
+    return Math.sin(x);
+}
+
+// Function to calculate the sawtooth wave of x
+function saw(x) {
+    // Sawtooth wave formula: x - floor(x)
+    return x - Math.floor(x);
+}
+```
+
+### Predicates
+
+For predicates, we need to set up event listeners for button presses. Assuming that the 'left' button corresponds to the "ArrowLeft" key and the 'right' button corresponds to the "ArrowRight" key, we can implement the predicates as follows:
+
+```javascript
+// Predicate to check if the left button (ArrowLeft key) is pressed
+function pressL(e) {
+    return e.key === "ArrowLeft";
+}
+
+// Predicate to check if the right button (ArrowRight key) is pressed
+function pressR(e) {
+    return e.key === "ArrowRight";
+}
+
+// To use these predicates, we can set up event listeners
+document.addEventListener('keydown', function(event) {
+    if (pressL(event)) {
+        console.log("Left button pressed");
+        // Update the cube's scale or perform other actions
+        cube.scale.x = sin(someValue);  // Example usage of the sin function
+    } else if (pressR(event)) {
+        console.log("Right button pressed");
+        // Update the cube's scale or perform other actions
+        cube.scale.x = saw(someValue);  // Example usage of the saw function
+    }
+});
+```
+
+### Integration with 3D API
+In this script, when a left or right key press is detected, we log the action and hypothetically update `cube.scale.x` using either the sine or sawtooth function. Please ensure "cube" and other elements (like `someValue`) are correctly defined and accessible in your actual implementation environment. This script assumes the existence of a 3D cube object that has a `scale.x` property we can set.

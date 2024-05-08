@@ -1,0 +1,83 @@
+To implement the functions and predicates as described, we'll use JavaScript to create functions that interact with the cube's rotation and to define predicates that check for button presses. 
+
+We will assume that the cube object and its rotation property are accessible and that `rotateLeft` and `rotateRight` change the cube's `rotation.y` property which represents the rotation around the y-axis in radians.
+
+Here is the JavaScript implementation:
+
+### Functions:
+1. **rotateLeft(cube)**
+2. **rotateRight(cube)**
+
+```javascript
+// Function to rotate the cube to the left by decreasing the y rotation by a fixed amount (e.g., 0.1 radians)
+function rotateLeft(cube) {
+    cube.rotation.y -= 0.1;
+    console.log("Rotated Left: New y rotation is", cube.rotation.y);
+}
+
+// Function to rotate the cube to the right by increasing the y rotation by a fixed amount (e.g., 0.1 radians)
+function rotateRight(cube) {
+    cube.rotation.y += 0.1;
+    console.log("Rotated Right: New y rotation is", cube.rotation.y);
+}
+```
+
+### Predicates:
+1. **pressL(e)**
+2. **pressR(e)**
+
+These predicates will need to track button press events. We'll assume HTML buttons with IDs `buttonL` and `buttonR` are present for left and right buttons, respectively. These functions will install listeners on these buttons and set flags when they are pressed.
+
+```javascript
+// Flags to track the button presses
+let leftPressed = false;
+let rightPressed = false;
+
+// Function to check if the left button is pressed
+function pressL(e) {
+    return leftPressed;
+}
+
+// Function to check if the right button is pressed
+function pressR(e) {
+    return rightPressed;
+}
+
+// Event listeners for the buttons
+document.getElementById('buttonL').addEventListener('mousedown', function() {
+    leftPressed = true;
+    console.log("Left button pressed");
+});
+
+document.getElementById('buttonL').addEventListener('mouseup', function() {
+    leftPressed = false;
+});
+
+document.getElementById('buttonR').addEventListener('mousedown', function() {
+    rightPressed = true;
+    console.log("Right button pressed");
+});
+
+document.getElementById('buttonR').addEventListener('mouseup', function() {
+    rightPressed = false;
+});
+```
+
+### HTML for buttons:
+
+```html
+<button id="buttonL">Left</button>
+<button id="buttonR">Right</button>
+```
+
+### CSS (optional) for quick button styling:
+
+```css
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+}
+```
+
+This setup ensures that the functions `rotateLeft` and `rotateRight` modify the rotation of the cube based on button events, and the predicates `pressL` and `pressR` return the current state of left and right button presses respectively.
