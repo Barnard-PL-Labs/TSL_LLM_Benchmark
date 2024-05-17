@@ -1,0 +1,135 @@
+<style>
+	#debug {
+		margin: 50px;
+		font-size: 25px;
+	}
+
+	#ball {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		animation: bounce 2s infinite ease-in-out;
+	}
+
+	@keyframes bounce {
+
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-500px);
+		}
+	}
+</style>
+
+<div id="debug"></div>
+<div id="ball"></div>
+
+<script>
+
+class Ball {
+    constructor(x) {
+        this.x = x; // x represents the horizontal position of the ball
+    }
+
+    // Function to move the ball left
+    moveLeft() {
+        if (!this.leftmost()) { // Check if it's not at the leftmost position
+            this.x -= 1;  // Move the ball left by decreasing x
+            return "Signal to move left";
+        }
+        return "Ball is at the leftmost position, cannot move left";
+    }
+
+    // Function to move the ball right
+    moveRight() {
+        if (!this.rightmost()) { // Check if it's not at the rightmost position
+            this.x += 1;  // Move the ball right by increasing x
+            return "Signal to move right";
+        }
+        return "Ball is at the rightmost position, cannot move right";
+    }
+
+    // Predicate to check if the ball is at the leftmost position
+    leftmost() {
+        const leftMostWallPosition = 0; // Assuming 0 is the leftmost position
+        return this.x === leftMostWallPosition;
+    }
+
+    // Predicate to check if the ball is at the rightmost position
+    rightmost() {
+        const rightMostWallPosition = 10; // Assuming 10 is the rightmost position
+        return this.x === rightMostWallPosition;
+    }
+}
+
+// Usage example
+const ball = new Ball(5); // Create a ball at position 5
+console.log(ball.moveLeft()); // Moves ball to the left
+console.log(ball.moveLeft()); // Moves ball to the left again
+console.log(ball.moveRight()); // Moves ball to the right
+console.log(ball.leftmost()); // Checks if at the leftmost position
+console.log(ball.rightmost()); // Checks if at the rightmost position
+
+
+</script>
+<script src="computed/Synth.js" type="text/javascript"></script>
+
+<script>
+
+	(async () => {
+
+
+		// Wrapper
+
+		const X_STEP_DURATION = 200;
+
+		class Ball {
+			constructor() {
+				this.pos = 0
+			}
+
+			render() {
+				const ball = document.getElementById('ball');
+				ball.style.transition = `left ${X_STEP_DURATION}ms linear`;
+				ball.style.left = `${this.pos / 10 * (screen.availWidth - 100)}px`;
+
+				const debug = document.querySelector('#debug');
+				debug.textContent = 'Current State: ' + currentState
+			}
+		}
+
+		window.currentState = 0
+
+		const ball = new Ball()
+		ball.render()
+
+		// /*
+
+		// Wait for 1s to sync the up-and-down animationw with bouncing, in order to make it look like the
+		// ball is bouncing.
+
+		// */
+		// await new Promise(((resolve) => resolve()), 1000)
+
+		setInterval(
+			(() => {
+
+				ball_pos = ball.pos;
+				({ currentState, ball_pos }) = updateState({ currentState, ball_pos })
+				ball.pos = ball_pos
+				console.log('currentState', currentState, ball)
+				ball.render()
+
+			}),
+			X_STEP_DURATION
+		)
+
+	})()
+
+</script>

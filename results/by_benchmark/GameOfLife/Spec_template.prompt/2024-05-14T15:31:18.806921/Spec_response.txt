@@ -1,0 +1,18 @@
+Here's the TSL (Temporal Stream-based Specification Language) specification for the game of life scenario described:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState <- alive];
+
+  // If comeDead is true the cell uses changeState() to die
+  comeDead(index) -> [changeState <- dead];
+}
+```
+
+This specification ensures that the cell will change its state based on the conditions evaluated by `comeAlive` and `comeDead`. Note that `changeState` is used as the method to modify the state of the cell to either `alive` or `dead`. The correctness of this specification relies on the accurate implementation of the `comeAlive` and `comeDead` predicates.

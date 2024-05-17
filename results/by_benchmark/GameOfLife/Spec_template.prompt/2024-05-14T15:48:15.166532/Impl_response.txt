@@ -1,0 +1,70 @@
+It appears that there might be some confusion in the request. Implementing methods in JavaScript using an API, especially for a scenario like a cellular automaton (which your functions and predicates suggest) doesn't directly relate to a TSL (Temporal Stream Logic) template but rather to actual function implementations. However, I can provide JavaScript implementations for the described functions and predicates assuming a standard grid-based setup typically found in implementations of Conway's Game of Life, which the functions and predicates suggest. 
+
+First, let's establish a JavaScript context for these functions:
+
+1. **Assumptions**:
+   - The grid is a 2D array of cells.
+   - Each cell in the grid can either be alive (`true`) or dead (`false`).
+   - The `index` provided to the `comeAlive` and `comeDead` predicates could be a single integer representing a linearized position of a 2D array, or a pair of coordinates. Here, we'll assume it's a pair `(x, y)` for clarity.
+
+2. **Utility Functions**:
+   - **countAliveNeighbors**: This function will help in checking the number of alive neighbors for a given cell.
+
+3. **Predicates and Functions**:
+   - **comeAlive**: Checks if a cell should become alive based on the number of its living neighbors.
+   - **comeDead**: Checks if a cell should die based on the number of its living neighbors.
+   - **changeState**: Toggles the state of a cell in the grid.
+
+Here is a possible implementation:
+
+```javascript
+// Assuming gridSize is known and grid is globally accessible 
+let grid;
+let gridSize;
+
+function initializeGrid(size) {
+    gridSize = size;
+    grid = Array(size).fill().map(() => Array(size).fill(false));
+}
+
+function countAliveNeighbors(x, y) {
+    let count = 0;
+    for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+            if (dx === 0 && dy === 0) continue;
+            let nx = x + dx, ny = y + dy;
+            if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize && grid[nx][ny]) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+function comeAlive(x, y) {
+    const aliveNeighbors = countAliveNeighbors(x, y);
+    return (!grid[x][y] && aliveNeighbors === 3) || (grid[x][y] && (aliveNeighbors === 2 || aliveNeighbors === 3));
+}
+
+function comeDead(x, y) {
+    const aliveNeighbors = countAliveNeighbors(x, y);
+    return aliveNeighbors < 2 || aliveNeighbors > 3;
+}
+
+function changeState(x, y) {
+    grid[x][y] = !grid[x][y];
+}
+
+
+// Initialization of the grid for demonstration
+initializeGrid(10); // initialize a 10x10 grid
+changeState(1, 1);
+changeState(1, 2);
+changeState(2, 2);
+
+// Example usage
+console.log(`Should (1,2) come alive next generation? ${comeAlive(1, 2)}`);
+console.log(`Should (1,1) turn dead next generation? ${comeDead(1, 1)}`);
+```
+
+This script sets up a grid, provides a basic implementation of the Conway's Game of Life rules through `comeAlive` and `comeDead` predicates, and allows state toggling through `changeState`. The `initializeGrid`, `comeAlive`, `comeDead`, and `changeState` functions utilize a global `grid` and `gridSize` to manipulate and query cell states based on Conway's Game of Life rules.

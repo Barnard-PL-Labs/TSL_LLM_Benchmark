@@ -1,0 +1,20 @@
+Here's the TSL specification based on the description provided:
+
+```tsl
+always assume {
+  // Mutual exclusion between comeAlive and comeDead
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+In this specification:
+- The `always assume` block ensures that the predicates `comeAlive` and `comeDead` for a given cell index cannot both be true at the same time, reflecting the mutual exclusivity between a cell coming to life or dying.
+- The `always guarantee` block ensures that when `comeAlive(index)` is true, the function `changeState()` is invoked to change the cell's state to alive, and similarly, when `comeDead(index)` is true, `changeState()` is called to change the cell's state to dead. Note that `changeState()` is used for both actions, as specified, implying that the context or internal handling within `changeState()` handles the actual state transition based on the game's rules.

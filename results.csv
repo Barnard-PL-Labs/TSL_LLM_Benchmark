@@ -1,0 +1,8 @@
+,benchmark,prompt,total,compiled,correct,unclassified
+0,Cube_Expansion,Spec_withoutFA_template.prompt,0,1,0,1
+1,Cube_Rotation,Spec_template.prompt,0,1,0,1
+2,Cube_and_Polygon,Spec_template.prompt,0,1,0,1
+3,Ball,Spec_onlyNlAndSummary_template.prompt,0,1,0,1
+4,Ball,Spec_template.prompt,0,1,0,1
+5,Ball,Spec_onlySummaryAndHeaders_template.prompt,0,1,0,1
+6,GameOfLife,Spec_template.prompt,0,0,0,0

@@ -1,0 +1,27 @@
+always assume {
+  // After moving left, the next state cannot have the ball at the rightmost wall
+  ([ ball <- moveLeft(ball) ] -> X !rightmost(ball));
+
+  // After moving right, the next state cannot have the ball at the leftmost wall
+  ([ ball <- moveRight(ball) ] -> X !leftmost(ball));
+
+  // The ball cannot be at both the leftmost and the rightmost wall at the same time
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, it must eventually move left
+  rightmost(ball) -> F ([ ball <- moveLeft(ball) ]);
+
+  // If the ball is at the leftmost wall, it must eventually move right
+  leftmost(ball) -> F ([ ball <- moveRight(ball) ]);
+
+  // If the ball is not at either extreme, it must eventually move either left or right
+  !(leftmost(ball) || rightmost(ball)) -> F ([ ball <- moveLeft(ball) ] || [ ball <- moveRight(ball) ]);
+
+  // If the ball moves from the leftmost position, it will not move left until it reaches the rightmost wall
+  leftmost(ball) -> (X ([ ball <- moveRight(ball) ]) W rightmost(ball));
+
+  // If the ball moves from the rightmost position, it will not move right until it reaches the leftmost wall
+  rightmost(ball) -> (X ([ ball <- moveLeft(ball) ]) W leftmost(ball));
+}

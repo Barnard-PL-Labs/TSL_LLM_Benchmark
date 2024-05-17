@@ -1,0 +1,18 @@
+Here is the TSL specification for simulating a single cell in the game of life according to your requirements:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [alive <- true];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [alive <- false];
+}
+```
+
+This TSL specification encapsulates the logic for a cell's behavior based on its neighboring cells' states as defined by the predicates `comeAlive` and `comeDead`. The assumption ensures the mutual exclusivity of the `comeAlive` and `comeDead` conditions, reflecting the game's rules that a cell cannot simultaneously come to life and die. The guarantees specify the state changes when these conditions are met, aligning with the classic rules of Conway's Game of Life where cells change state based on the number of living neighbors.

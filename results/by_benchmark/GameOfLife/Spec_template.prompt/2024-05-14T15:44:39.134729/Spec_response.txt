@@ -1,0 +1,20 @@
+Here is the TSL specification for the described scenario:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+In this TSL specification:
+- The `assume` block ensures that the conditions `comeAlive(index)` and `comeDead(index)` cannot both be true at the same time, which aligns with the rules of the game of life and the stated requirements.
+- The `guarantee` block specifies the actions to be taken when either `comeAlive(index)` or `comeDead(index)` is true. Each leads to a call to `changeState()` function, which presumably toggles the cell's state between alive and dead.

@@ -1,0 +1,12 @@
+always assume {
+  // Assumption: comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // Guarantee: If comeAlive is true, the cell changes its state to come alive
+  comeAlive(index) -> [changeState()];
+
+  // Guarantee: If comeDead is true, the cell changes its state to die
+  comeDead(index) -> [changeState()];
+}

@@ -1,0 +1,16 @@
+Here is the TSL specification for a single cell in the game of life based on the given description and constraints.
+
+```
+always assume {
+  // Ensure `comeAlive` and `comeDead` are mutually exclusive
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If `comeAlive` is true, the cell changes state to alive
+  comeAlive(index) -> [changeState()];
+
+  // If `comeDead` is true, the cell changes state to die
+  comeDead(index) -> [changeState()];
+}
+```

@@ -1,0 +1,16 @@
+always assume {
+  // The ball can never be both at the leftmost and rightmost positions simultaneously
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the leftmost wall, it should move to the right
+  leftmost(ball) -> X ([ball <- moveRight(ball)] W !leftmost(ball));
+
+  // When the ball is at the rightmost wall, it should move to the left
+  rightmost(ball) -> X ([ball <- moveLeft(ball)] W !rightmost(ball));
+
+  // Ensure continuous bouncing between the walls
+  G (leftmost(ball) -> F rightmost(ball));
+  G (rightmost(ball) -> F leftmost(ball));
+}

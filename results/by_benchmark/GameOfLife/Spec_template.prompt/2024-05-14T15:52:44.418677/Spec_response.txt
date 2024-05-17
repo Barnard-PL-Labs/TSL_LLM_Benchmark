@@ -1,0 +1,18 @@
+Here is how you can translate the requirements for a single cell's behavior in the Game of Life into a TSL specification:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [alive <- changeState()];
+  
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [alive <- changeState()];
+}
+```
+
+This TSL specification reflects the conditions under which a single cell in the Game of Life should change its state based on its neighbors, according to the functions `comeAlive` and `comeDead`. The mutual exclusion of these two functions is assumed, and the corresponding actions to change the state of the cell are guaranteed.

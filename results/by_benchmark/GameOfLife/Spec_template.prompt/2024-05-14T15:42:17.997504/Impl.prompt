@@ -1,0 +1,19 @@
+
+A system environment has the following API. Using the API, implement the following methods in JavaScript. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
+
+Functions and predicates to implement:
+
+
+Cells:
+  "alive" is the cell alive
+  "index" index of the cell on the grid. This is initialized in the function terms 
+Functions:
+  changeState
+Predicates:
+  comeAlive(index) => are exactly 3 neighbours are living or are 2 or 3 neighbours are living?
+  comeDead(index) => does the cell have less than 2 neighbours or more than 3 neighbours?
+  
+
+System API:
+
+
