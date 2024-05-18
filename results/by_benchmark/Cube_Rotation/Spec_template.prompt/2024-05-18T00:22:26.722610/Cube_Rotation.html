@@ -105,7 +105,31 @@
             pointLight.position.set(5, 5, 5);
             scene.add(pointLight);
 
-            const data = ``;
+            const data = `if (currentState === 0) {
+  if (!pressL(e) && !pressR(e)) {
+    cube = rotateRight(cube)
+    currentState = 0
+  }
+  else if (!pressL(e) && !pressR(e)) {
+    cube = rotateLeft(cube)
+    currentState = 0
+  }
+  else if (!pressL(e) && !pressR(e)) {
+    cube = cube
+    currentState = 0
+  }
+  else if (pressL(e) && pressR(e)) {
+    currentState = 0
+  }
+  else if (pressL(e) && !pressR(e)) {
+    cube = rotateLeft(cube)
+    currentState = 0
+  }
+  else if (!pressL(e) && pressR(e)) {
+    cube = rotateRight(cube)
+    currentState = 0
+  }
+}`;
             // data should be the Synth.js
             let genCode = `(function (e){\n` + data + "})";
             updateState = eval(genCode);
