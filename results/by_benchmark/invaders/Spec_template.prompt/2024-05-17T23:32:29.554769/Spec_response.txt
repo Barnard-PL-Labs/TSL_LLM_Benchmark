@@ -1,0 +1,31 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Mutual exclusion for key inputs to prevent simultaneous conflicting movements
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressUp(e));
+  !(pressL(e) && pressDown(e));
+  !(pressR(e) && pressUp(e));
+  !(pressR(e) && pressDown(e));
+  !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+  // If the ship is hit by an enemy or an obstacle, set a specific condition or flag
+  hit(ship) -> [command <- die(ship)];
+
+  // Movement guarantees based on key presses
+  pressL(e) && !leftmost(ship) -> [command <- moveLeft(ship)];
+  pressR(e) && !rightmost(ship) -> [command <- moveRight(ship)];
+
+  // Shooting action when the shoot key is pressed
+  pressS(e) -> [command <- shoot(ship)];
+}
+```
+
+This TSL specification defines the behavior of the player's ship in a way that:
+- Ensures that no two directional keys can be pressed at the same time, avoiding conflict in commands.
+- Responds to the ship being hit by setting a flag or performing an action that could signal game over or reduce life.
+- Moves the ship left or right when the corresponding key is pressed, unless the ship is already at the boundary of the game space (leftmost or rightmost).
+- Triggers a shooting action when the shoot key is pressed.

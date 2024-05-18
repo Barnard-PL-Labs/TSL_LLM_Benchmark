@@ -1,0 +1,23 @@
+always assume {
+    // Ensuring that no two directional keys can be pressed simultaneously
+    !(pressL(e) && pressR(e));
+    !(pressL(e) && pressUp(e));
+    !(pressL(e) && pressDown(e));
+    !(pressR(e) && pressUp(e));
+    !(pressR(e) && pressDown(e));
+    !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+    // Response when the ship is hit by an enemy or an obstacle
+    hit(ship) -> [command <- die(ship)];
+
+    // Managing left movement - move the ship left unless it is at the leftmost boundary
+    pressL(e) && !leftmost(ship) -> [command <- moveLeft(ship)];
+
+    // Managing right movement - move the ship right unless it is at the rightmost boundary
+    pressR(e) && !rightmost(ship) -> [command <- moveRight(ship)];
+
+    // Managing shooting action
+    pressS(e) -> [command <- shoot(ship)];
+}

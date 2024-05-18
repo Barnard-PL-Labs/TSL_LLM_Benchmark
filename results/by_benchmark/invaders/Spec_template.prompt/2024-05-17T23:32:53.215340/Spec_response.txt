@@ -1,0 +1,35 @@
+Below is the translation of the given natural language description into a TSL specification for the game Space Invaders. This specification defines the behavior of the player's ship based on input conditions and ship states:
+
+```tsl
+always assume {
+  // Ensure mutual exclusion for directional key inputs
+  !(pressL && pressR);
+  !(pressL && pressU);
+  !(pressL && pressD);
+  !(pressR && pressU);
+  !(pressR && pressD);
+  !(pressU && pressD);
+}
+
+always guarantee {
+  // Handle movement based on key presses ensuring ship does not move beyond game boundaries
+  pressL && !leftmost(ship) -> [ship <- moveLeft(ship)];
+  pressR && !rightmost(ship) -> [ship <- moveRight(ship)];
+  
+  // Shooting action when shoot key is pressed
+  pressS -> [ship <- shoot(ship)];
+  
+  // If the ship is hit, the game responds by triggering a death or damage sequence
+  hit(ship) -> [ship <- die(ship)];
+}
+```
+
+### Explanation of TSL Specification:
+- **Assumptions**:
+  - The `always assume` block ensures that no two directional keys are pressed simultaneously to avoid conflicting commands that could lead to undefined behavior.
+- **Guarantees**:
+  - The `always guarantee` block contains the logic for moving the ship left or right when the corresponding key is pressed, with additional conditions to ensure the ship does not move out of the game bounds (`leftmost` and `rightmost` predicates).
+  - The shooting action is triggered when the shoot key (S) is pressed.
+  - If the ship is hit (`hit(ship)` predicate), the appropriate action to end the game or reduce life (`die(ship)`) is enacted.
+
+This setup maintains the integrity of the game logic and ensures smooth and predictable ship control, adhering to the specified rules and interactions.

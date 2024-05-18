@@ -1,0 +1,43 @@
+Here's how you can translate the provided natural language description into a Temporal Stream Logic (TSL) specification for the game Space Invaders:
+
+```tsl
+always assume {
+  // Mutual exclusion for key inputs to prevent simultaneous contradictory movements
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressU(e));
+  !(pressL(e) && pressD(e));
+  !(pressR(e) && pressU(e));
+  !(pressR(e) && pressD(e));
+  !(pressU(e) && pressD(e));
+}
+
+always guarantee {
+  // If the ship is hit, set the dead flag
+  hit(ship) -> [dead(ship) <- 1];
+
+  // Left Movement: move the ship left unless it is already at the leftmost position
+  pressL(e) && !leftmost(ship) -> [moveLeft(ship)];
+
+  // Right Movement: move the ship right unless it is already at the rightmost position
+  pressR(e) && !rightmost(ship) -> [moveRight(ship)];
+
+  // Shooting Action: trigger shooting mechanism
+  pressS(e) -> [shoot(ship)];
+}
+```
+
+### Explanation
+
+#### Assumptions:
+
+- The `always assume` block enforces the mutual exclusion on key inputs. This ensures that no two opposing or contradictory directional keys are pressed at the same time, which prevents any potential conflicts in game logic pertaining to movement.
+
+#### Guarantees:
+
+- The `hit(ship)` condition immediately leads to the ship being marked as dead (`[dead(ship) <- 1]`), which could trigger a game over or reduce the player's life depending on additional game mechanics not specified here.
+
+- The `pressL(e)` condition checks if the left key is pressed and then makes sure the ship is not at the leftmost boundary (`!leftmost(ship)`) before moving it left by one unit through the function `moveLeft(ship)`.
+
+- Similarly, `pressR(e)` checks if the right key is pressed and ensures the ship is not at the rightmost boundary (`!rightmost(ship)`) before moving it right by one unit using the function `moveRight(ship)`.
+
+- `pressS(e)` represents the condition where the shoot key is pressed, triggering the `shoot(ship)` function that likely manages shooting mechanics like firing a projectile.

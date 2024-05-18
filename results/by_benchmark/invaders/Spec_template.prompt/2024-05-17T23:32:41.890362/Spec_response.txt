@@ -1,0 +1,39 @@
+Here's the translation of the provided natural language description into a TSL (Temporal Stream Logic) specification:
+
+```TSL
+always assume {
+    // Mutual exclusion for key inputs to ensure no conflicting movements
+    !(pressL && pressR);
+    !(pressL && pressU);
+    !(pressL && pressD);
+    !(pressR && pressU);
+    !(pressR && pressD);
+    !(pressU && pressD);
+}
+
+always guarantee {
+    // If the ship is hit, end game or lose a life
+    hit(ship) -> [die(ship)];
+    
+    // Left Movement: move the ship to the left when the left key is pressed
+    pressL -> {
+        !leftmost(ship) -> [moveLeft(ship)];
+    }
+    
+    // Right Movement: move the ship to the right when the right key is pressed
+    pressR -> {
+        !rightmost(ship) -> [moveRight(ship)];
+    }
+    
+    // Shooting Action: trigger shooting when the shoot key is pressed
+    pressS -> [shoot(ship)];
+}
+```
+
+### Explanation
+- **Mutual Exclusion**: The `assume` block ensures that no two directional keys are pressed simultaneously, avoiding conflicts in movement commands.
+- **Hit Detection**: The `guarantee` block listens for when the ship gets hit (`hit(ship)`) and then triggers the appropriate function `die(ship)` to handle game-ending or life-loss logic.
+- **Movement**: For left and right movements, the specification checks whether the ship is already at the boundary (`leftmost(ship)` or `rightmost(ship)`) before moving it to prevent going out of the playable area.
+- **Shooting**: The shooting action is controlled by the shoot key (`pressS`), which triggers the `shoot(ship)` function.
+
+This specification makes sure the game controls for the ship are responsive, mutually exclusive, and appropriately constrained by the game boundaries.

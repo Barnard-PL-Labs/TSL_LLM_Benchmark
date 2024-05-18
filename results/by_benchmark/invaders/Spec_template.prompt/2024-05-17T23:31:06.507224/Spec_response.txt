@@ -1,0 +1,36 @@
+Based on the given natural language description and the functions and predicates provided for the game "Space Invaders," the TSL specification can be structured as follows:
+
+```tsl
+always assume {
+  // Ensure no two directional keys are pressed simultaneously
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Move ship left when 'pressL' key is pressed and not at the leftmost position
+  pressL -> (!leftmost(ship) -> [ship <- moveLeft(ship)]);
+  
+  // Move ship right when 'pressR' key is pressed and not at the rightmost position
+  pressR -> (!rightmost(ship) -> [ship <- moveRight(ship)]);
+  
+  // Trigger shooting action when 'pressS' key is pressed
+  pressS -> [ship <- shoot(ship)];
+  
+  // Handle ship hit detection
+  hit(ship) -> [ship <- die(ship)];
+}
+```
+
+### Explanation:
+- **Mutual Exclusion for Key Inputs:** The `always assume` block ensures that conflicting directions are not pressed at the same time by using logical negations (`!`) combined with logical ANDs to prevent simultaneous directional inputs.
+  
+- **Left and Right Movement:** In the `always guarantee` block, when either left (`pressL`) or right (`pressR`) keys are pressed, the ship moves in the respective direction unless it is at the boundary (leftmost or rightmost). This is controlled by checking the predicates `leftmost(ship)` and `rightmost(ship)` and negating them to allow movement unless the ship is at the boundary.
+
+- **Shooting Action:** When the shoot key (`pressS`) is engaged, it triggers the shooting function `shoot(ship)`.
+
+- **Ship Hit Detection:** If the ship is hit, as determined by the predicate `hit(ship)`, the function `die(ship)` is activated, which could represent ending the game or losing a life.
