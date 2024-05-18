@@ -1,0 +1,66 @@
+To implement the described system using JavaScript functions and predicates, we'll need to define the functions and predicates using the given API directives for manipulating `cube.rotation.y`. Here's how you could structure the JavaScript code to fulfill these requirements:
+
+### Functions:
+
+#### `rotateLeft(cube)`
+This function will rotate the cube to the left by decrementing the `y` rotation.
+
+```javascript
+function rotateLeft(cube) {
+    cube.rotation.y -= 0.1; // Decrease the y rotation by 0.1 radians
+}
+```
+
+#### `rotateRight(cube)`
+This function will rotate the cube to the right by incrementing the `y` rotation.
+
+```javascript
+function rotateRight(cube) {
+    cube.rotation.y += 0.1; // Increase the y rotation by 0.1 radians
+}
+```
+
+### Predicates:
+
+These predicates will involve setting up event listeners to detect button presses. Assume `pressL` is triggered by the 'L' key and `pressR` by the 'R' key on the keyboard:
+
+#### `pressL(e)`
+Predicate that checks if the left button (let's assume 'L' key) is pressed.
+
+```javascript
+function pressL(e) {
+    return e.key === 'L' || e.key === 'l'; // Check if 'L' or 'l' is pressed
+}
+
+// Setup event listener in the appropriate part of your codebase where 'e' is the event object from a keyboard event
+document.addEventListener('keydown', function(event) {
+    if (pressL(event)) {
+        console.log("Left button pressed");
+        // Optionally, call rotateLeft here or handle elsewhere
+        // rotateLeft(cube);
+    }
+});
+```
+
+#### `pressR(e)`
+Predicate that checks if the right button (let's assume 'R' key) is pressed.
+
+```javascript
+function pressR(e) {
+    return e.key === 'R' || e.key === 'r'; // Check if 'R' or 'r' is pressed
+}
+
+// Setup event listener in the appropriate part of your codebase where 'e' is the event object from a keyboard event
+document.addEventListener('keydown', function(event) {
+    if (pressR(event)) {
+        console.log("Right button pressed");
+        // Optionally, call rotateRight here or handle elsewhere
+        // rotateRight(cube);
+    }
+});
+```
+
+### Integration with a 3D API
+To make this code functional, you would typically integrate it with a 3D graphics API such as Three.js, where you would have a proper `cube` object with a `rotation` property that can be modified. This integration is crucial for the rotation functions to actually affect the visual representation of the cube in a 3D space.
+
+Make sure to include these functions and event listeners in a context where they have access to the relevant `cube` object and where they can be effectively managed as part of your application's lifecycle.
