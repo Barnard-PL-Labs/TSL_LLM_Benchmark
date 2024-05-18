@@ -1,0 +1,18 @@
+always assume {
+  // This block typically contains environmental constraints or assumptions about the system's inputs.
+  // Since no specific assumptions about input constraints were described, we leave this block empty.
+}
+
+always guarantee {
+  // Here we define the system's reactions to inputs, but since the natural language description does not provide specific button press events or conditions that trigger the sounds, we can only generalize the structure.
+
+  // We assume that there are methods or conditions `pressButtonE4`, `pressButtonG4`, and `pressButtonA4` that represent the user pressing buttons to play notes E4, G4, and A4 respectively.
+  pressButtonE4 -> ([noteToPlay <- "E4"] || [noteToPlay2 <- "E4"]);
+  pressButtonG4 -> ([noteToPlay <- "G4"] || [noteToPlay2 <- "G4"]);
+  pressButtonA4 -> ([noteToPlay <- "A4"] || [noteToPlay2 <- "A4"]);
+  
+  // Ensuring only one note is assigned to each variable at one time, but allowing for simultaneous different notes across the two variables.
+  (pressButtonE4 && pressButtonG4) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "G4"]);
+  (pressButtonE4 && pressButtonA4) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]);
+  (pressButtonG4 && pressButtonA4) -> ([noteToPlay <- "G4"] && [noteToPlay2 <- "A4"]);
+}

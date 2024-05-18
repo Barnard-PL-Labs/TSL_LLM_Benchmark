@@ -1,0 +1,59 @@
+Given the description of the system and its functions and predicates, here's how you can implement them in JavaScript:
+
+### Functions
+These functions take `ball` as an argument and manipulate its movement by returning a signal which implies moving either to the left or right.
+
+```javascript
+function moveLeft(ball) {
+    // Assuming the ball object has a method or property that can be adjusted
+    // to signal moving left, the actual implementation might vary based on the full API details
+    // This is a placeholder for the intended signal operation
+    return `Move ${ball} to the left.`;
+}
+
+function moveRight(ball) {
+    // Assuming the ball object has a method or property that can be adjusted
+    // to signal moving right, the actual implementation might vary based on the full API details
+    // This is a placeholder for the intended signal operation
+    return `Move ${ball} to the right.`;
+}
+```
+
+### Predicates
+These predicates are functions that return a boolean indicating whether the ball is at the leftmost or rightmost position. Assuming the `ball` object has properties that define its position, the implementation would check these positions.
+
+```javascript
+function leftmost(ball) {
+    // Assuming `ball.x` represents the x-coordinate of the ball
+    // and `LEFT_WALL_X` is a constant or known value for the x-coordinate of the leftmost wall
+    const LEFT_WALL_X = 0;  // Example value, should be set according to your system's specifics
+    return ball.x === LEFT_WALL_X;
+}
+
+function rightmost(ball) {
+    // Assuming `ball.x` represents the x-coordinate of the ball
+    // and `RIGHT_WALL_X` is a constant or known value for the x-coordinate of the rightmost wall
+    const RIGHT_WALL_X = 100;  // Example value, should be set according to your system's specifics
+    return ball.x === RIGHT_WALL_X;
+}
+```
+
+### Example Usage
+Here’s how you might use these functions and predicates within a system where `ball` is an object with a `x` property representing its horizontal position within a coordinate system.
+
+```javascript
+let ball = {
+    x: 0  // Starting at the leftmost position
+};
+
+console.log(moveLeft(ball));  // Output might be "Move ball to the left."
+console.log(leftmost(ball));  // Output: true
+console.log(rightmost(ball)); // Output: false
+
+ball.x = 100; // Move ball to the rightmost position
+console.log(moveRight(ball)); // Output might be "Move ball to the right."
+console.log(leftmost(ball));  // Output: false
+console.log(rightmost(ball)); // Output: true
+```
+
+Note: The implementation details for `moveLeft` and `moveRight` depend heavily on how you actually signal movement in your system’s API. The placeholders provided just return string messages for demonstration. You’d need to replace those with appropriate API calls or property manipulations according to your system's documentation. Additionally, the constants `LEFT_WALL_X` and `RIGHT_WALL_X` should be set according to the actual values used in your environment.

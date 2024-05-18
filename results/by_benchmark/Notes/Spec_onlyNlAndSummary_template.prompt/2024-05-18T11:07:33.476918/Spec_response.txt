@@ -1,0 +1,42 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Assumptions about button presses
+  (!button1 || !button2) && (!button1 || !button3) && (!button2 || !button3);
+}
+
+always guarantee {
+  // Guarantee 1: When button1 is pushed, E4 will eventually be played on noteToPlay
+  button1 -> F ([noteToPlay <- "E4"]);
+
+  // Guarantee 2: When button2 is pushed, G4 will eventually be played on noteToPlay
+  button2 -> F ([noteToPlay <- "G4"]);
+
+  // Guarantee 3: When button3 is pushed, A4 will eventually be played on noteToPlay2
+  button3 -> F ([noteToPlay2 <- "A4"]);
+
+  // Guarantee 4: Immediate action for button1 and button2
+  button1 -> X ([noteToPlay <- "E4"]);
+  button2 -> X ([noteToPlay <- "G4"]);
+
+  // Guarantee 5: Exclusive playing of E4 on noteToPlay and A4 on noteToPlay2
+  ([noteToPlay2 <- "A4"]) -> !(noteToPlay = "E4");
+  ([noteToPlay <- "E4"]) -> !(noteToPlay2 = "A4");
+
+  // Guarantee 6: A4 cannot be played on noteToPlay2 until E4 has stopped being played on noteToPlay
+  G ([noteToPlay = "E4"] -> (! ([noteToPlay2 <- "A4"]) W [noteToPlay <- ""]));
+
+  // Guarantee 7: Sequence or chord playing
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}
+```
+
+### Explanation:
+- **Assumptions**: It's ensured that no two buttons (button1, button2, button3) can be pressed at the same time.
+- **Guarantee 1 & 2**: Describe the eventual reaction of the system when button1 or button2 is pressed, by setting the respective musical notes to `noteToPlay`.
+- **Guarantee 3**: Describes the system's response when button3 is pressed by setting the musical note A4 to `noteToPlay2`.
+- **Guarantee 4**: Ensures that the action to set the respective note is the next action to occur after button1 or button2 is pressed.
+- **Guarantee 5**: Prevents E4 on `noteToPlay` and A4 on `noteToPlay2` from being played simultaneously.
+- **Guarantee 6**: Enforces that A4 cannot play on `noteToPlay2` while E4 is playing on `noteToPlay`.
+- **Guarantee 7**: If E4 is played on `noteToPlay`, then A4 must eventually be played on `noteToPlay2` and G4 on `noteToPlay`, creating either a sequence or a chord of notes.

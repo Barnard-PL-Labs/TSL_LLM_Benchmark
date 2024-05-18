@@ -1,0 +1,69 @@
+To implement the specified functions and predicates in JavaScript, you can use the following approach:
+
+### Functions
+1. **sin(x)**: JavaScript's Math library provides a `Math.sin()` method which will be used to implement this function.
+2. **saw(x)**: A sawtooth wave can be created using the modulo operation to get a repeating pattern that ramps upwards and then abruptly drops.
+
+### Predicates
+For the predicates, you'll need event listeners to detect button presses. Since the predicates involve real-time user input, setting up proper event handling is crucial. One way to manage this is by using flags that are set and reset based on the event type.
+
+```javascript
+// Global variables for button states
+let leftPressed = false;
+let rightPressed = false;
+
+// Setting up the event listeners for button presses
+document.addEventListener('keydown', function(e) {
+    if (e.key === "ArrowLeft") {
+        leftPressed = true;
+    } else if (e.key === "ArrowRight") {
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === "ArrowLeft") {
+        leftPressed = false;
+    } else if (e.key === "ArrowRight") {
+        rightPressed = false;
+    }
+});
+
+// Predicate functions
+function pressL() {
+    return leftPressed;
+}
+
+function pressR() {
+    return rightPressed;
+}
+
+// Functions
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    // Implementing sawtooth wave: f(x) = x - floor(x)
+    return x - Math.floor(x);
+}
+
+// Example usage of system API to modify 'cube.scale.x'
+function updateCubeScale() {
+    // Assuming 'cube' is an accessible object in your environment
+    if (cube) {
+        cube.scale.x = sin(new Date().getTime() / 1000); // example usage of sin function to animate scale
+    }
+}
+
+// Continuously update cube scale
+setInterval(updateCubeScale, 100); // Updates cube scale every 100 milliseconds
+```
+
+### Explanation
+- **sin(x)**: Uses the built-in `Math.sin()` function to compute the sine of `x`.
+- **saw(x)**: Calculates the sawtooth wave by using the formula \( x - \lfloor x \rfloor \). This formula gives a linear increase and then a reset, creating a sawtooth pattern.
+- **pressL() and pressR()**: These use global boolean flags (`leftPressed` and `rightPressed`) that are controlled by `keydown` and `keyup` events. This method assumes that the left and right arrow keys are used for the left and right button respectively.
+- **updateCubeScale() and setInterval**: These are used to periodically update `cube.scale.x` using the sine function as an example to demonstrate dynamic changes in the cube's scale.
+  
+This setup should meet the requirements specified and integrate effectively with the system API. Always ensure that the API's cube object is correctly referenced based on your specific environment setup.

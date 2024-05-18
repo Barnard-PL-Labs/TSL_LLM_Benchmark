@@ -1,0 +1,33 @@
+```tsl
+always assume {
+  // There are three buttons that can be pushed by the user
+  true; // No specific assumptions related to the environment are required beyond the button presses
+}
+
+always guarantee {
+  // When button1 is pushed, the musical note E4 will eventually be played
+  button1 -> F ([noteToPlay <- "E4"]);
+  
+  // When button2 is pushed, the musical note G4 will eventually be played
+  button2 -> F ([noteToPlay <- "G4"]);
+  
+  // When button3 is pushed, the musical note A4 will eventually be played on a different variable
+  button3 -> F ([noteToPlay2 <- "A4"]);
+  
+  // If button1 or button2 is pushed, the respective note must be the next action
+  button1 -> X ([noteToPlay <- "E4"]);
+  button2 -> X ([noteToPlay <- "G4"]);
+  
+  // Specific relationship between notes on noteToPlay and noteToPlay2
+  ([noteToPlay2 <- "A4"]) -> !([noteToPlay <- "E4"]);
+  ([noteToPlay <- "E4"]) -> !([noteToPlay2 <- "A4"]);
+  
+  // A4 cannot be played on noteToPlay2 until E4 has stopped being played on noteToPlay
+  ([noteToPlay <- "E4"]) -> (G !([noteToPlay2 <- "A4"]) W [noteToPlay <- null]);
+  
+  // A sequence or chord of notes after E4 is played on noteToPlay
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}
+```
+
+This TSL code snippet follows the requirements provided in the natural language description. It ensures the sequential and conditional playing of musical notes based on button presses, using temporal operators to enforce the timing and order of these actions.

@@ -1,0 +1,75 @@
+Here is a JavaScript implementation of the described functions and predicates, assuming a hypothetical representation of the ball's state and its position within the environment.
+
+### Functions
+The `moveLeft()` and `moveRight()` functions modify the state of the ball by altering its directional signal. For simplicity, we assume that the ball's state can be represented by an object with a property that keeps track of its direction.
+
+```javascript
+/**
+ * Function to move the ball to the left.
+ * @param {Object} ball - The ball object with its current state.
+ * @returns {Object} Updated ball state with direction set to 'left'.
+ */
+function moveLeft(ball) {
+    ball.direction = 'left';
+    return ball;
+}
+
+/**
+ * Function to move the ball to the right.
+ * @param {Object} ball - The ball object with its current state.
+ * @returns {Object} Updated ball state with direction set to 'right'.
+ */
+function moveRight(ball) {
+    ball.direction = 'right';
+    return ball;
+}
+```
+
+### Predicates
+The `leftmost()` and `rightmost()` predicates determine whether the ball is at the leftmost or rightmost edges, respectively. These predicates return boolean values based on the ball's position. We assume the ball's position is stored in a property called `position`, and the environment has predefined limits (`LEFT_WALL` and `RIGHT_WALL`).
+
+```javascript
+// Hypothetical constants defining the boundaries of the environment
+const LEFT_WALL = 0;
+const RIGHT_WALL = 100;
+
+/**
+ * Predicate to check if the ball is at the leftmost wall.
+ * @param {Object} ball - The ball object with its current state.
+ * @returns {boolean} True if the ball is at the leftmost position, false otherwise.
+ */
+function leftmost(ball) {
+    return ball.position === LEFT_WALL;
+}
+
+/**
+ * Predicate to check if the ball is at the rightmost wall.
+ * @param {Object} ball - The ball object with its current state.
+ * @returns {boolean} True if the ball is at the rightmost position, false otherwise.
+ */
+function rightmost(ball) {
+    return ball.position === RIGHT_WALL;
+}
+```
+
+### Example Usage
+Here's how you might use these functions and predicates within a system that simulates the movement of a ball:
+
+```javascript
+// Example ball object
+let ball = {
+    position: 50,
+    direction: null
+};
+
+// Move the ball to the left and check its status
+moveLeft(ball);
+console.log(ball); // { position: 50, direction: 'left' }
+console.log(`Is at leftmost? ${leftmost(ball)}`); // false
+
+// Simulate moving the ball to the leftmost position
+ball.position = LEFT_WALL;
+console.log(`Is at leftmost now? ${leftmost(ball)}`); // true
+```
+
+This example assumes certain simplicities about how the ball and its environment are modeled. Adjustments would be necessary to fit specific API details or environmental constraints in a real system.

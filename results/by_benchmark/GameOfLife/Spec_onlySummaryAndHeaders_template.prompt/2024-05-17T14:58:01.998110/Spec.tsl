@@ -1,0 +1,13 @@
+always assume {
+  (alive && comeAlive(index)); // if the cell is alive, it should have exactly 2 or 3 live neighbors to stay alive
+  (!alive && comeAlive(index)); // if the cell is dead, it should have exactly 3 live neighbors to become alive
+  (alive && comeDead(index)); // if the cell is alive and has less than 2 or more than 3 neighbors, it will die
+  (!alive && comeDead(index)); // if the cell is dead and has less than 2 or more than 3 neighbors, it stays dead
+}
+
+always guarantee {
+  (alive && comeAlive(index)) -> [changeState(index) <- alive]; // if alive and conditions met, remains alive
+  (!alive && comeAlive(index)) -> [changeState(index) <- alive]; // if dead and conditions met, becomes alive
+  (alive && comeDead(index)) -> [changeState(index) <- !alive]; // if alive and conditions met, becomes dead
+  (!alive && comeDead(index)) -> [changeState(index) <- !alive]; // if dead and conditions met, stays dead
+}

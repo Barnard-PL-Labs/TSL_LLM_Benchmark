@@ -1,0 +1,34 @@
+```TSL
+always assume {
+  // Mutual exclusion for key inputs
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressUp(e));
+  !(pressL(e) && pressDown(e));
+  !(pressR(e) && pressUp(e));
+  !(pressR(e) && pressDown(e));
+  !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+  // Ship hit detection: setting a flag when hit
+  (shipHit) -> [dead <- 1];
+
+  // Movement and actions based on key inputs
+  // Left movement
+  pressL(e) -> [shipX <- shipX - 1];
+  
+  // Right movement
+  pressR(e) -> [shipX <- shipX + 1];
+  
+  // Shooting action
+  pressS(e) -> [shootCounter <- shootCounter + 1] || [shootingAction <- true];
+}
+```
+
+This TSL specification captures the rules described:
+1. **Mutual Exclusion**: Ensures no two directional keys are pressed simultaneously, preventing conflicting movements.
+2. **Ship Hit Detection**: Sets a "dead" flag to `1` when the ship is hit, indicating a possible game over or damage sequence.
+3. **Guarantees for Movement and Actions**:
+   - **Left Movement**: Decrements the `shipX` position by 1 unit upon pressing the left key.
+   - **Right Movement**: Increments the `shipX` position by 1 unit upon pressing the right key.
+   - **Shooting Action**: Either increments a shooting counter or sets a shooting action flag when the shoot key is pressed. This simulates the ship firing a projectile in the game.

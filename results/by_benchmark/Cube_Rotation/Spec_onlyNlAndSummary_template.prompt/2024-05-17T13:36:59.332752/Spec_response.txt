@@ -1,0 +1,14 @@
+```tsl
+always assume {
+  // It is assumed that the left and right buttons are never pressed simultaneously
+  !(pressL && pressR);
+}
+
+always guarantee {
+  // If the left button is pressed, the cube begins rotating left, and continues until the right button is pressed
+  pressL -> ([cube.rotation <- "left"] W pressR);
+
+  // If the right button is pressed, the cube begins rotating right, and continues until the left button is pressed
+  pressR -> ([cube.rotation <- "right"] W pressL);
+}
+```

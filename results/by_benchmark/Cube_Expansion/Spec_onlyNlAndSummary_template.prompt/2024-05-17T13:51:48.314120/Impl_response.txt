@@ -1,0 +1,37 @@
+To implement the given predicates within a JavaScript environment that doesn't use any functions, we'll need to rely on setting up appropriate listeners and using methods to check the state directly.
+
+Let's walk through the necessary steps for implementing the predicate `pressUp(e)`, which checks if the up arrow key is pressed:
+
+```javascript
+let upKeyPressed = false;
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === "ArrowUp") {
+        upKeyPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    if (event.key === "ArrowUp") {
+        upKeyPressed = false;
+    }
+});
+
+// Predicate to check if the up arrow key is pressed
+function pressUp() {
+    return upKeyPressed;
+}
+```
+
+**Explanation:**
+1. **State Variable `upKeyPressed`:** A boolean variable is used to track the state of the up arrow key. It is set to `false` initially, indicating that the key is not pressed.
+
+2. **Event Listeners:**
+   - **Key Down Listener:** This listener triggers on the `keydown` event. If the pressed key is the up arrow (`ArrowUp`), it sets `upKeyPressed` to `true`, indicating that the up arrow key is currently pressed down.
+   - **Key Up Listener:** Conversely, this listener on the `keyup` event sets `upKeyPressed` back to `false` once the up arrow key is released.
+
+3. **Predicate `pressUp()`:** This is a simple function that returns the current state of `upKeyPressed`. It returns `true` if the up arrow key is currently pressed, otherwise `false`.
+
+This setup ensures that the state of the up arrow key is accurately tracked and can be queried at any time through the `pressUp()` predicate. Note that this setup requires the predicate to be called periodically or in the context of another function to check if the up arrow key is pressed at a particular moment.
+
+Since additional functions or predicates were not specified for implementation, this satisfies the given requirement for handling the up arrow key press detection. Note that the implementation assumes the availability of standard browser APIs for handling keyboard events.

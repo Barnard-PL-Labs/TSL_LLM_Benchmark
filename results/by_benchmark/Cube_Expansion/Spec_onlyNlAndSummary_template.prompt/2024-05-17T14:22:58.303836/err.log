@@ -1,0 +1,1 @@
+Command '['tsl', 'synthesize', '-i', 'Cube_Expansion/computed/Spec.tsl', '--js', '-o', 'Cube_Expansion/computed/Synth.js']' returned non-zero exit status 1.

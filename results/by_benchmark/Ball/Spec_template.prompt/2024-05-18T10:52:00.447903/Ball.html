@@ -1,0 +1,127 @@
+<style>
+	#debug {
+		margin: 50px;
+		font-size: 25px;
+	}
+
+	#ball {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		animation: bounce 2s infinite ease-in-out;
+	}
+
+	@keyframes bounce {
+
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-500px);
+		}
+	}
+</style>
+
+<div id="debug"></div>
+<div id="ball"></div>
+
+<script>
+
+// Initial setup for the ball position
+// Assuming the ball can move between positions 0 (leftmost) to 10 (rightmost)
+let ball = {
+  position: 5 // middle of the range
+};
+
+// Functions
+function moveLeft(ball) {
+  if (ball.position > 0) { // Check if the ball is not already at the leftmost position
+    ball.position--;
+  }
+  return `Moved to ${ball.position}`; // Returns a signal (log) that the ball moved left
+}
+
+function moveRight(ball) {
+  if (ball.position < 10) { // Check if the ball is not already at the rightmost position
+    ball.position++;
+  }
+  return `Moved to ${ball.position}`; // Returns a signal (log) that the ball moved right
+}
+
+// Predicates
+function leftmost(ball) {
+  return ball.position === 0; // Returns true if the ball is at the leftmost position
+}
+
+function rightmost(ball) {
+  return ball.position === 10; // Returns true if the ball is at the rightmost position
+}
+
+// Usage example: Demonstrating the functions and predicates
+console.log(moveLeft(ball));  // Attempt to move ball left
+console.log(moveRight(ball)); // Attempt to move ball right
+console.log(`Is the ball at the leftmost position? ${leftmost(ball)}`);   // Should return false if not at position 0
+console.log(`Is the ball at the rightmost position? ${rightmost(ball)}`); // Should return false if not at position 10
+
+
+</script>
+<script src="computed/Synth.js" type="text/javascript"></script>
+
+<script>
+
+	(async () => {
+
+
+		// Wrapper
+
+		const X_STEP_DURATION = 200;
+
+		class Ball {
+			constructor() {
+				this.pos = 0
+			}
+
+			render() {
+				const ball = document.getElementById('ball');
+				ball.style.transition = `left ${X_STEP_DURATION}ms linear`;
+				ball.style.left = `${this.pos / 10 * (screen.availWidth - 100)}px`;
+
+				const debug = document.querySelector('#debug');
+				debug.textContent = 'Current State: ' + currentState
+			}
+		}
+
+		window.currentState = 0
+
+		const ball = new Ball()
+		ball.render()
+
+		// /*
+
+		// Wait for 1s to sync the up-and-down animationw with bouncing, in order to make it look like the
+		// ball is bouncing.
+
+		// */
+		// await new Promise(((resolve) => resolve()), 1000)
+
+		setInterval(
+			(() => {
+
+				ball_pos = ball.pos;
+				({ currentState, ball_pos }) = updateState({ currentState, ball_pos })
+				ball.pos = ball_pos
+				console.log('currentState', currentState, ball)
+				ball.render()
+
+			}),
+			X_STEP_DURATION
+		)
+
+	})()
+
+</script>

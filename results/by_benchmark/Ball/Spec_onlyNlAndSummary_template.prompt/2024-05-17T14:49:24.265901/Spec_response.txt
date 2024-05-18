@@ -1,0 +1,29 @@
+```tsl
+always assume {
+  (ball.moveLeft -> X !(ball.position == 10));
+  (ball.moveRight -> X !(ball.position == 0));
+  !(ball.position == 0 && ball.position == 10);
+}
+
+always guarantee {
+  (ball.position == 10) -> F (ball.moveLeft);
+  (ball.position == 0) -> F (ball.moveRight);
+  (!(ball.position == 0 || ball.position == 10)) -> F (ball.moveLeft || ball.moveRight);
+  (ball.position == 0 && X !(ball.position == 0)) -> G !(ball.moveLeft) W (ball.position == 10);
+  (ball.position == 10 && X !(ball.position == 10)) -> G !(ball.moveRight) W (ball.position == 0);
+}
+```
+
+### Explanation:
+
+**Assumptions:**
+1. If the ball moves left, then in the next state, it cannot be at the rightmost wall (position 10).
+2. If the ball moves right, then in the next state, it cannot be at the leftmost wall (position 0).
+3. The ball cannot be at both walls (positions 0 and 10) simultaneously.
+
+**Guarantees:**
+4. If the ball is at the rightmost wall (position 10), it must eventually move left.
+5. If the ball is at the leftmost wall (position 0), it must eventually move right.
+6. If the ball is not at either the leftmost or the rightmost wall, it must eventually move either left or right.
+7. If the ball is at the leftmost wall and is about to move away, it should continuously not move left until it reaches the rightmost wall.
+8. If the ball is at the rightmost wall and is about to move away, it should continuously not move right until it reaches the leftmost wall.

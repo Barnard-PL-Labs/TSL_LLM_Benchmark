@@ -1,0 +1,58 @@
+Here is a TSL specification based on your description:
+
+```
+always assume {
+  // Ensure no two operations can happen at the same time
+  !(press1(e) && press2(e)) &&
+  !(press1(e) && press3(e)) &&
+  !(press1(e) && pressD(e)) &&
+  !(press1(e) && pressQ(e)) &&
+  !(press1(e) && pressO(e)) &&
+  !(press1(e) && pressR(e)) &&
+  !(press2(e) && press3(e)) &&
+  !(press2(e) && pressD(e)) &&
+  !(press2(e) && pressQ(e)) &&
+  !(press2(e) && pressO(e)) &&
+  !(press2(e) && pressR(e)) &&
+  !(press3(e) && pressD(e)) &&
+  !(press3(e) && pressQ(e)) &&
+  !(press3(e) && pressO(e)) &&
+  !(press3(e) && pressR(e)) &&
+  !(pressD(e) && pressQ(e)) &&
+  !(pressD(e) && pressO(e)) &&
+  !(pressD(e) && pressR(e)) &&
+  !(pressQ(e) && pressO(e)) &&
+  !(pressQ(e) && pressR(e)) &&
+  !(pressO(e) && pressR(e));
+}
+
+always guarantee {
+  // Purchasing product option 1
+  press1(e) && isLessThanPoint75(total) -> [e <- purchaseOption1()];
+  
+  // Purchasing product option 2
+  press2(e) && isLessThanOne(total) -> [e <- purchaseOption2()];
+  
+  // Purchasing product option 3
+  press3(e) && isLessThanOnePoint25(total) -> [e <- purchaseOption3()];
+  
+  // Inserting a dime
+  pressD(e) -> [total <- total + 0.10];
+  
+  // Inserting a quarter
+  pressQ(e) -> [total <- total + 0.25];
+  
+  // Inserting a dollar
+  pressO(e) -> [total <- total + 1.00];
+  
+  // Refunding money
+  pressR(e) -> [total <- 0];
+}
+```
+
+In this specification:
+- The `assume` block states that no two machine operations can happen simultaneously.
+- The `guarantee` block defines the conditions and outcomes for each button press:
+  - Pressing the 1, 2, or 3 keys will trigger the purchase of product options 1, 2, or 3 respectively, provided there is enough money in the total.
+  - Pressing the d, q, or o keys will add a dime, a quarter, or a dollar to the total respectively.
+  - Pressing the r key will reset the total to zero, effectively refunding the money.

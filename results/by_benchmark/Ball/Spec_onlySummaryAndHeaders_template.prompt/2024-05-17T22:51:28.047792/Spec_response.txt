@@ -1,0 +1,26 @@
+Here's the TSL specification for the bouncing ball scenario as described:
+
+```
+always assume {
+  // Define the constraints for ball movement based on its position
+  (ball = 0 -> leftmost(ball));
+  (ball = 10 -> rightmost(ball));
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // Ball behavior for bouncing between the walls
+  (leftmost(ball) -> X ([ball <- moveRight(ball)]));
+  (rightmost(ball) -> X ([ball <- moveLeft(ball)]));
+  (!leftmost(ball) && !rightmost(ball)) -> 
+      (ball@prev = ball - 1 -> X ([ball <- moveRight(ball)])) ||
+      (ball@prev = ball + 1 -> X ([ball <- moveLeft(ball)]));
+}
+```
+
+### Explanation:
+- `assume` block defines constraints for the ball's position and ensures it's within boundaries and correctly identifies when it is at either wall.
+- `guarantee` block defines how the ball should move based on its last position:
+  - If the ball is at the leftmost position (0), it should move right next.
+  - If the ball is at the rightmost position (10), it should move left next.
+  - If the ball is not at any walls, it continues moving in the same direction as its previous movement (either continuing left or right).

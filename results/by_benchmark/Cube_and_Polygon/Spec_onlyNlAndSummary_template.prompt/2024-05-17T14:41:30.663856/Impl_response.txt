@@ -1,0 +1,72 @@
+To implement the required functions and predicates in JavaScript, we'll first create the functions for `sin(x)` and `saw(x)`. Then, we'll implement the predicate functions `pressL(e)` and `pressR(e)` which will be checking for specific keypress events. Finally, we'll interact with the Cube API to manage the cube's scale along the x-axis based on specific predicates.
+
+### 1. Implementing sin(x) and saw(x) functions:
+```javascript
+// Sine function
+function sin(x) {
+    return Math.sin(x);
+}
+
+// Sawtooth wave function
+function saw(x) {
+    // A typical implementation of a sawtooth function using modulo and division
+    return (x - Math.floor(x)) * 2 - 1;
+}
+```
+
+### 2. Implementing Predicate Functions for Keypresses:
+For the predicates, we'll need to set up event listeners to detect left (`pressL`) and right (`pressR`) key presses. We'll store the state of these keypresses in variables and modify these states based on key events.
+
+```javascript
+// Initialize key states
+let leftPressed = false;
+let rightPressed = false;
+
+// Set up event listeners
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {  // Check for the left arrow key
+        leftPressed = true;
+    }
+    if (e.key === 'ArrowRight') {  // Check for the right arrow key
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {  // Check for the left arrow key
+        leftPressed = false;
+    }
+    if (e.key === 'ArrowRight') {  // Check for the right arrow key
+        rightPressed = false;
+    }
+});
+
+// Predicate functions
+function pressL() {
+    return leftPressed;
+}
+
+function pressR() {
+    return rightPressed;
+}
+```
+
+### 3. Example Usage with Cube API:
+Assuming there's an object available in the global scope named `cube` which has a property `scale`, we can manipulate `cube.scale.x` based on the sine and sawtooth functions and based on whether left or right keys are pressed:
+
+```javascript
+function updateCubeScale() {
+    if (pressL()) {
+        // Apply the sine function to the cube's x-axis scale when left is pressed
+        cube.scale.x = sin(Date.now() / 1000);  // passing time as parameter
+    } else if (pressR()) {
+        // Apply the sawtooth wave function when right is pressed
+        cube.scale.x = saw(Date.now() / 1000);  // passing time as parameter
+    }
+}
+
+// Continuously update cube scale based on key presses
+setInterval(updateCubeScale, 16); // Approximately 60Hz
+```
+
+This setup uses browser event listeners to detect key states and predicates to apply corresponding transformations to the cube. The continuous update is handled by `setInterval` to repeatedly check and apply the functions based on keypress states.

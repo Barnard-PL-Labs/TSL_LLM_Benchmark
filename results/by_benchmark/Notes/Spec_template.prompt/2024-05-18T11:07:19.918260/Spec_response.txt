@@ -1,0 +1,26 @@
+```
+always assume {
+  // Three buttons, named button1, button2, and button3, can be pushed by the user
+  button1 || button2 || button3;
+}
+
+always guarantee {
+  // When button1 is pushed, ensure E4 is the next note played on "noteToPlay"
+  button1 -> X ([noteToPlay <- "E4"]);
+
+  // When button2 is pushed, ensure G4 is the next note played on "noteToPlay"
+  button2 -> X ([noteToPlay <- "G4"]);
+
+  // When button3 is pushed, ensure A4 is the next note played on "noteToPlay2"
+  button3 -> X ([noteToPlay2 <- "A4"]);
+
+  // Relationship to avoid simultaneous play of E4 on "noteToPlay" and A4 on "noteToPlay2"
+  ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]) -> false;
+
+  // A4 on "noteToPlay2" cannot be played until E4 has stopped being played on "noteToPlay"
+  ([noteToPlay2 <- "A4"]) -> !(X ([noteToPlay <- "E4"]));
+
+  // If E4 is played on "noteToPlay", then A4 must eventually be played on "noteToPlay2" and G4 on "noteToPlay"
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}
+```

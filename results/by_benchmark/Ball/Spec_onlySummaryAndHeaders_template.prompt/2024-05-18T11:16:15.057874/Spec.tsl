@@ -1,0 +1,16 @@
+always assume {
+  // Assumption on ball positioning; ball should only be at the extremes when it can move towards the opposite direction
+  (leftmost(ball) -> !rightmost(ball)) ;
+  (rightmost(ball) -> !leftmost(ball)) ;
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, it should move right on the next state
+  leftmost(ball) -> X [ball <- moveRight(ball)];
+  
+  // If the ball is at the rightmost position, it should move left on the next state
+  rightmost(ball) -> X [ball <- moveLeft(ball)];
+  
+  // When the ball is not at any wall, it continues in the current direction
+  !leftmost(ball) && !rightmost(ball) -> [ball <- ball];
+}

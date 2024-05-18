@@ -1,0 +1,31 @@
+To create a TSL specification reflecting the behavior of a ball bouncing between two walls, we need to translate the natural language description into appropriate TSL assume and guarantee blocks. Here's how you can specify it:
+
+```tsl
+always assume {
+  // Assumptions about the ball's state when it reaches the leftmost or rightmost wall
+  (leftmost(ball) -> X (!leftmost(ball))); // Next state, not on the leftmost if just there
+  (rightmost(ball) -> X (!rightmost(ball))); // Next state, not on the rightmost if just there
+}
+
+always guarantee {
+  // The ball bounces between two walls
+  leftmost(ball) -> X [ball <- moveRight(ball)]; // Move right when at leftmost
+  rightmost(ball) -> X [ball <- moveLeft(ball)]; // Move left when at rightmost
+
+  // Ensure the ball moves continuously left or right if not at the walls
+  (!leftmost(ball) && !rightmost(ball))
+    -> (([ball <- moveLeft(ball)] W rightmost(ball)) || ([ball <- moveRight(ball)] W leftmost(ball)));
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+    - If the ball is at the leftmost position, in the next state, it cannot still be at the leftmost. This ensures that the ball moves away from the wall.
+    - Similarly, if the ball is at the rightmost position, in the next state, it must move away from this wall too.
+
+2. **Guarantees**:
+    - When the ball reaches the leftmost wall (`leftmost(ball)`), in the next state, it should move right. The function `moveRight(ball)` handles this movement.
+    - When the ball reaches the rightmost wall (`rightmost(ball)`), in the next state, it should move left. The function `moveLeft(ball)` is used here.
+    - When the ball is not at any wall, it should continuously move in its current direction either until it hits a wall. This is controlled by the weak until (`W`) operator, allowing the ball to keep moving in one direction (left or right) until it reaches the opposite wall.
+
+This TSL specification captures the continuous bouncing behavior of the ball between two defined boundaries (walls), with direct actions to change direction upon hitting each wall.

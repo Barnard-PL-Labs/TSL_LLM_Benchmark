@@ -1,0 +1,13 @@
+always assume {
+  // Define the behavior of the ball when it reaches the walls
+  (leftmost(ball) -> X (!leftmost(ball)));
+  (rightmost(ball) -> X (!rightmost(ball)));
+}
+
+always guarantee {
+  // When the ball hits the leftmost wall, it should start moving right on the next move
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // When the ball hits the rightmost wall, it should start moving left on the next move
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+}

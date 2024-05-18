@@ -1,0 +1,142 @@
+<style>
+	#debug {
+		margin: 50px;
+		font-size: 25px;
+	}
+
+	#ball {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		animation: bounce 2s infinite ease-in-out;
+	}
+
+	@keyframes bounce {
+
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-500px);
+		}
+	}
+</style>
+
+<div id="debug"></div>
+<div id="ball"></div>
+
+<script>
+
+// Assumed ball object structure for demonstration (you can adjust to your actual data structure):
+// ball = {
+//   position: current position number,
+//   leftWall: position of leftmost wall,
+//   rightWall: position of rightmost wall
+// }
+
+// Functions
+function moveLeft(ball) {
+  // Move the ball to the left by changing its position
+  if (ball.position > ball.leftWall) {
+    ball.position -= 1;  // Move left only if it's not at the leftmost wall
+  }
+  return ball; // Returns the updated state of the ball
+}
+
+function moveRight(ball) {
+  // Move the ball to the right by changing its position
+  if (ball.position < ball.rightWall) {
+    ball.position += 1;  // Move right only if it's not at the rightmost wall
+  }
+  return ball; // Returns the updated state of the ball
+}
+
+// Predicates
+function leftmost(ball) {
+  // Check if the ball is against the leftmost wall
+  return ball.position === ball.leftWall;
+}
+
+function rightmost(ball) {
+  // Check if the ball is against the rightmost wall
+  return ball.position === ball.rightWall;
+}
+
+// Example usage
+let ball = {
+  position: 5,
+  leftWall: 0,
+  rightWall: 10
+};
+
+console.log("Initial Position:", ball.position);
+ball = moveLeft(ball);
+console.log("After moving left:", ball.position);
+console.log("Is at leftmost?", leftmost(ball));
+ball = moveRight(ball);
+ball = moveRight(ball);
+console.log("After moving right twice:", ball.position);
+console.log("Is at rightmost?", rightmost(ball));
+
+
+</script>
+<script src="computed/Synth.js" type="text/javascript"></script>
+
+<script>
+
+	(async () => {
+
+
+		// Wrapper
+
+		const X_STEP_DURATION = 200;
+
+		class Ball {
+			constructor() {
+				this.pos = 0
+			}
+
+			render() {
+				const ball = document.getElementById('ball');
+				ball.style.transition = `left ${X_STEP_DURATION}ms linear`;
+				ball.style.left = `${this.pos / 10 * (screen.availWidth - 100)}px`;
+
+				const debug = document.querySelector('#debug');
+				debug.textContent = 'Current State: ' + currentState
+			}
+		}
+
+		window.currentState = 0
+
+		const ball = new Ball()
+		ball.render()
+
+		// /*
+
+		// Wait for 1s to sync the up-and-down animationw with bouncing, in order to make it look like the
+		// ball is bouncing.
+
+		// */
+		// await new Promise(((resolve) => resolve()), 1000)
+
+		setInterval(
+			(() => {
+
+				ball_pos = ball.pos;
+				({ currentState, ball_pos }) = updateState({ currentState, ball_pos })
+				ball.pos = ball_pos
+				console.log('currentState', currentState, ball)
+				ball.render()
+
+			}),
+			X_STEP_DURATION
+		)
+
+	})()
+
+</script>

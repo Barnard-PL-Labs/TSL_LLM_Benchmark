@@ -1,0 +1,37 @@
+Given your setup and the natural language description for a Space Invaders game, here is how a TSL specification might look:
+
+```tsl
+always assume {
+    // Assuming that if the ship is hit, it will react by either losing a life or ending the game
+    hit(ship) -> X die(ship);
+    // Assuming ship cannot move beyond leftmost or rightmost boundaries
+    leftmost(ship) -> !([ship <- moveLeft(ship)]);
+    rightmost(ship) -> !([ship <- moveRight(ship)]);
+}
+
+always guarantee {
+    // If the left arrow key is pressed and the ship is not at the leftmost position, then move left
+    pressLeft -> (!leftmost(ship) -> [ship <- moveLeft(ship)]);
+    
+    // If the right arrow key is pressed and the ship is not at the rightmost position, then move right
+    pressRight -> (!rightmost(ship) -> [ship <- moveRight(ship)]);
+    
+    // If the space bar is pressed, shoot
+    pressSpace -> [ship <- shoot(ship)];
+    
+    // If the ship is hit by an enemy, the ship dies
+    hit(ship) -> [ship <- die(ship)];
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - If the ship is hit (`hit(ship)`), the next state should enact the `die(ship)` function, leading to a game over or a loss of life.
+   - The ship can't move left (`moveLeft(ship)`) if it's already at the leftmost position (`leftmost(ship)`), and similarly, it can't move right (`moveRight(ship)`) if it's at the rightmost boundary (`rightmost(ship)`).
+
+2. **Guarantees**:
+   - Ship movement is controlled by left (`pressLeft`) and right (`pressRight`) key presses. It checks if the ship is not at the respective boundaries before moving.
+   - Shooting is triggered by pressing the space bar (`pressSpace`).
+   - When the ship is hit by an enemy, it triggers the `die(ship)` function.
+
+This TSL specification ensures that the ship responds correctly to player inputs and game interactions while respecting the physical limits and game rules. Adjustments might be necessary depending on additional game mechanics or different control schemes.

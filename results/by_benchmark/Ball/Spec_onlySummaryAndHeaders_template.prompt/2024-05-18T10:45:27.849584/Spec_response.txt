@@ -1,0 +1,29 @@
+To translate the natural language description of a ball bouncing between two walls into a TSL specification, we need to establish assumptions and guarantees that reflect the behavior of the ball as it moves between the two extreme positions represented by values 0 and 10.
+
+Here is the corresponding TSL specification:
+
+```tsl
+always assume {
+    // Ensure the ball can only be at the leftmost or rightmost position
+    (leftmost(ball) -> !rightmost(ball));
+    (rightmost(ball) -> !leftmost(ball));
+}
+
+always guarantee {
+    // When the ball hits the leftmost wall, it should move right
+    leftmost(ball) -> ([ball <- moveRight(ball)] W rightmost(ball));
+
+    // When the ball hits the rightmost wall, it should move left
+    rightmost(ball) -> ([ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - We assume that if the ball is at the leftmost position (`leftmost(ball)`), it cannot simultaneously be at the rightmost position (`!rightmost(ball)`) and vice versa. This ensures mutual exclusivity between the two extreme positions.
+
+2. **Guarantees**:
+   - If the ball is at the leftmost position (`leftmost(ball)`), the TSL code guarantees that the ball will start moving to the right (`moveRight(ball)`) and will continue this movement until it reaches the rightmost position (`rightmost(ball)`). This is represented using the weak until (`W`) operator.
+   - Conversely, if the ball is at the rightmost position (`rightmost(ball)`), the ball will start moving to the left (`moveLeft(ball)`) and will continue this movement until it reaches the leftmost position (`leftmost(ball)`), again using the weak until (`W`) operator.
+
+This specification captures the bouncing behavior of the ball between two walls, as described in the natural language input.

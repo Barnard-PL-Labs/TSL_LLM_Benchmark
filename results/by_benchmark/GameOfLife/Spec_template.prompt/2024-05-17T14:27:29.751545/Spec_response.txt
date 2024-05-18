@@ -1,0 +1,20 @@
+Here's how the description would translate into a TSL (Temporal Stream Logic) specification:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell will change its state to alive
+  comeAlive(index) -> [alive <- true];
+
+  // If comeDead is true, the cell will change its state to dead
+  comeDead(index) -> [alive <- false];
+}
+```
+
+In this specification:
+- The `always assume` block ensures that the conditions `comeAlive(index)` and `comeDead(index)` cannot be true at the same time, reflecting the mutual exclusivity of these conditions.
+- The `always guarantee` block dictates the behavior of the cell based on the predicates `comeAlive(index)` and `comeDead(index)`. If `comeAlive(index)` is true, the cell's state `alive` is set to true, indicating the cell comes to life. Conversely, if `comeDead(index)` is true, the state `alive` is set to false, indicating the cell dies.

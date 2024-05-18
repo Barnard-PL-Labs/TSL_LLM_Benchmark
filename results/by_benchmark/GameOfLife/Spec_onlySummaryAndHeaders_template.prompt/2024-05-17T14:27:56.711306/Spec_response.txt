@@ -1,0 +1,20 @@
+Here's the TSL specification based on the description provided for simulating a single cell in the game of life:
+
+```tsl
+always assume {
+  // The basic assumption of cell state transitions depends on the number of active neighbors
+  (alive && comeAlive(index)) || (!alive && comeDead(index));
+}
+
+always guarantee {
+  // If the cell should come alive, change its state to alive
+  comeAlive(index) -> [changeState <- true];
+
+  // If the cell should die, change its state to dead
+  comeDead(index) -> [changeState <- false];
+}
+```
+
+In this TSL specification:
+- The `always assume` block contains the core assumption that the cell changes based on the number of living neighbors, adhering to the rules of Conway's Game of Life.
+- The `always guarantee` block specifies the behavior (changing state) based on whether the cell needs to come alive or die according to the predicates `comeAlive` and `comeDead`. The function `changeState` is used to toggle the cell's state between alive and dead.

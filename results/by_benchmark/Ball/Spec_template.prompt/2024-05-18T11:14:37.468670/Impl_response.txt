@@ -1,0 +1,64 @@
+To implement the requirements provided, we first need to define the JavaScript functions and predicates that interact with the cell `ball`. Since the system API isn't fully defined, we'll assume `ball` is an object that can have properties or methods which allow us to modify its state or check its position. Here's how you might write these functions and predicates:
+
+### Functions
+```javascript
+function moveLeft(ball) {
+  // Assuming 'ball' has a method to update its position
+  // Decrements the x position, simulating a move to the left
+  ball.position.x -= 1;
+  return `Signal to move to left; New position: (${ball.position.x}, ${ball.position.y})`;
+}
+
+function moveRight(ball) {
+  // Assuming 'ball' has a method to update its position
+  // Increments the x position, simulating a move to the right
+  ball.position.x += 1;
+  return `Signal to move to right; New position: (${ball.position.x}, ${ball.position.y})`;
+}
+```
+
+### Predicates
+```javascript
+function leftmost(ball) {
+  // Assuming there's a predefined limit to the leftmost position (e.g., x=0)
+  // Returns true if the ball is at the leftmost position
+  return ball.position.x === 0;
+}
+
+function rightmost(ball) {
+  // Assuming there's a predefined limit to the rightmost position (e.g., x=10)
+  // Returns true if the ball is at the rightmost position
+  return ball.position.x === 10;
+}
+```
+
+### Example Usage
+```javascript
+// Example `ball` object setup
+let ball = {
+  position: {
+    x: 5,
+    y: 0
+  }
+};
+
+// Test moving the ball
+console.log(moveRight(ball)); // Expected: Signal to move to right; New position: (6, 0)
+console.log(moveLeft(ball));  // Expected: Signal to move to left; New position: (5, 0)
+
+// Check positions
+console.log(leftmost(ball));  // Expected: false
+console.log(rightmost(ball)); // Expected: false
+
+// Move ball to extremes and check
+ball.position.x = 0;
+console.log(leftmost(ball));  // Expected: true
+
+ball.position.x = 10;
+console.log(rightmost(ball)); // Expected: true
+```
+
+### Notes
+- The values for the leftmost and rightmost walls (`0` and `10` respectively) are assumed for demonstration. Adjust these based on the actual constraints of your system.
+- The structure of the `ball` object (particularly the `position` property) is an assumption. You may need to modify the interaction with the `ball` object depending on how its state is represented in your actual system API.
+- This script assumes a simple 2D coordinate system and direct manipulation of the `ball.position.x` property. In a real system, movement might involve more complex interactions or API calls.

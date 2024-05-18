@@ -1,0 +1,35 @@
+To translate your natural language description into a TSL specification, we will define the behavior of the ball as it moves between two walls, represented by the numbers 0 (leftmost) and 10 (rightmost). We'll use the predicates `leftmost(ball)` and `rightmost(ball)` to detect when the ball is at either wall, and the functions `moveLeft(ball)` and `moveRight(ball)` to change its position.
+
+Here is how this behavior can be specified in TSL:
+
+```
+always assume {
+  // The ball can either be at the leftmost or rightmost position, or somewhere in between
+  (leftmost(ball) -> !rightmost(ball)) ;
+  (rightmost(ball) -> !leftmost(ball)) ;
+}
+
+always guarantee {
+  // When the ball is at the leftmost wall, it should start moving to the right
+  leftmost(ball) -> X (G !leftmost(ball) U rightmost(ball)) ;
+  
+  // When the ball reaches the rightmost wall, it should start moving to the left
+  rightmost(ball) -> X (G !rightmost(ball) U leftmost(ball)) ;
+  
+  // Define the motion of the ball: moving left or right depending on the wall it reaches
+  leftmost(ball) -> ([ ball <- moveRight(ball) ]) W rightmost(ball) ;
+  rightmost(ball) -> ([ ball <- moveLeft(ball) ]) W leftmost(ball) ;
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - When the ball is at the leftmost position, it cannot simultaneously be at the rightmost position, and vice versa.
+
+2. **Guarantees**:
+   - If the ball is at the leftmost position (`leftmost(ball)`), then in the next state and until it reaches the rightmost position, it should not be at the leftmost position (`!leftmost(ball)`). This continues until the ball hits the rightmost wall (`rightmost(ball)`).
+   - Similarly, if the ball is at the rightmost position, it will move left in the next state and continue moving left until it hits the leftmost wall.
+   - The actions to move the ball left or right are invoked depending on the position of the ball (`moveRight(ball)` when at the leftmost, `moveLeft(ball)` when at the rightmost), and these actions continue until the ball reaches the opposite wall.
+
+This TSL specification establishes a model where the ball continuously bounces between the two walls, changing direction upon hitting each wall.

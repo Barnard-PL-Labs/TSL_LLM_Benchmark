@@ -1,0 +1,15 @@
+always assume {
+  // It's either against the left wall, somewhere in the middle, or against the right wall.
+  (leftmost(ball) || !leftmost(ball) && !rightmost(ball) || rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is against the leftmost wall, it should start moving right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+  
+  // If the ball is against the rightmost wall, it should start moving left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+
+  // If not at the boundaries, it should continue in the current direction until it hits a wall
+  (!leftmost(ball) && !rightmost(ball)) -> ([ball <- moveLeft(ball)] W rightmost(ball) || [ball <- moveRight(ball)] W leftmost(ball));
+}

@@ -1,0 +1,25 @@
+always assume {
+  // Ensure that only one of the buttons can be pressed at any one time
+  ! (pressA(e) && pressB(e));
+  ! (pressA(e) && pressC(e));
+  ! (pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Guarantee that pressing A increments the counter by stepsize
+  pressA(e) -> [count <- count + stepsize];
+  
+  // Guarantee that pressing B increments the counter by 2
+  pressB(e) -> [count <- count + 2];
+  
+  // Guarantee that pressing C increments the counter by 3
+  pressC(e) -> [count <- count + 3];
+  
+  // Guarantee that pressing A three times in a row multiplies stepsize by three
+  // Assuming a hidden state countA to track the number of consecutive A presses
+  pressA(e) && X(pressA(e) && X(pressA(e) && !pressB(e) && !pressC(e)))
+    -> X(X(X([stepsize <- multiplyByThree(stepsize)])));
+
+  // Ensure stepsize resets to 1 if B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}

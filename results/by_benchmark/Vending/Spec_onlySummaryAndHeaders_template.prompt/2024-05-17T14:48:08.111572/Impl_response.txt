@@ -1,0 +1,47 @@
+To implement the predicates using the System API descriptions, we'll assume that you can access properties directly from `total` and `e`, and write the predicates based on these assumptions. Here's how you could implement these predicates in JavaScript:
+
+```javascript
+// Predicates related to 'total'
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicates related to 'e' (event object typically from user interaction)
+function pressD(e) {
+    return e.key === 'd';
+}
+
+function pressQ(e) {
+    return e.key === 'q';
+}
+
+function pressO(e) {
+    return e.key === 'o';
+}
+
+function press1(e) {
+    return e.key === '1';
+}
+
+function press2(e) {
+    return e.key === '2';
+}
+
+function press3(e) {
+    return e.key === '3';
+}
+
+function pressR(e) {
+    return e.key === 'r';
+}
+```
+
+These functions should be called with the appropriate `total` value or event `e` when checking conditions. For example, when a keyboard event is detected, you should pass the event object to the respective predicate to determine which key was pressed. Similarly, whenever you need to check the `total` amount, pass the current `total` value to the predicate function to determine if it meets the specified condition.

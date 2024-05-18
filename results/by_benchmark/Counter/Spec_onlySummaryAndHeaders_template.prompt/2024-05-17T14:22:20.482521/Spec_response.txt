@@ -1,0 +1,36 @@
+Below is the TSL specification that translates the provided natural language description into the temporal structured language (TSL) format:
+
+```tsl
+always assume {
+    // Mutual Exclusion: No two button presses can occur at the same time
+    !(pressA(e) && pressB(e));
+    !(pressA(e) && pressC(e));
+    !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+    // When A is pressed 3 times consecutively without B or C being pressed, multiply stepsize by 3
+    pressA(e) && X(pressA(e)) && X(X(pressA(e))) && !X(pressB(e)) && !X(pressC(e)) && !X(X(pressB(e))) && !X(X(pressC(e)))
+        -> [stepsize <- multiplyByThree(stepsize)];
+    
+    // When B or C is pressed, reset stepsize to 1
+    (pressB(e) || pressC(e))
+        -> [stepsize <- 1];
+
+    // Ensure stepsize does not change if no relevant button presses
+    !(pressA(e) || pressB(e) || pressC(e))
+        -> [stepsize <- stepsize];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**: 
+   - Mutual exclusion is enforced among button presses using logical negations. This ensures no two button presses (A, B, C) can happen at the same time, reflecting the requirement that no two counter operations are performed simultaneously.
+
+2. **Guarantees**:
+   - The `pressA(e)` guarantees check for three consecutive presses of the A key without any presses of B or C in between. If this pattern is detected, the stepsize is multiplied by three by calling the function `multiplyByThree(stepsize)`.
+   - If the B or C key is pressed, the stepsize is reset to 1.
+   - The last clause ensures that if none of the A, B, or C keys are pressed, the stepsize remains unchanged, preserving its current state.
+
+This specification models the described system behavior where button presses influence a counter's step increment size, with specific rules for multiplication and resetting based on certain button press sequences.

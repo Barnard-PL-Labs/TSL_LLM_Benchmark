@@ -1,0 +1,19 @@
+always assume {
+  // Ensure that the left and right buttons are not pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, update the cube's rotation using a sinusoidal function of a count
+  pressL(e) -> [cube.rotation <- sin(count)];
+
+  // When the right button is pressed, update the polygon's rotation using a sawtooth function of the same count
+  pressR(e) -> [polygon.rotation <- saw(count)];
+
+  // Increment the count each time a button is pressed (either left or right)
+  (pressL(e) || pressR(e)) -> [count <- count + 1];
+
+  // Maintain the static positions of the cube and polygon
+  [cube.position <- staticPositionCube];
+  [polygon.position <- staticPositionPolygon];
+}

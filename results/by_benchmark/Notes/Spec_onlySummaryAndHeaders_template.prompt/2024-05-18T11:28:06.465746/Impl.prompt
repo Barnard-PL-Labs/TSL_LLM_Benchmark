@@ -1,0 +1,14 @@
+
+A system environment has the following API. Using the API, implement the following methods in JavaScript. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
+
+Functions and predicates to implement:
+
+
+There are no functions or predicates. Write an empty code block and exit.
+
+
+System API:
+
+
+There is no wrapper api
+

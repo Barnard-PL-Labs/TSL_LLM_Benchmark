@@ -1,0 +1,21 @@
+Here is the TSL specification based on your description of a single cell in the game of life simulation:
+
+```tsl
+always assume {
+  // Assumption about the exclusivity of comeAlive and comeDead functions
+  !(comeAlive && comeDead);
+}
+
+always guarantee {
+  // Guarantee that if comeAlive is true, the cell transitions to alive state using changeState() function
+  comeAlive -> [cellState <- changeState(alive)];
+  
+  // Guarantee that if comeDead is true, the cell transitions to dead state using changeState() function
+  comeDead -> [cellState <- changeState(dead)];
+}
+``` 
+
+In this TSL code:
+- `comeAlive` and `comeDead` are used to determine the state changes of the cell.
+- `cellState` is a state variable of the cell that stores its current state ("alive" or "dead").
+- `changeState(alive)` and `changeState(dead)` are actions that change the state of `cellState` based on the input conditions.

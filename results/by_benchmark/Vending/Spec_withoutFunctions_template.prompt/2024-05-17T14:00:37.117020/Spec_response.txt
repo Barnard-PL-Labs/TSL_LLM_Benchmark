@@ -1,0 +1,50 @@
+Here is the TSL specification based on the provided natural language description and predicates. The assumptions ensure that no two operations (pressing different buttons) can happen at the same time, and the guarantees dictate how the vending machine reacts when each button is pressed.
+
+```tsl
+always assume {
+  // Mutually exclusive button presses:
+  !(pressD(e) && pressQ(e)) && 
+  !(pressD(e) && pressO(e)) && 
+  !(pressD(e) && press1(e)) && 
+  !(pressD(e) && press2(e)) && 
+  !(pressD(e) && press3(e)) && 
+  !(pressD(e) && pressR(e)) && 
+  
+  !(pressQ(e) && pressO(e)) && 
+  !(pressQ(e) && press1(e)) && 
+  !(pressQ(e) && press2(e)) && 
+  !(pressQ(e) && press3(e)) && 
+  !(pressQ(e) && pressR(e)) && 
+
+  !(pressO(e) && press1(e)) && 
+  !(pressO(e) && press2(e)) && 
+  !(pressO(e) && press3(e)) && 
+  !(pressO(e) && pressR(e)) && 
+  
+  !(press1(e) && press2(e)) && 
+  !(press1(e) && press3(e)) && 
+  !(press1(e) && pressR(e)) && 
+
+  !(press2(e) && press3(e)) && 
+  !(press2(e) && pressR(e)) && 
+
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Increment the total value when d, q, or o is pressed:
+  pressD(e) -> [total <- total + 0.1];
+  pressQ(e) -> [total <- total + 0.25];
+  pressO(e) -> [total <- total + 1];
+
+  // Decrement the total value or do nothing based on the total value when 1, 2, or 3 is pressed:
+  press1(e) -> (isLessThanPoint75(total) ? [total <- total] : [total <- total - 0.75]);
+  press2(e) -> (isLessThanOne(total) ? [total <- total] : [total <- total - 1]);
+  press3(e) -> (isLessThanOnePoint25(total) ? [total <- total] : [total <- total - 1.25]);
+
+  // Reset the total value to zero when r is pressed:
+  pressR(e) -> [total <- 0];
+}
+```
+
+This TSL code encapsulates the functionality of a vending machine where inputs (presses of buttons) determine the total money inserted and the ability to purchase items or get a refund. The mutual exclusion in the assumptions ensures that button presses are treated as independent input events, which is crucial for correct functioning.

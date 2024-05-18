@@ -1,0 +1,21 @@
+```tsl
+always assume {
+  // Assuming no conflicting inputs are given simultaneouly
+  !(pressE4 && (pressG4 || pressA4));
+  !(pressG4 && (pressE4 || pressA4));
+  !(pressA4 && (pressE4 || pressG4));
+}
+
+always guarantee {
+  // Map button presses to musical notes, maintaining the possibility of playing two notes simultaneously
+  pressE4 -> [noteToPlay <- "E4"];
+  pressG4 -> [noteToPlay <- "G4"];
+  pressA4 -> [noteToPlay <- "A4"];
+
+  // Simultaneous note plays
+  (pressE4 && pressG4) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "G4"]);
+  (pressE4 && pressA4) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]);
+  (pressG4 && pressA4) -> ([noteToPlay <- "G4"] && [noteToPlay2 <- "A4"]);
+}
+```
+In this TSL specification, the assumptions prevent multiple note buttons from being recognized as pressed simultaneously unless explicitly handled in the guarantees to allow certain combinations for simultaneous play. This setup enables the system to respond to button inputs by assigning the corresponding musical notes to different variables, thus facilitating the simultaneous play of two different notes.

@@ -1,0 +1,38 @@
+To implement the predicate `pressUp(e)` as specified, we need to set up an event listener that monitors keyboard events and checks if the "up arrow key" is being pressed. Since the requirement explicitly states not to use functions but predicates, and predicates should return a boolean, we will create a predicate that sets its value based on the state of the "up arrow key" press. Here, we assume we can maintain a state which updates based on the event.
+
+Let's write the JavaScript code to implement it:
+
+```javascript
+// This boolean will store the state of the up arrow key.
+let isUpKeyPressed = false;
+
+// Event listener for keydown - sets isUpKeyPressed to true if up arrow key (key code 38) is pressed.
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 38) { // 38 is the key code for the up arrow key
+        isUpKeyPressed = true;
+    }
+});
+
+// Event listener for keyup - resets isUpKeyPressed to false when the up arrow key is released.
+document.addEventListener('keyup', function(event) {
+    if (event.keyCode === 38) {
+        isUpKeyPressed = false;
+    }
+});
+
+// Predicate to check if the up arrow key is pressed.
+function pressUp() {
+    return isUpKeyPressed;
+}
+```
+
+### Explanation:
+1. **State Variable**: `isUpKeyPressed` is a boolean variable that holds the state of whether the up arrow key is currently pressed. It starts as `false`.
+
+2. **Event Listeners**:
+   - **Keydown**: An event listener for the 'keydown' event changes `isUpKeyPressed` to `true` if the up arrow key is pressed.
+   - **Keyup**: Another event listener for the 'keyup' event sets `isUpKeyPressed` back to `false` once the up arrow key is released.
+
+3. **Predicate Function**: The `pressUp()` function is a simple predicate that returns the value of `isUpKeyPressed`.
+
+This approach fulfills the requirement of creating a predicate without using additional arbitrary functions, relying solely on a state variable and event listeners to track and reflect the state of the up arrow key.

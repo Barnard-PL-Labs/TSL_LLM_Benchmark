@@ -1,0 +1,29 @@
+Here is the TSL specification derived from the natural language description provided:
+
+```TSL
+always assume {
+  // Define the exclusive relationship between pressing and releasing the up key
+  !(pressUp(e) && !pressUp(e));
+}
+
+always guarantee {
+  // When the up key is pressed, increment the counter each frame
+  pressUp(e) -> [count <- count + 1];
+
+  // When the up key is not pressed, set the counter to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // The cube's x-axis scale is updated to match the current value of the counter
+  [cube.scale.x <- count];
+}
+```
+
+### Explanation:
+
+- **Assumptions**:
+  - The exclusive relationship assumption (`!(pressUp(e) && !pressUp(e))`) ensures that the system is only considering the situation where the up key is either pressed or not pressed at any given time, not both.
+  
+- **Guarantees**:
+  - The first guarantee specifies that when the up key is pressed, the counter is incremented by 1 every frame. This is modeled directly with the update action `[count <- count + 1]`.
+  - The second guarantee addresses the situation when the up key is not pressed, setting the counter back to 0.5 (`[count <- 0.5]`).
+  - Finally, the cube's scale along the x-axis is continuously updated to reflect the value of `count` through `[cube.scale.x <- count]`. This ensures that the scale change is directly responsive to the user's input as described.

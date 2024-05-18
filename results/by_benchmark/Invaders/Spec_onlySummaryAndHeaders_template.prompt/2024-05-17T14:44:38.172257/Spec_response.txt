@@ -1,0 +1,25 @@
+Here's the TSL specification for the behavior of a player's ship in Space Invaders:
+
+```
+always assume {
+  // Ship cannot be simultaneously on the leftmost and rightmost positions
+  !(leftmost(ship) && rightmost(ship));
+  // Ship can either be hit or not, but not both
+  !hit(ship) || hit(ship);
+}
+
+always guarantee {
+  // If the ship is at the leftmost position, it cannot move further left
+  leftmost(ship) -> [ship <- moveRight(ship)];
+  // If the ship is at the rightmost position, it cannot move further right
+  rightmost(ship) -> [ship <- moveLeft(ship)];
+  // If the ship is not at either boundary, it can move left or right
+  !(leftmost(ship) || rightmost(ship)) -> ([ship <- moveLeft(ship)] || [ship <- moveRight(ship)]);
+  // Ship can shoot regardless of position
+  [ship <- shoot(ship)];
+  // If the ship is hit, end the game or lose a life
+  hit(ship) -> [ship <- die(ship)];
+}
+```
+
+This specification uses predicates to check boundary conditions (leftmost, rightmost) and hit status, and functions to perform actions such as moving left, moving right, shooting, and handling game termination through die(ship) when hit. The `always assume` block ensures logical consistency in ship positioning and hit status, while the `always guarantee` block handles responses to these conditions.

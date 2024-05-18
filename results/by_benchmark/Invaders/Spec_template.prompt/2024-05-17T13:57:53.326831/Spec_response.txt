@@ -1,0 +1,43 @@
+Here is the TSL specification based on the provided description and the requirements:
+
+```tsl
+always assume {
+  // Ensure mutual exclusion for key inputs (L, R)
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Manage ship movements and interactions
+  // Left movement
+  pressL -> ((!leftmost(ship)) -> X [ship.ctrl <- moveLeft(ship)]);
+  // Right movement
+  pressR -> ((!rightmost(ship)) -> X [ship.ctrl <- moveRight(ship)]);
+  // Shooting action
+  pressShoot -> [ship.ctrl <- shoot(ship)];
+  
+  // Handling hit detection and response
+  hit(ship) -> [ship.ctrl <- die(ship)];
+
+  // Ensure no movement occurs if at boundary or conflicting keys are pressed
+  (leftmost(ship) && pressL) -> [ship.ctrl <- idle];
+  (rightmost(ship) && pressR) -> [ship.ctrl <- idle];
+}
+```
+
+### Explanation:
+1. **Always Assume**:
+   - Mutual exclusion is enforced for all directional inputs to prevent conflicting signals for movement. This makes sure that the ship moves in one direction at a time.
+   
+2. **Always Guarantee**:
+   - **Left Movement**: The ship will move left if the left key is pressed, provided the ship is not at the leftmost boundary.
+   - **Right Movement**: The ship will move right if the right key is pressed, provided the ship is not at the rightmost boundary.
+   - **Shooting Action**: Activates the shooting mechanism when the shoot key is pressed.
+   - **Handling Hit**: If the ship is hit by an enemy or obstacle, the game will trigger a die action, which may end the game or cause the ship to lose a life.
+   - **Boundary Conditions**: If the ship is at a boundary, no movement command in the direction of the boundary will be executed, ensuring the ship doesn't go beyond the game area.
+
+This TSL specification ensures that the behavior of the ship in Space Invaders is clearly defined with respect to key inputs and game interactions, adhering to the constraints and actions specified in the game's design.

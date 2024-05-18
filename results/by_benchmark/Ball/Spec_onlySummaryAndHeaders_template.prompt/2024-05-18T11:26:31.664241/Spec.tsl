@@ -1,0 +1,17 @@
+always assume {
+  // The ball can either be at the leftmost or rightmost position, or somewhere in between
+  (leftmost(ball) -> !rightmost(ball)) ;
+  (rightmost(ball) -> !leftmost(ball)) ;
+}
+
+always guarantee {
+  // When the ball is at the leftmost wall, it should start moving to the right
+  leftmost(ball) -> X (G !leftmost(ball) U rightmost(ball)) ;
+  
+  // When the ball reaches the rightmost wall, it should start moving to the left
+  rightmost(ball) -> X (G !rightmost(ball) U leftmost(ball)) ;
+  
+  // Define the motion of the ball: moving left or right depending on the wall it reaches
+  leftmost(ball) -> ([ ball <- moveRight(ball) ]) W rightmost(ball) ;
+  rightmost(ball) -> ([ ball <- moveLeft(ball) ]) W leftmost(ball) ;
+}

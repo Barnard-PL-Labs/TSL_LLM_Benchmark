@@ -1,0 +1,22 @@
+always assume {
+  // Define the exclusive relationship between pressing the buttons for E4, G4, and A4
+  !(pressE4(e) && pressG4(e)) ;
+  !(pressE4(e) && pressA4(e)) ;
+  !(pressG4(e) && pressA4(e)) ;
+}
+
+always guarantee {
+  // Play E4 when its corresponding button is pressed
+  pressE4(e) -> [noteToPlay <- "E4"] ;
+
+  // Play G4 when its corresponding button is pressed
+  pressG4(e) -> [noteToPlay <- "G4"] ;
+
+  // Play A4 when its corresponding button is pressed
+  pressA4(e) -> [noteToPlay <- "A4"] ;
+
+  // Allow for simultaneous playing of two notes, ensuring no overlap in noteToPlay and noteToPlay2
+  (pressE4(e) && pressG4(e)) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "G4"]) ;
+  (pressE4(e) && pressA4(e)) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]) ;
+  (pressG4(e) && pressA4(e)) -> ([noteToPlay <- "G4"] && [noteToPlay2 <- "A4"]) ;
+}

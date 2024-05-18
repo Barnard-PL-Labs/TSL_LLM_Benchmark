@@ -1,0 +1,14 @@
+always assume {
+  // Assume basic functionality of predicates and functions, no further assumptions needed
+}
+
+always guarantee {
+  // When the ball hits the leftmost wall, it should start moving to the right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+
+  // When the ball hits the rightmost wall, it should start moving to the left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+
+  // Ensure that when neither boundary condition is met, the ball continues in its current direction
+  !(leftmost(ball) || rightmost(ball)) -> ([ball <- ball]);
+}

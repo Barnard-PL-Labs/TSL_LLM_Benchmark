@@ -1,0 +1,26 @@
+Here's a TSL specification for the behavior of a ball bouncing between two walls based on the given information:
+
+```tsl
+always assume {
+  // The ball can either be at the leftmost or rightmost position but not both at the same time
+  !(leftmost(ball) && rightmost(ball));
+
+  // If the ball is at the leftmost position, it cannot be commanded to move left
+  leftmost(ball) -> ![ball <- moveLeft(ball)];
+
+  // If the ball is at the rightmost position, it cannot be commanded to move right
+  rightmost(ball) -> ![ball <- moveRight(ball)];
+}
+
+always guarantee {
+  // When the ball hits the leftmost wall, it should start moving right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+
+  // When the ball hits the rightmost wall, it should start moving left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+}
+```
+
+This specification ensures that:
+1. The ball reacts to its position against either wall by moving in the opposite direction.
+2. Commands to move the ball further against a wall it is already touching are prohibited, ensuring the ball always bounces back within the defined range.

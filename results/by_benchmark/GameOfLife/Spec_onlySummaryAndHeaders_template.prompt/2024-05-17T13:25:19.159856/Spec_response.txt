@@ -1,0 +1,36 @@
+To create a TSL specification for simulating a single cell in the game of life, we'll need to define assumptions and guarantees based on the rules of the game. The cell can either be alive or dead, and its next state depends on the number of its living neighbors, as defined by the functions `comeAlive(index)` and `comeDead(index)`.
+
+### TSL Specification:
+
+```
+always assume {
+  // Assume that a cell's transition functions capture the game's rules correctly
+  (alive -> comeAlive(index)) ;
+  (!alive -> comeDead(index)) ;
+}
+
+always guarantee {
+  // If a cell is dead and the condition for coming alive is met, it becomes alive
+  (!alive && comeAlive(index)) -> [alive <- true];
+  
+  // If a cell is alive and the condition for dying is met, it becomes dead
+  (alive && comeDead(index)) -> [alive <- false];
+  
+  // Maintain the current state if conditions to change are not met
+  (alive && !comeDead(index)) -> [alive <- true];
+  (!alive && !comeAlive(index)) -> [alive <- false];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+    - The assumption block specifies that for an alive cell, `comeAlive(index)` needs to be true to maintain its state. Similarly, a dead cell should meet the `comeDead(index)` condition to change its state. It ensures that the cell state transition adheres to the rules defined by the `comeAlive` and `comeDead` predicates.
+
+2. **Guarantees**:
+    - The guarantees handle the state transitions:
+        - If the cell is dead (`!alive`) and the `comeAlive(index)` condition is met, the cell state is set to alive.
+        - If the cell is alive and meets the `comeDead(index)` condition due to having too few or too many neighbors, the cell state is set to dead.
+        - If none of the conditions for changing state are met, the cell remains in its current state.
+
+This specification ensures that each cell in the Game of Life updates according to the standard rules based on its neighbors' states.

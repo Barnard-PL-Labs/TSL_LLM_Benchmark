@@ -1,0 +1,36 @@
+To create a TSL specification for a ball bouncing between two walls, we need to define the behavior of the ball as it reaches each wall and how it should react. We'll make use of the provided functions and predicates to control the movement of the ball and to detect when it has reached the extremes of its range.
+
+### TSL Specification for Bouncing Ball:
+
+```tsl
+always assume {
+  // Ensure that the ball cannot be in a state less than 0 or greater than 10.
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, the next move should be to the right.
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // If the ball is at the rightmost position, the next move should be to the left.
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+
+  // If the ball is not at either boundary, it should continue in the current direction.
+  (!leftmost(ball) && !rightmost(ball)) -> (
+    (lastCommand == moveRight(ball) -> X ([ball <- moveRight(ball)])) &&
+    (lastCommand == moveLeft(ball) -> X ([ball <- moveLeft(ball)]))
+  );
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - The ball's position is always between 0 and 10, inclusive. This prevents any out-of-range errors.
+
+2. **Guarantees**:
+   - When the ball reaches the leftmost wall (`leftmost(ball)`), the next state guarantees that the command to move the ball to the right (`moveRight(ball)`) is issued.
+   - Similarly, when the ball reaches the rightmost wall (`rightmost(ball)`), the command to move it to the left (`moveLeft(ball)`) is issued.
+   - If the ball is not at either boundary, it will continue moving in the direction of the last command. This is done by checking if the last command was `moveRight(ball)` or `moveLeft(ball)` and then issuing the same command in the next state.
+
+This TSL specification allows the ball to "bounce" between the two walls by changing its direction upon hitting each wall and continuing in the current direction otherwise.

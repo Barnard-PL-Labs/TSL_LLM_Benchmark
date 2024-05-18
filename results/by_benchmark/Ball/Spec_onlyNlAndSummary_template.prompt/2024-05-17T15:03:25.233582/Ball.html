@@ -1,0 +1,134 @@
+<style>
+	#debug {
+		margin: 50px;
+		font-size: 25px;
+	}
+
+	#ball {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		animation: bounce 2s infinite ease-in-out;
+	}
+
+	@keyframes bounce {
+
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-500px);
+		}
+	}
+</style>
+
+<div id="debug"></div>
+<div id="ball"></div>
+
+<script>
+
+// Assuming `ball` is an object that can have its state changed through methods or properties
+// and that there's an environment or context that interprets these state changes.
+
+// Functions
+function moveLeft(ball) {
+    // Adjust the ball's position to the left
+    // This might typically involve decrementing the x-coordinate of the ball
+    ball.x -= 1; // Assuming ball.x denotes the horizontal position of the ball
+    return ball; // Returning the updated ball object
+}
+
+function moveRight(ball) {
+    // Adjust the ball's position to the right
+    ball.x += 1; // Assuming ball.x denotes the horizontal position of the ball
+    return ball; // Returning the updated ball object
+}
+
+// Predicates
+function leftmost(ball) {
+    // Check if the ball is at the leftmost position
+    // Assuming that `0` might represent the leftmost boundary
+    return ball.x === 0;
+}
+
+function rightmost(ball) {
+    // Check if the ball is at the rightmost position
+    // Assuming `rightBoundary` is a predefined constant indicating the rightmost boundary
+    return ball.x === rightBoundary;
+}
+
+// Usage Example
+let ball = { x: 5 }; // Example ball object with a starting x position
+const rightBoundary = 10; // Define rightmost boundary for the environment
+
+console.log("Initial Position:", ball.x);
+ball = moveLeft(ball);
+console.log("After moveLeft:", ball.x);
+ball = moveRight(ball);
+console.log("After moveRight:", ball.x);
+
+console.log("Is at leftmost?", leftmost(ball));
+console.log("Is at rightmost?", rightmost(ball));
+
+
+</script>
+<script src="computed/Synth.js" type="text/javascript"></script>
+
+<script>
+
+	(async () => {
+
+
+		// Wrapper
+
+		const X_STEP_DURATION = 200;
+
+		class Ball {
+			constructor() {
+				this.pos = 0
+			}
+
+			render() {
+				const ball = document.getElementById('ball');
+				ball.style.transition = `left ${X_STEP_DURATION}ms linear`;
+				ball.style.left = `${this.pos / 10 * (screen.availWidth - 100)}px`;
+
+				const debug = document.querySelector('#debug');
+				debug.textContent = 'Current State: ' + currentState
+			}
+		}
+
+		window.currentState = 0
+
+		const ball = new Ball()
+		ball.render()
+
+		// /*
+
+		// Wait for 1s to sync the up-and-down animationw with bouncing, in order to make it look like the
+		// ball is bouncing.
+
+		// */
+		// await new Promise(((resolve) => resolve()), 1000)
+
+		setInterval(
+			(() => {
+
+				ball_pos = ball.pos;
+				({ currentState, ball_pos }) = updateState({ currentState, ball_pos })
+				ball.pos = ball_pos
+				console.log('currentState', currentState, ball)
+				ball.render()
+
+			}),
+			X_STEP_DURATION
+		)
+
+	})()
+
+</script>

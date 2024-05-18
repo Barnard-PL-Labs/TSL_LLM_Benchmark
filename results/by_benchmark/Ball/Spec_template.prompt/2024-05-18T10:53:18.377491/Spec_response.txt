@@ -1,0 +1,31 @@
+Here is the TSL specification based on your description:
+
+```tsl
+always assume {
+  ([ball <- moveLeft(ball)] -> X !rightmost(ball));
+  ([ball <- moveRight(ball)] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+  (leftmost(ball) && X ([ball <- moveRight(ball)])) -> ([ball <- moveRight(ball)] W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft(ball)])) -> ([ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+### Explanation of the TSL code:
+
+#### Assumptions:
+1. If the ball is moved left, it cannot be at the rightmost wall in the next state (`X !rightmost(ball)`).
+2. If the ball is moved right, it cannot be at the leftmost wall in the next state (`X !leftmost(ball)`).
+3. The ball cannot be at both the leftmost and rightmost walls at the same time (`!(leftmost(ball) && rightmost(ball))`).
+
+#### Guarantees:
+4. If the ball is at the rightmost wall, it will eventually be moved to the left (`F ([ball <- moveLeft(ball)])`).
+5. If the ball is at the leftmost wall, it will eventually be moved to the right (`F ([ball <- moveRight(ball)])`).
+6. If the ball is neither at the leftmost nor at the rightmost wall, it will eventually be moved either left or right (`F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)])`).
+7. If the ball is at the leftmost wall and is going to move right in the next state, it must keep moving right until it reaches the rightmost wall (`([ball <- moveRight(ball)] W rightmost(ball))`).
+8. If the ball is at the rightmost wall and is going to move left in the next state, it must keep moving left until it reaches the leftmost wall (`([ball <- moveLeft(ball)] W leftmost(ball))`).

@@ -1,0 +1,36 @@
+Here is the TSL specification based on the natural language description provided:
+
+```tsl
+always assume {
+  // Ensure that no two buttons are pressed simultaneously
+  !(pressA && pressB) && !(pressA && pressC) && !(pressB && pressC);
+}
+
+always guarantee {
+  // Increment counter by 1 when A is pressed
+  pressA -> [count <- count + 1];
+  
+  // Increment counter by 2 when B is pressed
+  pressB -> [count <- count + 2];
+  
+  // Increment counter by 3 when C is pressed
+  pressC -> [count <- count + 3];
+  
+  // If A is pressed three times in a row, increase stepsize by multiplying by three
+  (X (pressA && X (pressA && X pressA))) -> X [stepsize <- multiplyByThree(stepsize)] W (!pressA || pressB || pressC);
+  
+  // Reset stepsize to 1 when B or C is pressed
+  (pressB || pressC) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+1. **Assumptions Section:**
+   - Ensures mutual exclusivity between button presses, meaning no two buttons can be pressed at the same time.
+
+2. **Guarantees Section:**
+   - Each button press results in an increment of the `count` variable by a specific value (1, 2, or 3) depending on the button pressed.
+   - Pressing the `A` button three times consecutively triples the `stepsize` on the next press of `A`, but this is only in effect until any other button (`B` or `C`) is pressed or `A` is not pressed immediately next.
+   - Pressing either `B` or `C` resets the `stepsize` to 1.
+
+This TSL specification aligns with the requirements described, managing the counter increments based on button sequences and ensuring specific actions reset or modify the increment behavior as defined.

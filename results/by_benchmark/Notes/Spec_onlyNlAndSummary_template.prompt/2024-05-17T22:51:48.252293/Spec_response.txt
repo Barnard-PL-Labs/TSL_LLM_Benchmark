@@ -1,0 +1,34 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Define the input states for button presses
+  button1 || button2 || button3;
+}
+
+always guarantee {
+  // Guarantee that pressing button1 will play E4 as the next note on "noteToPlay"
+  button1 -> X ([noteToPlay <- E4]);
+
+  // Guarantee that pressing button2 will play G4 as the next note on "noteToPlay"
+  button2 -> X ([noteToPlay <- G4]);
+
+  // Guarantee that pressing button3 will play A4 as the next note on "noteToPlay2"
+  button3 -> X ([noteToPlay2 <- A4]);
+
+  // Ensure that E4 and A4 cannot be played at the same time on "noteToPlay" and "noteToPlay2" respectively
+  ([noteToPlay <- E4] && X [noteToPlay2 <- A4]) -> false;
+  ([noteToPlay2 <- A4] && X [noteToPlay <- E4]) -> false;
+
+  // A4 cannot be played on "noteToPlay2" until E4 has stopped being played on "noteToPlay"
+  (X [noteToPlay <- E4]) -> !F([noteToPlay2 <- A4]);
+
+  // If E4 is played on "noteToPlay", then A4 must eventually be played on "noteToPlay2" and G4 on "noteToPlay"
+  [noteToPlay <- E4] -> F([noteToPlay2 <- A4] && [noteToPlay <- G4]);
+}
+```
+
+This TSL specification includes:
+- Assumptions about button presses as inputs.
+- Guarantees that determine the behavior of note playing in response to these button presses.
+- Specific conditions around the simultaneous and sequential playing of notes based on button presses and note variable assignments.

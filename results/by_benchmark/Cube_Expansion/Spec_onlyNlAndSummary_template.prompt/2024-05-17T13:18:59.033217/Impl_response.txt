@@ -1,0 +1,23 @@
+To implement the predicates within the constraints provided, we will focus on defining the predicate `pressUp(e)` which checks if the user presses the up arrow key.
+
+Since we are not using any explicit functions and are bound to use predicates within an event-driven context, the implementation will involve setting up an event listener for keyboard events. The predicate will be set up to evaluate to `true` when the up arrow key is pressed and `false` otherwise.
+
+Here is how you can implement this in JavaScript using the provided specifications:
+
+```javascript
+// Define the predicate for detecting an up arrow key press
+function pressUp(event) {
+  return event.keyCode === 38;  // 38 is the keyCode for the up arrow key
+}
+
+// Example usage within an application context:
+document.addEventListener('keydown', function(event) {
+  if (pressUp(event)) {
+    console.log("Up arrow key was pressed.");
+  }
+});
+```
+
+This script sets up an event listener that listens for `keydown` events on the entire document. When a key is pressed, it checks if the pressed key is the up arrow key by calling the `pressUp` predicate. If `pressUp` returns `true`, indicating that the up arrow key was pressed, it logs a message to the console.
+
+This implementation effectively uses the `pressUp` predicate to encapsulate the logic for detecting the up arrow key press, adhering to the requirement of using predicates to determine the state of user input.

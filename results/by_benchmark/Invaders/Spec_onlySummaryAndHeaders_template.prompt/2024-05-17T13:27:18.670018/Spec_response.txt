@@ -1,0 +1,44 @@
+Assuming the specification requires handling inputs like moving left, moving right, shooting, and reacting to getting hit, here is a suggested TSL specification:
+
+```
+always assume {
+  // Ship cannot move left if it is at the leftmost position
+  (leftmost(ship) -> (X !([ship.ctrl <- moveLeft(ship)]))) ;
+  
+  // Ship cannot move right if it is at the rightmost position
+  (rightmost(ship) -> (X !([ship.ctrl <- moveRight(ship)]))) ;
+  
+  // Ship can always shoot
+  true;
+  
+  // If ship is hit, it must respond with a die action
+  (hit(ship) -> X ([ship.ctrl <- die(ship)])) ;
+}
+
+always guarantee {
+  // If the ship is not at the leftmost edge, it can move left
+  !leftmost(ship) -> ([ship.ctrl <- moveLeft(ship)]) ;
+  
+  // If the ship is not at the rightmost edge, it can move right
+  !rightmost(ship) -> ([ship.ctrl <- moveRight(ship)]) ;
+  
+  // The ship can always shoot regardless of position
+  ([ship.ctrl <- shoot(ship)]) ;
+  
+  // If the ship gets hit, it must take a die action
+  hit(ship) -> ([ship.ctrl <- die(ship)]) ;
+}
+```
+
+### Explanation
+1. **Assumptions**:
+   - The ship cannot move left if it's at the leftmost position, and similarly, it cannot move right if it's at the rightmost position.
+   - The ship can always issue a shoot command.
+   - If the ship is hit by an enemy, the ship must execute a "die" action in the next state.
+
+2. **Guarantees**:
+   - If the ship is not at the leftmost or rightmost edges, it can move left or right respectively.
+   - The ship can shoot at any time.
+   - Upon being hit, the ship responds by executing a "die" action.
+
+This specification ensures that the ship acts within its movement constraints and reacts appropriately to game events like getting hit or shooting.

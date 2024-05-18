@@ -1,0 +1,18 @@
+Here is the TSL specification for the scenario described:
+
+```tsl
+always assume {
+  // The ball can only be at the extreme positions 0 or 10
+  (leftmost(ball) || rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, it should move right in the next step
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+  
+  // If the ball is at the rightmost position, it should move left in the next step
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+}
+```
+
+This specification ensures that the ball bounces back and forth between the two walls. When at the leftmost position, the ball will move right, and when at the rightmost position, it will move left.

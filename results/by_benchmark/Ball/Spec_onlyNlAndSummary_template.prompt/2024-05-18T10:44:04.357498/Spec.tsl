@@ -1,0 +1,27 @@
+always assume {
+  // If the ball is moved to the left, it is not at the rightmost wall in the next state
+  (moveLeft -> X !(ballPosition = 10));
+
+  // If the ball is moved to the right, it is not at the leftmost wall in the next state
+  (moveRight -> X !(ballPosition = 0));
+
+  // The ball cannot be at both the leftmost and the rightmost wall at the same time
+  !(ballPosition = 0 && ballPosition = 10);
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, it must eventually be moved to the left
+  (ballPosition = 10 -> F moveLeft);
+
+  // If the ball is at the leftmost wall, it must eventually be moved to the right
+  (ballPosition = 0 -> F moveRight);
+
+  // If the ball is neither at the leftmost nor at the rightmost wall, it must eventually move
+  (!(ballPosition = 0 || ballPosition = 10) -> F (moveLeft || moveRight));
+
+  // If the ball is at the leftmost wall and moving away, it must not move left until it reaches the rightmost wall
+  (ballPosition = 0 && X moveRight -> ([ballPosition <- ballPosition + 1] W (ballPosition = 10)));
+
+  // If the ball is at the rightmost wall and moving away, it must not move right until it reaches the leftmost wall
+  (ballPosition = 10 && X moveLeft -> ([ballPosition <- ballPosition - 1] W (ballPosition = 0)));
+}

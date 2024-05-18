@@ -1,0 +1,38 @@
+Here is the TSL specification based on your description for the player's ship behavior in Space Invaders:
+
+```tsl
+always assume {
+  // Assume that at any given time, the ship can either not be hit, or can be hit by an incoming enemy.
+  (hit(ship) || !hit(ship));
+  // Assume that the ship is either at the leftmost or rightmost boundary, or it is not.
+  (leftmost(ship) || !leftmost(ship));
+  (rightmost(ship) || !rightmost(ship));
+}
+
+always guarantee {
+  // If the ship is hit by an enemy, the game should execute the die action.
+  hit(ship) -> [ship <- die(ship)];
+
+  // If the ship is at the leftmost position, it should only be able to move right or shoot.
+  leftmost(ship) -> (!([ship <- moveLeft(ship)]) && ([ship <- moveRight(ship)] || [ship <- shoot(ship)]));
+
+  // If the ship is at the rightmost position, it should only be able to move left or shoot.
+  rightmost(ship) -> (!([ship <- moveRight(ship)]) && ([ship <- moveLeft(ship)] || [ship <- shoot(ship)]));
+
+  // If the ship is not at any boundary, it can move left, move right, or shoot.
+  (!leftmost(ship) && !rightmost(ship)) -> ([ship <- moveLeft(ship)] || [ship <- moveRight(ship)] || [ship <- shoot(ship)]);
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - The first assumption ensures the ship can either be hit or not be hit at any given time.
+   - The second and third assumptions deal with the ship being at the boundaries (leftmost or rightmost).
+
+2. **Guarantees**:
+   - If the ship is hit (`hit(ship)`), it triggers the `die` function which could end the game or cause the player to lose a life.
+   - When the ship is at the leftmost boundary (`leftmost(ship)`), it cannot move left further, thus only `moveRight` or `shoot` actions are allowed.
+   - When the ship is at the rightmost boundary (`rightmost(ship)`), it cannot move right further, so it can only move left or shoot.
+   - If the ship is not at any boundary, it can move freely to the left or right and can also shoot.
+
+This specification ensures that the ship's movement and actions are correctly restricted based on its position and the game events.

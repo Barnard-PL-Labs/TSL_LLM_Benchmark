@@ -1,0 +1,26 @@
+always assume {
+  // Define any necessary assumptions about the environment or inputs.
+}
+
+always guarantee {
+  // Actions based on button presses to produce musical notes.
+  
+  // When buttonE4 is pressed, set noteToPlay to "E4"
+  buttonE4 -> [noteToPlay <- "E4"];
+
+  // When buttonG4 is pressed, set noteToPlay to "G4"
+  buttonG4 -> [noteToPlay <- "G4"];
+  
+  // When buttonA4 is pressed, set noteToPlay to "A4"
+  buttonA4 -> [noteToPlay <- "A4"];
+  
+  // Additional handling for simultaneous notes using noteToPlay2
+  // When buttonE4 is pressed alongside buttonG4, set noteToPlay2 to "G4"
+  (buttonE4 && buttonG4) -> [noteToPlay2 <- "G4"];
+  
+  // When buttonG4 is pressed alongside buttonA4, set noteToPlay2 to "A4"
+  (buttonG4 && buttonA4) -> [noteToPlay2 <- "A4"];
+  
+  // When buttonE4 is pressed alongside buttonA4, set noteToPlay2 to "A4"
+  (buttonE4 && buttonA4) -> [noteToPlay2 <- "A4"];
+}

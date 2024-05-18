@@ -1,0 +1,32 @@
+To model this bouncing ball scenario in TSL, we need to express the behavior of the ball as it interacts with the walls and changes its movement direction accordingly. Here is how you can write this in TSL format:
+
+```tsl
+always assume {
+  // Assuming there are only two possible movements: moveLeft and moveRight,
+  // and their exclusive execution based on the position of the ball.
+  (leftmost(ball) -> !([ ball <- moveRight(ball) ])) ;
+  (rightmost(ball) -> !([ ball <- moveLeft(ball) ])) ;
+}
+
+always guarantee {
+  // When the ball is at the leftmost position, it should move right next,
+  // and continue moving right until it hits the rightmost wall.
+  leftmost(ball) -> X ([ ball <- moveRight(ball) ] W rightmost(ball)) ;
+
+  // When the ball is at the rightmost position, it should move left next,
+  // and continue moving left until it hits the leftmost wall.
+  rightmost(ball) -> X ([ ball <- moveLeft(ball) ] W leftmost(ball)) ;
+}
+```
+
+### Explanation:
+
+1. **Assumptions**: 
+   - When the ball is at the leftmost position (`leftmost(ball)`), it cannot move left anymore, so the action to move right (`moveRight(ball)`) is the only possible action.
+   - When the ball is at the rightmost position (`rightmost(ball)`), it cannot move right, so the action to move left (`moveLeft(ball)`) is the only possible action.
+
+2. **Guarantees**: 
+   - If the ball is at the leftmost position, the next state must be a movement to the right, and it should continue moving right until it reaches the rightmost position. This is captured using the temporal operator `X` (next) combined with `W` (weak until), indicating that the right-moving action will continue until the ball hits the rightmost wall.
+   - Similarly, if the ball is at the rightmost position, it should start moving left in the next state and continue this action until it hits the leftmost wall.
+
+This TSL specification captures the dynamics of a ball bouncing back and forth between two boundary walls, changing direction upon hitting each wall.

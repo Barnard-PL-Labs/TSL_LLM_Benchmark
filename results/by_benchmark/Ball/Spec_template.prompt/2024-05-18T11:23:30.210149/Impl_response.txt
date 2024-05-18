@@ -1,0 +1,51 @@
+To implement the specified methods in JavaScript for the system environment described, we will create functions to handle the movement of the ball and predicates to check its position relative to the boundaries (leftmost and rightmost walls). Since the actual environment API isn't specified, I'll assume basic functionality for moving a 'ball' and checking its positions.
+
+Here's how you can implement these functions and predicates:
+
+```javascript
+// Defining the 'ball' object to simulate the cell
+// Let's assume 'ball' has a property 'position' which stores its current position
+let ball = {
+    position: 0 // Starting position
+};
+
+// Functions
+function moveLeft(ball) {
+    // Decrement the position of the ball to simulate moving to the left
+    ball.position -= 1;
+    return `Moved left to position ${ball.position}`;
+}
+
+function moveRight(ball) {
+    // Increment the position of the ball to simulate moving to the right
+    ball.position += 1;
+    return `Moved right to position ${ball.position}`;
+}
+
+// Predicates
+function leftmost(ball) {
+    // Check if the ball is at the leftmost position. Assuming leftmost wall is at position 0
+    return ball.position === 0;
+}
+
+function rightmost(ball) {
+    // Check if the ball is at the rightmost position. Assuming rightmost wall is at position 10 for example
+    return ball.position === 10;
+}
+
+// Usage example
+console.log(moveLeft(ball));   // "Moved left to position -1"
+console.log(moveRight(ball));  // "Moved right to position 0"
+console.log(leftmost(ball));   // true
+console.log(rightmost(ball));  // false
+
+// Adjust the position and see how it behaves at boundaries
+ball.position = 10;
+console.log(rightmost(ball));  // true
+```
+
+**Note:**
+- The `ball` object is used to simulate the environment where a ball can be manipulated by changing its position.
+- The `moveLeft` and `moveRight` functions adjust the `ball.position` to simulate movement.
+- The `leftmost` and `rightmost` functions are predicates that return a boolean indicating whether the ball is at the respective walls.
+- The position limits (0 for leftmost and 10 for rightmost in this example) are arbitrary and should be adjusted based on the actual constraints of your environment. If the environment has specific API methods to get these limits or to move the ball, those should be used instead of directly manipulating `ball.position`.

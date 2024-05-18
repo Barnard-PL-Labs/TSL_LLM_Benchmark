@@ -1,0 +1,64 @@
+Below, I'll provide the JavaScript implementation for interacting with a "ball" through the given API, implementing both functions and predicates as specified.
+
+### Implementation:
+
+**1. Functions:**
+- `moveLeft(ball)`: This function will alter the state of the ball to represent a movement to the left.
+- `moveRight(ball)`: This function will alter the state of the ball to represent a movement to the right.
+
+**2. Predicates:**
+- `leftmost(ball)`: This predicate checks if the ball is positioned against the leftmost wall.
+- `rightmost(ball)`: This predicate checks if the ball is positioned against the rightmost wall.
+
+### JavaScript Code:
+
+```javascript
+// Assuming `ball` is an object that can have its state changed through methods or properties
+// and that there's an environment or context that interprets these state changes.
+
+// Functions
+function moveLeft(ball) {
+    // Adjust the ball's position to the left
+    // This might typically involve decrementing the x-coordinate of the ball
+    ball.x -= 1; // Assuming ball.x denotes the horizontal position of the ball
+    return ball; // Returning the updated ball object
+}
+
+function moveRight(ball) {
+    // Adjust the ball's position to the right
+    ball.x += 1; // Assuming ball.x denotes the horizontal position of the ball
+    return ball; // Returning the updated ball object
+}
+
+// Predicates
+function leftmost(ball) {
+    // Check if the ball is at the leftmost position
+    // Assuming that `0` might represent the leftmost boundary
+    return ball.x === 0;
+}
+
+function rightmost(ball) {
+    // Check if the ball is at the rightmost position
+    // Assuming `rightBoundary` is a predefined constant indicating the rightmost boundary
+    return ball.x === rightBoundary;
+}
+
+// Usage Example
+let ball = { x: 5 }; // Example ball object with a starting x position
+const rightBoundary = 10; // Define rightmost boundary for the environment
+
+console.log("Initial Position:", ball.x);
+ball = moveLeft(ball);
+console.log("After moveLeft:", ball.x);
+ball = moveRight(ball);
+console.log("After moveRight:", ball.x);
+
+console.log("Is at leftmost?", leftmost(ball));
+console.log("Is at rightmost?", rightmost(ball));
+```
+
+### Notes:
+- In the provided code, I assume the `ball` object has an attribute `x` that represents its horizontal position. Adjusting this attribute simulates the movement.
+- The `leftmost` and `rightmost` predicates check this position against predefined limits (`0` and `rightBoundary`, respectively).
+- Ensure to define or understand the limitations of the `rightBoundary` value based on the actual system's constraints or environment setup.
+- This implementation is a straightforward example; depending on the system's API details, additional adjustments or method integrations might be necessary.

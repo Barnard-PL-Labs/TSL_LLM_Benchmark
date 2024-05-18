@@ -1,0 +1,15 @@
+```
+always assume {
+  (moveLeft -> X !(ballPos = 10));
+  (moveRight -> X !(ballPos = 0));
+  !(ballPos = 0 && ballPos = 10);
+}
+
+always guarantee {
+  (ballPos = 10) -> F (moveLeft);
+  (ballPos = 0) -> F (moveRight);
+  !(ballPos = 0 || ballPos = 10) -> F (moveLeft || moveRight);
+  (ballPos = 0 && X moveRight) -> G !(moveLeft W (ballPos = 10));
+  (ballPos = 10 && X moveLeft) -> G !(moveRight W (ballPos = 0));
+}
+```

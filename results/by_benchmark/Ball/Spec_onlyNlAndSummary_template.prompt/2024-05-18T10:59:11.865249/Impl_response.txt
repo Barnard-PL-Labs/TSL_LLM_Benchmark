@@ -1,0 +1,73 @@
+To implement the given requirements for the "functions" and "predicates" in JavaScript, we first need to define how the "ball" cell and its associated functions and predicates will work with the system. Since there isn't a predefined API wrapper provided for accessing or modifying the state of the "ball", we can assume that the "ball" object will have properties that can be modified directly or through functions.
+
+Here is the JavaScript code for implementing the specified functions and predicates:
+
+```javascript
+// Assuming the "ball" object has a property .position indicating its position on a hypothetical x-axis
+// and .leftWall and .rightWall indicating the positions of the walls.
+
+const ball = {
+    position: 0,  // Initial position of the ball
+    leftWall: -10, // Position of the leftmost wall
+    rightWall: 10  // Position of the rightmost wall
+};
+
+// Functions:
+
+/**
+ * Moves the ball to the left
+ * @param {Object} ball - The ball object
+ * @returns {Object} Updated state of the ball after moving left
+ */
+function moveLeft(ball) {
+    // Check if the ball is not at the leftmost position
+    if (!leftmost(ball)) {
+        ball.position -= 1;  // move the ball one unit to the left
+    }
+    return ball;
+}
+
+/**
+ * Moves the ball to the right
+ * @param {Object} ball - The ball object
+ * @returns {Object} Updated state of the ball after moving right
+ */
+function moveRight(ball) {
+    // Check if the ball is not at the rightmost position
+    if (!rightmost(ball)) {
+        ball.position += 1;  // move the ball one unit to the right
+    }
+    return ball;
+}
+
+// Predicates:
+
+/**
+ * Checks if the ball is at the leftmost position
+ * @param {Object} ball - The ball object
+ * @returns {boolean} True if the ball is at the leftmost position, false otherwise
+ */
+function leftmost(ball) {
+    return ball.position <= ball.leftWall;
+}
+
+/**
+ * Checks if the ball is at the rightmost position
+ * @param {Object} ball - The ball object
+ * @returns {boolean} True if the ball is at the rightmost position, false otherwise
+ */
+function rightmost(ball) {
+    return ball.position >= ball.rightWall;
+}
+
+// Example usage:
+console.log("Initial Position:", ball.position);
+moveRight(ball);
+console.log("After moving Right:", ball.position);
+moveLeft(ball);
+console.log("After moving Left:", ball.position);
+console.log("Is at leftmost:", leftmost(ball));
+console.log("Is at rightmost:", rightmost(ball));
+```
+
+This implementation defines a `ball` object with properties `position`, `leftWall`, and `rightWall`. The `moveLeft` and `moveRight` functions check the conditions using `leftmost` and `rightmost` predicates to see if movement is possible before updating the position. The predicates `leftmost` and `rightmost` simply return `true` or `false` based on the current position of the ball relative to the walls. The example usage at the end demonstrates how to use these functions and predicates.

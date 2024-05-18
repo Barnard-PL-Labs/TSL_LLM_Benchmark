@@ -1,0 +1,37 @@
+To create a TSL specification based on the given description, we need to define how user inputs (through the left and right keys) affect a numerical count, which in turn changes the rotation of graphical objects (a cube and a polygon) based on sinusoidal and sawtooth wave functions. We also need to define static positions for these objects. Here's how this could be implemented in TSL:
+
+```tsl
+always assume {
+  // Define the mutual exclusion between left and right key presses
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // Increment the numerical count when the right key is pressed
+  pressR(e) -> [count <- count + 1];
+  
+  // Decrement the numerical count when the left key is pressed
+  pressL(e) -> [count <- count - 1];
+
+  // Update the rotation of the cube based on the sine of the current count
+  [cube.rotation <- sin(count)];
+    
+  // Update the rotation of the polygon based on the sawtooth wave of the current count
+  [polygon.rotation <- saw(count)];
+  
+  // Define static positions for the cube and polygon
+  [cube.position <- (1, 0, 0)];  // Example position for the cube
+  [polygon.position <- (-1, 0, 0)];  // Example position for the polygon
+}
+```
+
+### Explanation:
+1. **Assumptions:** We use mutual exclusion to ensure that the left and right keys cannot be pressed simultaneously, which simplifies the control logic.
+
+2. **Guarantees:**
+   - The `count` variable is incremented or decremented based on the right or left key presses, respectively.
+   - The `cube.rotation` is set based on the sine of `count`, providing a continuous sinusoidal rotation as `count` changes.
+   - Similarly, the `polygon.rotation` is set based on a sawtooth wave function of `count`, which will give it a repetitive linear rotational pattern.
+   - Static positions are defined for both graphical objects to maintain a consistent scene layout. These positions are set as constants but could be adjusted as needed for the scene.
+
+This specification should effectively manage the dynamic rotation and static positioning of the graphical objects based on user input as described.

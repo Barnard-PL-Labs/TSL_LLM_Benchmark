@@ -1,0 +1,27 @@
+Here is a TSL specification based on the provided description and the structure of the provided example:
+
+```tsl
+always assume {
+  // Ensure that no two button presses can happen simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Pressing A three times in a row multiplies the stepsize by 3, unless B or C is pressed, which resets it to 1
+  ((pressA(e) && X(pressA(e)) && XX(pressA(e))) && !(X(pressB(e)) || X(pressC(e)) || XX(pressB(e)) || XX(pressC(e))))
+    -> [stepsize <- multiplyByThree(stepsize)];
+  
+  // Reset stepsize to 1 if B or C is pressed
+  (pressB(e) || pressC(e))
+    -> [stepsize <- 1];
+}
+```
+
+Explanation:
+
+1. The `always assume` block ensures mutual exclusion between button operations. That is, no two different button presses can happen at the same time.
+2. The `always guarantee` block handles the logic of stepsize changes:
+   - If the A key is pressed three times consecutively (and neither B nor C is pressed immediately after those A presses), the `stepsize` is multiplied by 3 using the function `multiplyByThree(stepsize)`.
+   - Pressing B or C resets the `stepsize` to 1, thereby ensuring that any interruption by B or C resets the increment value.

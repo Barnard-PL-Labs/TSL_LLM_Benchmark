@@ -1,0 +1,45 @@
+To implement the `pressUp(e)` predicate in JavaScript, we need to add an event listener to the document to listen for `keydown` events and check if the key pressed is the up arrow key. We will define a variable to track the state of the up arrow key (whether it's pressed or not) and update this variable based on the key events.
+
+Since the requirement specifies that we should not implement any functions, I will directly set up the event listeners in the script and use a variable to maintain the state of the up arrow key.
+
+Here is the JavaScript code to implement the `pressUp(e)` predicate:
+
+```javascript
+// Variable to track the state of the up arrow key
+let isUpKeyPressed = false;
+
+// Event listener for the 'keydown' event
+document.addEventListener('keydown', function(event) {
+    if (event.key === "ArrowUp") {
+        isUpKeyPressed = true;
+    }
+});
+
+// Event listener for the 'keyup' event
+document.addEventListener('keyup', function(event) {
+    if (event.key === "ArrowUp") {
+        isUpKeyPressed = false;
+    }
+});
+
+// Code to simulate the usage of the predicate
+// The 'setInterval' function is used here just to demonstrate the state of the predicate.
+// In a real application, you would use `isUpKeyPressed` wherever the predicate condition needs to be checked.
+setInterval(() => {
+    console.log("Is the UP key pressed? ", isUpKeyPressed);
+}, 1000);
+```
+
+### Explanation:
+1. **Variable Initialization:**
+   - `isUpKeyPressed` is a boolean variable initialized to `false`. It serves as the state holder for whether the up arrow key is pressed.
+
+2. **Event Listeners:**
+   - Two event listeners are added to the document:
+     - A `keydown` event listener sets `isUpKeyPressed` to `true` when the up arrow key is detected.
+     - A `keyup` event listener sets `isUpKeyPressed` to `false` when the up arrow key is released.
+
+3. **Demonstration Code:**
+   - The `setInterval` function is used here just for demonstration purposes to periodically check and print the state of the up arrow key. In practical scenarios, the `isUpKeyPressed` variable would be checked in the logic where the predicate condition (whether the up arrow key is pressed) needs to be evaluated.
+
+This setup will ensure that the predicate `pressUp(e)` correctly reflects the state of the up arrow key being pressed in the application.

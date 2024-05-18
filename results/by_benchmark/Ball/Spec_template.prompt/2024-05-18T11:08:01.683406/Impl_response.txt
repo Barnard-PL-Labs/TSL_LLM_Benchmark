@@ -1,0 +1,80 @@
+To implement the described methods in JavaScript, we will define functions for `moveLeft` and `moveRight`, and predicates for `leftmost` and `rightmost`. Since these predicates return boolean values, they will check the position of the ball relative to predefined boundaries assumed to represent the walls.
+
+Here's how you might implement these functions and predicates:
+
+```javascript
+// Define global boundaries for the sake of example. You may have these defined elsewhere in your project.
+const LEFT_WALL = 0;
+const RIGHT_WALL = 100; // assuming the playing area width is 100 units.
+
+// Represents the state of the ball. Let's assume it starts at position 50.
+let ball = {
+    position: 50
+};
+
+/**
+ * Moves the ball to the left by decreasing its position by 1.
+ * @param {object} ball - The ball object with its current state.
+ * @returns {object} - Returns the updated ball object.
+ */
+function moveLeft(ball) {
+    if (ball.position > LEFT_WALL) {
+        ball.position -= 1;
+    }
+    return ball;
+}
+
+/**
+ * Moves the ball to the right by increasing its position by 1.
+ * @param {object} ball - The ball object with its current state.
+ * @returns {object} - Returns the updated ball object.
+ */
+function moveRight(ball) {
+    if (ball.position < RIGHT_WALL) {
+        ball.position += 1;
+    }
+    return ball;
+}
+
+/**
+ * Checks if the ball is at the leftmost position.
+ * @param {object} ball - The ball object with its current state.
+ * @returns {boolean} - True if the ball is at the leftmost position, otherwise false.
+ */
+function leftmost(ball) {
+    return ball.position === LEFT_WALL;
+}
+
+/**
+ * Checks if the ball is at the rightmost position.
+ * @param {object} ball - The ball object with its current state.
+ * @returns {boolean} - True if the ball is at the rightmost position, otherwise false.
+ */
+function rightmost(ball) {
+    return ball.position === RIGHT_WALL;
+}
+
+// Example usage
+console.log("Initial position:", ball.position);
+moveLeft(ball);
+console.log("After moving left:", ball.position);
+console.log("Is at leftmost?", leftmost(ball));
+moveRight(ball);
+moveRight(ball);
+console.log("After moving right twice:", ball.position);
+console.log("Is at rightmost?", rightmost(ball));
+```
+
+### Explanation:
+
+1. **Global Boundaries:** `LEFT_WALL` and `RIGHT_WALL` are defined to simulate the environment's boundaries. You can adjust these values based on the actual dimensions of your project.
+
+2. **Ball State:** The `ball` object is initialized with a `position` property. This object is manipulated by the `moveLeft` and `moveRight` functions which modify the `position`.
+
+3. **Functions:** `moveLeft` and `moveRight` adjust the `position` of the `ball` within the confines of the `LEFT_WALL` and `RIGHT_WALL`. These functions ensure that the ball does not move beyond the boundaries.
+
+4. **Predicates:** `leftmost` and `rightmost` functions check whether the ball's `position` matches the boundary positions, and return a boolean value accordingly.
+
+5. **Example usage:** Demonstrates how the ball's position changes with movements and boundary checks.
+
+This implementation assumes a simple model where the ball moves in a linear space between two walls. Adjustments might be needed depending on further details about how the ball and walls are represented in the actual system.

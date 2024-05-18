@@ -1,0 +1,31 @@
+Here is the TSL specification based on your description:
+
+```tsl
+always assume {
+  ([ball <- moveLeft(ball)] -> X !rightmost(ball));
+  ([ball <- moveRight(ball)] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+  !(leftmost(ball) || rightmost(ball)) -> F (([ball <- moveLeft(ball)]) || ([ball <- moveRight(ball)]));
+  (leftmost(ball) && X ([ball <- moveRight(ball)])) -> ([ball <- moveRight(ball)] W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft(ball)])) -> ([ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+Explanation:
+
+### Assumptions:
+1. If the command to move the ball left is given, in the next state, the ball cannot be at the rightmost position.
+2. If the command to move the ball right is given, in the next state, the ball cannot be at the leftmost position.
+3. The ball cannot be at both the leftmost and rightmost positions simultaneously.
+
+### Guarantees:
+4. If the ball is at the rightmost wall, it is guaranteed that a command will eventually be given to move the ball left.
+5. If the ball is at the leftmost wall, it is guaranteed that a command will eventually be given to move the ball right.
+6. If the ball is not at either of the walls, a command will eventually come to move it in either direction.
+7. If the ball is at the leftmost wall and is commanded to move right, it must continue moving right until it reaches the rightmost wall.
+8. If the ball is at the rightmost wall and is commanded to move left, it must continue moving left until it reaches the leftmost wall.

@@ -1,0 +1,25 @@
+```
+always assume {
+  // Ensure no two counter (button) operations can be performed at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment counter by stepsize when A is pressed
+  pressA(e) -> [count <- count + stepsize];
+
+  // Increment counter by 2 when B is pressed
+  pressB(e) -> [count <- count + 2];
+
+  // Increment counter by 3 when C is pressed
+  pressC(e) -> [count <- count + 3];
+
+  // Reset stepsize to 1 when B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // Triple the stepsize if A is pressed three times in a row without B or C being pressed in between
+  (pressA(e) && X (pressA(e) && X (pressA(e) && X pressA(e) && !(pressB(e) || pressC(e))))) -> [stepsize <- multiplyByThree(stepsize)];
+}
+```

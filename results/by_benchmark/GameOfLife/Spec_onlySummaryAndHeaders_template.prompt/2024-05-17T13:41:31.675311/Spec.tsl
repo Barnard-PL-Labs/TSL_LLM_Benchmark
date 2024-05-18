@@ -1,0 +1,15 @@
+always assume {
+  // Define the conditions under which a cell comes alive or dies
+  (alive -> comeAlive(index)) || (!alive -> comeDead(index));
+}
+
+always guarantee {
+  // If a cell is supposed to come alive, change its state to alive
+  comeAlive(index) -> [alive <- true];
+  
+  // If a cell is supposed to die, change its state to dead
+  comeDead(index) -> [alive <- false];
+  
+  // If neither condition is met, the state of the cell remains unchanged
+  !(comeAlive(index) || comeDead(index)) -> [alive <- alive];
+}

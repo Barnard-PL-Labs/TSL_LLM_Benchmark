@@ -1,0 +1,48 @@
+In JavaScript, given the API constraints and task descriptions, we can implement the functions and predicates as follows:
+
+### Functions
+
+1. `moveLeft(ball)`: This function should modify the `ball` signal to represent moving the ball to the left.
+2. `moveRight(ball)`: Similarly, this function should modify the `ball` signal to indicate that the ball should move to the right.
+
+### Predicates
+
+1. `leftmost(ball)`: This predicate checks if the `ball` is currently at the leftmost wall.
+2. `rightmost(ball)`: This predicate checks if the `ball` is at the rightmost wall.
+
+Here's the JavaScript implementation:
+
+```javascript
+// Functions
+function moveLeft(ball) {
+    // Assuming 'ball' can take a signal or state that represents its position.
+    // This function sets that state to indicate a movement to the left.
+    // Example: decrementing the x-position of the ball.
+    return ball - 1;
+}
+
+function moveRight(ball) {
+    // Similar to moveLeft, but increments the position to move right.
+    return ball + 1;
+}
+
+// Predicates
+function leftmost(ball) {
+    // Assuming there's a defined constant or a way to determine the leftmost position.
+    // Check if the ball's current position is equal to the leftmost boundary.
+    // Assuming `LEFTMOST_POSITION` is a constant holding the value of the leftmost position.
+    return ball === LEFTMOST_POSITION;
+}
+
+function rightmost(ball) {
+    // Assuming there's a defined constant or a way to determine the rightmost position.
+    // Check if the ball's current position is equal to the rightmost boundary.
+    // Assuming `RIGHTMOST_POSITION` is a constant holding the value of the rightmost position.
+    return ball === RIGHTMOST_POSITION;
+}
+```
+
+### Assumptions and Constants
+The above implementation assumes that the `ball` variable holds a numerical value representing its position and that there are predefined constants `LEFTMOST_POSITION` and `RIGHTMOST_POSITION` which define the boundaries within the system. Adjust these constants based on the actual system configuration and the maximum/minimum values that `ball` can have.
+
+This implementation is simplistic and does not cover how the values are updated in a real-time environment (e.g., a game loop or an event-driven system). For such cases, additional logic to handle state updates, collision detection, and possibly user input would be necessary.

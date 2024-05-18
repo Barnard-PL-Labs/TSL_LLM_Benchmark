@@ -1,0 +1,80 @@
+To implement the specified functions and predicates using JavaScript, we need to set up event listeners for button presses and manipulate the cube's rotation based on these events. Below is a sample implementation using the provided API:
+
+### JavaScript Code Implementation
+
+1. **Setting up the Cube Object:**
+   Assuming that `cube` is an object in our system that can be manipulated directly, it should have a property named `rotation` which in turn has a property `y` for the rotation around the y-axis.
+
+2. **Functions to Rotate the Cube:**
+   ```javascript
+   function rotateLeft(cube) {
+       cube.rotation.y -= Math.PI / 4;  // Rotate left by 45 degrees
+   }
+
+   function rotateRight(cube) {
+       cube.rotation.y += Math.PI / 4;  // Rotate right by 45 degrees
+   }
+   ```
+
+3. **Predicates for Button Presses:**
+   We need a way to listen to button press events. Assuming we're using standard HTML buttons and JavaScript, here's how you can set up these predicates with event listeners:
+   
+   ```html
+   <!-- HTML setup for buttons -->
+   <button id="leftButton">Left</button>
+   <button id="rightButton">Right</button>
+   ```
+
+   ```javascript
+   // JavaScript to handle button presses
+   let leftPressed = false;
+   let rightPressed = false;
+
+   document.getElementById('leftButton').addEventListener('mousedown', function() {
+       leftPressed = true;
+   });
+   document.getElementById('leftButton').addEventListener('mouseup', function() {
+       leftPressed = false;
+   });
+
+   document.getElementById('rightButton').addEventListener('mousedown', function() {
+       rightPressed = true;
+   });
+   document.getElementById('rightButton').addEventListener('mouseup', function() {
+       rightPressed = false;
+   });
+
+   function pressL() {
+       return leftPressed;
+   }
+
+   function pressR() {
+       return rightPressed;
+   }
+   ```
+
+4. **Using the Functions and Predicates:**
+   To bind the rotation functions to the button press predicates, use an update loop or event-driven model depending on the framework/environment:
+
+   ```javascript
+   function updateCube() {
+       if (pressL()) {
+           rotateLeft(cube);
+       }
+       if (pressR()) {
+           rotateRight(cube);
+       }
+   }
+
+   // Call updateCube function repeatedly, e.g., using requestAnimationFrame for smooth animation if in a browser.
+   function animate() {
+       requestAnimationFrame(animate);
+       updateCube();
+   }
+   animate();
+   ```
+
+### Notes:
+- The rotation values (`Math.PI / 4`) can be adjusted to control how much the cube rotates per button press.
+- The predicates `pressL` and `pressR` use boolean flags that are toggled by mouse events. This setup assumes that there's no requirement for handling continuous button presses differently from single presses. Adjustments might be needed based on the specific interaction model (e.g., adding key hold support).
+- `requestAnimationFrame` is used for animation consistency and performance optimization in web environments. This function will need to be called in a loop to continuously update the cube's orientation based on button states.

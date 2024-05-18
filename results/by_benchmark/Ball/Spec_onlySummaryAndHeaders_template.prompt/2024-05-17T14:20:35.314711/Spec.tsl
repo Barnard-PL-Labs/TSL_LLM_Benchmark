@@ -1,0 +1,14 @@
+always assume {
+  // There are no additional environmental assumptions required beyond the function and predicate declarations
+}
+
+always guarantee {
+  // When the ball is at the leftmost position, it should move to the right in the next step
+  leftmost(ball) -> X ([ ball <- moveRight(ball) ]);
+
+  // When the ball is at the rightmost position, it should move to the left in the next step
+  rightmost(ball) -> X ([ ball <- moveLeft(ball) ]);
+
+  // When the ball is not at either boundary, it should continue in its current direction
+  !(leftmost(ball) || rightmost(ball)) -> ([ ball <- ball ]);
+}

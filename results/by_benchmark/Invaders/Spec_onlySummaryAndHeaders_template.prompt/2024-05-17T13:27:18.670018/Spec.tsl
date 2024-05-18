@@ -1,0 +1,27 @@
+always assume {
+  // Ship cannot move left if it is at the leftmost position
+  (leftmost(ship) -> (X !([ship.ctrl <- moveLeft(ship)]))) ;
+  
+  // Ship cannot move right if it is at the rightmost position
+  (rightmost(ship) -> (X !([ship.ctrl <- moveRight(ship)]))) ;
+  
+  // Ship can always shoot
+  true;
+  
+  // If ship is hit, it must respond with a die action
+  (hit(ship) -> X ([ship.ctrl <- die(ship)])) ;
+}
+
+always guarantee {
+  // If the ship is not at the leftmost edge, it can move left
+  !leftmost(ship) -> ([ship.ctrl <- moveLeft(ship)]) ;
+  
+  // If the ship is not at the rightmost edge, it can move right
+  !rightmost(ship) -> ([ship.ctrl <- moveRight(ship)]) ;
+  
+  // The ship can always shoot regardless of position
+  ([ship.ctrl <- shoot(ship)]) ;
+  
+  // If the ship gets hit, it must take a die action
+  hit(ship) -> ([ship.ctrl <- die(ship)]) ;
+}

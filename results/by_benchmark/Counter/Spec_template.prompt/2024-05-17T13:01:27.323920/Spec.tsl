@@ -1,0 +1,24 @@
+always assume {
+  // Mutual exclusion for button presses to ensure no two operations are performed at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When A is pressed, increment the counter by the current stepsize
+  pressA(e) -> [count <- count + stepsize];
+
+  // When B is pressed, increment the counter by 2 and reset stepsize to 1
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // When C is pressed, increment the counter by 3 and reset stepsize to 1
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // If A is pressed three times consecutively, then the fourth time it is pressed, multiply stepsize by 3
+  // This TSL assumes an external mechanism counts the consecutive A presses or resets it if B or C is pressed
+  // Introducing a cell 'aPressCount' to track consecutive A presses
+  pressA(e) && (aPressCount = 3) -> [stepsize <- multiplyByThree(stepsize)];
+  pressA(e) -> [aPressCount <- aPressCount + 1];
+  (pressB(e) || pressC(e)) -> [aPressCount <- 0];
+}

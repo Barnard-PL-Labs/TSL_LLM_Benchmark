@@ -1,0 +1,82 @@
+To implement the functions and predicates as described, we will use JavaScript. Below are the implementations that respect the specified guidelines and interface with the given system API for the cube's scale:
+
+### Functions Implementation
+```javascript
+// Function that returns the sine of x
+function sin(x) {
+  return Math.sin(x);
+}
+
+// Function that returns the sawtooth wave of x
+function saw(x) {
+  // Implementing a sawtooth wave function
+  // Period of the sawtooth wave is assumed to be 2 * Math.PI
+  // Formula: saw(x) = 2 * (x / (2 * Math.PI) - Math.floor(1/2 + x / (2 * Math.PI)))
+  return 2 * (x / (2 * Math.PI) - Math.floor(1/2 + x / (2 * Math.PI)));
+}
+```
+
+### Predicates Implementation
+To implement the predicates `pressL(e)` and `pressR(e)`, we need to set up event listeners that will detect button presses. Assuming the buttons are part of the DOM and have specific IDs or classes, the predicates can be set to monitor these events.
+
+```javascript
+// Predicate to check if the left button is pressed
+function pressL(e) {
+  let leftPressed = false;
+  
+  // Adding an event listener to the expected 'left' button
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowLeft') {  // Assuming the left arrow key represents the left button
+      leftPressed = true;
+    }
+  });
+
+  document.addEventListener('keyup', function(event) {
+    if (event.key === 'ArrowLeft') {
+      leftPressed = false;
+    }
+  });
+
+  return () => leftPressed;
+}
+
+// Predicate to check if the right button is pressed
+function pressR(e) {
+  let rightPressed = false;
+  
+  // Adding an event listener to the expected 'right' button
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowRight') {  // Assuming the right arrow key represents the right button
+      rightPressed = true;
+    }
+  });
+
+  document.addEventListener('keyup', function(event) {
+    if (event.key === 'ArrowRight') {
+      rightPressed = false;
+    }
+  });
+
+  return () => rightPressed;
+}
+
+// Usage of predicates (example)
+const isLeftPressed = pressL();
+const isRightPressed = pressR();
+```
+
+### Integrating with the Cube's Scale API
+To integrate these functions and predicates with cube manipulation in a 3D environment, you can add further functionality to adjust `cube.scale.x` based on the predicates or functions result. For instance:
+
+```javascript
+// Example of using the predicates to modify cube.scale.x
+setInterval(() => {
+  if (isLeftPressed()) {
+    cube.scale.x = sin(new Date().getTime() / 1000);  // Change scale based on the sine function
+  } else if (isRightPressed()) {
+    cube.scale.x = saw(new Date().getTime() / 1000);  // Change scale based on the saw function
+  }
+}, 100);  // Update every 100 ms
+```
+
+Keep in mind that in a real implementation, the `cube` object and its method for setting `scale.x` should be correctly referred to depending on the actual 3D library or environment you are using.

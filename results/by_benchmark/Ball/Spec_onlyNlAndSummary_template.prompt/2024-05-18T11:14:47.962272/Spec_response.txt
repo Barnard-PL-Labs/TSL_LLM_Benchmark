@@ -1,0 +1,35 @@
+Here is a TSL specification based on the provided natural language description for the ball bouncing between two walls:
+
+```TSL
+always assume {
+  // If the ball is moved to the left, then in the next moment, it is guaranteed that the ball is not at the rightmost wall.
+  (moveLeft -> X !(ball.position == 10));
+
+  // If the ball is moved to the right, then in the next moment, it is ensured that the ball is not at the leftmost wall.
+  (moveRight -> X !(ball.position == 0));
+
+  // It is always the case that the ball cannot be at both the leftmost and the rightmost wall at the same time.
+  G !(ball.position == 0 && ball.position == 10);
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, eventually it must be moved to the left.
+  (ball.position == 10 -> F moveLeft);
+
+  // If the ball is at the leftmost wall, eventually it must be moved to the right.
+  (ball.position == 0 -> F moveRight);
+
+  // If the ball is neither at the leftmost nor at the rightmost wall, then eventually, it must be moved either to the left or to the right.
+  (!(ball.position == 0 || ball.position == 10) -> F (moveLeft || moveRight));
+
+  // If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall.
+  ((ball.position == 0) && X moveRight -> !(moveLeft) W (ball.position == 10));
+
+  // If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall.
+  ((ball.position == 10) && X moveLeft -> !(moveRight) W (ball.position == 0));
+}
+```
+
+### Explanation:
+- **Assumptions** define the constraints on how the ball moves based on actions taken (left or right) and ensure mutual exclusivity of being at both walls simultaneously.
+- **Guarantees** define necessary actions based on the ball's position, ensuring that it moves away from the walls and continues moving appropriately until it reaches the opposite wall. These are set up to maintain the bouncing behavior expected from the ball between two walls.

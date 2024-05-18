@@ -1,0 +1,36 @@
+Here's the TSL specification based on your description:
+
+```tsl
+always assume {
+  // There are three buttons that a user can push
+  (button1 || button2 || button3);
+}
+
+always guarantee {
+  // When button1 is pushed, E4 will eventually be played and it must be the next action
+  button1 -> X ([noteToPlay <- "E4"]);
+  
+  // When button2 is pushed, G4 will eventually be played and it must be the next action
+  button2 -> X ([noteToPlay <- "G4"]);
+  
+  // When button3 is pushed, A4 will eventually be played on noteToPlay2 and it must be the next action
+  button3 -> X ([noteToPlay2 <- "A4"]);
+
+  // If A4 is playing on noteToPlay2, E4 cannot be played on noteToPlay at the same time
+  ([noteToPlay2 <- "A4"]) -> !([noteToPlay <- "E4"]);
+
+  // A4 cannot be played on noteToPlay2 until E4 has stopped being played on noteToPlay
+  ([noteToPlay <- "E4"]) -> F (!([noteToPlay <- "E4"]) U ([noteToPlay2 <- "A4"]));
+
+  // If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2 and G4 on noteToPlay
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && X ([noteToPlay <- "G4"]));
+}
+```
+
+### Explanation:
+- **Assumptions**: The system assumes that one of three buttons can be pushed at any time.
+- **Guarantees**:
+  - The immediate response to a button push (buttons 1, 2, and 3) is specified with the `X` operator to ensure that the corresponding note is the next action.
+  - The condition where A4 on `noteToPlay2` and E4 on `noteToPlay` cannot play simultaneously is explicitly stated.
+  - The condition for playing A4 on `noteToPlay2` only after E4 has stopped playing on `noteToPlay` uses the pattern `F (...) U (...)`.
+  - The specification includes a sequence where the playing of E4 leads to the eventual playing of A4 and G4 in a particular order, showcasing a sequence or chord progression.

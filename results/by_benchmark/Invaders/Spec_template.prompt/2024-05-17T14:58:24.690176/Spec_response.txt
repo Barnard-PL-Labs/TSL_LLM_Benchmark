@@ -1,0 +1,40 @@
+Here's the TSL specification based on the provided natural language description for controlling a player's spaceship in a game like Space Invaders:
+
+```tsl
+always assume {
+  // Mutual exclusions for key inputs to ensure no conflicting movements
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressUp(e));
+  !(pressL(e) && pressDown(e));
+  !(pressR(e) && pressUp(e));
+  !(pressR(e) && pressDown(e));
+  !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+  // Ship movements and interactions
+  // If the ship is hit by an enemy, end game or lose a life
+  hit(ship) -> [die(ship)];
+
+  // Left movement: if left key is pressed and ship is not at leftmost position
+  pressL(e) && !leftmost(ship) -> [ship <- moveLeft(ship)];
+
+  // Right movement: if right key is pressed and ship is not at rightmost position
+  pressR(e) && !rightmost(ship) -> [ship <- moveRight(ship)];
+
+  // Shooting action: if shoot key is pressed, trigger shooting
+  pressShoot(e) -> [shoot(ship)];
+}
+```
+
+### Explanation:
+- **Assumptions**:
+  - The mutual exclusion for key inputs ensures that no two opposing or conflicting directional inputs are processed simultaneously, which could otherwise result in undefined behavior in the game's movement mechanics.
+
+- **Guarantees**:
+  - If the ship is hit (`hit(ship)`), the `die(ship)` action is triggered, representing the ship being destroyed or losing a life.
+  - When the left key is pressed and the ship is not already at the leftmost boundary (`leftmost(ship)`), the `moveLeft(ship)` function is called to move the ship one unit to the left.
+  - When the right key is pressed and the ship is not at the rightmost boundary (`rightmost(ship)`), the `moveRight(ship)` function is called to move the ship one unit to the right.
+  - When the shoot key is pressed (`pressShoot(e)`), the `shoot(ship)` function is activated to perform a shooting action, likely engaging the game's firing mechanics to attack enemies.
+
+This specification models simple game controls and interactions, focusing on movement restrictions and basic combat mechanics.

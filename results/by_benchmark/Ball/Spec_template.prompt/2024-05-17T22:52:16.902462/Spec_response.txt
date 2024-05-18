@@ -1,0 +1,36 @@
+Here is the TSL specification based on the provided natural language description and function/predicate definitions:
+
+```TSL
+always assume {
+  ([ball <- moveLeft(ball)] -> X !rightmost(ball));
+  ([ball <- moveRight(ball)] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+  (!leftmost(ball) && !rightmost(ball)) -> F (([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]));
+
+  (leftmost(ball) && X ([ball <- moveRight(ball)]))
+    -> ([ball <- moveRight(ball)] W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft(ball)]))
+    -> ([ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+### Explanation:
+
+**Assumptions:**
+1. If the ball moves left, it cannot be at the rightmost wall in the next state.
+2. If the ball moves right, it cannot be at the leftmost wall in the next state.
+3. The ball cannot be at both the leftmost and rightmost walls simultaneously.
+
+**Guarantees:**
+4. If the ball is at the rightmost wall, it will eventually move left.
+5. If the ball is at the leftmost wall, it will eventually move right.
+6. If the ball is not at any wall, it must eventually move either left or right.
+7. If the ball starts moving right from the leftmost wall, it will continue moving right until it reaches the rightmost wall.
+8. If the ball starts moving left from the rightmost wall, it will continue moving left until it reaches the leftmost wall. 
+
+This specification ensures that the ball behaves as described, bouncing between two walls and obeying the constraints of its movements.

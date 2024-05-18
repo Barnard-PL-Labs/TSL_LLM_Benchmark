@@ -1,0 +1,22 @@
+
+A system environment has the following API. Using the API, implement the following methods in JavaScript. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
+
+Functions and predicates to implement:
+
+
+Cells:
+  "ship" represents the state of the space ship
+Functions:
+  moveLeft(ship) => returns a signal to move ship to the left by one unit
+  moveRight(ship) => returns a signal to move ship to the right by one unit
+  shoot(ship) => returns a signal to shoot 
+  die(ship) => does an action, end game or lose life.
+Predicates:
+  leftmost(ship) => is the ship against the leftmost wall?
+  rightmost(ship) => is the ship against the rightmost wall?
+  hit(ship) => has the ship been hit by an incoming enemy?
+  
+
+System API:
+
+

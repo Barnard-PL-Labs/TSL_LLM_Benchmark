@@ -1,0 +1,80 @@
+To implement the requested functions and predicates in a JavaScript environment, we'll first define the functions `sin(x)` and `saw(x)`, and then create the predicates `pressL(e)` and `pressR(e)` that react to button presses. Since predicates involve event handling, we'll set up event listeners to detect when the left or right button is pressed.
+
+Here's a possible implementation:
+
+```javascript
+// Define a global object to manage the state of button presses
+const buttonStates = {
+    leftPressed: false,
+    rightPressed: false
+};
+
+// Functions
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    // Sawtooth wave can be implemented as the fractional part of x
+    return x - Math.floor(x);
+}
+
+// Predicates: These should be used to check the state of button presses
+function pressL(e) {
+    return buttonStates.leftPressed;
+}
+
+function pressR(e) {
+    return buttonStates.rightPressed;
+}
+
+// Event listeners for button presses
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        buttonStates.leftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        buttonStates.rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        buttonStates.leftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        buttonStates.rightPressed = false;
+    }
+});
+
+// Example usage of the API to manipulate cube.scale.x
+function updateCubeScale() {
+    const cube = {
+        scale: {
+            x: 1
+        }
+    };
+
+    // Let's say we use the sin function to periodically update the cube's x-scale
+    setInterval(() => {
+        cube.scale.x = sin(Date.now() / 1000);
+        console.log(`Updated cube scale.x to ${cube.scale.x}`);
+    }, 1000);
+}
+
+// Start the cube scale update
+updateCubeScale();
+```
+
+### Explanations:
+1. **sin(x) and saw(x)**: 
+    - `sin(x)` uses JavaScript's `Math.sin` function.
+    - `saw(x)` returns the fractional part of `x`, which creates a sawtooth wave pattern.
+
+2. **Event Handling for pressL(e) and pressR(e)**:
+    - We use `keydown` and `keyup` events to track whether the left or right arrow keys are pressed.
+    - The state of each key is managed using a `buttonStates` object, which keeps track of whether each button is currently pressed.
+    - `pressL` and `pressR` functions check this object to determine the current state of the left or right key.
+
+3. **Cube Scale Manipulation**:
+    - In the `updateCubeScale` function, a hypothetical `cube` object is manipulated. This function periodically updates the `cube.scale.x` using the sine of the current time to demonstrate dynamic scaling.
+
+This setup provides a foundational structure to manage button states and apply effects based on those states in a JavaScript environment interfacing with 3D graphics, assuming `cube` is a part of a larger 3D graphics library like Three.js.

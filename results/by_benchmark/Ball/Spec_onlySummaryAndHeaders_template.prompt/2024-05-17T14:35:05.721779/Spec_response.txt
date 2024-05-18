@@ -1,0 +1,34 @@
+To translate your natural language description of a ball bouncing between two walls into a Temporal Stream Logic (TSL) specification, we need to design rules that ensure the ball moves appropriately within the defined boundaries. Here's how you could set it up:
+
+### TSL Specification:
+
+```tsl
+always assume {
+  // Assume that the ball can only be at the furthest left or right position before moving in the opposite direction
+  (rightmost(ball) -> X !rightmost(ball));
+  (leftmost(ball) -> X !leftmost(ball));
+}
+
+always guarantee {
+  // Guarantee that if the ball is at the leftmost position, it should start moving right on the next state
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // Guarantee that if the ball is at the rightmost position, it should move left on the next state
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+
+  // Ensure that if the ball is not at either boundary, it continues in the current direction
+  (!leftmost(ball) && !rightmost(ball)) -> ([ball <- ball]);
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - The ball can only be at the furthest left (`leftmost(ball)`) or right (`rightmost(ball)`) positions before it must change direction. Once it reaches these positions, in the next state, it cannot be at the same position (`X !rightmost(ball)` and `X !leftmost(ball)`).
+
+2. **Guarantees**:
+   - If the ball is at the leftmost wall (`leftmost(ball)`), in the next state (`X`), the ball should get a command to move right (`[ball <- moveRight(ball)]`).
+   - If the ball is at the rightmost wall (`rightmost(ball)`), in the next state, the ball should get a command to move left (`[ball <- moveLeft(ball)]`).
+   - If the ball is not at either boundary (`!leftmost(ball) && !rightmost(ball)`), it should continue in the direction it was moving previously (`[ball <- ball]` indicates no change in movement command, assuming previous state logic dictates movement direction).
+
+This TSL specification ensures that the ball will bounce between the boundaries of `0` and `10`, changing direction at each boundary as described in the natural language specification.

@@ -1,0 +1,18 @@
+always assume {
+  // Ensuring that only one button for each note can be pushed at any time
+  !(pushButtonE4 && pushButtonG4);
+  !(pushButtonE4 && pushButtonA4);
+  !(pushButtonG4 && pushButtonA4);
+}
+
+always guarantee {
+  // Assign the note to be played when respective button is pushed
+  pushButtonE4 -> [noteToPlay <- "E4"];
+  pushButtonG4 -> [noteToPlay <- "G4"];
+  pushButtonA4 -> [noteToPlay <- "A4"];
+
+  // Play a second note simultaneously if another button is pushed
+  (pushButtonE4 && pushButtonG4) -> [noteToPlay2 <- "G4"];
+  (pushButtonE4 && pushButtonA4) -> [noteToPlay2 <- "A4"];
+  (pushButtonG4 && pushButtonA4) -> [noteToPlay2 <- "A4"];
+}

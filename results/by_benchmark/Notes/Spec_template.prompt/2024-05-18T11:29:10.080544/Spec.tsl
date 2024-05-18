@@ -1,0 +1,26 @@
+always assume {
+  // Define that there are three individual buttons: button1, button2, and button3
+  (button1 || button2 || button3);
+  // Enforce that each button press is treated individually
+  !(button1 && button2);
+  !(button1 && button3);
+  !(button2 && button3);
+}
+
+always guarantee {
+  // Ensure that pressing button1 leads to playing note E4 as the next action
+  button1 -> (X [noteToPlay <- "E4"]); 
+  // Ensure that pressing button2 leads to playing note G4 as the next action
+  button2 -> (X [noteToPlay <- "G4"]); 
+  // Ensure that pressing button3 leads to playing note A4 as the next action, on a different variable
+  button3 -> (X [noteToPlay2 <- "A4"]);
+  
+  // Enforce that E4 cannot be played on noteToPlay if A4 is playing on noteToPlay2 and vice versa
+  ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]) -> false;
+  
+  // Condition for playing A4 on noteToPlay2 only after E4 has stopped on noteToPlay
+  ([noteToPlay <- "E4"] -> F(![noteToPlay <- "E4"]) W [noteToPlay2 <- "A4"]);
+  
+  // If E4 is played, A4 must eventually play on noteToPlay2 and G4 on noteToPlay
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}

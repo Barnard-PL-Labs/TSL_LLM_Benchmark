@@ -1,0 +1,12 @@
+always assume {
+  // Ensure the ball is either at the leftmost or rightmost position to trigger movement changes
+  (leftmost(ball) || rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the rightmost position, it should move left on the next move
+  rightmost(ball) -> X [ball <- moveLeft(ball)];
+
+  // When the ball is at the leftmost position, it should move right on the next move
+  leftmost(ball) -> X [ball <- moveRight(ball)];
+}

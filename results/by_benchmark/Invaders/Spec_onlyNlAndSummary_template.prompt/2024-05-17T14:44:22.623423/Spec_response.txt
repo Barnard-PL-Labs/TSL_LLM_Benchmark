@@ -1,0 +1,37 @@
+Here is the TSL specification based on the provided natural language description for the player's ship behavior in Space Invaders:
+
+```
+always assume {
+  // Mutual Exclusion for Key Inputs
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Ship Hit Detection
+  (shipHit) -> [dead <- 1];
+
+  // Left Movement
+  pressL -> [shipPositionX <- shipPositionX - 1];
+
+  // Right Movement
+  pressR -> [shipPositionX <- shipPositionX + 1];
+
+  // Shooting Action
+  pressS -> [shootCounter <- shootCounter + 1];
+}
+```
+
+### Explanation:
+1. **Assumptions**: This section ensures that no two directional keys are pressed simultaneously, which would lead to conflicting commands. Each condition checks a pair of directional inputs and ensures they cannot both be true at the same time.
+
+2. **Guarantees**: 
+   - **Ship Hit Detection**: When the ship is hit (`shipHit`), the `dead` flag is set to 1, indicating the ship has been damaged or lost.
+   - **Left and Right Movement**: The ship's horizontal position (`shipPositionX`) is adjusted based on the pressing of the left (`pressL`) or right (`pressR`) keys, decrementing or incrementing the position by one unit respectively.
+   - **Shooting Action**: Activates when the shoot key (`pressS`) is pressed, which increments a counter or triggers a game mechanism related to shooting. This could be represented in various ways depending on the game's implementation; here, it's modeled as incrementing a `shootCounter`.
+
+This specification provides foundational interactions for the ship based on player inputs in a game setting, ensuring clear and non-conflicting input handling and defining critical game behaviors like movement and actions upon being hit.

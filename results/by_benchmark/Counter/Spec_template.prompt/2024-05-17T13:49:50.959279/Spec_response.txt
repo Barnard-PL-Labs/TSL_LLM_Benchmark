@@ -1,0 +1,40 @@
+Based on the natural language description provided, the TSL specification should ensure that the system behaves correctly according to the rules described for pressing the A, B, and C keys. Below is the corresponding TSL code structured into the `always assume` and `always guarantee` blocks:
+
+```tsl
+always assume {
+  // Ensure that no two counter operations can be performed at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Rule for pressing A button
+  pressA(e) -> ([counter <- counter + stepsize]);
+  
+  // Rule for pressing B button
+  pressB(e) -> ([counter <- counter + 2]);
+  
+  // Rule for pressing C button
+  pressC(e) -> ([counter <- counter + 3]);
+
+  // Increase stepsize by 3 times if A is pressed three times in a row
+  // using a predicate to check if A was pressed three times consecutively
+  (pressA(e) && X (pressA(e)) && X X (pressA(e)) && X X X (pressA(e))) -> [stepsize <- multiplyByThree(stepsize)];
+  
+  // Resetting the stepsize to 1 when B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - Mutual exclusion is ensured for button presses to prevent simultaneous operations, as specified.
+
+2. **Guarantees**:
+   - When the A button is pressed, the counter is incremented by the current `stepsize`.
+   - When the B or C button is pressed, the counter is incremented by a fixed amount (2 and 3 respectively).
+   - A sequence of four consecutive presses of the A button triggers an increase in the `stepsize` by a function `multiplyByThree`.
+   - Any press of B or C resets the `stepsize` to 1.
+
+This specification adheres to the rules described in the natural language description, ensuring the counter's behavior and stepsize adjustments are correctly managed based on the button pressed.

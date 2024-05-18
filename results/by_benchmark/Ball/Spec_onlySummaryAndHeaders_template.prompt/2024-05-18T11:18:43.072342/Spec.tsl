@@ -1,0 +1,16 @@
+always assume {
+  // Assume the logical exclusivity of being at either wall
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the leftmost wall, it must move right next
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // When the ball is at the rightmost wall, it must move left next
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+  
+  // When the ball is not at any wall, it continues in its current direction
+  // This assumes that the ball's movement direction is encoded in the state of 'ball'
+  !leftmost(ball) && !rightmost(ball) -> X ([ball <- ball]);
+}

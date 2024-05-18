@@ -1,0 +1,19 @@
+always assume {
+  // Ensure the ball can only be at positions ranging from 0 to 10
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // When the ball is at the leftmost position and not moving beyond, move it to the right
+  (ball == 0) -> [ball <- moveRight(ball)];
+
+  // When the ball reaches the rightmost position and not moving beyond, move it to the left
+  (ball == 10) -> [ball <- moveLeft(ball)];
+
+  // As long as the ball is not at either extreme, it should continue in the current direction
+  // If moving right and not at the rightmost, keep moving right
+  (!rightmost(ball) && [ball <- moveRight(ball)]) -> X (!leftmost(ball) -> [ball <- moveRight(ball)] W rightmost(ball));
+
+  // If moving left and not at the leftmost, keep moving left
+  (!leftmost(ball) && [ball <- moveLeft(ball)]) -> X (!rightmost(ball) -> [ball <- moveLeft(ball)] W leftmost(ball));
+}

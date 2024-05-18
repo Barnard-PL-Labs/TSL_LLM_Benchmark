@@ -1,0 +1,33 @@
+Based on the natural language description provided, here is the corresponding TSL specification:
+
+```tsl
+always assume {
+  // If the ball is moved to the left, it cannot be at the rightmost wall in the next state
+  ([ball <- moveLeft(ball)]) -> X !(rightmost(ball));
+
+  // If the ball is moved to the right, it cannot be at the leftmost wall in the next state
+  ([ball <- moveRight(ball)]) -> X !(leftmost(ball));
+
+  // The ball cannot be at both the leftmost and rightmost wall at the same time
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, eventually it must be moved to the left
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+
+  // If the ball is at the leftmost wall, eventually it must be moved to the right
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+
+  // If the ball is neither at the leftmost nor the rightmost wall, then eventually it must be moved either to the left or to the right
+  !(leftmost(ball) || rightmost(ball)) -> F (([ball <- moveLeft(ball)]) || ([ball <- moveRight(ball)]));
+
+  // If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall
+  leftmost(ball) && X ([ball <- moveRight(ball)]) -> ([ball <- moveRight(ball)]) W rightmost(ball);
+
+  // If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall
+  rightmost(ball) && X ([ball <- moveLeft(ball)]) -> ([ball <- moveLeft(ball)]) W leftmost(ball);
+}
+```
+
+This TSL specification translates the provided constraints about the movement of a ball bouncing between two walls into a formal representation acceptable by a system that interprets Temporal Stream Logic (TSL). Each clause in the "assume" and "guarantee" sections correlates directly to the assumptions and guarantees described in the natural language specification.

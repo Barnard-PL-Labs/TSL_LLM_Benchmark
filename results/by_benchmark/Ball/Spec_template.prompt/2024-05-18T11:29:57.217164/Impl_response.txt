@@ -1,0 +1,72 @@
+Since you are requesting JavaScript implementations for functions and predicates to control and check the state of a "ball", and considering a scenario where you don't have a specific system API wrapper provided, I'll define these functions and predicates based on general assumptions about how they might interact with a given cell or state.
+
+Here is a possible way to implement these:
+
+### JavaScript Implementations
+
+```javascript
+// Assuming "ball" is an object that might look like this:
+// { position: 0, leftWall: 0, rightWall: 100 }
+
+// Functions:
+function moveLeft(ball) {
+    // Decrease the position of the ball to move it left
+    if (ball.position > ball.leftWall) {
+        ball.position -= 1;
+    }
+    return ball.position;
+}
+
+function moveRight(ball) {
+    // Increase the position of the ball to move it right
+    if (ball.position < ball.rightWall) {
+        ball.position += 1;
+    }
+    return ball.position;
+}
+
+// Predicates:
+function leftmost(ball) {
+    // Check if the ball is at the leftmost position
+    return ball.position === ball.leftWall;
+}
+
+function rightmost(ball) {
+    // Check if the ball is at the rightmost position
+    return ball.position === ball.rightWall;
+}
+```
+
+### Usage Example
+
+```javascript
+// Example ball object
+let ball = {
+    position: 50,
+    leftWall: 0,
+    rightWall: 100
+};
+
+console.log("Initial Position:", ball.position);
+
+// Move ball to the left
+moveLeft(ball);
+console.log("After moving left:", ball.position);
+console.log("Is at leftmost?", leftmost(ball));
+
+// Move ball to the right
+moveRight(ball);
+moveRight(ball);
+console.log("After moving right twice:", ball.position);
+console.log("Is at rightmost?", rightmost(ball));
+```
+
+### Explanation
+
+1. **Functions: `moveLeft` and `moveRight`**
+   - These functions adjust the `position` property of the `ball` object to move it left or right. The movement is conditional based on whether the ball is already at the left or right boundary defined by `leftWall` and `rightWall`.
+
+2. **Predicates: `leftmost` and `rightmost`**
+   - These are simple checks that compare the `ball`'s `position` to its boundary properties (`leftWall` and `rightWall`). They return `true` if the ball is at the respective wall, otherwise `false`.
+
+This setup assumes the `ball` object structure as shown, and that there are predefined boundary values (`leftWall`, `rightWall`). If the actual system has a different mechanism or data structure for controlling and checking positions, the functions and predicates will need to be adjusted accordingly.

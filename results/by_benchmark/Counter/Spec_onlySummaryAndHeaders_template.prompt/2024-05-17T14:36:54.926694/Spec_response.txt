@@ -1,0 +1,27 @@
+Here is the TSL specification based on your description, incorporating the pressing of keys A, B, and C, with the specific rules for modifying the counter and ensuring mutual exclusion between button presses.
+
+```tsl
+always assume {
+  // Ensure that no two keys are pressed simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Pressing the B or C key resets the stepsize to 1
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // Pressing the A key three times in a row multiplies the stepsize by 3, unless interrupted by B or C
+  pressA(e) -> X (pressA(e) -> X (pressA(e) -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e))));
+
+  // Ensure that pressing A normally increments the counter by the current stepsize
+  pressA(e) -> [counter <- counter + stepsize];
+}
+```
+
+This specification handles:
+- Mutual exclusion of button presses, ensuring that pressing one button negates the possibility of another being pressed at the same time.
+- The feature of resetting `stepsize` to 1 if either the B or C key is pressed.
+- The functionality for the A key, where pressing it three consecutive times without interruption from B or C multiplies the `stepsize` by 3. If B or C is pressed during this sequence, it will stop the multiplication process and reset `stepsize` to 1.
+- Normal increment of the counter by `stepsize` when the A key is pressed.

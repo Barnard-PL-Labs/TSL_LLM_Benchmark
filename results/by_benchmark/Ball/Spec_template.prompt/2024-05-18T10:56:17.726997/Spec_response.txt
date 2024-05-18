@@ -1,0 +1,15 @@
+```
+always assume {
+  ([ball <- moveLeft()] -> X !rightmost(ball));
+  ([ball <- moveRight()] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft()]);
+  leftmost(ball) -> F ([ball <- moveRight()]);
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft()] || [ball <- moveRight()]);
+  (leftmost(ball) && X ([ball <- moveRight()])) -> G (!leftmost(ball) W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft()])) -> G (!rightmost(ball) W leftmost(ball));
+}
+```

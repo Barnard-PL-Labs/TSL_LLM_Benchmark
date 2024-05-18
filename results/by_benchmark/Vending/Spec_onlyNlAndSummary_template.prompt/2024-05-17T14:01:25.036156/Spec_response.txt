@@ -1,0 +1,36 @@
+```tsl
+always assume {
+  // Mutual exclusion for button presses
+  !(pressD && pressQ) && !(pressD && pressO) && !(pressD && press1) && !(pressD && press2) && !(pressD && press3) && !(pressD && pressR) &&
+  !(pressQ && pressO) && !(pressQ && press1) && !(pressQ && press2) && !(pressQ && press3) && !(pressQ && pressR) &&
+  !(pressO && press1) && !(pressO && press2) && !(pressO && press3) && !(pressO && pressR) &&
+  !(press1 && press2) && !(press1 && press3) && !(press1 && pressR) &&
+  !(press2 && press3) && !(press2 && pressR) &&
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increment total by 0.1 when pressD is pushed
+  pressD -> [total <- total + 0.1];
+
+  // Increment total by 0.25 when pressQ is pushed
+  pressQ -> [total <- total + 0.25];
+
+  // Increment total by 1 when pressO is pushed
+  pressO -> [total <- total + 1];
+
+  // Decrement total by 0.75 when press1 is pushed and total >= 0.75
+  (press1 && total >= 0.75) -> [total <- total - 0.75];
+
+  // Decrement total by 1 when press2 is pushed and total >= 1
+  (press2 && total >= 1) -> [total <- total - 1];
+
+  // Decrement total by 1.25 when press3 is pushed and total >= 1.25
+  (press3 && total >= 1.25) -> [total <- total - 1.25];
+
+  // Set total to 0 when pressR is pushed
+  pressR -> [total <- 0];
+}
+```
+
+This TSL specification ensures that the vending machine operates correctly as described by the natural language requirements, with mutual exclusivity enforced for button presses and appropriate actions taken based on the button pressed and the current total amount in the machine.

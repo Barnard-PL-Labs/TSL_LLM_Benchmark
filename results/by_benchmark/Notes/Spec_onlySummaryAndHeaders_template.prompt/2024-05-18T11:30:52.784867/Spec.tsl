@@ -1,0 +1,16 @@
+always assume {
+  // Define the mutual exclusion for playing notes E4, G4, and A4
+  !([noteToPlay <- "E4"] && [noteToPlay <- "G4"]) ;
+  !([noteToPlay <- "E4"] && [noteToPlay <- "A4"]) ;
+  !([noteToPlay <- "G4"] && [noteToPlay <- "A4"]) ;
+  !([noteToPlay2 <- "E4"] && [noteToPlay2 <- "G4"]) ;
+  !([noteToPlay2 <- "E4"] && [noteToPlay2 <- "A4"]) ;
+  !([noteToPlay2 <- "G4"] && [noteToPlay2 <- "A4"]) ;
+}
+
+always guarantee {
+  // Define the behavior of playing notes
+  [buttonPress1] -> ([noteToPlay <- "E4"] || [noteToPlay2 <- "E4"]) ;
+  [buttonPress2] -> ([noteToPlay <- "G4"] || [noteToPlay2 <- "G4"]) ;
+  [buttonPress3] -> ([noteToPlay <- "A4"] || [noteToPlay2 <- "A4"]) ;
+}

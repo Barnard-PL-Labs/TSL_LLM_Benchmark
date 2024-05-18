@@ -1,0 +1,49 @@
+In the scenario provided, we need to implement predicates that evaluate certain conditions based on the inputs received by the system. We have a series of predicates that determine the amount in the "total" cell and key presses represented by the "e" cell. Below are the predicate implementations using JavaScript. Each predicate function will return a boolean value based on the conditions specified.
+
+```javascript
+// Predicates for checking the "total" value
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicates for checking key presses in the "e" state
+function pressD(e) {
+    return e.key === 'd';
+}
+
+function pressQ(e) {
+    return e.key === 'q';
+}
+
+function pressO(e) {
+    return e.key === 'o';
+}
+
+function press1(e) {
+    return e.key === '1';
+}
+
+function press2(e) {
+    return e.key === '2';
+}
+
+function press3(e) {
+    return e.key === '3';
+}
+
+function pressR(e) {
+    return e.key === 'r';
+}
+```
+
+Each function takes the relevant input (either `total` or `e`) and returns a boolean value based on the comparison or equality check. These functions, when called with the correct arguments, will tell you if the specified condition is met, allowing the vending machine or any other system to make decisions based on these inputs. 
+
+Note: This implementation assumes that the `e` object has a property `key` which contains the lower-case representation of the key pressed. If the actual system uses different properties or structures, adjustments to the code may be necessary.

@@ -1,0 +1,17 @@
+```
+always assume {
+  ([ball <- moveLeft(ball)] -> X !(rightmost(ball)));
+  ([ball <- moveRight(ball)] -> X !(leftmost(ball)));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+  (leftmost(ball) && X ([ball <- moveRight(ball)])) -> (!leftmost(ball) W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft(ball)])) -> (!rightmost(ball) W leftmost(ball));
+}
+```
+
+This TSL specification describes the behavior of a system where a ball bounces between two walls, with positions ranging from 0 (leftmost wall) to 10 (rightmost wall). The assumptions ensure the ball's movement restrictions upon reaching wall boundaries, and the guarantees define the expected behavior when the ball is at either of these boundaries.

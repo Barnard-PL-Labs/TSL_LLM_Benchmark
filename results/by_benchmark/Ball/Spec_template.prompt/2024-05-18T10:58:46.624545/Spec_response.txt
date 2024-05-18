@@ -1,0 +1,45 @@
+Here is the TSL specification based on the provided natural language description and the functions and predicates mentioned:
+
+```tsl
+always assume {
+  // If the ball is moved to the left, then in the next moment, it is guaranteed that the ball is not at the rightmost wall.
+  ([ball <- moveLeft(ball)]) -> X !rightmost(ball);
+
+  // If the ball is moved to the right, then in the next moment, it is ensured that the ball is not at the leftmost wall.
+  ([ball <- moveRight(ball)]) -> X !leftmost(ball);
+  
+  // It is always the case that the ball cannot be at both the leftmost and the rightmost wall at the same time.
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, eventually it must be moved to the left.
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+
+  // If the ball is at the leftmost wall, eventually it must be moved to the right.
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+
+  // If the ball is neither at the leftmost nor at the rightmost wall, then eventually, it must be moved either to the left or to the right.
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+
+  // If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall.
+  (leftmost(ball) && X ([ball <- moveRight(ball)])) -> ([ball <- moveRight(ball)] W rightmost(ball));
+
+  // If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall.
+  (rightmost(ball) && X ([ball <- moveLeft(ball)])) -> ([ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+### Explanation:
+
+- **Assumptions**:
+  1. When the ball moves left, the next state cannot be at the rightmost wall.
+  2. When the ball moves right, the next state cannot be at the leftmost wall.
+  3. The ball cannot be simultaneously at both walls.
+
+- **Guarantees**:
+  4. If the ball is touching the rightmost wall, it must eventually move left.
+  5. If the ball is touching the leftmost wall, it must eventually move right.
+  6. If the ball is not touching either wall, it must eventually move in either direction.
+  7. If the ball is at the leftmost position and is set to move right next, it must continue moving right until it hits the rightmost wall.
+  8. If the ball is at the rightmost position and is set to move left next, it must continue moving left until it hits the leftmost wall.

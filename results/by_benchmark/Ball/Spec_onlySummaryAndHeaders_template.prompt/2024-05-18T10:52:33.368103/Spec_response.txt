@@ -1,0 +1,25 @@
+Based on the provided natural language description, we can translate the behavior of the ball bouncing between two walls into a TSL specification. Here's how you can structure the TSL code:
+
+```
+always assume {
+  // The ball cannot be both at the leftmost and rightmost positions at the same time
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, it should move right
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+  
+  // If the ball is at the rightmost position, it should move left
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+  
+  // General movement behavior: if not at any wall, continue moving in the current direction until a wall is reached
+  (!leftmost(ball) && !rightmost(ball)) -> (X ([ball <- moveLeft(ball)]) W leftmost(ball) || X ([ball <- moveRight(ball)]) W rightmost(ball));
+}
+```
+
+This TSL code:
+- Begins by assuming that the ball can't be at both walls at the same time.
+- Specifies that if the ball is against the left wall (`leftmost(ball)`), the next state (`X`) should guarantee that an action (`[ball <- moveRight(ball)]`) is taken to move the ball to the right.
+- Similarly, if the ball is against the right wall (`rightmost(ball)`), the next state should involve an action to move the ball to the left (`[ball <- moveLeft(ball)]`).
+- Handles the continuous movement of the ball when it's not at either wall, ensuring that it continues to move in the current direction until it reaches a wall. This is modeled using the "weak until" (`W`) operator which maintains a condition until another condition is met, but does not require the second condition to become true eventually.

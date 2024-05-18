@@ -1,0 +1,16 @@
+always assume {
+  (ball = 0 -> leftmost(ball));   // When the ball's position is 0, it is at the leftmost wall
+  (ball = 10 -> rightmost(ball)); // When the ball's position is 10, it is at the rightmost wall
+  (ball >= 0 && ball <= 10);      // The ball's position is always between 0 and 10
+}
+
+always guarantee {
+  (leftmost(ball) -> X ([ball <- moveRight(ball)]));  // When at the leftmost wall, move the ball to the right next
+  (rightmost(ball) -> X ([ball <- moveLeft(ball)]));  // When at the rightmost wall, move the ball to the left next
+
+  // Ensure that when not at either wall, the ball continues in the same direction it was moving
+  (!leftmost(ball) && !rightmost(ball) && (ball > 0 && ball < 10)) -> (
+    (ball' = ball + 1 -> X ([ball <- moveRight(ball)])) ||
+    (ball' = ball - 1 -> X ([ball <- moveLeft(ball)]))
+  );
+}

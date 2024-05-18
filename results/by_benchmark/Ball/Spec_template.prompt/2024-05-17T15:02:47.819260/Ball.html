@@ -1,0 +1,123 @@
+<style>
+	#debug {
+		margin: 50px;
+		font-size: 25px;
+	}
+
+	#ball {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		animation: bounce 2s infinite ease-in-out;
+	}
+
+	@keyframes bounce {
+
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-500px);
+		}
+	}
+</style>
+
+<div id="debug"></div>
+<div id="ball"></div>
+
+<script>
+
+// Assuming there is a global object 'system' to interact with the environment
+// which we can use to get or set the state of 'ball' cell
+
+// Functions
+function moveLeft(ball) {
+  // Assuming 'system.setBallDirection' exists and accepts parameters for ball and direction
+  system.setBallDirection(ball, 'left');
+  return 'Signal to move left sent';
+}
+
+function moveRight(ball) {
+  // Similarly assuming 'system.setBallDirection' for moving right
+  system.setBallDirection(ball, 'right');
+  return 'Signal to move right sent';
+}
+
+// Predicates
+function leftmost(ball) {
+  // Assuming 'system.getBallPosition' returns the position of the ball
+  // and 'system.getLeftWallPosition' gives the position of the leftmost wall
+  const ballPosition = system.getBallPosition(ball);
+  const leftWallPosition = system.getLeftWallPosition();
+  return ballPosition === leftWallPosition;
+}
+
+function rightmost(ball) {
+  // Assuming similar function for getting the rightmost wall position
+  const ballPosition = system.getBallPosition(ball);
+  const rightWallPosition = system.getRightWallPosition();
+  return ballPosition === rightWallPosition;
+}
+
+
+</script>
+<script src="computed/Synth.js" type="text/javascript"></script>
+
+<script>
+
+	(async () => {
+
+
+		// Wrapper
+
+		const X_STEP_DURATION = 200;
+
+		class Ball {
+			constructor() {
+				this.pos = 0
+			}
+
+			render() {
+				const ball = document.getElementById('ball');
+				ball.style.transition = `left ${X_STEP_DURATION}ms linear`;
+				ball.style.left = `${this.pos / 10 * (screen.availWidth - 100)}px`;
+
+				const debug = document.querySelector('#debug');
+				debug.textContent = 'Current State: ' + currentState
+			}
+		}
+
+		window.currentState = 0
+
+		const ball = new Ball()
+		ball.render()
+
+		// /*
+
+		// Wait for 1s to sync the up-and-down animationw with bouncing, in order to make it look like the
+		// ball is bouncing.
+
+		// */
+		// await new Promise(((resolve) => resolve()), 1000)
+
+		setInterval(
+			(() => {
+
+				ball_pos = ball.pos;
+				({ currentState, ball_pos }) = updateState({ currentState, ball_pos })
+				ball.pos = ball_pos
+				console.log('currentState', currentState, ball)
+				ball.render()
+
+			}),
+			X_STEP_DURATION
+		)
+
+	})()
+
+</script>

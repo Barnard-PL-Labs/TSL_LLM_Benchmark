@@ -1,0 +1,38 @@
+Here's the TSL specification derived from your description:
+
+```tsl
+always assume {
+  // Button inputs are mutually exclusive to simplify the model
+  !(button1 && button2) && !(button2 && button3) && !(button1 && button3);
+}
+
+always guarantee {
+  // When button1 is pushed, E4 is played next on noteToPlay
+  button1 -> X ([noteToPlay <- "E4"]);
+  
+  // When button2 is pushed, G4 is played next on noteToPlay
+  button2 -> X ([noteToPlay <- "G4"]);
+  
+  // When button3 is pushed, A4 is played next on noteToPlay2
+  button3 -> X ([noteToPlay2 <- "A4"]);
+
+  // If A4 is played on noteToPlay2, E4 cannot be played simultaneously on noteToPlay
+  ([noteToPlay2 <- "A4"] -> G !(noteToPlay = "E4"));
+
+  // A4 on noteToPlay2 cannot play until E4 has stopped being played on noteToPlay
+  ([noteToPlay <- "E4"] -> (!([noteToPlay2 <- "A4"]) W !([noteToPlay <- "E4"])));
+
+  // If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2,
+  // and G4 must eventually follow on noteToPlay
+  ([noteToPlay <- "E4"] -> F ([noteToPlay2 <- "A4"] && F ([noteToPlay <- "G4"])));
+}
+```
+
+### Explanation:
+
+1. **Assumptions**: We define that the buttons are mutually exclusive in their activation, simplifying the handling in the guarantees.
+2. **Guarantees**:
+   - When each button is pushed, the corresponding note is played next on the respective variable (`noteToPlay` or `noteToPlay2`).
+   - If `A4` is played on `noteToPlay2`, `E4` cannot be played at the same time on `noteToPlay` to prevent simultaneous play.
+   - `A4` cannot play on `noteToPlay2` until `E4` stops playing on `noteToPlay`.
+   - When `E4` is played on `noteToPlay`, it is followed by `A4` on `noteToPlay2` and then `G4` on `noteToPlay` as a sequence or chord structure.
