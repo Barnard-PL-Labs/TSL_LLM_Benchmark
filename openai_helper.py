@@ -171,6 +171,7 @@ always guarantee {
 """
 
 # TODO Add three prompts. One for no html template, one for rudimentary, one for skeleton
+NO_CODE_GEN = """Using this description of a program, write a single html file that runs this in the script section"""
 NO_TEMPLATE_REGEN = """Using this code as insipiration generate a single html file that runs the js code
 {}"""
 SKELETON_REGEN = """Using this synthesized code and the following html template as an example complete the html. The html should run the functionality defined by the code, feel free to add any functionality you deem necessary.

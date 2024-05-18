@@ -15,7 +15,13 @@ import datetime
 import argparse
 from subprocess import check_call
 
-from openai_helper import ask_chatgpt, NO_TEMPLATE_REGEN, SKELETON_REGEN, BASE_HTML
+from openai_helper import (
+    ask_chatgpt,
+    NO_CODE_GEN,
+    NO_TEMPLATE_REGEN,
+    SKELETON_REGEN,
+    BASE_HTML,
+)
 
 file_dir = os.path.dirname(__file__)
 
@@ -262,6 +268,7 @@ def run_with_args(args):
         if args.regen_html:
             print("Using synthesized code to regenerate html")
             prompt_templates = [
+                ("summary_gen", NO_CODE_GEN.format(spec_prompt)),
                 ("code_ntregen", NO_TEMPLATE_REGEN.format(code_block)),
                 (
                     "code_sknregen",
