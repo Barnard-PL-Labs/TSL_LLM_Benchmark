@@ -1,0 +1,1 @@
+Command '['tsl', 'synthesize', '-i', 'invaders/computed/Spec.tsl', '--js', '-o', 'invaders/computed/Synth.js']' returned non-zero exit status 1.

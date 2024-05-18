@@ -1,0 +1,58 @@
+Given the description and requirements, here's how you can implement the functions and predicates in JavaScript, utilizing a typical event-driven approach for the predicates. Note that the cube's scale manipulation using `cube.scale.x` assumes an object `cube` with a property structure like that often found in three-dimensional graphics libraries such as THREE.js.
+
+### JavaScript Implementation
+
+#### Functions
+
+```javascript
+// Returns the sine of x
+function sin(x) {
+    return Math.sin(x);
+}
+
+// Returns the sawtooth wave of x
+function saw(x) {
+    // Sawtooth wave function: x - floor(x)
+    return x - Math.floor(x);
+}
+```
+
+#### Predicates
+
+For predicates, I'll assume `cube` is a globally accessible object and the predicates are meant to be used within an event-driven context like a webpage or a software with GUI event handling.
+
+```javascript
+// Predicate for pressL, returns true when the left button is pressed
+function pressL(e) {
+    return e.key === 'ArrowLeft';
+}
+
+// Predicate for pressR, returns true when the right button is pressed
+function pressR(e) {
+    return e.key === 'ArrowRight';
+}
+
+// Example of usage with event listeners
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        console.log('Left button pressed');
+        // Assuming cube.scale.x can be modified directly
+        cube.scale.x = sin(t); // 't' should be defined in your context, possibly as time or frame count
+    }
+    if (pressR(e)) {
+        console.log('Right button pressed');
+        // Modify cube.scale.x based on sawtooth wave
+        cube.scale.x = saw(t); // Likewise, 't' needs to be contextually defined
+    }
+});
+```
+
+### Notes
+
+1. **Event Handling**: The `pressL` and `pressR` predicates are designed to be used within an event listener that passes an event object (`e`). The properties of this object (like `e.key`) are checked to determine if the left or right arrow keys were pressed.
+
+2. **Integration**: The code snippets assume that the `cube` object and a variable `t` for time or frame count are managed elsewhere in your application. This could be part of an animation loop or another part of your event-driven logic.
+
+3. **Dependencies**: This code assumes a browser environment or another JavaScript environment capable of handling events similar to DOM events (`keydown`). If using in a different environment (like a server-side Node.js application), you'll need to adapt or simulate the event handling mechanism accordingly.
+
+4. **Testing and Debugging**: Make sure to test these functions and predicates in the actual environment where `cube.scale.x` is meaningful and modifiable, which typically would be within a 3D graphics rendering loop or similar setup.

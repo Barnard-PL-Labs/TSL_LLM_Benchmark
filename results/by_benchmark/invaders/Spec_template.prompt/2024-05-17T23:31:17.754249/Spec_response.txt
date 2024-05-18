@@ -1,0 +1,39 @@
+Here's the TSL specification based on the provided natural language description for the behavior of a player's ship in Space Invaders:
+
+```tsl
+always assume {
+  // Ensure mutual exclusion for key inputs, ensuring no two directional keys are pressed simultaneously
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // If the left key (L) is pressed and the ship is not at the leftmost position, move the ship left
+  pressL && !leftmost(ship) -> [ ship <- moveLeft(ship) ];
+  
+  // If the right key (R) is pressed and the ship is not at the rightmost position, move the ship right
+  pressR && !rightmost(ship) -> [ ship <- moveRight(ship) ];
+  
+  // If the shoot key (S) is pressed, trigger the shooting action
+  pressS -> [ ship <- shoot(ship) ];
+  
+  // If the ship is hit by an enemy or an obstacle, trigger the die action
+  hit(ship) -> [ ship <- die(ship) ];
+}
+```
+
+### Explanation of the TSL Code
+1. **Assumptions**:
+   - The code specifies the mutual exclusion of key inputs to prevent simultaneous conflicting movements. This ensures that only one movement command (left, right, up, down) or action (shoot) is processed at any time.
+
+2. **Guarantees**:
+   - When the left key is pressed and the ship is not already at the left boundary, the ship moves left.
+   - When the right key is pressed and the ship is not at the right boundary, the ship moves right.
+   - The shoot action is triggered when the shoot key is pressed, allowing the player to fire projectiles.
+   - If the ship gets hit by an enemy or an obstacle, the die action is initiated, which might involve ending the game or losing a life, depending on the game rules.
+
+This specification clearly defines the behavior of the ship based on input conditions and the ship's state relative to game boundaries and interactions with game elements.

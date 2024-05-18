@@ -1,0 +1,44 @@
+To implement the predicate `pressUp(e)` in JavaScript, which checks if the up arrow key is pressed, we need to add an event listener to the window that listens for `keydown` events. Since predicates should return boolean values, we will initialize a variable that keeps track of whether the up arrow key (which corresponds to the key code 38) is pressed.
+
+Here’s how you can implement this in JavaScript:
+
+```javascript
+// Variable to keep track of the state of the up arrow key
+let upKeyPressed = false;
+
+// Function to handle keydown events
+function handleKeyDown(event) {
+    if (event.keyCode === 38) {  // 38 is the key code for the up arrow key
+        upKeyPressed = true;
+    }
+}
+
+// Function to handle keyup events
+function handleKeyUp(event) {
+    if (event.keyCode === 38) {
+        upKeyPressed = false;
+    }
+}
+
+// Adding event listeners to the window for keydown and keyup
+window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('keyup', handleKeyUp);
+
+// Predicate function to check if the up key is pressed
+function pressUp() {
+    return upKeyPressed;
+}
+```
+
+Explanation:
+1. **Variable Initialization**: `upKeyPressed` is a boolean that tracks the state of the up arrow key. It is initialized to `false`.
+
+2. **Event Handlers**:
+   - `handleKeyDown`: This function sets `upKeyPressed` to `true` if the key pressed is the up arrow key (key code 38).
+   - `handleKeyUp`: This function sets `upKeyPressed` to `false` when the up arrow key is released.
+
+3. **Event Listeners**: We add two event listeners to the window to listen for `keydown` and `keyup` events. These listeners will trigger `handleKeyDown` and `handleKeyUp` respectively.
+
+4. **Predicate Function `pressUp`**: This function returns the current state of `upKeyPressed`, allowing other parts of your system to check if the up arrow key is currently pressed.
+
+This setup ensures that `pressUp` will accurately reflect the state of the up arrow key anytime it's called, providing a correct implementation for the predicate as per the given requirements.

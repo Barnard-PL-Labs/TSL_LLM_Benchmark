@@ -1,0 +1,20 @@
+To translate your natural language description into a TSL specification, we need to define both the assumptions and the guarantees based on the interaction with the up key and the cube's scaling behavior. Here's a potential TSL specification for the scenario described:
+
+```tsl
+always assume {
+    // There are no specific environmental assumptions to declare in this context, assuming basic input handling is managed externally.
+}
+
+always guarantee {
+    // Guarantee 1: When the user presses the up button, increment the counter each frame.
+    pressUp(e) -> [count <- count + 1];
+
+    // Guarantee 2: When the user is not pressing the up button, reset the counter to 0.5.
+    !pressUp(e) -> [count <- 0.5];
+
+    // Guarantee 3: Update the cube's scale.x with the value of the counter.
+    [cube.scale.x <- count];
+}
+```
+
+This TSL specification sets up a reactive system where the cube's scale along the x-axis responds dynamically to the up key being pressed. The `count` variable increments continually as long as the up key is held down, and resets to 0.5 when the up key is released. The cube's scale is tied directly to the current value of `count`.

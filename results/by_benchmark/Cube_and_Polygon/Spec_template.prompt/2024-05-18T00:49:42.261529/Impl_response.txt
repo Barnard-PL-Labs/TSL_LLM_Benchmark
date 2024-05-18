@@ -1,0 +1,64 @@
+Here is a JavaScript implementation of the given functions and predicates using the described system API. For the predicates `pressL` and `pressR`, we will use event listeners on the appropriate input events to determine the state of the left and right buttons respectively.
+
+```javascript
+// System API interaction object, assuming an object named 'cube' exists in your environment
+const cube = {
+  scale: {
+    x: 1
+  }
+};
+
+// Functions
+function sin(x) {
+  return Math.sin(x);
+}
+
+function saw(x) {
+  // Implementation of a sawtooth wave function
+  const period = 2 * Math.PI; // period, you can adjust this if needed
+  return 2 * (x / period - Math.floor(0.5 + x / period));
+}
+
+// Predicates using event listeners
+let leftPressed = false;
+let rightPressed = false;
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft') {
+    leftPressed = true;
+  } else if (e.key === 'ArrowRight') {
+    rightPressed = true;
+  }
+});
+
+document.addEventListener('keyup', function(e) {
+  if (e.key === 'ArrowLeft') {
+    leftPressed = false;
+  } else if (e.key === 'ArrowRight') {
+    rightPressed = false;
+  }
+});
+
+function pressL(e) {
+  return leftPressed;
+}
+
+function pressR(e) {
+  return rightPressed;
+}
+```
+
+### Explanation:
+1. **Functions (`sin` and `saw`)**:
+   - The `sin(x)` function uses JavaScript's built-in `Math.sin()` to compute the sine of `x`.
+   - The `saw(x)` function computes the sawtooth wave for a given `x`. It's implemented manually by defining a period and applying the sawtooth function formula.
+
+2. **Predicates (`pressL` and `pressR`)**:
+   - We maintain two variables `leftPressed` and `rightPressed` to keep track of whether the left or right arrow keys are currently pressed.
+   - We add event listeners for `keydown` and `keyup` events to update these variables when the left or right keys are pressed or released.
+   - Functions `pressL(e)` and `pressR(e)` simply return the current state (true/false) of these variables.
+
+3. **Interaction with `cube`**:
+   - The example does not include interaction with the `cube.scale.x`, but you can adjust it based on your system needs by setting `cube.scale.x` within any part of this script, for example, within an update loop or in response to button presses.
+
+Make sure to integrate this script in an environment where DOM events can be captured (like a web page with a defined `cube` object). If the system API has specific requirements or behaves differently, adjustments might be needed.

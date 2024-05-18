@@ -1,0 +1,49 @@
+Here is the TSL specification based on the description provided for the behavior of a player's ship in a game similar to Space Invaders:
+
+```tsl
+always assume {
+    // Mutual Exclusion for Key Inputs
+    !(pressL && pressR);
+    !(pressL && pressUp);
+    !(pressL && pressDown);
+    !(pressR && pressUp);
+    !(pressR && pressDown);
+    !(pressUp && pressDown);
+}
+
+always guarantee {
+    // Ship Hit Detection
+    hit -> [command <- die(ship)];
+    
+    // Left Movement
+    pressL -> {
+        // Ensure that the ship can move left unless it's at the leftmost position
+        !leftmost(ship) -> [command <- moveLeft(ship)];
+    };
+    
+    // Right Movement
+    pressR -> {
+        // Ensure that the ship can move right unless it's at the rightmost position
+        !rightmost(ship) -> [command <- moveRight(ship)];
+    };
+    
+    // Shooting Action
+    pressS -> [command <- shoot(ship)];
+}
+```
+
+### Explanation:
+
+1. **Mutual Exclusion for Key Inputs**: 
+   - The specification begins by ensuring that no two directional keys can be pressed at the same time. This is essential to prevent conflicting movements or actions.
+
+2. **Ship Hit Detection**: 
+   - The specification checks if the `hit` predicate is true, indicating the ship has been hit by an enemy or an obstacle. If so, the action `die(ship)` is invoked, which could represent ending the game or losing a life.
+
+3. **Left and Right Movement**: 
+   - When the left key (`pressL`) is pressed, and the ship is not at the leftmost position (`!leftmost(ship)`), the ship is moved left by one unit using the `moveLeft(ship)` function. Similarly, when the right key (`pressR`) is pressed, and the ship is not at the rightmost position (`!rightmost(ship)`), the ship is moved right by one unit using the `moveRight(ship)` function.
+
+4. **Shooting Action**: 
+   - The shooting action is triggered when the shoot key (`pressS`) is pressed, using the `shoot(ship)` function indicating that the ship should shoot.
+
+This TSL specification organizes the behavior and constraints for the ship in the game, ensuring appropriate responses to user inputs and game events.

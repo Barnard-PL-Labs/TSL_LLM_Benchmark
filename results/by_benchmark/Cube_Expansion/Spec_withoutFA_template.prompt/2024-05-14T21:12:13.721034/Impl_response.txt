@@ -1,0 +1,36 @@
+To create the TSL template for the described system using predicates without using functions, we can directly define the necessary conditions and actions based on the provided predicates and API. Since JavaScript functions are not to be implemented, we'll focus on how the TSL (Temporal Stream Logic) concepts would be applied if they were to be implemented in a system that supports TSL.
+
+Let's proceed by setting up the TSL environment:
+
+### TSL Environment Setup
+This setup will assume the existence of predicates that can check the state of keyboard inputs. Given that JavaScript functions are not used, the predicates are assumed to be provided by some external API that integrates with a hypothetical TSL environment.
+
+```tsl
+always assume {
+  // Predicate to check if the up arrow key is pressed. 
+  // The actual implementation is assumed to be handled externally.
+  pressUp(e);
+}
+
+always guarantee {
+  // Example usage of the cube.scale.x API in response to the pressUp predicate.
+  // If the up arrow key is pressed, increase the cube's scale along the x-axis.
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 1];
+
+  // If the up arrow key is not being pressed, maintain the current scale.
+  !pressUp(e) -> [cube.scale.x <- cube.scale.x];
+}
+```
+
+### Explanation:
+1. **Assumptions Block**: 
+   - `pressUp(e)`: We assume there is a predicate `pressUp(e)` which becomes true when the up arrow key is pressed. This is part of the external API or environment handling keyboard inputs.
+
+2. **Guarantees Block**:
+   - Increase Scale: When the up arrow key is pressed (`pressUp(e)`), the cube's scale on the x-axis is increased by 1. This is indicated by `[cube.scale.x <- cube.scale.x + 1]`.
+   - Maintain Scale: When the up arrow key is not pressed (`!pressUp(e)`), the scale of the cube on the x-axis remains unchanged. This is indicated by maintaining the current value `[cube.scale.x <- cube.scale.x]`.
+
+### Notes:
+- This TSL template assumes that the system has the capability to interpret and execute TSL specifications directly or through some middleware that translates these specifications into actionable code.
+- The actual JavaScript implementation of such predicates and event listeners would involve adding event listeners to the DOM and updating variables accordingly, but per the instructions, those implementations are not created.
+- TSL is a high-level specification language used mainly in theoretical contexts or specific domains like reactive systems, and typically it would need a runtime environment or a compiler that understands how to execute or simulate these specifications.

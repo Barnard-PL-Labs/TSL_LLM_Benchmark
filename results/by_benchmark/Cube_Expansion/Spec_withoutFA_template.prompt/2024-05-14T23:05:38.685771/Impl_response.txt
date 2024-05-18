@@ -1,0 +1,38 @@
+To implement the specified predicates without defining any functions in JavaScript, we need to set up an event listener for the `keydown` event. This listener will check if the up arrow key is pressed, setting a global variable or a property to reflect the current state (true or false) of the up arrow key press. This predicate can then be used to determine if the "up" key is currently pressed.
+
+Let's implement this functionality using a simple JavaScript structure that fits your requirements. Here, I will use a simple object to store the state of the key press and add listeners directly to update this state.
+
+```javascript
+// Creating an object to store the state of key presses
+const keyState = {
+  upPressed: false
+};
+
+// Adding an event listener for the "keydown" event to detect when keys are pressed
+document.addEventListener('keydown', function(event) {
+  if (event.key === "ArrowUp") { // Check if the key is the up arrow
+    keyState.upPressed = true;
+  }
+});
+
+// Adding an event listener for the "keyup" event to reset the state when the key is released
+document.addEventListener('keyup', function(event) {
+  if (event.key === "ArrowUp") {
+    keyState.upPressed = false;
+  }
+});
+
+// Predicate to check if the up arrow key is pressed
+function pressUp() {
+  return keyState.upPressed;
+}
+```
+
+In this example:
+- We define a `keyState` object that holds the boolean state of whether the up arrow key is pressed.
+- We add two event listeners to the `document`: one for `keydown` and one for `keyup`. 
+  - In the `keydown` listener, we check if the pressed key is the up arrow key (`ArrowUp`). If it is, we set `upPressed` to `true`.
+  - In the `keyup` listener, we also check if the released key is the up arrow key, and if so, we set `upPressed` to `false`.
+- We define a `pressUp` function, which is a predicate that returns the current state of `upPressed`, indicating whether the up arrow key is currently pressed.
+
+This setup allows for the predicate `pressUp` to be used in any context to check the state of the up arrow key dynamically based on user input. It suits systems where the state of user input needs to be checked repeatedly or conditionally during runtime.

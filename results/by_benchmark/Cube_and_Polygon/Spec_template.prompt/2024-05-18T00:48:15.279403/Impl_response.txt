@@ -1,0 +1,55 @@
+Below you will find JavaScript implementations for the specified "functions" and "predicates" which correspond to the system environment you described. These implementations will interact with a three-dimensional cube object, which has a property `scale` with a sub-property `x` for managing its scale along the x-axis.
+
+### Functions:
+
+1. **sin(x)** - Returns the sine of x.
+2. **saw(x)** - Returns the sawtooth wave of x, which can be simulated using periodic modulo operations.
+
+```javascript
+// Function to return the sine of x
+function sin(x) {
+  return Math.sin(x);
+}
+
+// Function to return the sawtooth wave of x
+function saw(x) {
+  // Modulo operation to create a repeating pattern with a period from 0 to 2π
+  return 2 * (x - Math.floor(x / (2 * Math.PI)) * 2 * Math.PI) / (2 * Math.PI) - 1;
+}
+```
+
+### Predicates:
+
+1. **pressL(e)** - Returns true when the left button is pressed.
+2. **pressR(e)** - Returns true when the right button is pressed.
+
+These predicates require event listeners within the functions to detect key presses. I'll assume the use of keyboard events (e.g., pressing 'A' for left and 'D' for right). You'll need to adjust the key codes according to your specific requirements (e.g., using arrow keys).
+
+```javascript
+// Predicate to determine if the left button (key 'A') is pressed
+function pressL(e) {
+  return e.key === 'a' || e.key === 'A';
+}
+
+// Predicate to determine if the right button (key 'D') is pressed
+function pressR(e) {
+  return e.key === 'd' || e.key === 'D';
+}
+
+// Adding event listeners to the window to detect key presses
+window.addEventListener('keydown', function(e) {
+  if (pressL(e)) {
+    console.log("Left button pressed");
+    // Here you can interact with the cube, for example:
+    // cube.scale.x = sin(someValue); // Modify this as needed
+  }
+
+  if (pressR(e)) {
+    console.log("Right button pressed");
+    // Interaction with the cube can go here
+    // cube.scale.x = saw(someValue); // Modify this as needed
+  }
+});
+```
+
+In the code above, I've added a window event listener for `keydown` events, which calls the `pressL` and `pressR` predicates to check if the respective keys are pressed. According to the conditions, you can then manipulate `cube.scale.x` or perform other actions as required. Adjust the example to fit with the actual API method for setting `cube.scale.x` if it differs from direct property manipulation.

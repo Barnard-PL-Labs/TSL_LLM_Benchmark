@@ -1,0 +1,37 @@
+To implement the predicate `pressUp(e)` in JavaScript, which checks if the user has pressed the up arrow key on their keyboard, you will need to use the `addEventListener` method on the `document` object to listen for `keydown` and `keyup` events. Since the predicates should return a boolean indicating whether the up arrow key is pressed or not, we'll manage this state with a variable.
+
+Here is how you can set it up:
+
+```javascript
+let isUpKeyPressed = false;
+
+// Event listener for keydown
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowUp') {
+        isUpKeyPressed = true;
+    }
+});
+
+// Event listener for keyup
+document.addEventListener('keyup', function(event) {
+    if (event.key === 'ArrowUp') {
+        isUpKeyPressed = false;
+    }
+});
+
+// Predicate function to check if the up arrow key is pressed
+function pressUp() {
+    return isUpKeyPressed;
+}
+```
+
+### Explanation:
+1. **State Variable (`isUpKeyPressed`)**: This variable holds the state of the up arrow key, whether it's currently pressed (`true`) or not (`false`).
+
+2. **Event Listeners**: 
+   - The `keydown` event listener sets `isUpKeyPressed` to `true` if the up arrow key (`ArrowUp`) is pressed.
+   - The `keyup` event listener sets `isUpKeyPressed` back to `false` when the up arrow key is released.
+
+3. **Predicate Function (`pressUp`)**: This function simply returns the current state of `isUpKeyPressed`, indicating whether the up arrow key is currently pressed.
+
+This setup ensures that the system can accurately and dynamically check the state of the up arrow key at any time by calling the `pressUp()` function, as required by a predicate in TSL (Temporal Stream Logic) specifications.

@@ -1,0 +1,28 @@
+Based on the detailed description and requirements provided, here's how the TSL specification can be structured for the scenario with the cube's scale and user interaction with the up key:
+
+```tsl
+always assume {
+}
+
+always guarantee {
+    // Set default counter and scale values when the up button is not pressed
+    !pressUp(e) -> [count <- 0.5] && [cube.scale.x <- 0.5];
+
+    // Increment counter by 1 every frame while the up button is pressed
+    pressUp(e) -> [count <- count + 1];
+
+    // Update cube scale to match the counter value
+    pressUp(e) -> [cube.scale.x <- count];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**: There are no specific assumptions about the environment or other conditions that must hold true all the time, which is why the `always assume` block is empty.
+
+2. **Guarantees**:
+   - When the `up` button is not being pressed (`!pressUp(e)`), the counter (`count`) is set to 0.5, and the `cube.scale.x` is also set to 0.5.
+   - When the `up` button is pressed (`pressUp(e)`), the value of the counter (`count`) increments by 1 for every frame that the button remains pressed.
+   - Concurrently, as long as the `up` button is pressed (`pressUp(e)`), the cube's scale along the x-axis (`cube.scale.x`) updates to the current value of `count`, effectively scaling the cube as the button is held down.
+
+This TSL specification directly ties the cube's scaling behavior to the up button being pressed, with an immediate reset when the button is released.

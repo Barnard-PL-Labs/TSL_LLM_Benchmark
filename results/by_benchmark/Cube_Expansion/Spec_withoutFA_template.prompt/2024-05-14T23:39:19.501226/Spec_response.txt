@@ -1,0 +1,29 @@
+To translate the given natural language description into a TSL specification, we need to first define the predicates, assumptions, and guarantees based on the behavior of the cube's scale in response to the user's input (pressing the up key).
+
+```tsl
+always assume {
+  // No specific environmental assumptions beyond input conditions
+}
+
+always guarantee {
+  // Count holds the value for scaling the cube on the x-axis.
+  // When the up key is pressed, increment the value of count each frame.
+  pressUp(e) -> [count <- count + 1];
+
+  // When the up key is not pressed, reset count to 0.5.
+  !pressUp(e) -> [count <- 0.5];
+
+  // The cube's scale along the x-axis is updated with the value of count.
+  [cube.scale.x <- count];
+}
+```
+
+### Explanation:
+1. **Assumptions**: No explicit environmental assumptions are needed for this scenario as it directly handles input from the user. The assumption section remains empty in this case.
+
+2. **Guarantees**:
+   - When the up key is pressed (`pressUp(e)`), the counter variable `count` increments by 1 each frame. This is modeled by the assignment `[count <- count + 1]`.
+   - When the up key is not pressed (`!pressUp(e)`), the counter is reset to a baseline value of 0.5, done via `[count <- 0.5]`.
+   - The cube’s x-axis scale (`cube.scale.x`) is always updated to reflect the current value of `count`, ensuring that the cube’s size changes reactively as specified.
+
+This TSL specification describes the dynamic interaction between the up key input and the cube's scaling behavior, ensuring that the cube responds immediately and correctly to changes in user input.

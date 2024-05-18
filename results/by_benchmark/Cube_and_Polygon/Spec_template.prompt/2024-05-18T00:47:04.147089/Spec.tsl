@@ -1,0 +1,24 @@
+always assume {
+  // It is assumed that the left and right buttons are never pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // Handling the increment of the count when the right key is pressed
+  pressR(e) -> ([count <- count + 0.1] W pressL(e));
+
+  // Handling the decrement of the count when the left key is pressed
+  pressL(e) -> ([count <- count - 0.1] W pressR(e));
+
+  // Setting the rotation of the cube based on the sine of twice the count value
+  [cube.rotation.y <- sin(2 * count)];
+
+  // Setting the rotation of the polygon based on the sawtooth pattern of 0.5 times (1 + count)
+  [polygon.rotation.y <- saw(0.5 * (1 + count))];
+
+  // Fixing the x-position of the cube
+  [cube.position.x <- 1];
+
+  // Fixing the x-position of the polygon
+  [polygon.position.x <- 3];
+}

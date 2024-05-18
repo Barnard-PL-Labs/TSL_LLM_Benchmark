@@ -1,0 +1,27 @@
+Here's the TSL specification for the provided scenario regarding the cube's scale change based on user input:
+
+```tsl
+always assume {
+  // There are no specific environmental assumptions indicated.
+}
+
+always guarantee {
+  // When the user presses the up button, increment the count each frame
+  pressUp(e) -> [count <- count + 1];
+  
+  // When the user is not pressing the up button, reset count to 0.5
+  !pressUp(e) -> [count <- 0.5];
+  
+  // The scale of the cube along the x-axis always matches the value of count
+  [cube.scale.x <- count];
+}
+```
+
+### Explanation:
+1. **Assumptions**: There are no specific assumptions about the environment that need to be explicitly stated in the `always assume` block.
+
+2. **Guarantee 1**: When the user presses the up key, the counter (`count`) increments by 1 each frame. This is ensured by the assignment `[count <- count + 1]` under the condition `pressUp(e)`.
+
+3. **Guarantee 2**: When the user is not pressing the up key, the counter is reset to 0.5, as shown by `[count <- 0.5]` under the condition `!pressUp(e)` (negation of pressing up).
+
+4. **Guarantee 3**: The scale of the cube along the x-axis is continuously set to the value of `count`, thus following the changes in `count` as specified by the other two guarantees. This keeps the cube's scale responsive to the key press in real-time.

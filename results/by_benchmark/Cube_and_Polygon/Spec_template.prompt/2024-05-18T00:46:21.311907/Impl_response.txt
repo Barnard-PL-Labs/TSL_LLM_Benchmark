@@ -1,0 +1,73 @@
+To implement the functions and predicates using the provided API and requirements, we'll write JavaScript code that interacts with an assumed global object `cube` for manipulating `cube.scale.x`. We'll also define the `sin` and `saw` functions, and predicates `pressL` and `pressR` which detect button presses.
+
+### JavaScript Implementation
+
+```javascript
+// Assuming a global cube object is present and has a scale property with x, y, z components
+var cube = {
+    scale: {
+        x: 1, // Default scale along x-axis
+        y: 1,
+        z: 1
+    }
+};
+
+// Functions
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    // Sawtooth wave function, period of 2π
+    return 2 * (x / (2 * Math.PI) - Math.floor(0.5 + x / (2 * Math.PI)));
+}
+
+// Predicates
+function pressL(e) {
+    // Assume an event 'e' has a key property,
+    // Returns true if the left arrow key is pressed
+    return e.key === "ArrowLeft";
+}
+
+function pressR(e) {
+    // Assume an event 'e' has a key property,
+    // Returns true if the right arrow key is pressed
+    return e.key === "ArrowRight";
+}
+
+// Event listeners for key presses
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        console.log("Left button pressed");
+        // Additional actions can be triggered here
+    } else if (pressR(e)) {
+        console.log("Right button pressed");
+        // Additional actions can be triggered here
+    }
+});
+
+// Example usage of sin and saw functions to manipulate cube.scale.x
+function updateCubeScale() {
+    let time = new Date().getTime() / 1000; // Current time in seconds
+    cube.scale.x = sin(time); // Update scale x using sine function
+    console.log("Updated cube scale.x to sine wave:", cube.scale.x);
+
+    cube.scale.x = saw(time); // Update scale x using sawtooth wave
+    console.log("Updated cube scale.x to sawtooth wave:", cube.scale.x);
+}
+
+// Periodically update cube's scale for demonstration
+setInterval(updateCubeScale, 1000); // Update every second
+```
+
+### Explanation
+1. **sin(x) and saw(x)**: These functions compute the sine and sawtooth wave values of `x`. The sawtooth wave function is manually defined to have a period of \(2\pi\).
+
+2. **pressL(e) and pressR(e)**: These predicates check if the left or right arrow keys are pressed, respectively. They are designed to be used inside an event listener for keydown events.
+
+3. **Event Listener**: An event listener for the 'keydown' event calls `pressL` and `pressR` to detect if either the left or right arrow keys are pressed, executing the respective condition blocks.
+
+4. **updateCubeScale()**: This function demonstrates how to periodically update `cube.scale.x` using the `sin` and `saw` functions to show dynamic changes over time.
+
+### Note
+The given implementation assumes that the object `cube` and method of setting `cube.scale.x` directly corresponds to a visual or functional change in a 3D environment, which might typically be managed by a 3D graphics library such as Three.js. The `setInterval` function is used here for periodic updates and demonstration purposes only. Adjustments might be necessary based on the actual application architecture and performance considerations.

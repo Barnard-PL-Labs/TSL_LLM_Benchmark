@@ -1,0 +1,16 @@
+```tsl
+always assume {
+    // Input reactions are inherently mutually exclusive
+}
+
+always guarantee {
+    // When the user presses the up key, increment the counter each frame
+    pressUp(e) -> [count <- count + 1];
+
+    // When the user is not pressing the up key, reset the counter to 0.5
+    !(pressUp(e)) -> [count <- 0.5];
+
+    // Assign the counter value to the cube's scale along the x-axis
+    [cube.scale.x <- count];
+}
+```

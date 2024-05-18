@@ -1,0 +1,53 @@
+To implement the system with TSL (Temporal Stream Logic) and integrate the predicates with JavaScript, we begin by focusing on the `pressUp(e)` predicate. This predicate checks if the 'up' arrow key is pressed on the keyboard. We will achieve this by using event listeners in JavaScript to detect key presses.
+
+### JavaScript Implementation for `pressUp(e)`
+
+For `pressUp(e)`, we'll add a boolean variable to track the state of the up arrow key (whether it's pressed or not). We will set up event listeners for `keydown` and `keyup` events to update this boolean accordingly.
+
+Here's how you could implement this in JavaScript:
+
+```javascript
+// Variable to track the state of the up arrow key
+let upKeyPressed = false;
+
+// Add event listeners to the document for keydown and keyup events
+document.addEventListener('keydown', function(event) {
+    if (event.key === "ArrowUp") {
+        upKeyPressed = true; // Set to true when the up arrow key is pressed down
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    if (event.key === "ArrowUp") {
+        upKeyPressed = false; // Set to false when the up arrow key is released
+    }
+});
+
+// Predicate function to check if the up arrow key is pressed
+function pressUp(e) {
+    return upKeyPressed;
+}
+```
+
+### Integration with TSL
+
+Now, assuming integration with a TSL-based system, we typically manage the state transitions and reactions in TSL. Here, we use the `pressUp` function as part of the control logic that might look something like this in TSL:
+
+```tsl
+always assume {
+    // Define the key press behavior
+    pressUp(e);
+}
+
+always guarantee {
+    // Example guarantee, which could be a reaction to the key press
+    pressUp(e) -> [cube.scale.x <- 2]; // Scale the cube along the x-axis when the up key is pressed
+}
+```
+This TSL snippet assumes that when `pressUp(e)` is true, some action (like scaling a cube) is guaranteed. It's important to note that the actual syntax and API for setting properties like `cube.scale.x` will depend on the specifics of the system you're working with.
+
+### Note on Real System Integration
+
+In a real system, TSL predicates and guarantees need to be evaluated and triggered by a system that understands TSL and can interact with JavaScript or another host language. This setup often involves more infrastructure, such as a runtime environment that can monitor key presses and execute corresponding reactions defined in TSL.
+
+This setup provided here is a basic demonstration and would require more context about the runtime and environment specifics to fully implement and deploy in a real application.

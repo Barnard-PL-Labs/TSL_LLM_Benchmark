@@ -1,0 +1,24 @@
+Here's the TSL specification that matches your description:
+
+```tsl
+always assume {
+  // No specific assumptions are required for environment interaction in this case
+}
+
+always guarantee {
+  // When the user presses the up button, the counter (count) increments by 1 every frame
+  pressUp(e) -> [count <- count + 1];
+
+  // When the user is not pressing the up button, the counter (count) returns to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // The scale value along the x-axis (cube.scale.x) is continuously updated with the value of the counter (count)
+  [cube.scale.x <- count];
+}
+```
+
+This TSL specification incorporates the following logic:
+1. The `pressUp(e)` predicate checks if the up key is pressed.
+2. If the up key is pressed, the counter `count` is incremented by 1 every frame.
+3. If the up key is not pressed, the counter `count` is reset to 0.5.
+4. Regardless of the user input state, the cube's scale along the x-axis (`cube.scale.x`) is always updated to match the current value of `count`.

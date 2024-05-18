@@ -1,0 +1,24 @@
+always assume {
+    // Mutual Exclusion for Key Inputs to prevent simultaneous directional movements
+    !(pressL && pressR);
+    !(pressL && pressUp);
+    !(pressL && pressDown);
+    !(pressR && pressUp);
+    !(pressR && pressDown);
+    !(pressUp && pressDown);
+}
+
+always guarantee {
+    // Movements and Actions
+    // Left Movement
+    pressL -> ((!leftmost(ship)) -> [ship <- moveLeft(ship)]);
+    
+    // Right Movement
+    pressR -> ((!rightmost(ship)) -> [ship <- moveRight(ship)]);
+    
+    // Shooting Action
+    pressS -> [ship <- shoot(ship)];
+    
+    // Ship Hit Detection
+    hit(ship) -> [ship <- die(ship)];
+}

@@ -1,0 +1,52 @@
+To implement the predicate `pressUp(e)` that checks if the user presses the up arrow key on their keyboard in JavaScript, you will need to set up an event listener for the keydown event. Since predicates should return a boolean, we will manage the state of the up arrow key being pressed with a boolean variable.
+
+Below is a simple JavaScript implementation that uses the provided system API to handle the interaction with a cube, along with the event listener setup for detecting the up arrow key press:
+
+```javascript
+// State variable to hold the status of the up key
+let isUpKeyPressed = false;
+
+// Function to initialize event listeners
+function initializeKeyListeners() {
+    // Adding keydown event listener
+    window.addEventListener('keydown', function(e) {
+        if (e.key === "ArrowUp") {
+            isUpKeyPressed = true; // Set to true when the up arrow key is pressed
+        }
+    });
+
+    // Adding keyup event listener 
+    window.addEventListener('keyup', function(e) {
+        if (e.key === "ArrowUp") {
+            isUpKeyPressed = false; // Reset to false when the up arrow key is released
+        }
+    });
+}
+
+// Predicate function to check if the up key is pressed
+function pressUp() {
+    return isUpKeyPressed;
+}
+
+// Call the function to setup event listeners on window load
+window.onload = initializeKeyListeners;
+
+// Example usage
+// Continuously check if the up arrow key is pressed and log the status
+setInterval(() => {
+    console.log("Is the up arrow key pressed?", pressUp());
+}, 1000);
+```
+
+### Explanation:
+1. **State Management**: We use a boolean variable `isUpKeyPressed` to maintain the current state of the up arrow key, whether it is pressed or not.
+
+2. **Event Listeners**: We add two event listeners to the window - one for `keydown` and the other for `keyup`. The `keydown` event sets `isUpKeyPressed` to true when the up arrow key is pressed, while the `keyup` event resets it to false when the key is released.
+
+3. **Predicate Function**: The `pressUp` function acts as a predicate, returning the current state (`true` or `false`) of the up arrow key being pressed.
+
+4. **Initialization**: The `initializeKeyListeners` function is called when the window loads, ensuring the event listeners are set up correctly.
+
+5. **Logging**: As an example of using this setup, a `setInterval` function continuously logs the state of the up arrow key every second.
+
+This implementation provides a straightforward approach to detecting and managing the state of the up arrow key press, suitable for integration into applications needing this functionality.

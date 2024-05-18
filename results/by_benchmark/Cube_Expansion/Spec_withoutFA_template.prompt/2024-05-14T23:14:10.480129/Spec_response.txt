@@ -1,0 +1,24 @@
+Here is the TSL specification based on your description:
+
+```TSL
+always assume {
+  // No specific assumptions are required for this scenario
+}
+
+always guarantee {
+  // When the user presses the up button, increment the counter (count) continuously
+  pressUp(e) -> [count <- count + 1];
+
+  // When the user is not pressing the up button, reset the counter to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // The cube's scale along the x-axis is always updated to the value of the counter
+  [cube.scale.x <- count];
+}
+```
+
+In this specification:
+- The `pressUp(e)` predicate is used to detect when the up arrow key is pressed.
+- The value of `count` is incremented each frame while the up key is pressed, simulating continuous scale change.
+- When the up key is not pressed, the value of `count` is reset to 0.5, which in turn sets the cube's scale along the x-axis back to 0.5.
+- The cube's scale along the x-axis (`cube.scale.x`) is updated every frame to reflect the value of `count`, ensuring that changes in scale due to key presses are reflected visually in real-time.

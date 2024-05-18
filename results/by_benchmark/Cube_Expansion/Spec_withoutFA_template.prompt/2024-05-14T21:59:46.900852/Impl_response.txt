@@ -1,0 +1,40 @@
+To implement the predicate `pressUp(e)` using JavaScript, we must add an event listener to detect when the up arrow key is pressed on the keyboard. This predicate will then return a boolean value indicating whether the up key is pressed. Since we are instructed not to use or implement any functions beyond this predicate, we will directly set up the event listener and use a variable to track the state of the up key press.
+
+Below is the JavaScript code to implement this:
+
+```javascript
+// Variable to keep track of the up key press state
+let isUpKeyPressed = false;
+
+// Function to update the state when the up key is pressed
+document.addEventListener('keydown', function(event) {
+  if (event.key === "ArrowUp") {
+    isUpKeyPressed = true;
+  }
+});
+
+// Function to reset the state when the up key is released
+document.addEventListener('keyup', function(event) {
+  if (event.key === "ArrowUp") {
+    isUpKeyPressed = false;
+  }
+});
+
+// Predicate to check if the up key is pressed
+function pressUp() {
+  return isUpKeyPressed;
+}
+```
+
+### Explanation:
+1. **Variable Initialization**: We initialize a variable `isUpKeyPressed` to `false`. This variable will hold the state of the up arrow key, specifically whether it is currently pressed down or not.
+
+2. **Event Listener for `keydown`**: We add an event listener to the `document` object that listens for `keydown` events. Whenever a key is pressed down, this event is triggered. Inside this event handler:
+   - If the key pressed is the "ArrowUp" key (representing the up arrow key), we set `isUpKeyPressed` to `true`.
+
+3. **Event Listener for `keyup`**: Similarly, we add another event listener for `keyup` events. This event is triggered when a key is released. Inside this handler:
+   - If the "ArrowUp" key is released, we reset `isUpKeyPressed` to `false`.
+
+4. **Predicate Function `pressUp()`**: This function simply returns the value of `isUpKeyPressed`. If the up key is currently pressed, it returns `true`; otherwise, it returns `false`.
+
+This setup ensures that the predicate correctly reflects the state of the up arrow key at any moment, allowing other parts of your system to check this state through the `pressUp()` function.

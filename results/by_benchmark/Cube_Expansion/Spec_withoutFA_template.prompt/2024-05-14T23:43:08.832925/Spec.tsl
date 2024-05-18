@@ -1,0 +1,14 @@
+always assume {
+  // No assumptions specified regarding external conditions or predicates
+}
+
+always guarantee {
+  // When the user is not pressing the up button, the counter should be reset to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // When the user presses the up button, increment the counter by 1 each frame
+  pressUp(e) -> [count <- count + 1];
+
+  // The scale value along the x-axis is set to the current value of the counter
+  [cube.scale.x <- count];
+}

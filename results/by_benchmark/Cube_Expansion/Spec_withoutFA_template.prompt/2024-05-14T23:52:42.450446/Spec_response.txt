@@ -1,0 +1,20 @@
+Below is the TSL specification for the described scenario where a cube's scale along the x-axis changes reactively to the pressing of the up key:
+
+```tsl
+always assume {
+  // Insert assumptions here if necessary
+}
+
+always guarantee {
+  // When the up button is pressed, increment the counter each frame
+  pressUp(e) -> [count <- count + 1];
+
+  // When the up button is not pressed, reset the counter to 0.5
+  ! pressUp(e) -> [count <- 0.5];
+
+  // Update the cube's scale.x with the value of the counter
+  [cube.scale.x <- count];
+}
+```
+
+This TSL setup ensures the cube's scale along the x-axis reacts appropriately to the pressing of the up key, incrementing when pressed and reverting to 0.5 when not pressed. The cube's scale is continuously updated with the value of the counter.

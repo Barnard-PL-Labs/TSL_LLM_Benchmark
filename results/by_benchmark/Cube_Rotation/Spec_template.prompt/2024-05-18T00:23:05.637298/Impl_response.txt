@@ -1,0 +1,72 @@
+To implement the described functionality in JavaScript, we need to set up a method to rotate the cube and predicates to check if the left or right button is pressed. Below are the implementations for the functions and predicates using the given API.
+
+### Functions Implementation:
+
+#### Rotate Left:
+This function will rotate the cube to the left by decreasing the y rotation.
+
+```javascript
+function rotateLeft(cube) {
+    cube.rotation.y -= Math.PI / 18;  // Rotate left by 10 degrees
+}
+```
+
+#### Rotate Right:
+This function will rotate the cube to the right by increasing the y rotation.
+
+```javascript
+function rotateRight(cube) {
+    cube.rotation.y += Math.PI / 18;  // Rotate right by 10 degrees
+}
+```
+
+### Predicates Implementation:
+
+For the predicates, we will use event listeners to detect when the left or right buttons are pressed. We will assume these are literal 'left' and 'right' keys on the keyboard.
+
+#### Press Left (`pressL`):
+
+```javascript
+function pressL(e) {
+    return e.key === 'ArrowLeft';  // Returns true if the left arrow key is pressed
+}
+
+// Example usage with an event listener
+document.addEventListener('keydown', function(event) {
+    if (pressL(event)) {
+        rotateLeft(cube);
+    }
+});
+```
+
+#### Press Right (`pressR`):
+
+```javascript
+function pressR(e) {
+    return e.key === 'ArrowRight';  // Returns true if the right arrow key is pressed
+}
+
+// Example usage with an event listener
+document.addEventListener('keydown', function(event) {
+    if (pressR(event)) {
+        rotateRight(cube);
+    }
+});
+```
+
+### Complete Example with Event Listeners:
+
+Here is how you might set up the complete system with event listeners to handle rotation based on key presses:
+
+```javascript
+// Assuming 'cube' is already defined and has a 'rotation.y' property available
+document.addEventListener('keydown', function(event) {
+    if (pressL(event)) {
+        rotateLeft(cube);
+    } else if (pressR(event)) {
+        rotateRight(cube);
+    }
+});
+```
+
+This setup uses the keyboard's arrow keys to control the rotation of the cube in a 3D environment. The cube's rotation is modified based on which key is pressed, using the rotation property that is assumed to be part of the cube object as per the provided API. Adjust the rotation degree (`Math.PI / 18`) as needed for smoother or more significant rotation steps.

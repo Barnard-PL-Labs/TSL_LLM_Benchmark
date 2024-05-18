@@ -1,0 +1,81 @@
+To implement the given functions and predicates in JavaScript and integrate them with the described system API, we will structure the code into segments that fulfill each requirement.
+
+### Implementing the Functions: `sin(x)` and `saw(x)`
+
+To implement the `sin(x)` and `saw(x)` functions, we can utilize JavaScript's Math library for the sine function, and write a custom function for the sawtooth wave.
+
+```javascript
+// sin(x): Returns the sine of x
+function sin(x) {
+    return Math.sin(x);
+}
+
+// saw(x): Returns the sawtooth wave of x
+function saw(x) {
+    const period = 2 * Math.PI; // Define the period of the wave
+    const normalizedX = x % period; // Normalize x to a value within the period
+    return 2 * (normalizedX / period) - 1; // Scale and shift to range [-1, 1]
+}
+```
+
+### Implementing the Predicates: `pressL(e)` and `pressR(e)`
+
+Since these predicates involve event listeners that detect whether the left or right button is pressed, we'll need to set up event listeners within the browser environment and use a mechanism to store the state of each button press.
+
+```javascript
+// State variables to track button presses
+let isLeftPressed = false;
+let isRightPressed = false;
+
+// pressL(e): Returns true when the left button is pressed
+function pressL(e) {
+    return isLeftPressed;
+}
+
+// pressR(e): Returns true when the right button is pressed
+function pressR(e) {
+    return isRightPressed;
+}
+
+// Setup event listeners to update state variables
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        isLeftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        isRightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        isLeftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        isRightPressed = false;
+    }
+});
+```
+
+### Integrating with the 3D Environment API
+
+Assuming there's a global object `cube` which controls the 3D representation, and particularly the scale along the x-axis can be modified via `cube.scale.x`, we can update this scale using one of the implemented functions based on user input:
+
+```javascript
+// Example integration: Dynamically update cube's scale based on arrow keys
+function updateCubeScale() {
+    if (pressL()) {
+        cube.scale.x = sin(Date.now() / 1000);  // Apply sine wave based on current time
+    } else if (pressR()) {
+        cube.scale.x = saw(Date.now() / 1000);  // Apply sawtooth wave based on current time
+    }
+}
+
+// Call update function continuously using requestAnimationFrame for smooth integration
+function animate() {
+    requestAnimationFrame(animate);
+    updateCubeScale();
+}
+
+animate();  // Start the animation loop
+```
+
+This JavaScript setup uses `requestAnimationFrame` to continuously check and apply the scale transformations based on the sine and sawtooth functions when the left or right arrow keys are pressed, respectively. The pressing of these keys is captured by the predicate functions `pressL(e)` and `pressR(e)`.

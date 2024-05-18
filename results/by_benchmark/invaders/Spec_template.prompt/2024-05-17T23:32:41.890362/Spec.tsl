@@ -1,0 +1,27 @@
+always assume {
+    // Mutual exclusion for key inputs to ensure no conflicting movements
+    !(pressL && pressR);
+    !(pressL && pressU);
+    !(pressL && pressD);
+    !(pressR && pressU);
+    !(pressR && pressD);
+    !(pressU && pressD);
+}
+
+always guarantee {
+    // If the ship is hit, end game or lose a life
+    hit(ship) -> [die(ship)];
+    
+    // Left Movement: move the ship to the left when the left key is pressed
+    pressL -> {
+        !leftmost(ship) -> [moveLeft(ship)];
+    }
+    
+    // Right Movement: move the ship to the right when the right key is pressed
+    pressR -> {
+        !rightmost(ship) -> [moveRight(ship)];
+    }
+    
+    // Shooting Action: trigger shooting when the shoot key is pressed
+    pressS -> [shoot(ship)];
+}

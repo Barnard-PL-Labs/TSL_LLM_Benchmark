@@ -1,0 +1,14 @@
+always assume {
+    // There are no specific environmental assumptions to be made
+}
+
+always guarantee {
+    // Initialize the counter and scale when not pressing the up button
+    !(pressUp(e)) -> ([count <- 0.5] && [cube.scale.x <- 0.5]);
+
+    // When the up button is pressed, increment the counter and update the cube's scale
+    pressUp(e) -> (X ([count <- count + 1] && [cube.scale.x <- count]));
+
+    // When the button is released, reset the counter and scale
+    !pressUp(e) -> ([count <- 0.5] && [cube.scale.x <- 0.5]);
+}
