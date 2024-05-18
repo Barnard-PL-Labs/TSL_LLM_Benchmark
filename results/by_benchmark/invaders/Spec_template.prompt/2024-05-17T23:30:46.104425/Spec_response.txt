@@ -1,0 +1,39 @@
+Here is the TSL specification based on your described behavior for the player's ship in Space Invaders:
+
+```tsl
+always assume {
+  // Mutual exclusion for key inputs
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // If the ship is hit, end the game or lose life
+  hit(ship) -> [die(ship)];
+
+  // Ship movements based on key presses, ensuring that movements are blocked at the boundaries
+  // Left movement
+  pressL -> ((!leftmost(ship)) -> X ([ship <- moveLeft(ship)]));
+  
+  // Right movement
+  pressR -> ((!rightmost(ship)) -> X ([ship <- moveRight(ship)]));
+  
+  // Shooting action
+  pressShoot -> [ship <- shoot(ship)];
+}
+```
+
+Explanation:
+- **Assumptions**: The mutual exclusion in the assumptions ensures that no contradictory key inputs are processed at the same time. This prevents any conflicting actions or errors in ship movement.
+  
+- **Guarantees**:
+  - The ship responds to a hit by executing the `die(ship)` function, which could represent losing a life or ending the game.
+  - When the left key is pressed, if the ship is not at the leftmost boundary (`leftmost(ship)` returns false), the ship moves left. The `X` operator is used to indicate that the movement effect will be noticeable in the next state.
+  - Similarly, when the right key is pressed, if the ship is not at the rightmost boundary, it moves right.
+  - The shooting action is triggered whenever the shoot key is pressed, represented by the `shoot(ship)` function.
+  
+This TSL specification captures the basic movement and interaction dynamics of the ship in the Space Invaders game based on your description.

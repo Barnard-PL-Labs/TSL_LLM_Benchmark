@@ -1,0 +1,24 @@
+always assume {
+  // Mutual exclusion for key inputs
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // If the ship is hit, end the game or lose life
+  hit(ship) -> [die(ship)];
+
+  // Ship movements based on key presses, ensuring that movements are blocked at the boundaries
+  // Left movement
+  pressL -> ((!leftmost(ship)) -> X ([ship <- moveLeft(ship)]));
+  
+  // Right movement
+  pressR -> ((!rightmost(ship)) -> X ([ship <- moveRight(ship)]));
+  
+  // Shooting action
+  pressShoot -> [ship <- shoot(ship)];
+}

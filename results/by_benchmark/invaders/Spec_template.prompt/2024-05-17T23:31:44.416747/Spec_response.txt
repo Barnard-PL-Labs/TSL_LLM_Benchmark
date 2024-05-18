@@ -1,0 +1,38 @@
+Here is the TSL specification based on the detailed natural language description provided for the Space Invaders game:
+
+```
+always assume {
+  // Mutual exclusion for key inputs to prevent conflicting movements
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressUp(e));
+  !(pressL(e) && pressDown(e));
+  !(pressR(e) && pressUp(e));
+  !(pressR(e) && pressDown(e));
+  !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+  // Ship hit detection - setting dead condition if hit
+  hit(ship) -> [die(ship)];
+
+  // Left Movement: when left key is pressed, move left unless it's at the leftmost position
+  pressL(e) && !leftmost(ship) -> [moveLeft(ship)];
+
+  // Right Movement: when right key is pressed, move right unless it's at the rightmost position
+  pressR(e) && !rightmost(ship) -> [moveRight(ship)];
+
+  // Shooting Action: when shoot key is pressed, execute shoot function
+  pressS(e) -> [shoot(ship)];
+}
+```
+
+### Explanation:
+- The `always assume` block defines conditions to ensure mutual exclusivity among directional inputs, ensuring that no two directional keys are pressed simultaneously. This setup prevents conflicting commands that would otherwise lead to undefined game behavior.
+  
+- The `always guarantee` block defines how the system should react:
+  - If the ship is hit, the `die(ship)` function is triggered, which could end the game or cause the ship to lose a life.
+  - If the left key is pressed and the ship is not at the leftmost edge, the ship moves left by one unit through the `moveLeft(ship)` function.
+  - If the right key is pressed and the ship is not at the rightmost edge, the ship moves right by one unit through the `moveRight(ship)` function.
+  - If the shoot key is pressed, the shooting action is triggered via the `shoot(ship)` function to attack enemies.
+
+This TSL specification ensures that the ship behaves according to the game rules and responds correctly to player inputs and game events.

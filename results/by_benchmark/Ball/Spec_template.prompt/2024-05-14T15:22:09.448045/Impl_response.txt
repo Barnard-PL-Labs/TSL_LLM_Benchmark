@@ -1,0 +1,56 @@
+To implement the described system functionality using JavaScript, first, we need to define the methods for "functions" and "predicates" related to managing the state and behavior of a "ball" object within an environment. These methods will control the movement of the ball and check its position against the edges of the environment (leftmost and rightmost walls).
+
+Let's assume that the "ball" object has properties that can be manipulated or checked, such as its current position. For simplicity, we will represent the ball's position with a numeric variable that indicates its horizontal position. In this setup, we could define the boundaries of the environment (e.g., a leftmost wall at position 0 and a rightmost wall at position 10).
+
+Here's the JavaScript implementation:
+
+```javascript
+// Define the ball object with an initial position
+let ball = {
+    position: 5 // Assuming the middle of a scale from 0 to 10
+};
+
+// Functions:
+function moveLeft(ball) {
+    // Move the ball to the left by decreasing its position by 1
+    // Ensure that the ball does not cross the leftmost boundary
+    if (ball.position > 0) {
+        ball.position -= 1;
+    }
+    return ball.position;
+}
+
+function moveRight(ball) {
+    // Move the ball to the right by increasing its position by 1
+    // Ensure that the ball does not cross the rightmost boundary
+    if (ball.position < 10) {
+        ball.position += 1;
+    }
+    return ball.position;
+}
+
+// Predicates:
+function leftmost(ball) {
+    // Check if the ball is at the leftmost position (position 0)
+    return ball.position === 0;
+}
+
+function rightmost(ball) {
+    // Check if the ball is at the rightmost position (position 10)
+    return ball.position === 10;
+}
+
+// Example Usage:
+console.log("Initial Position:", ball.position);
+console.log("Move Left:", moveLeft(ball));
+console.log("Is Leftmost:", leftmost(ball));
+console.log("Move Right:", moveRight(ball));
+console.log("Is Rightmost:", rightmost(ball));
+```
+
+This implementation consists of:
+1. **ball object**: Represents the ball with a `position` property.
+2. **moveLeft() and moveRight() functions**: These manage the ball's position by decrementing or incrementing its `position` property, ensuring it does not pass the defined boundaries (0 for leftmost and 10 for rightmost).
+3. **leftmost() and rightmost() predicates**: These functions check whether the ball is at either the leftmost or the rightmost positions, respectively.
+
+This basic setup allows you to manipulate and query the state of the ball within a constrained linear environment. Adjust the boundary values according to the actual requirements or constraints of your environment.
