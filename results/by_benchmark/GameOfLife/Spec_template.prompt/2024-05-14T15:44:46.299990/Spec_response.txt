@@ -1,0 +1,18 @@
+Here is the TSL specification based on the natural language description provided:
+
+```tsl
+always assume {
+  // comAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+This TSL specification reflects the behavior rules of a cell in the Game of Life, where the cell's life status changes based on the conditions evaluated by the `comeAlive` and `comeDead` predicates, ensuring that both conditions cannot be true simultaneously.

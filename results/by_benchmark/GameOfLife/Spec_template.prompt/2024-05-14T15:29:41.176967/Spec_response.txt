@@ -1,0 +1,20 @@
+Here is the TSL specification that matches your description for simulating a single cell in the game of life:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+In this TSL specification:
+- The `assume` block ensures that the predicates `comeAlive` and `comeDead` are mutually exclusive for any given cell state evaluation.
+- The `guarantee` block handles the transitions of the cell state based on the predicates `comeAlive` and `comeDead`. The function `changeState()` is called to switch the cell to the appropriate state (alive or dead).

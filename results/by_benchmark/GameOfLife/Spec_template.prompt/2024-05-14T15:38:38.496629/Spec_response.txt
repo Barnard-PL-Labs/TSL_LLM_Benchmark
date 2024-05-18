@@ -1,0 +1,18 @@
+Here is the TSL specification based on your description:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [alive <- true];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [alive <- false];
+}
+```
+
+This TSL specification adheres to the rules of Conway's Game of Life by using the predicates `comeAlive` and `comeDead` to determine when a cell should become alive or dead. The guarantees ensure that the state of the cell (`alive`) is updated properly based on these conditions. Note that the `changeState()` function was replaced by direct assignments to the `alive` variable, as TSL works with state assignments rather than calling functions to change state.

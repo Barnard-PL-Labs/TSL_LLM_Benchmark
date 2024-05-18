@@ -1,0 +1,18 @@
+Here's how you can translate the given natural language description into a TSL specification for simulating a single cell in the game of life:
+
+```tsl
+always assume {
+  // Ensure that the predicates comeAlive and comeDead do not both return true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell should use changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell should use changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+This TSL code captures the basic rules of cell state changes in the Game of Life, specifically focusing on the transitions based on the conditions defined by `comeAlive` and `comeDead`. These predicates encapsulate the logic regarding the number of living neighbors that determine whether a cell becomes alive or dies, ensuring that the cell transitions correctly according to the game's rules.

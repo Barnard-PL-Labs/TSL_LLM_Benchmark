@@ -1,0 +1,96 @@
+Here's an example implementation in JavaScript to handle these functions and predicates based on your requirements. Since the API details for interacting with the cells are not fully provided, I'll assume some typical methods and data structures for implementing a grid-based system like Conway's Game of Life, which appears to be the context for these requirements.
+
+First, let's define the structure and initial setup:
+
+```javascript
+class Cell {
+    constructor(alive = false) {
+        this.alive = alive;
+    }
+}
+
+class Grid {
+    constructor(size) {
+        this.size = size;
+        this.cells = new Array(size * size).fill().map(() => new Cell());
+    }
+
+    getCell(index) {
+        return this.cells[index];
+    }
+
+    setCell(index, state) {
+        this.cells[index].alive = state;
+    }
+
+    getNeighbors(index) {
+        const offsets = [-1, 0, 1];
+        let neighbors = [];
+        for (let i of offsets) {
+            for (let j of offsets) {
+                if (i === 0 && j === 0) continue; // Skip self
+                const neighborIndex = index + i + this.size * j;
+                if (neighborIndex >= 0 && neighborIndex < this.cells.length) {
+                    neighbors.push(this.cells[neighborIndex]);
+                }
+            }
+        }
+        return neighbors;
+    }
+}
+
+// Instantiate the grid
+const grid = new Grid(10);
+```
+
+Next, define the function to change the state of a cell:
+
+```javascript
+function changeState(index, newState) {
+    grid.setCell(index, newState);
+}
+```
+
+Now, define the predicates to determine if a cell should come alive or die based on its neighbors:
+
+```javascript
+function comeAlive(index) {
+    const cell = grid.getCell(index);
+    const neighbors = grid.getNeighbors(index);
+    const aliveNeighbors = neighbors.filter(neighbor => neighbor.alive).length;
+
+    // Cell comes to life if it has exactly 3 living neighbors, or if it's already alive and has 2 or 3 living neighbors
+    return (!cell.alive && aliveNeighbors === 3) || (cell.alive && (aliveNeighbors === 2 || aliveNeighbors === 3));
+}
+
+function comeDead(index) {
+    const neighbors = grid.getNeighbors(index);
+    const aliveNeighbors = neighbors.filter(neighbor => neighbor.alive).length;
+
+    // Cell dies if it has fewer than 2 or more than 3 living neighbors
+    return aliveNeighbors < 2 || aliveNeighbors > 3;
+}
+```
+
+To use this system, you would periodically evaluate each cell in the grid to determine if it should be alive or dead based on the rules encoded in `comeAlive` and `comeDead`:
+
+```javascript
+function updateGrid() {
+    const changes = [];
+    for (let i = 0; i < grid.cells.length; i++) {
+        if (comeAlive(i)) {
+            changes.push({index: i, state: true});
+        } else if (comeDead(i)) {
+            changes.push({index: i, state: false});
+        }
+    }
+
+    // Apply changes after all calculations to avoid affecting the outcome
+    changes.forEach(change => changeState(change.index, change.state));
+}
+
+// Example of running an update
+updateGrid();
+```
+
+This script provides a basic implementation of a cell lifecycle in a grid, assuming typical behaviors in Conway's Game of Life. Adjustments might be necessary depending on the specific methods and properties available in the actual API you are using.

@@ -1,0 +1,16 @@
+always assume {
+  // The ball can only be at the leftmost or rightmost position, but not both at the same time
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the leftmost position, it must move right in the next state
+  leftmost(ball) -> X [ball <- moveRight(ball)];
+  
+  // When the ball is at the rightmost position, it must move left in the next state
+  rightmost(ball) -> X [ball <- moveLeft(ball)];
+  
+  // Ensure the ball moves left until it hits the leftmost wall
+  // and moves right until it hits the rightmost wall
+  G ((leftmost(ball) -> (F rightmost(ball))) && (rightmost(ball) -> (F leftmost(ball))));
+}

@@ -1,0 +1,21 @@
+Here is the TSL (Temporal Stream Logic) specification for the described single cell simulation in the Game of Life, based on the provided functions and predicates:
+
+```tsl
+always assume {
+  // comAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive(index) is true the cell uses changeState() to come alive
+  comeAlive(index) -> [alive <- true];
+
+  // If comeDead(index) is true the cell uses changeState() to die
+  comeDead(index) -> [alive <- false];
+}
+```
+
+In this TSL specification:
+- The `always assume` block ensures that the conditions `comeAlive` and `comeDead` cannot both be true simultaneously, maintaining the logical consistency of the cell's state transitions according to the rules.
+  
+- The `always guarantee` block enforces that the cell’s alive state is updated based on the `comeAlive` and `comeDead` predicates. If `comeAlive(index)` evaluates as true, the cell's alive state is set to true (the cell comes alive). Conversely, if `comeDead(index)` evaluates as true, the cell's alive state is set to false (the cell dies).

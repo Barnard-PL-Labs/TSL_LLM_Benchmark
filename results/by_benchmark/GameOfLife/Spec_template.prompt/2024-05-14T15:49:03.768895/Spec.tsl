@@ -1,0 +1,8 @@
+always assume {
+  !(comeAlive(index) && comeDead(index)); // comeAlive and comeDead cannot both be true at the same time
+}
+
+always guarantee {
+  comeAlive(index) -> [changeState()];
+  comeDead(index) -> [changeState()];
+}

@@ -1,0 +1,20 @@
+Here's how you would translate the given natural language description into a Temporal Stream Logic (TSL) specification for simulating a single cell in the game of life:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+In this specification:
+- The `assume` block states that the predicates `comeAlive` and `comeDead` cannot both be true at the same time, ensuring mutual exclusion between these two transitions.
+- The `guarantee` block defines how changes in the cell's state should be handled based on the predicates. If `comeAlive(index)` is true, the cell must execute `changeState()` to become alive. Similarly, if `comeDead(index)` is true, the cell must also execute `changeState()` to die. The same function `changeState()` is used for both transitions, assuming its action is context-dependent on the state evaluated by `comeAlive` or `comeDead`.

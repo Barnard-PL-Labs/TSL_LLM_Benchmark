@@ -1,0 +1,72 @@
+To implement the required functions and predicates for controlling and querying the state of the "ball" in the system environment based on the descriptions provided, here's a simple JavaScript structure that defines these methods:
+
+### Functions
+
+1. **moveLeft(ball)**: This function will return a signal to move the ball to the left.
+2. **moveRight(ball)**: This function will return a signal to move the ball to the right.
+
+### Predicates
+
+1. **leftmost(ball)**: This predicate will check if the ball is against the leftmost wall and return a boolean.
+2. **rightmost(ball)**: This predicate will check if the ball is against the rightmost wall and return a boolean.
+
+Assuming the `ball` object has attributes like `position` which can be manipulated, and methods to determine its position relative to the walls (e.g., `isAtLeftWall()` and `isAtRightWall()`), the implementation in JavaScript could look like this:
+
+```javascript
+// Defining the ball object for demonstration. In a real scenario, this should be part of the system API.
+const ball = {
+  position: 0, // Example position value
+  leftWall: 0, // Position of the leftmost wall
+  rightWall: 10, // Position of the rightmost wall
+  moveLeft: function() {
+    if (this.position > this.leftWall) {
+      this.position -= 1;
+      return `Moved to ${this.position}`;
+    } else {
+      return `Cannot move left, ball is at leftmost position ${this.position}`;
+    }
+  },
+  moveRight: function() {
+    if (this.position < this.rightWall) {
+      this.position += 1;
+      return `Moved to ${this.position}`;
+    } else {
+      return `Cannot move right, ball is at rightmost position ${this.position}`;
+    }
+  },
+  isAtLeftWall: function() {
+    return this.position === this.leftWall;
+  },
+  isAtRightWall: function() {
+    return this.position === this.rightWall;
+  }
+};
+
+// Implementing the functions and predicates
+
+// Functions
+function moveLeft(ball) {
+  return ball.moveLeft();
+}
+
+function moveRight(ball) {
+  return ball.moveRight();
+}
+
+// Predicates
+function leftmost(ball) {
+  return ball.isAtLeftWall();
+}
+
+function rightmost(ball) {
+  return ball.isAtRightWall();
+}
+
+// Example usage
+console.log(moveLeft(ball)); // Example call to move the ball left
+console.log(leftmost(ball)); // Check if ball is at the leftmost position
+console.log(moveRight(ball)); // Example call to move the ball right
+console.log(rightmost(ball)); // Check if ball is at the rightmost position
+```
+
+This code snippet provides an example of how you could set up these functions and predicates based on the API described. Make sure to adapt the implementation details according to the actual structure and methods of the `ball` object provided by your system's API.

@@ -1,0 +1,157 @@
+<style>
+	#debug {
+		margin: 50px;
+		font-size: 25px;
+	}
+
+	#ball {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		animation: bounce 2s infinite ease-in-out;
+	}
+
+	@keyframes bounce {
+
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-500px);
+		}
+	}
+</style>
+
+<div id="debug"></div>
+<div id="ball"></div>
+
+<script>
+
+// Assuming the ball object structure for the purpose of this implementation
+let ball = {
+    position: 0,    // Numeric representation of ball position
+    leftWall: -10,  // Position of leftmost wall
+    rightWall: 10   // Position of rightmost wall
+};
+
+/**
+ * Functions to control the ball's movement
+ */
+
+// Move the ball to the left
+function moveLeft(ball) {
+    if (!leftmost(ball)) {
+        ball.position -= 1;  // Move left by decreasing position
+    }
+    return `Move ball to position ${ball.position}`;
+}
+
+// Move the ball to the right
+function moveRight(ball) {
+    if (!rightmost(ball)) {
+        ball.position += 1;  // Move right by increasing position
+    }
+    return `Move ball to position ${ball.position}`;
+}
+
+/**
+ * Predicates to check the ball's position relative to the walls
+ */
+
+// Check if the ball is at the leftmost position
+function leftmost(ball) {
+    return ball.position <= ball.leftWall;
+}
+
+// Check if the ball is at the rightmost position
+function rightmost(ball) {
+    return ball.position >= ball.rightWall;
+}
+
+/**
+ * Testing the implementation
+ */
+
+// Test moving the ball
+console.log(moveLeft(ball));    // Should move the ball left
+console.log(moveRight(ball));   // Should move the ball right
+console.log(moveLeft(ball));    // Should move the ball left
+
+// Test predicates
+console.log(leftmost(ball));    // Should return false unless the ball is at the leftmost position
+console.log(rightmost(ball));   // Should return false unless the ball is at the rightmost position
+
+// Move to the leftmost position for testing
+while (!leftmost(ball)) {
+    moveLeft(ball);
+}
+console.log(leftmost(ball));    // Should now return true
+
+// Move to the rightmost position for testing
+while (!rightmost(ball)) {
+    moveRight(ball);
+}
+console.log(rightmost(ball));   // Should now return true
+
+
+</script>
+<script src="computed/Synth.js" type="text/javascript"></script>
+
+<script>
+
+	(async () => {
+
+
+		// Wrapper
+
+		const X_STEP_DURATION = 200;
+
+		class Ball {
+			constructor() {
+				this.pos = 0
+			}
+
+			render() {
+				const ball = document.getElementById('ball');
+				ball.style.transition = `left ${X_STEP_DURATION}ms linear`;
+				ball.style.left = `${this.pos / 10 * (screen.availWidth - 100)}px`;
+
+				const debug = document.querySelector('#debug');
+				debug.textContent = 'Current State: ' + currentState
+			}
+		}
+
+		window.currentState = 0
+
+		const ball = new Ball()
+		ball.render()
+
+		// /*
+
+		// Wait for 1s to sync the up-and-down animationw with bouncing, in order to make it look like the
+		// ball is bouncing.
+
+		// */
+		// await new Promise(((resolve) => resolve()), 1000)
+
+		setInterval(
+			(() => {
+
+				ball_pos = ball.pos;
+				({ currentState, ball_pos }) = updateState({ currentState, ball_pos })
+				ball.pos = ball_pos
+				console.log('currentState', currentState, ball)
+				ball.render()
+
+			}),
+			X_STEP_DURATION
+		)
+
+	})()
+
+</script>

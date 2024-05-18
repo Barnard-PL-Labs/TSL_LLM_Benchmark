@@ -1,0 +1,61 @@
+To implement the requested functions and predicates in JavaScript using the given API (albeit incomplete in your input), we'll need to make some assumptions about the API's capabilities. Specifically, we'll assume the API provides a way to access the state of a cell and its neighbors.
+
+### Assumptions:
+1. `getCell(index)` - Function to get the cell object at a given `index`.
+2. `isAlive(cell)` - Function that returns `true` if the cell is alive, otherwise `false`.
+3. `getNeighbors(index)` - Function that returns an array of cell objects representing the neighbors of the cell at `index`.
+
+### Implementation:
+
+```javascript
+// Functions
+
+/**
+ * Changes the state of a cell at a given index. If the cell is alive, it will be killed; if it is dead, it will come to life.
+ * @param {number} index - The index of the cell on the grid.
+ */
+function changeState(index) {
+    const cell = getCell(index);
+    if (isAlive(cell)) {
+        killCell(index); // Assuming a function to kill the cell
+    } else {
+        reviveCell(index); // Assuming a function to revive the cell
+    }
+}
+
+// Predicates
+
+/**
+ * Determines if a cell should come alive based on the number of living neighbors.
+ * A cell comes alive if exactly 3 of its neighbors are alive, or if it's currently alive and 2 or 3 of its neighbors are alive.
+ * @param {number} index - The index of the cell on the grid.
+ * @returns {boolean} - Returns true if the cell should come alive, false otherwise.
+ */
+function comeAlive(index) {
+    const cell = getCell(index);
+    const neighbors = getNeighbors(index);
+    const aliveCount = neighbors.filter(neighbor => isAlive(neighbor)).length;
+
+    return aliveCount === 3 || (isAlive(cell) && (aliveCount === 2 || aliveCount === 3));
+}
+
+/**
+ * Determines if a cell should die based on the number of living neighbors.
+ * A cell dies if it has fewer than 2 or more than 3 living neighbors.
+ * @param {number} index - The index of the cell on the grid.
+ * @returns {boolean} - Returns true if the cell should die, false otherwise.
+ */
+function comeDead(index) {
+    const neighbors = getNeighbors(index);
+    const aliveCount = neighbors.filter(neighbor => isAlive(neighbor))..length;
+
+    return aliveCount < 2 || aliveCount > 3;
+}
+```
+
+### Notes:
+- The `changeState` function toggles the life state of the cell at a given index. This assumes we have `killCell` and `reviveCell` functions accessible from the API to directly kill or revive a cell.
+- The `comeAlive` function checks whether a cell should be revived based on the classic rules from Conway's Game of Life: a cell comes to life if it has exactly three living neighbors or remains alive if it has two or three living neighbors.
+- The `comeDead` function checks if a cell should die based on having too few (fewer than 2) or too many (more than 3) alive neighbors.
+
+This implementation rests on several assumptions about API functions (`getCell`, `isAlive`, `getNeighbors`, `killCell`, `reviveCell`) that need to be confirmed or adjusted based on the actual API you are working with.

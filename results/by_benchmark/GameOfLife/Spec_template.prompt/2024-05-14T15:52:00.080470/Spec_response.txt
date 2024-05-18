@@ -1,0 +1,20 @@
+Here's how the natural language description can be translated into a TSL specification:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+In this TSL specification:
+- The **assume** block ensures that the predicates `comeAlive` and `comeDead` do not contradict each other by asserting they cannot both be true simultaneously.
+- The **guarantee** block defines the actions to be taken based on the predicates. When `comeAlive` is true, the cell changes its state to alive using `changeState()`. Similarly, when `comeDead` is true, the cell also changes its state (presumably to dead) using `changeState()`. This reflects the basic rules of the Game of Life concerning cell state transitions based on the number of alive neighbors.

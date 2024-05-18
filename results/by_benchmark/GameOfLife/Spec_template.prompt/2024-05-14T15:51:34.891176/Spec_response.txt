@@ -1,0 +1,18 @@
+Here is how you would create a TSL specification from the provided natural language description for a state machine simulating a single cell in the game of life:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, then the cell uses changeState() to come alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+This TSL specification captures the rules of cell survival and death based on the `comeAlive` and `comeDead` predicates, ensuring that a cell changes its state appropriately.

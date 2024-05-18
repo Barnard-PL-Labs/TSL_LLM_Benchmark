@@ -1,0 +1,20 @@
+Here's the TSL specification based on the given description of Conway's Game of Life for a single cell:
+
+```tsl
+always assume {
+  // Assumption: comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // Guarantee: If comeAlive is true, the cell changes its state to come alive
+  comeAlive(index) -> [changeState()];
+
+  // Guarantee: If comeDead is true, the cell changes its state to die
+  comeDead(index) -> [changeState()];
+}
+```
+
+In this specification:
+- The `assume` block ensures that the predicates `comeAlive(index)` and `comeDead(index)` cannot both be true at the same time, reflecting the mutual exclusivity of a cell's state transition conditions.
+- The `guarantee` block makes sure that when `comeAlive(index)` is true, the function `changeState()` is called to make the cell alive, and similarly, when `comeDead(index)` is true, the function `changeState()` is called to make the cell dead.

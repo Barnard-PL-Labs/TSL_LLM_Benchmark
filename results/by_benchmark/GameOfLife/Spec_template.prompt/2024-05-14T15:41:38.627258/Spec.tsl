@@ -1,0 +1,12 @@
+always assume {
+  // Ensuring that comeAlive and comeDead predicates are mutually exclusive
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell changes state to become alive
+  comeAlive(index) -> [changeState()];
+  
+  // If comeDead is true, the cell changes state to die
+  comeDead(index) -> [changeState()];
+}

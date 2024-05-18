@@ -1,0 +1,18 @@
+Based on your description and requirements, here's a TSL specification for a state machine managing a single cell in the Game of Life:
+
+```tsl
+always assume {
+  // comeAlive and comeDead cannot be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell changes its state to alive
+  comeAlive(index) -> [changeState <- alive];
+  
+  // If comeDead is true, the cell changes its state to dead
+  comeDead(index) -> [changeState <- dead];
+}
+```
+
+This TSL specification clearly separates the assumptions and guarantees as per the rules specified for the Game of Life and ensures that the cell's state is changed according to the surrounding conditions dictated by the `comeAlive` and `comeDead` predicates.

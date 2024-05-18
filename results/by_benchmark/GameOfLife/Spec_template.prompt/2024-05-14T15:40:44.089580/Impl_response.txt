@@ -1,0 +1,79 @@
+To implement the given tasks using JavaScript and considering the constraints mentioned, I'll first outline a basic structure for the system we're working with. This system appears to be a variant of Conway's Game of Life, where cells on a grid can be either alive or dead, and their future state depends on the number of alive neighbors they have.
+
+### JavaScript Implementation:
+
+We'll need to define a few functions and predicates:
+
+1. **changeState(index)**: This function will toggle the state of a cell at a given index.
+2. **comeAlive(index)**: Predicate to decide if a dead cell should come alive.
+3. **comeDead(index)**: Predicate to decide if a living cell should die.
+
+However, as the full system API is not provided, I'll assume typical functionalities that might be expected in such an API, like accessing a cell's state and its neighbors.
+
+Here's how this could be implemented:
+
+```javascript
+// Assuming an API providing access to cell states and their neighbors
+class GameOfLife {
+    constructor(size) {
+        this.size = size;
+        this.grid = new Array(size * size).fill(false); // boolean array indicating alive (true) or dead (false)
+    }
+
+    // Method to get cell state (alive or dead)
+    alive(index) {
+        return this.grid[index];
+    }
+
+    // Method to change the state of a cell
+    changeState(index) {
+        this.grid[index] = !this.grid[index];
+    }
+
+    // Method to get indices of neighbors
+    getNeighbors(index) {
+        const neighbors = [];
+        const row = Math.floor(index / this.size);
+        const col = index % this.size;
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                if (i === 0 && j === 0) continue; // Skip the cell itself
+                const nRow = row + i;
+                const nCol = col + j;
+                if (nRow >= 0 && nRow < this.size && nCol >= 0 && nCol < this.size) {
+                    neighbors.push(nRow * this.size + nCol);
+                }
+            }
+        }
+        return neighbors;
+    }
+
+    // Predicate to check if a dead cell should come alive
+    comeAlive(index) {
+        const neighbors = this.getNeighbors(index);
+        const aliveCount = neighbors.filter(n => this.alive(n)).length;
+        return !this.alive(index) && (aliveCount === 3);
+    }
+
+    // Predicate to check if a living cell should die
+    comeDead(index) {
+        const neighbors = this.getNeighbors(index);
+        const aliveCount = neighbors.filter(n => this.alive(n)).length;
+        return this.alive(index) && (aliveCount < 2 || aliveCount > 3);
+    }
+}
+
+// Example usage
+const game = new GameOfLife(10); // Creating a 10x10 grid
+console.log(game.comeAlive(14)); // Check if cell at index 14 should come alive
+console.log(game.comeDead(15));  // Check if cell at index 15 should come dead
+game.changeState(15);            // Toggle the state of cell at index 15
+```
+
+### Explanation:
+- **Constructor**: Initializes a grid of specified size with all cells dead.
+- **changeState**: Flips the boolean state of a cell at the given index.
+- **getNeighbors**: Helper function to find index positions of all 8 possible neighbors in a grid with boundary checks.
+- **comeAlive & comeDead**: Implements the rules of the game using the number of living neighbors. They ensure cells come alive or die based on the classic rules of Conway's Game of Life.
+
+This code provides a basic framework. Depending on actual system specifications and API functions, you may need adjustments for integration.

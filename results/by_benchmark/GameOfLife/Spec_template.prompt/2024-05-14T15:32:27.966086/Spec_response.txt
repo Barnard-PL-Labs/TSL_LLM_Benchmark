@@ -1,0 +1,20 @@
+Here's the TSL specification based on the natural language description for simulating a single cell in the game of life:
+
+```TSL
+always assume {
+  // comeAlive and comeDead are mutually exclusive
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell changes state to alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell changes state to dead
+  comeDead(index) -> [changeState()];
+}
+```
+
+In this specification:
+- The `always assume` section ensures that `comeAlive` and `comeDead` cannot both be true at the same time, reflecting the rule that these conditions are mutually exclusive.
+- The `always guarantee` section dictates the behavior of the cell based on the predicates `comeAlive` and `comeDead`. If `comeAlive(index)` is true, the cell uses the function `changeState()` to become alive. Similarly, if `comeDead(index)` is true, the cell uses `changeState()` to die.

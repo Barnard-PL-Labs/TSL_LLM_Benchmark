@@ -1,0 +1,8 @@
+always assume {
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  comeAlive(index) -> [changeState()];  // Change state to alive
+  comeDead(index) -> [changeState()];   // Change state to dead
+}
