@@ -1,0 +1,14 @@
+always assume {
+  // Assume no conflicting inputs or conditions are specified.
+}
+
+always guarantee {
+  // When the up button is pressed, increment the counter each frame. 
+  pressUp(e) -> [count <- count + 1];
+
+  // When the up button is not being pressed, reset the counter to 0.5.
+  !pressUp(e) -> [count <- 0.5];
+
+  // The cube's scale along the x-axis is updated to match the value of the counter.
+  [cube.scale.x <- count];
+}

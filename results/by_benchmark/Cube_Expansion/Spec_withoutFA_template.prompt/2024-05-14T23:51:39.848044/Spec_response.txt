@@ -1,0 +1,14 @@
+```
+always assume {
+  // No relevant assumptions given in the description
+}
+
+always guarantee {
+  // Manage the counter based on the up key being pressed
+  pressUp(e) -> [count <- count + 1];
+  !pressUp(e) -> [count <- 0.5];
+
+  // Update the cube's scale.x with the current count value
+  [cube.scale.x <- count];
+}
+```

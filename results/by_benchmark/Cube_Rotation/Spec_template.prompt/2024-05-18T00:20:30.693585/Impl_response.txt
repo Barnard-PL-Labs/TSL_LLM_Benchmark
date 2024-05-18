@@ -1,0 +1,64 @@
+To implement the described functionality in JavaScript, we'll define the functions and predicates based on the provided specifications. Here, we'll use JavaScript event listeners to detect button presses and manipulate the rotation of a 3D cube object using its `rotation.y` property.
+
+### Functions
+
+Here are the JavaScript functions to rotate the cube left and right:
+
+```javascript
+// Function to rotate the cube to the left
+function rotateLeft(cube) {
+    // Assuming that rotating left decreases the y rotation angle
+    cube.rotation.y -= Math.PI / 18; // Rotate by 10 degrees
+}
+
+// Function to rotate the cube to the right
+function rotateRight(cube) {
+    // Assuming that rotating right increases the y rotation angle
+    cube.rotation.y += Math.PI / 18; // Rotate by 10 degrees
+}
+```
+
+### Predicates
+
+For the predicates, we assume the presence of an HTML environment where button presses can be detected via event listeners. Here's an approach using simple Boolean flags:
+
+```html
+<button id="leftButton">Left</button>
+<button id="rightButton">Right</button>
+<script>
+let leftPressed = false;
+let rightPressed = false;
+
+document.getElementById('leftButton').addEventListener('mousedown', function() {
+    leftPressed = true;
+});
+document.getElementById('leftButton').addEventListener('mouseup', function() {
+    leftPressed = false;
+});
+
+document.getElementById('rightButton').addEventListener('mousedown', function() {
+    rightPressed = true;
+});
+document.getElementById('rightButton').addEventListener('mouseup', function() {
+    rightPressed = false;
+});
+
+// Predicate to check if the left button is pressed
+function pressL() {
+    return leftPressed;
+}
+
+// Predicate to check if the right button is pressed
+function pressR() {
+    return rightPressed;
+}
+</script>
+```
+
+### Explanation
+
+1. **rotateLeft** and **rotateRight** functions: These modify the `rotation.y` property of a `cube` object. The rotation values are in radians, where `Math.PI / 18` approximates to 10 degrees.
+
+2. **pressL** and **pressR** predicates: These functions return the state of the `leftPressed` and `rightPressed` Boolean flags, which are set to `true` when the corresponding buttons are pressed down and set to `false` when released. The event listeners are attached to HTML buttons with IDs `leftButton` and `rightButton`.
+
+This setup requires that the HTML page contains buttons with the specified IDs and that the `cube` object passed to the rotation functions correctly exposes a `rotation.y` property that controls its orientation in 3D space.

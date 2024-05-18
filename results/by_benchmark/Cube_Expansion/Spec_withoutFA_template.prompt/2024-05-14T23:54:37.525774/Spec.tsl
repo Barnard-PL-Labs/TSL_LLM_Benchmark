@@ -1,0 +1,15 @@
+always assume{
+    // No specific assumptions required for external environmental constraints
+    // You may need to add assumptions if the environment or interaction has particular conditions or restrictions
+}
+
+always guarantee{
+    // When the user is not pressing the up button, the counter should be reset to 0.5
+    !pressUp(e) -> [count <- 0.5];
+    
+    // When the user presses the up button, the counter increments by 1 each frame
+    pressUp(e) -> [count <- count + 1];
+
+    // The cube's scale along the x-axis is updated with the value of the counter
+    [cube.scale.x <- count];
+}

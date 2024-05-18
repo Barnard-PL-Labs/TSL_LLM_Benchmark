@@ -1,0 +1,84 @@
+Understanding your requirements, below is a JavaScript implementation that uses the provided API to handle cube movements and event-based predicates for left and right button presses.
+
+### JavaScript Implementation
+
+We'll start by defining the JavaScript functions `rotateLeft` and `rotateRight` for the cube, and then implement the predicates `pressL` and `pressR` using event listeners.
+
+```javascript
+// Assume cube is an object available in the global scope with a rotation property.
+// We can access and modify cube.rotation.y to rotate the cube.
+
+// Functions
+function rotateLeft(cube) {
+    // Rotate the cube to the left by decrementing the y rotation
+    cube.rotation.y -= 0.1; // Rotating by 0.1 radians to the left
+    console.log('Cube rotated left:', cube.rotation.y);
+}
+
+function rotateRight(cube) {
+    // Rotate the cube to the right by incrementing the y rotation
+    cube.rotation.y += 0.1; // Rotating by 0.1 radians to the right
+    console.log('Cube rotated right:', cube.rotation.y);
+}
+
+// Predicates and Event Listeners
+// Assuming the existence of an appropriate event emitter or HTML elements for capturing events
+let leftPressed = false;
+let rightPressed = false;
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = true;
+        console.log('Left button pressed');
+    }
+    if (e.key === 'ArrowRight') {
+        rightPressed = true;
+        console.log('Right button pressed');
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    }
+    if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+
+// Predicate functions to check the state of left and right presses
+function pressL(e) {
+    return leftPressed;
+}
+
+function pressR(e) {
+    return rightPressed;
+}
+
+// Example usage of the functions and predicates
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        rotateLeft(cube);
+    }
+    if (pressR(e)) {
+        rotateRight(cube);
+    }
+});
+```
+
+### Explanation
+
+1. **rotateLeft** and **rotateRight Functions**:
+   - Modify the `cube.rotation.y` property to rotate the cube left or right by a fixed radian (0.1 in this example).
+
+2. **Event Handling**:
+   - `keydown` and `keyup` events are used to update the boolean flags `leftPressed` and `rightPressed`.
+   - These flags are set to `true` when the respective arrow keys are pressed down, and reset to `false` when the keys are released.
+
+3. **Predicate Functions**:
+   - `pressL` and `pressR` return the current state of `leftPressed` and `rightPressed`. These functions allow for checking if the left or right keys are currently pressed.
+
+4. **Event Listeners for Cube Rotation**:
+   - Additional listeners can be added to rotate the cube based on the pressing of left or right arrow keys using the predicate functions.
+
+This implementation provides a clear structure for handling cube rotations based on left and right key presses using basic JavaScript event handling and manipulation of object properties.

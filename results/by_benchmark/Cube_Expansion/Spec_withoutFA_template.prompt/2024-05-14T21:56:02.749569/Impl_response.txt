@@ -1,0 +1,37 @@
+To provide a clear implementation outline for Temporal Stream Logic (TSL) in a JavaScript environment with predicates, we'll focus on setting up the predicate `pressUp(e)` to check if the up arrow key is pressed. Since you mentioned not to use functions and to only focus on the TSL implementation, we will express the logic without adding explicit JavaScript functions for functionality. Below is the TSL model to incorporate this.
+
+### TSL Model for `pressUp(e)` Predicate
+
+Given the requirement, the key aspect is detecting the pressing of the up arrow key. In TSL, we don't implement event listeners directly; instead, we describe the behavior that should stem from certain conditions. Here's how we can structure the TSL template:
+
+```tsl
+always assume {
+    // Define keyboard interactions
+    // We assume an abstract representation where `upKeyPressed` is true when the up key is pressed
+    (upKeyPressed -> pressUp(e));
+}
+
+always guarantee {
+    // Response to the pressing of the up key
+    pressUp(e) -> [cube.scale.x <- cube.scale.x * 1.1]; // Example response, scales cube on x-axis
+}
+```
+
+### Key Components and Assumptions:
+- **`upKeyPressed`**: This is an abstract predicate that we assume to be true when the up arrow key is pressed. In a practical JavaScript implementation, this would be triggered by an event listener for the `keydown` event.
+
+- **`pressUp(e)`**: This predicate is used within the TSL context to react to the pressing of the up key. The reaction (or guarantee) in the hypothetical scenario scales the cube along the x-axis.
+
+### Practical JavaScript Implementation (For Reference)
+If you were to implement the predicate in JavaScript for actual use (though you requested not to use functions, this is for completeness):
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 38) { // 38 is the key code for the up arrow key
+        cube.scale.x *= 1.1; // scale the cube on the x-axis
+    }
+});
+```
+
+### Usage in a System:
+In a full system using TSL, the model would not typically execute JavaScript directly but would describe how the system should behave or react within the constraints and capabilities defined by the system’s API and the TSL framework's execution environment. The actual linking with system APIs and triggering of predicates like `pressUp(e)` would be managed by the TSL execution engine or middleware that interprets TSL specifications relative to system events.

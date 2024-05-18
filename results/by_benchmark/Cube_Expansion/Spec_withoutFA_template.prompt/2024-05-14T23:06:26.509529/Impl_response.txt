@@ -1,0 +1,47 @@
+To implement the predicate `pressUp(e)` using the provided API and system environment, we'll be focusing on creating an event listener for the `keydown` event to check if the user presses the up arrow key. Since you've mentioned not to use any functions, I'll provide the logic for setting this up directly in a TSL template form, assuming you might want to implement it in a JavaScript-based setup.
+
+### TSL Template for Predicate `pressUp(e)`
+This TSL template assumes that there's an interactive environment where the user can press keys while the system is running. Here, `pressUp(e)` is a predicate that becomes `true` when the up arrow key (which corresponds to the key code `38`) is pressed.
+
+First, let's define our assumptions and guarantees in the TSL template for the predicate:
+
+```tsl
+always assume {
+    // Define a key event listener for 'keydown' events
+    (evt.type == 'keydown' && evt.keyCode == 38) -> pressUp(e);
+    (evt.type == 'keyup' && evt.keyCode == 38) -> !pressUp(e);
+}
+
+always guarantee {
+    // Define reactions based on the pressUp predicate being true
+    pressUp(e) -> [cube.scale.x <- someValue]; // You could define `someValue` based on your system's needs
+}
+```
+
+### Explanation
+1. **Assumptions**: 
+   - The system reacts to key events, specifically the `keydown` and `keyup` events for the up arrow key (`keyCode == 38`). 
+   - When the up arrow key is pressed (`keydown` with `keyCode == 38`), the predicate `pressUp(e)` becomes `true`.
+   - When the up arrow key is released (`keyup` with `keyCode == 38`), the predicate `pressUp(e)` becomes `false`.
+
+2. **Guarantees**:
+   - When `pressUp(e)` is `true`, an action is taken, such as modifying the `cube.scale.x` property. The actual modification (represented here by `someValue`) would depend on the specific requirements of your system.
+
+### Actionable JavaScript Code
+If you were to implement this in the actual JavaScript environment, it might look like this:
+
+```javascript
+document.addEventListener('keydown', function(evt) {
+    if (evt.keyCode == 38) {
+        // Set cube.scale.x or other actions when up arrow is pressed
+    }
+});
+
+document.addEventListener('keyup', function(evt) {
+    if (evt.keyCode == 38) {
+        // Reset or adjust cube.scale.x when up arrow is released
+    }
+});
+```
+
+This JavaScript snippet is illustrative and aligns with the logic defined in the TSL template, assuming a proper integration between the TSL environment and the JavaScript event handling system.

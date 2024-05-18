@@ -1,0 +1,31 @@
+To create a TSL specification for the described behavior of the cube's scaling in response to the up key being pressed, you need to incorporate assumptions about user input and guarantees about how the system (cube scaling) responds to these inputs. Let's translate your requirements into TSL constructs:
+
+### TSL Specification
+
+```tsl
+always assume {
+    // No specific assumptions about external conditions are defined here.
+}
+
+always guarantee {
+    // When the up key is pressed, increment the counter for each frame the key is held down.
+    pressUp(e) -> [count <- count + 1] W !pressUp(e);
+
+    // When the up key is not pressed, reset the counter to 0.5.
+    !pressUp(e) -> [count <- 0.5];
+
+    // The cube's x-axis scale is updated to match the counter value.
+    [cube.scale.x <- count];
+}
+```
+
+### Explanation
+
+1. **Assumptions**: In this specification, there are no explicit assumptions about the environment that need to be listed under `always assume`. All necessary conditions are directly related to user input and are handled in the guarantees.
+
+2. **Guarantees**:
+   - **Increment Counter**: When the `pressUp(e)` predicate (indicating that the up key is pressed) is true, the counter `count` is incremented by 1 for each frame as long as the up key remains pressed. The use of `W` (weak until) allows the counter to keep incrementing until the up key is released.
+   - **Reset Counter**: When the up key is not being pressed (`!pressUp(e)`), the counter `count` is immediately set to 0.5.
+   - **Update Scale**: The scale of the cube along the x-axis (`cube.scale.x`) is continuously updated to reflect the value of `count`.
+
+This TSL specification effectively models the dynamic scaling of a cube in response to pressing and releasing the up key, using a counter to adjust the scale value.

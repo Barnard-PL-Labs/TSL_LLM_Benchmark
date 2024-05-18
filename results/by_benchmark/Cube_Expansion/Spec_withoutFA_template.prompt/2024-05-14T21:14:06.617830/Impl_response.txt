@@ -1,0 +1,47 @@
+Given the structure of your system, it seems you want to implement a predicate `pressUp(e)` in JavaScript to detect when the up arrow key is pressed on the keyboard. This predicate will dynamically listen for keyboard events and will be used to influence the state of the cube, specifically its scale along the x-axis, though in this case, we are only implementing the predicate, not handling the cube scaling.
+
+Here is how you can implement the `pressUp(e)` predicate with an event listener in JavaScript:
+
+```javascript
+// Define a variable to keep the state of the up arrow key
+let isUpKeyPressed = false;
+
+// Function to update the state when the up arrow key is pressed
+function updateKeyPressState(event) {
+    if (event.keyCode === 38) {  // 38 is the key code for the up arrow key
+        isUpKeyPressed = true;
+    } else {
+        isUpKeyPressed = false;
+    }
+}
+
+// Add event listeners to track when keys are pressed and released
+window.addEventListener('keydown', function(event) {
+    updateKeyPressState(event);
+});
+
+window.addEventListener('keyup', function(event) {
+    // Reset the state when the key is released
+    if (event.keyCode === 38) {
+        isUpKeyPressed = false;
+    }
+});
+
+// Predicate function to check if the up arrow key is pressed
+function pressUp(e) {
+    return isUpKeyPressed;
+}
+```
+
+### Explanation:
+1. **Variable Declaration**: `isUpKeyPressed` is a boolean variable that holds the state of the up arrow key (whether it's being pressed or not).
+
+2. **Function `updateKeyPressState`**: This function sets `isUpKeyPressed` to `true` if the up arrow key is pressed, otherwise to `false`. It's used directly in the `keydown` event to immediately set the state when the key is pressed.
+
+3. **Event Listeners**: 
+    - The `keydown` event listener calls `updateKeyPressState` to set `isUpKeyPressed` to `true` when the up arrow key is pressed.
+    - The `keyup` event listener resets `isUpKeyPressed` to `false` when the up arrow key is released, ensuring that `pressUp` accurately reflects the current state of the key.
+
+4. **Predicate Function `pressUp`**: This function returns the current state of `isUpKeyPressed`, effectively indicating whether the up arrow key is currently pressed.
+
+This implementation allows the predicate `pressUp(e)` to be used to check if the up arrow key is pressed at any given moment by calling `pressUp()`. Note that in a real-world scenario, you might need to manage the event listeners' lifecycle more carefully to avoid potential memory leaks or excessive processing, especially if this code is part of a larger application that gets loaded and unloaded dynamically.

@@ -1,0 +1,29 @@
+Here is the TSL specification corresponding to the provided natural language description and predicates:
+
+```tsl
+always assume {
+  // There are no specific external environmental assumptions noted, so this section remains empty.
+}
+
+always guarantee {
+  // If the user presses the up button, increment the counter (count) by 1 every frame.
+  pressUp(e) -> [count <- count + 1];
+
+  // If the user is not pressing the up button, reset the count to 0.5.
+  !pressUp(e) -> [count <- 0.5];
+
+  // The scale of the cube along the x-axis is updated according to the current value of the counter.
+  [cube.scale.x <- count];
+}
+```
+
+### Breakdown of the Specification
+
+1. **Assumptions**: This section is empty because there are no specific environmental conditions or external factors stated that affect the functioning or states of the system.
+
+2. **Guarantees**:
+   - **Increment Counter**: When the `pressUp(e)` predicate is active (i.e., when the user is pressing the up key), the counter variable `count` is incremented by 1 in each frame. This simulates the continuous pressing and the resulting increase in scale.
+   - **Reset Counter**: When the `pressUp(e)` predicate is not active (i.e., the user is not pressing the up key), the counter `count` is set to 0.5. This ensures that the scale returns to its initial state when the key is not being pressed.
+   - **Update Cube Scale**: Independently of the pressing state, the scale of the cube along the x-axis (`cube.scale.x`) is always set to the current value of the counter (`count`). This guarantees that the cube’s scale is responsive to the changes in the counter, which is controlled by user interaction through the up key.
+
+This specification directly ties the scale of the cube along the x-axis to the user input, effectively making the cube's size reactive to the pressing of the up key, with immediate reversion when the key is released.

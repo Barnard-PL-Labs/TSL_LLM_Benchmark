@@ -1,0 +1,27 @@
+Here is how the TSL specification would look based on your requirements and the available functions and predicates:
+
+```tsl
+always assume {
+  // Assumption that left and right buttons are never pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // Guarantee that when the left button is pressed, the cube rotates left until the right button is pressed
+  pressL(e) -> [cube <- rotateLeft(cube)] W pressR(e);
+
+  // Guarantee that when the right button is pressed, the cube rotates right until the left button is pressed
+  pressR(e) -> [cube <- rotateRight(cube)] W pressL(e);
+}
+```
+
+### Explanation:
+
+1. **Assumptions Block**:
+   - `!(pressL(e) && pressR(e))`: This ensures that the left and right buttons are not pressed at the same time, which aligns with your stated assumption that both buttons cannot be pressed simultaneously.
+
+2. **Guarantees Block**:
+   - `pressL(e) -> [cube <- rotateLeft(cube)] W pressR(e)`: Here, the system guarantees that if the left button is pressed, the cube will start rotating to the left. This rotation will continue "Weak Until" the right button is pressed. This aligns with the requirement that the cube should continue rotating in the direction specified by the last button pressed until the opposite button is pressed.
+   - `pressR(e) -> [cube <- rotateRight(cube)] W pressL(e)`: Similarly, if the right button is pressed, the cube will rotate to the right until the left button is pressed.
+
+This TSL specification ensures that the cube’s rotation is controlled smoothly, based on the button pressed, and no simultaneous button presses can occur, thereby avoiding any conflicts or erratic behavior in the cube’s rotation mechanism.

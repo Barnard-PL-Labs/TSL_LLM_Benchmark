@@ -1,0 +1,20 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // No specific assumptions related to external conditions are outlined
+}
+
+always guarantee {
+  // When the up button is pressed, increment the counter each frame
+  pressUp(e) -> [count <- count + 1];
+
+  // When the up button is not pressed, reset the counter to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // The scale value along the x-axis is updated with the value of the counter
+  [cube.scale.x <- count];
+}
+```
+
+This TSL template reflects the behavior described: the cube's scale along the x-axis adjusts based on whether the up key is pressed or not, with dynamic updates to the `count` which directly impacts the `cube.scale.x` value.

@@ -1,0 +1,23 @@
+Below is the TSL specification based on the given natural language description for handling the scaling of a cube along the x-axis in response to user interaction with the up key:
+
+```tsl
+always assume {
+  // This section is intentionally left empty as the description does not specify any environmental assumptions that affect the guarantees.
+}
+
+always guarantee {
+  // When the up key is pressed, increment the counter 'count' by 1 every frame
+  pressUp(e) -> ([count <- count + 1] W !pressUp(e));
+  
+  // When the up key is not pressed, set the counter 'count' to 0.5
+  !pressUp(e) -> [count <- 0.5];
+  
+  // The cube's scale along the x-axis follows the value of 'count'
+  [cube.scale.x <- count];
+}
+```
+
+Explanation:
+1. The `pressUp(e)` predicate is used to check if the up key is being pressed. If it is, the `count` variable is incremented by 1 for each frame until the up key is released (`!pressUp(e)`), as indicated by the use of the Weak Until operator `W`.
+2. When the up key is not pressed (`!pressUp(e)`), the `count` is set to 0.5. This is specified in the guarantee section to ensure that the scale resets when the key is not being pressed.
+3. The scale of the cube along the x-axis (`cube.scale.x`) is continuously updated to match the value of `count`, ensuring that any changes in `count` due to pressing or releasing the up key are reflected in the cube's scale.

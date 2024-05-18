@@ -1,0 +1,48 @@
+To implement the predicates as specified, we will need to create JavaScript code that listens for user inputs (like pressing the up arrow key) and checks the state of these inputs. Since functions are not to be implemented at this time, we'll focus only on creating a predicate `pressUp(e)`.
+
+Below is the JavaScript code that sets up an event listener to detect when the "up" arrow key is pressed on the keyboard, and dynamically evaluates the predicate based on this event.
+
+```javascript
+// Object to hold the state of the key presses
+const keyStates = {
+    upPressed: false
+};
+
+// Function to update the state when the up arrow key is pressed
+function updateKeyPress(event) {
+    // Check if the key pressed is the up arrow key
+    if (event.keyCode === 38) {  // 38 is the keycode for the up arrow key
+        keyStates.upPressed = true;
+    }
+}
+
+// Function to clear the key press state when the key is released
+function clearKeyPress(event) {
+    // Check if the key released is the up arrow key
+    if (event.keyCode === 38) {
+        keyStates.upPressed = false;
+    }
+}
+
+// Add event listeners to the document for keydown and keyup events
+document.addEventListener('keydown', updateKeyPress);
+document.addEventListener('keyup', clearKeyPress);
+
+// Predicate function to check if the up arrow key is currently pressed
+function pressUp() {
+    return keyStates.upPressed;
+}
+```
+
+### Explanation:
+1. **Key States Object**: `keyStates` object keeps track of whether the up arrow key is pressed. Initially, `upPressed` is set to `false`.
+
+2. **Event Listener Functions**:
+   - `updateKeyPress`: This function is triggered on a `keydown` event. It checks if the up arrow key (key code 38) was pressed and updates `keyStates.upPressed` to `true`.
+   - `clearKeyPress`: This function is triggered on a `keyup` event. It checks if the up arrow key was released and sets `keyStates.upPressed` to `false`.
+
+3. **Event Listeners**: Event listeners for `keydown` and `keyup` are added to the global `document` object. These ensure that any key press or release is captured, and the appropriate function is called.
+
+4. **`pressUp` Predicate**: This simple function returns the current state of `upPressed` from the `keyStates` object. It serves as the predicate to check if the up arrow key is being pressed.
+
+This setup ensures that the predicate `pressUp()` accurately reflects the real-time state of the up arrow key, adhering to the requirements of being able to dynamically evaluate its truth value based on user input.

@@ -1,0 +1,26 @@
+Here's the TSL specification based on the given natural language description:
+
+```tsl
+always assume {
+  // Assume that the left and right buttons are never pressed at the same time.
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // Guarantee that if the left button is pressed, the cube begins rotating left until the right button is pressed.
+  pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e));
+
+  // Guarantee that if the right button is pressed, the cube begins rotating right until the left button is pressed.
+  pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e));
+}
+```
+
+### Explanation:
+- **Assumptions**:
+  - `!(pressL(e) && pressR(e))`: This line assumes that the left (`pressL(e)`) and right (`pressR(e)`) buttons are never pressed simultaneously, ensuring there are no conflicting signals sent to the cube's control system.
+
+- **Guarantees**:
+  - `pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e))`: This line guarantees that if the left button is pressed, the cube starts rotating to the left. This rotation continues until the right button is pressed, at which point the condition for the weak until (`W`) terminates the rotation to the left.
+  - `pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e))`: Similarly, this guarantees that if the right button is pressed, the cube starts rotating to the right. This rotation continues until the left button is pressed, terminating the rotation to the right. 
+
+This specification ensures that the cube's rotation can be controlled by the user through the left and right buttons, without overlap or conflict between the commands. The use of weak until (`W`) in the guarantees allows the rotation in one direction to continue indefinitely until the opposite button is pressed, thereby switching the rotation direction.

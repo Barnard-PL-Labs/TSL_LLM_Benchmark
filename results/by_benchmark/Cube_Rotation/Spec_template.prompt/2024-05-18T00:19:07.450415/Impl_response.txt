@@ -1,0 +1,58 @@
+To implement the required functions and predicates with the system API guidelines, we can utilize JavaScript along with some event handling mechanisms. Here's how you can structure the JavaScript code to achieve the desired functionalities:
+
+### 1. Rotate Functions:
+
+These functions will manipulate `cube.rotation.y` to rotate the cube left or right. Given the simplicity, we assume a fixed rotation step for each call.
+
+```javascript
+function rotateLeft(cube) {
+    // Assuming cube.rotation.y is a numeric value representing the rotation in degrees or radians
+    // Let's assume each rotation changes the angle by 5 degrees (convert to radians if necessary)
+    cube.rotation.y -= 5 * (Math.PI / 180); // Converting degrees to radians
+}
+
+function rotateRight(cube) {
+    cube.rotation.y += 5 * (Math.PI / 180); // Converting degrees to radians
+}
+```
+
+### 2. Predicate Functions:
+
+For the predicates, we'll set up event listeners that update flags when keys are pressed. These flags will be checked by the predicate functions.
+
+```javascript
+let leftPressed = false;
+let rightPressed = false;
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+
+function pressL(e) {
+    return leftPressed;
+}
+
+function pressR(e) {
+    return rightPressed;
+}
+```
+
+### Explanation:
+
+- **rotateLeft(cube)** and **rotateRight(cube)**: These functions adjust the rotation of the cube around the y-axis by a fixed increment or decrement. This is a simplistic model where each call to the function rotates the cube by 5 degrees. The rotation value is adjusted directly on the `cube.rotation.y` property.
+
+- **pressL(e)** and **pressR(e)**: These predicates check if the left or right arrow keys are pressed. The key states are tracked using a simple `keydown` and `keyup` mechanism, updating boolean flags. The predicates then return the state of these flags. This allows asynchronous checking of key states at any point in the program.
+
+This setup provides a basic framework to handle cube rotation based on keyboard inputs using JavaScript and could be extended or modified for more complex scenarios or additional controls.

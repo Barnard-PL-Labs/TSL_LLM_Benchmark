@@ -1,0 +1,34 @@
+To implement the predicate `pressUp(e)` in JavaScript, we will need to set up an event listener that listens for keypress events and checks if the up arrow key (which corresponds to the keycode `38`) is pressed. This will determine the truth value of the predicate.
+
+Given that your environment includes interaction with a 3D cube through setting properties like `cube.scale.x`, but no specific details on how to access or modify these properties are provided, the solution focuses only on the predicate implementation.
+
+Below is a JavaScript implementation for the `pressUp(e)` predicate using event listeners:
+
+```javascript
+// Assuming there's a global object to keep the state of the keys
+const keyState = {};
+
+// Function to update the state when a key is pressed
+function updateKeyState(event) {
+    keyState[event.keyCode] = event.type === 'keydown';
+}
+
+// Adding event listeners for keydown and keyup
+document.addEventListener('keydown', updateKeyState);
+document.addEventListener('keyup', updateKeyState);
+
+// Predicate function to check if the up arrow key is pressed
+function pressUp() {
+    // Key code 38 corresponds to the up arrow key
+    return keyState[38] === true;
+}
+```
+
+### Explanation:
+1. **Global State (`keyState`)**: An object is used to track which keys are currently pressed down. The keys are stored by their keycode, and the value is `true` if the key is currently pressed, otherwise it is not defined or `false`.
+
+2. **Event Listeners**: Two event listeners are added to the document. They listen for `keydown` and `keyup` events. When a key is pressed down, a `keydown` event is triggered, setting the corresponding keycode in `keyState` to `true`. When the key is released, a `keyup` event sets the value back to `false`.
+
+3. **Predicate Function (`pressUp`)**: This function checks the state of the `keyState` object to determine if the up arrow key (keycode `38`) is currently being pressed. It returns `true` if the key is pressed, otherwise `false`.
+
+This implementation provides a straightforward way to check if the up arrow key is pressed at any given time by calling the `pressUp` function, which will evaluate the current state based on the most recent key events.

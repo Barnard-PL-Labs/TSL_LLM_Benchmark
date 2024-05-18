@@ -1,0 +1,64 @@
+To implement the required functions and predicates using the given system API in JavaScript, you'll need to define the `rotateLeft` and `rotateRight` functions for the cube rotation, as well as the `pressL` and `pressR` predicates to handle the left and right button press events, respectively. Below is a JavaScript implementation of these functionalities.
+
+### JavaScript Implementation
+
+#### Functions
+
+```javascript
+// Function to rotate the cube to the left by modifying its y rotation
+function rotateLeft(cube) {
+    cube.rotation.y -= 0.1;  // Decrease the y-rotation value to rotate left
+}
+
+// Function to rotate the cube to the right by modifying its y rotation
+function rotateRight(cube) {
+    cube.rotation.y += 0.1;  // Increase the y-rotation value to rotate right
+}
+```
+
+#### Predicates
+
+For the predicates, I'll use event listeners to detect button presses. This example assumes that the buttons have some form of identifiers (e.g., HTML buttons with specific IDs or classes).
+
+```html
+<!-- HTML structure for buttons -->
+<button id="leftButton">Left</button>
+<button id="rightButton">Right</button>
+```
+
+```javascript
+// Predicate to determine if the left button is pressed
+function pressL(e) {
+    return e.target.id === 'leftButton';  // Returns true if the left button is pressed
+}
+
+// Predicate to determine if the right button is pressed
+function pressR(e) {
+    return e.target.id === 'rightButton';  // Returns true if the right button is pressed
+}
+
+// Adding event listeners to buttons
+document.getElementById('leftButton').addEventListener('click', function(e) {
+    if (pressL(e)) {
+        console.log("Left button pressed");
+        // Here you can call rotateLeft(cube) if needed
+    }
+});
+
+document.getElementById('rightButton').addEventListener('click', function(e) {
+    if (pressR(e)) {
+        console.log("Right button pressed");
+        // Here you can call rotateRight(cube) if needed
+    }
+});
+```
+
+### Explanation
+
+1. **rotateLeft** and **rotateRight Functions**: These functions adjust the `rotation.y` property of the `cube` object. Modifying `rotation.y` controls the cube's rotation around the y-axis. To rotate left, you decrease the y value, while to rotate right, you increase the y value.
+
+2. **pressL** and **pressR Predicates**: These are functions designed to return a boolean value based on the event's target identity. They check if the event's target element matches the IDs of the left or right buttons.
+
+3. **Event Listeners**: Added to the buttons to detect clicks and execute the predicates. Depending on the button pressed, relevant console logs are displayed, and you could also trigger rotation functions directly from these listeners.
+
+This setup integrates simple DOM manipulation for button event handling with 3D transformations based on those events, demonstrating how to bridge user interactions with visual changes in a 3D environment.

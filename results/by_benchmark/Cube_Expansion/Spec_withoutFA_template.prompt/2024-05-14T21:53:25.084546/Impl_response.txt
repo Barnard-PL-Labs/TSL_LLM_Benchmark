@@ -1,0 +1,29 @@
+To implement the predicate `pressUp(e)` which checks if the user has pressed the up arrow key on their keyboard, you can use JavaScript to add an event listener to the window object. This will listen for 'keydown' events and will determine if the up arrow key (which has the key code 38) is being pressed. Below is the implementation for this predicate:
+
+```javascript
+// Create a variable to track the state of the up key
+let upKeyPressed = false;
+
+// Add an event listener to the window to listen for keydown events
+window.addEventListener('keydown', function(e) {
+    if (e.keyCode === 38) { // 38 is the key code for the up arrow key
+        upKeyPressed = true;
+    }
+});
+
+// Add an event listener to the window to listen for keyup events
+window.addEventListener('keyup', function(e) {
+    if (e.keyCode === 38) { // 38 is the key code for the up arrow key
+        upKeyPressed = false;
+    }
+});
+
+// The predicate function that checks if the up key is pressed
+function pressUp() {
+    return upKeyPressed;
+}
+```
+
+This code sets up two event listeners on the global window object. The first listener checks for the 'keydown' event and sets `upKeyPressed` to `true` if the up arrow key is being pressed. The second listener checks for the 'keyup' event and sets `upKeyPressed` to `false` when the up arrow key is released. The function `pressUp` simply returns the current state of `upKeyPressed`, which is `true` when the key is pressed and `false` otherwise.
+
+This approach ensures that your predicate correctly reflects the state of the up arrow key at any given time.

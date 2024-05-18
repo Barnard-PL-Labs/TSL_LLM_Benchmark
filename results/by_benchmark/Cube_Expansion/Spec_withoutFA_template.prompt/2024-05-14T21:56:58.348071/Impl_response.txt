@@ -1,0 +1,54 @@
+To create a system that uses predicates to determine actions based on user input, and specifically to check if the 'Up' arrow key is pressed, the following JavaScript code can be used. This code utilizes the event listeners to detect key presses and updates the predicate accordingly.
+
+```javascript
+// Predicate Setup
+let isUpKeyPressed = false;
+
+// Event listeners for key detection
+document.addEventListener('keydown', function(event) {
+    if (event.key === "ArrowUp") {
+        isUpKeyPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    if (event.key === "ArrowUp") {
+        isUpKeyPressed = false;
+    }
+});
+
+// Usage of the predicate in a system environment that requires checking the 'Up' key press
+function checkUpKeyPress() {
+    if (isUpKeyPressed) {
+        // Perform actions when Up key is pressed
+        console.log("Up key is pressed.");
+        // Example: Set cube's scale on x-axis, suppose 'cube' is an object representing a 3D model
+        cube.scale.x = 2;  // Example setting, assuming 'cube' and its property 'scale.x' are accessible
+    } else {
+        // Perform actions when Up key is not pressed
+        console.log("Up key is not pressed.");
+        cube.scale.x = 1;  // Reset to default scale, assuming 'cube' and its property 'scale.x' are accessible
+    }
+}
+
+// Optionally, you can periodically check this state or use this in an animation loop
+setInterval(checkUpKeyPress, 100);  // Checks the key press state every 100ms
+```
+
+### Explanation:
+1. **Predicate Setup:**
+   - `isUpKeyPressed` keeps track of whether the Up arrow key is pressed. It's initialized to `false`.
+
+2. **Event Listeners:**
+   - Two listeners are added to the document: one for `keydown` and one for `keyup`.
+   - The `keydown` event sets `isUpKeyPressed` to `true` if the Up arrow key is detected.
+   - The `keyup` event sets `isUpKeyPressed` to `false` when the Up arrow key is released.
+
+3. **Usage of the Predicate:**
+   - The `checkUpKeyPress` function checks the state of `isUpKeyPressed`.
+   - Actions are performed based on whether the Up key is currently pressed. For demonstration, it logs to the console and manipulates the scale of a hypothetical `cube` object on the x-axis. This assumes that you have a `cube` object with a `scale.x` property accessible in your environment.
+
+4. **Periodic Check:**
+   - Using `setInterval`, the key press state is checked every 100 milliseconds. This could also be integrated into an animation or rendering loop, depending on the application's architecture.
+
+This implementation only uses predicates and does not implement functions beyond what is necessary to handle and check the predicate state. Make sure that `cube` and its properties are defined in your actual environment as per your system API specifications.
