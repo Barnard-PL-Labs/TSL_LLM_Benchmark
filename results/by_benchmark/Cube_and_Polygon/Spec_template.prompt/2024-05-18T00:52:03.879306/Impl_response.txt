@@ -1,0 +1,73 @@
+Here's how you can implement the required functions and predicates in JavaScript for your specified system environment:
+
+### Functions Implementation
+
+1. **sin(x):** JavaScript already has a Math.sin function which calculates the sine of a given angle (in radians). Hence, we can directly use it.
+
+2. **saw(x):** To create a sawtooth wave, we can use the modulo operation to create a repeating pattern. The sawtooth wave pattern can be achieved by continuously increasing the value of x and then resetting it after reaching a certain limit.
+
+```javascript
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    // Assuming the period of the sawtooth wave is 2π (similar to sine and cosine)
+    const period = 2 * Math.PI;
+    return (x % period) / period;
+}
+```
+
+### Predicates Implementation
+
+Predicates are functions that return a boolean value based on certain conditions. Here, you want to check if certain keys (left or right) are pressed. You can implement these using event listeners in JavaScript.
+
+```javascript
+let isLeftPressed = false;
+let isRightPressed = false;
+
+function setupEventListeners() {
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            isLeftPressed = true;
+        }
+        if (e.key === 'ArrowRight') {
+            isRightPressed = true;
+        }
+    });
+
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'ArrowLeft') {
+            isLeftPressed = false;
+        }
+        if (e.key === 'ArrowRight') {
+            isRightPressed = false;
+        }
+    });
+}
+
+// Call this function once when your application starts
+setupEventListeners();
+
+function pressL() {
+    return isLeftPressed;
+}
+
+function pressR() {
+    return isRightPressed;
+}
+```
+
+### System API Usage
+
+You mentioned needing to manipulate `cube.scale.x` as part of your system's API. If you want to adjust this value based on the output from `sin(x)` or `saw(x)`, you would do something like this:
+
+```javascript
+function updateCubeScale() {
+    cube.scale.x = sin(someXValue); // or saw(someXValue)
+}
+```
+
+This `updateCubeScale` function would need to be called appropriately within your application's update loop or in response to specific events, depending on your application's architecture.
+
+With these implementations, you have functions for generating sine and sawtooth waves and predicates to check if left or right keys are pressed, along with a setup to utilize your system's API to manipulate a 3D cube's scale on the x-axis.

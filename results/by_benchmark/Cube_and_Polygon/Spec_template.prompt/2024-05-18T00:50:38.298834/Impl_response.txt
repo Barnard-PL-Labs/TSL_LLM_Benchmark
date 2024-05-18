@@ -1,0 +1,60 @@
+Below is the JavaScript implementation for the specified functions and predicates. This code demonstrates how to handle cube scaling using mathematical functions and how to detect button presses through event listeners.
+
+```javascript
+// System API mockup (assuming a simple object structure for demonstration)
+const cube = {
+  scale: {
+    x: 1
+  }
+};
+
+// Functions
+function sin(x) {
+  return Math.sin(x);
+}
+
+function saw(x) {
+  const period = 2 * Math.PI; // Define the period of the sawtooth wave
+  return 2 * (x / period - Math.floor(x / period + 0.5)); // Calculate sawtooth wave
+}
+
+// Predicates
+function pressL(e) {
+  return e.key === 'ArrowLeft';
+}
+
+function pressR(e) {
+  return e.key === 'ArrowRight';
+}
+
+// Event listeners for detecting left and right key presses
+document.addEventListener('keydown', function(e) {
+  if (pressL(e)) {
+    console.log('Left button pressed');
+    // Example: Set cube's scale.x based on sawtooth wave of some variable t
+    cube.scale.x = saw(Date.now() / 1000); // Update using a sawtooth wave based on time
+    console.log('Updated cube.scale.x to:', cube.scale.x);
+  } else if (pressR(e)) {
+    console.log('Right button pressed');
+    // Example: Set cube's scale.x based on sine wave of some variable t
+    cube.scale.x = sin(Date.now() / 1000); // Update using a sine wave based on time
+    console.log('Updated cube.scale.x to:', cube.scale.x);
+  }
+});
+
+// Logging current cube.scale.x for debugging
+setInterval(() => {
+  console.log('Current cube.scale.x:', cube.scale.x);
+}, 2000);
+```
+
+### Key Aspects:
+1. **sin(x) and saw(x)**: These functions compute the sine and sawtooth wave values respectively, which can be used to modify `cube.scale.x`.
+
+2. **pressL(e) and pressR(e)**: These predicates check if the left or right arrow keys have been pressed. They are used in the context of an event listener to detect key presses.
+
+3. **Event Listeners**: The `keydown` event listener triggers actions based on whether a left or right arrow key is pressed. When either key is pressed, it logs the action and updates the cube's scale on the x-axis using either the sawtooth or sine wave functions. The changes are based on the current time to demonstrate dynamic behavior.
+
+4. **Logging**: Regular logging every 2 seconds shows the current `cube.scale.x` value for monitoring how it changes over time due to key presses.
+
+This setup assumes basic HTML and JavaScript environment. Adjustments may be necessary depending on the specific 3D graphics library or environment where `cube.scale.x` is managed.

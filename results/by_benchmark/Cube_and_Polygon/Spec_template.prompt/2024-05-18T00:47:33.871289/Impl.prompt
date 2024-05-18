@@ -1,0 +1,25 @@
+
+A system environment has the following API. Using the API, implement the following methods in JavaScript. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
+
+Functions and predicates to implement:
+
+
+Cells:
+  Cube represents the state of the signal that determines the cube's scale along the x-axis.
+
+Functions:
+    - sin(x): Returns the sine of x.
+    - saw(x): Returns the sawtooth wave of x.
+
+Predicates:
+    - pressL(e): A predicate that returns true when the left button is pressed. Event listener should be inside the function.
+    - pressR(e): A predicate that returns true when the right button is pressed. Event listener should be inside the function.
+
+System API:
+
+
+/*
+
+Get or set the cube.scale.x in 3D by changing "cube.scale.x".
+
+*/
