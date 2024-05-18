@@ -1,0 +1,23 @@
+```tsl
+always assume {
+  // Mutual Exclusion for directional inputs, ensuring only one is processed at a time
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressUp(e));
+  !(pressL(e) && pressDown(e));
+  !(pressR(e) && pressUp(e));
+  !(pressR(e) && pressDown(e));
+  !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+  // If the ship is hit, trigger the die function
+  hit(ship) -> [die(ship)];
+
+  // Moving the ship left or right based on key presses and ensuring ship doesn't move beyond game bounds
+  pressL(e) && !leftmost(ship) -> [moveLeft(ship)];  // Move left only if not at the leftmost edge
+  pressR(e) && !rightmost(ship) -> [moveRight(ship)]; // Move right only if not at the rightmost edge
+
+  // When shoot key is pressed, trigger the shoot function
+  pressShoot(e) -> [shoot(ship)];
+}
+```

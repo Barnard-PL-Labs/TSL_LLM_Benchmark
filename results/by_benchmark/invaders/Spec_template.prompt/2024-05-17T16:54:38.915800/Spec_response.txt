@@ -1,0 +1,38 @@
+Here is the TSL specification based on the provided natural language description and the functions and predicates related to the behavior of a player's ship in a Space Invaders game:
+
+```tsl
+always assume {
+    // Mutual Exclusion for Key Inputs
+    !(pressL(e) && pressR(e));
+    !(pressL(e) && pressUp(e));
+    !(pressL(e) && pressDown(e));
+    !(pressR(e) && pressUp(e));
+    !(pressR(e) && pressDown(e));
+    !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+    // Ship Hit Detection
+    hit(ship) -> [command <- die(ship)];
+
+    // Left Movement
+    pressL(e) && !leftmost(ship) -> [ship <- moveLeft(ship)];
+
+    // Right Movement
+    pressR(e) && !rightmost(ship) -> [ship <- moveRight(ship)];
+
+    // Shooting Action
+    pressS(e) -> [ship <- shoot(ship)];
+}
+```
+
+### Explanation:
+- **Assumptions:** The mutual exclusions make sure that no two directional keys are pressed at the same time, which avoids conflicting commands.
+
+- **Guarantees:**
+  - If the ship is hit (`hit(ship)`), the `die(ship)` function is executed, which could end the game or cause the ship to lose a life.
+  - When the left key is pressed (`pressL(e)`), and the ship is not already at the leftmost boundary (`!leftmost(ship)`), the ship moves left by triggering `moveLeft(ship)`.
+  - When the right key is pressed (`pressR(e)`), and the ship is not at the rightmost boundary (`!rightmost(ship)`), the ship moves right by invoking `moveRight(ship)`.
+  - Activating the shoot key (`pressS(e)`) triggers the `shoot(ship)` function, which could represent firing a projectile or some other shooting mechanism.
+
+This TSL specification captures the fundamental mechanics of ship control in Space Invaders, addressing movement restrictions and actions based on player inputs and game conditions.

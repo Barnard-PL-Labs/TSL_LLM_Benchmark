@@ -1,0 +1,21 @@
+always assume {
+  // Mutual Exclusion for Key Inputs: Ensuring no two directional keys are pressed simultaneously
+  !(pressL(ship) && pressR(ship));
+  !(pressL(ship) && pressUp(ship));
+  !(pressL(ship) && pressDown(ship));
+  !(pressR(ship) && pressUp(ship));
+  !(pressR(ship) && pressDown(ship));
+  !(pressUp(ship) && pressDown(ship));
+}
+
+always guarantee {
+  // Ship Movement: Handling left and right movement with boundary conditions
+  pressL(ship) && !leftmost(ship) -> [ship <- moveLeft(ship)];
+  pressR(ship) && !rightmost(ship) -> [ship <- moveRight(ship)];
+
+  // Shooting Action: Triggering a shooting mechanism when shoot key is pressed
+  pressS(ship) -> [ship <- shoot(ship)];
+
+  // Ship Hit Detection: Triggering game over or life loss sequence when hit
+  hit(ship) -> [ship <- die(ship)];
+}

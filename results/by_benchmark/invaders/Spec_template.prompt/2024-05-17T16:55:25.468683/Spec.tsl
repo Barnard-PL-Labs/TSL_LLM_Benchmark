@@ -1,0 +1,27 @@
+always assume {
+  // Mutual exclusion for key inputs to prevent conflicting movements
+  ! (pressL && pressR);
+  ! (pressL && pressUp);
+  ! (pressL && pressDown);
+  ! (pressR && pressUp);
+  ! (pressR && pressDown);
+  ! (pressUp && pressDown);
+}
+
+always guarantee {
+  // Handling ship hit detection
+  hit(ship) -> [die(ship)];
+
+  // Left movement
+  pressL -> {
+    !leftmost(ship) -> [moveLeft(ship)];
+  };
+
+  // Right movement
+  pressR -> {
+    !rightmost(ship) -> [moveRight(ship)];
+  };
+
+  // Shooting action
+  pressS -> [shoot(ship)];
+}

@@ -1,0 +1,18 @@
+Here is the TSL specification for the provided use case of simulating a cell in the Game of Life:
+
+```
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [alive <- changeState()];
+  
+  // If comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [alive <- changeState()];
+}
+```
+
+This TSL specification defines the behavior of a cell based on the neighbors' state, ensuring that the rules of the Game of Life are respected in terms of cell birth and death based on the defined functions `comeAlive` and `comeDead`.

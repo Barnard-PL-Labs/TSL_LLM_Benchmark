@@ -1,0 +1,40 @@
+Here is the TSL specification corresponding to the natural language description provided for the behavior of a player's ship in a Space Invaders game:
+
+```tsl
+always assume {
+  // Mutual exclusion for key inputs:
+  !(pressLeft && pressRight);
+  !(pressLeft && pressUp);
+  !(pressLeft && pressDown);
+  !(pressRight && pressUp);
+  !(pressRight && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Handling the ship being hit:
+  hit(ship) -> [die(ship)];
+
+  // Left movement:
+  pressLeft && !leftmost(ship) -> [moveLeft(ship)];
+  
+  // Right movement:
+  pressRight && !rightmost(ship) -> [moveRight(ship)];
+  
+  // Shooting action:
+  pressShoot -> [shoot(ship)];
+}
+```
+
+### Explanation:
+
+#### Assumptions:
+1. **Mutual Exclusion for Key Inputs**: Here, it is ensured that no two directional keys are pressed simultaneously. This prevents conflicting commands which might otherwise cause unexpected behavior or glitches in the movement of the ship.
+
+#### Guarantees:
+1. **Ship Hit Detection**: If the ship gets hit by an enemy or an obstacle, the `die(ship)` function is called, which might trigger the end of the game or a loss of life, depending on the game's rules.
+2. **Left Movement**: When the left key is pressed and provided the ship is not already at the leftmost position (`!leftmost(ship)`), the `moveLeft(ship)` function is invoked to move the ship one unit to the left.
+3. **Right Movement**: Similarly, when the right key is pressed and the ship is not at the rightmost position (`!rightmost(ship)`), the `moveRight(ship)` function is triggered to move the ship one unit to the right.
+4. **Shooting Action**: Pressing the shoot key triggers the `shoot(ship)` function, which could involve shooting a projectile from the ship.
+
+This specification clearly defines the interaction of the ship with user inputs and game events, ensuring that the ship acts as expected and adheres to the constraints set by the game's design.

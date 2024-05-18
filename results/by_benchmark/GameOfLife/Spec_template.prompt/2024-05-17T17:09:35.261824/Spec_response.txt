@@ -1,0 +1,26 @@
+Here's how you would translate your natural language description for a single cell in the Game of Life into a TSL specification:
+
+```tsl
+always assume {
+  // Ensuring that comeAlive and comeDead predicates are not both true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // If comeAlive is true, the cell changes its state to alive
+  comeAlive(index) -> [changeState()];
+
+  // If comeDead is true, the cell changes its state to dead
+  comeDead(index) -> [changeState()];
+}
+```
+
+Explanation:
+1. **Assumptions**:
+    - The assumption states that the predicates `comeAlive(index)` and `comeDead(index)` cannot both be true at the same time. This aligns with the rules of the Game of Life where a cell's next state is determined based on a specific set of conditions, and conflicting conditions (both alive and dead) should not occur simultaneously.
+
+2. **Guarantees**:
+    - The guarantees ensure that if the cell should come alive according to the `comeAlive` predicate, then the cell uses the function `changeState()` to become alive.
+    - Similarly, if the cell should die according to the `comeDead` predicate, then the cell uses the function `changeState()` to die.
+
+This TSL specification effectively models the behavior of a single cell in the Game of Life based on the rules defined by the `comeAlive` and `comeDead` functions.

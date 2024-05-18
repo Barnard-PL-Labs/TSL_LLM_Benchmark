@@ -1,0 +1,39 @@
+To convert the provided natural language description into a TSL specification for a Space Invaders game, we need to define both the assumptions and guarantees that control the behavior of the spaceship based on key inputs and interactions within the game environment. Below is the TSL specification reflecting the provided scenario:
+
+```tsl
+always assume {
+  // Ensuring mutual exclusion for directional inputs
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Handling left movement, ensuring the ship doesn't move left if it's at the leftmost position
+  pressL -> (!(leftmost(ship)) -> [ship <- moveLeft(ship)]);
+  
+  // Handling right movement, ensuring the ship doesn't move right if it's at the rightmost position
+  pressR -> (!(rightmost(ship)) -> [ship <- moveRight(ship)]);
+
+  // Handling shooting action
+  pressS -> [ship <- shoot(ship)];
+
+  // Handling the ship being hit by an enemy or obstacle
+  hit(ship) -> [ship <- die(ship)];
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - The assumptions section uses logical negations to ensure that no two directional keys are pressed simultaneously, which prevents conflicting movements.
+
+2. **Guarantees**:
+   - **Left Movement**: The ship moves left unless it is already at the leftmost boundary. 
+   - **Right Movement**: The ship moves right unless it is already at the rightmost boundary.
+   - **Shooting Action**: Triggered when the shoot key is pressed.
+   - **Ship Hit Detection**: If the ship is hit, the `die(ship)` function is executed, which could trigger a game over or reduce the player's life.
+
+The TSL code effectively captures the game dynamics described in the natural language specification, focusing on mutual exclusion for inputs and responsive actions based on the game state.
