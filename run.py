@@ -268,14 +268,14 @@ def run_with_args(args):
         if args.regen_html:
             print("Using synthesized code to regenerate html")
             prompt_templates = [
-                ("summary_gen", NO_CODE_GEN.format(spec_prompt)),
-                ("code_ntregen", NO_TEMPLATE_REGEN.format(code_block)),
+                ("summary_only", NO_CODE_GEN.format(spec_prompt)),
+                ("code_no_template", NO_TEMPLATE_REGEN.format(code_block)),
                 (
-                    "code_sknregen",
+                    "code_summary_skeletontemplate",
                     SKELETON_REGEN.format(spec_prompt, BASE_HTML, code_block),
                 ),
                 (
-                    "code_sktregen",
+                    "code_summary_template",
                     SKELETON_REGEN.format(spec_prompt, wrapper_contents, code_block),
                 ),
             ]
