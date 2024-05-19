@@ -1,0 +1,25 @@
+Here is a TSL specification that captures the described behavior of the cube control system using left and right buttons:
+
+```tsl
+always assume {
+  // Assumption that left and right buttons are never pressed simultaneously
+  !(pressLeft && pressRight);
+}
+
+always guarantee {
+  // Guarantees for rotation control based on button presses
+  pressLeft -> ([cube.rotation <- "left"] W pressRight);
+  pressRight -> ([cube.rotation <- "right"] W pressLeft);
+}
+```
+
+### Explanation:
+
+- **Assumptions**:
+  - The `!(pressLeft && pressRight);` assumption ensures that the system considers it impossible for both the left and right buttons to be pressed at the same time. This is a safety and logic constraint to prevent conflicting commands.
+
+- **Guarantees**:
+  - `pressLeft -> ([cube.rotation <- "left"] W pressRight);` specifies that if the left button is pressed, the cube will start and continue rotating to the left until the right button is pressed.
+  - Similarly, `pressRight -> ([cube.rotation <- "right"] W pressLeft);` ensures that pressing the right button causes the cube to rotate to the right until the left button is pressed.
+
+This setup uses the weak until (`W`) operator to maintain the current rotation direction until the opposite button is pressed, ensuring smooth and uninterrupted control over the cube's rotation direction.

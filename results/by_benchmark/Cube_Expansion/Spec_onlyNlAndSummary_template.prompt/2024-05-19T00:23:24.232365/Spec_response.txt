@@ -1,0 +1,23 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Assume mutual exclusion of pressing and not pressing the up key
+  !(pressUp(e) && !pressUp(e));
+}
+
+always guarantee {
+  // When the up button is pressed, increment the counter by 1 each frame
+  pressUp(e) -> [count <- count + 1];
+
+  // When the up button is not pressed, set the counter to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // Update the cube's scale.x to match the current value of count
+  [cube.scale.x <- count];
+}
+```
+
+In this TSL specification:
+- The assumption ensures that the `pressUp` event and its negation (`!pressUp`) are mutually exclusive, meaning they cannot happen at the same time.
+- The guarantees handle the logic for incrementing the counter when the up key is pressed and resetting it to 0.5 when the up key is not pressed. The cube's x-axis scale is always set to the current value of `count`, thereby linking the visual scale of the cube directly to the user's interaction with the up key.

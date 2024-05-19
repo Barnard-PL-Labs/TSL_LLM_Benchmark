@@ -1,0 +1,78 @@
+To implement the required functions and predicates using JavaScript, you will first create functions for rotating the cube left and right. Then, you will create predicates that detect when the left or right button is pressed. Here’s how you can accomplish this:
+
+### Functions to Rotate the Cube
+
+```javascript
+/**
+ * Rotates the cube to the left.
+ * @param {object} cube - The cube object with a rotation property.
+ */
+function rotateLeft(cube) {
+    // Assuming cube.rotation.y is in radians and a positive rotation is to the left.
+    cube.rotation.y += Math.PI / 4; // Rotate by 45 degrees
+}
+
+/**
+ * Rotates the cube to the right.
+ * @param {object} cube - The cube object with a rotation property.
+ */
+function rotateRight(cube) {
+    // Assuming cube.rotation.y is in radians and a negative rotation is to the right.
+    cube.rotation.y -= Math.PI / 4; // Rotate by 45 degrees
+}
+```
+
+### Predicates for Button Presses
+
+For predicates `pressL` and `pressR`, it's important to establish a mechanism to detect button presses. We'll consider `e` to be an event object provided by JavaScript event listeners. Since predicates must return `true` or `false`, we'll set up event listeners within the predicates to update flags when specific keys are pressed.
+
+To achieve this, you might want a setup where you track the state of the keys:
+
+```javascript
+// Object to keep track of button states
+const buttonState = {
+    leftPressed: false,
+    rightPressed: false
+};
+
+// Set up event listeners for keydown and keyup
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        buttonState.leftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        buttonState.rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        buttonState.leftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        buttonState.rightPressed = false;
+    }
+});
+
+/**
+ * Predicate to check if the left button is pressed.
+ * @returns {boolean} True if the left button is currently pressed.
+ */
+function pressL() {
+    return buttonState.leftPressed;
+}
+
+/**
+ * Predicate to check if the right button is pressed.
+ * @returns {boolean} True if the right button is currently pressed.
+ */
+function pressR() {
+    return buttonState.rightPressed;
+}
+```
+
+### Integrating the Functions and Predicates
+
+With the above setup, you can use these functions and predicates in other parts of your application logic to handle cube rotations based on button presses, or for any other interactive behavior that depends on these inputs.
+
+### Note
+
+The rotation values (like `Math.PI / 4`) and keys (like `'ArrowLeft'` and `'ArrowRight'`) can be adjusted based on the specific requirements or configurations of your system.

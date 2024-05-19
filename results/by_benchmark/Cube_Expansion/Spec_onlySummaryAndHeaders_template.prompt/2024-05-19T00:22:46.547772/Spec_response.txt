@@ -1,0 +1,26 @@
+Here is the TSL specification based on the provided description:
+
+```tsl
+always assume {
+  // No specific environmental assumptions other than the input from the pressUp function
+}
+
+always guarantee {
+  // The cube's scale.x starts at 0.5 when the up key is not pressed
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+
+  // When the up key is pressed, increment the scale value continuously each frame
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 0.01];
+
+  // When the up key is released, reset the scale value immediately to 0.5
+  pressUp(e) W !pressUp(e) -> [cube.scale.x <- 0.5];
+}
+```
+
+### Explanation:
+1. **always assume**: There are no assumptions about the environment in this scenario, as the cube's behavior is directly controlled by the user input (`pressUp(e)`).
+
+2. **always guarantee**: 
+   - The first guarantee handles the case when the up key is not pressed. In this case, the scale along the x-axis (`cube.scale.x`) is statically set to 0.5.
+   - The second guarantee covers the scenario when the up key is actively being pressed. It specifies that each frame during which this condition holds true, the scale value should increment by 0.01.
+   - The third guarantee manages the release of the up key. Using the weak until (`W`) operator, it ensures that immediately when the up key is released, the scale is reset to 0.5. The weak until is important here as it allows the increment action to continue until the `!pressUp(e)` condition (release of the up key) becomes true.

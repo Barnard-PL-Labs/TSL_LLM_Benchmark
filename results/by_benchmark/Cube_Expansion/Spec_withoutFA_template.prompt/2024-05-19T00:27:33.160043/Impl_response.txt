@@ -1,0 +1,51 @@
+To implement the predicates using the given API, we will need to set up the appropriate mechanisms to handle and verify user interactions, specifically for detecting when the up arrow key is pressed on the keyboard. For this scenario, let's focus on creating the `pressUp(e)` predicate.
+
+Since you mentioned not to implement the functions but only to describe how they should be set up using JavaScript, here is the explanation and code outline for `pressUp(e)`:
+
+### `pressUp(e)`: Predicate for Detecting Up Arrow Key Press
+
+The `pressUp(e)` predicate checks if the up arrow key (typically represented by the keycode `38`) is pressed. This can be done by setting up an event listener on the document for the `keydown` event and checking if the key pressed is the up arrow key. The state of the key press (pressed or not) can be tracked using a variable.
+
+Here's a sketch of the JavaScript implementation:
+
+```javascript
+// Variable to track the state of the up arrow key
+let upKeyPressed = false;
+
+// Function to update the state based on keydown events
+function checkUpKeyPress(event) {
+    // Check if the key pressed is the up arrow key
+    if (event.keyCode === 38) {
+        upKeyPressed = true;
+    }
+}
+
+// Function to reset the key state when the key is released
+function resetUpKeyPress(event) {
+    // Reset the state if the up arrow key is released
+    if (event.keyCode === 38) {
+        upKeyPressed = false;
+    }
+}
+
+// Event listeners for keydown and keyup events
+document.addEventListener('keydown', checkUpKeyPress);
+document.addEventListener('keyup', resetUpKeyPress);
+
+// Predicate function to be used in the system
+function pressUp() {
+    return upKeyPressed;
+}
+```
+
+### Explanation:
+
+1. **Variable Initialization**: `upKeyPressed` is a boolean variable initialized to `false`. It tracks whether the up arrow key is currently pressed.
+
+2. **Event Listeners**: Two event listeners are added to the `document`:
+   - `keydown`: This triggers `checkUpKeyPress` which sets `upKeyPressed` to `true` if the up arrow key is pressed.
+   - `keyup`: This triggers `resetUpKeyPress` which resets `upKeyPressed` to `false` when the up arrow key is released.
+
+3. **Predicate Function `pressUp()`**: This function returns the current state of `upKeyPressed`, allowing the system to know if the up arrow key is currently being pressed.
+
+This setup ensures that the `pressUp()` function effectively reflects the state of the up arrow key at any moment, aligning with the requirements of being a predicate in the system. This implementation facilitates the integration with other system components that may rely on detecting this specific user interaction.

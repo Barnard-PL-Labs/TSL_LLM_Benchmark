@@ -1,0 +1,27 @@
+Here is the TSL specification based on the given natural language description:
+
+```TSL
+always assume {
+   // Define that pressing the up button cannot be true and false at the same time
+   !(pressUp(e) && !pressUp(e));
+}
+
+always guarantee {
+   // When the user presses the up button, increment the counter each frame
+   pressUp(e) -> [count <- count + 1];
+
+   // When the user is not pressing the up button, reset the counter to 0.5
+   !pressUp(e) -> [count <- 0.5];
+
+   // The scale value along the x-axis is updated with the value of the counter
+   [cube.scale.x <- count];
+}
+```
+
+### Explanation:
+1. **Assumptions:** The assumption section clarifies that pressing the up key and not pressing it are mutually exclusive states. This is specified to ensure logical consistency in the simulation.
+
+2. **Guarantees:**
+   - When the "up" button is pressed (`pressUp(e)`), the counter `count` is incremented by 1 every frame, representing the continuous pressing and the resultant scaling operation.
+   - When the "up" button is not being pressed (`!pressUp(e)`), the counter is reset to 0.5, returning the scale to its base state.
+   - The cube's scale along the x-axis (`cube.scale.x`) is continuously updated to match the value of `count`, ensuring that the visual scale of the cube corresponds to the current counter value.

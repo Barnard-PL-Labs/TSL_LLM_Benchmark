@@ -1,0 +1,12 @@
+always assume {
+  // Ensure that both buttons cannot be pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, the cube should rotate left until the right button is pressed
+  pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e));
+  
+  // When the right button is pressed, the cube should rotate right until the left button is pressed
+  pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e));
+}

@@ -1,0 +1,59 @@
+To implement the requested functions and predicates using JavaScript, you can follow the structure below. This setup assumes that you have access to an environment where you can listen to button press events and modify the state of a 3D object (in this case, a "cube"). Here's how you could define these functions and predicates:
+
+### JavaScript Implementation
+
+1. **Rotate Functions for the Cube**
+
+```javascript
+function rotateLeft(cube) {
+    // Assuming cube.rotation.y is a numeric angle in radians and
+    // a left rotation decreases the angle
+    cube.rotation.y -= Math.PI / 8;  // Rotate left by 22.5 degrees
+}
+
+function rotateRight(cube) {
+    // Assuming cube.rotation.y is a numeric angle in radians and
+    // a right rotation increases the angle
+    cube.rotation.y += Math.PI / 8;  // Rotate right by 22.5 degrees
+}
+```
+
+2. **Event Listener Predicates for Button Presses**
+
+Assuming HTML buttons with ids 'left-button' and 'right-button', you can set up event listeners for these buttons to handle the press events.
+
+```javascript
+// Predicate to check if left button is pressed
+function pressL(e) {
+    return e.target.id === 'left-button';
+}
+
+// Predicate to check if right button is pressed
+function pressR(e) {
+    return e.target.id === 'right-button';
+}
+
+// Adding event listeners to the buttons
+document.getElementById('left-button').addEventListener('click', function(e) {
+    if (pressL(e)) {
+        console.log("Left button pressed");
+        // Optionally call rotateLeft here if required by the system's design
+        rotateLeft(cube);
+    }
+});
+
+document.getElementById('right-button').addEventListener('click', function(e) {
+    if (pressR(e)) {
+        console.log("Right button pressed");
+        // Optionally call rotateRight here if required by the system's design
+        rotateRight(cube);
+    }
+});
+```
+
+### Notes:
+- **Event Handling:** The predicates `pressL` and `pressR` are designed to check if the specific button has been pressed by examining the event's target ID. The event listeners then use these predicates to determine actions.
+- **Rotation Angles:** Adjust the rotation angle (`Math.PI / 8`) as needed based on the desired rotation granularity and the coordinate system of the 3D environment.
+- **3D Environment:** Ensure that the `cube.rotation.y` property is correctly linked to the 3D representation of the cube in whichever graphics library or environment you are using (e.g., WebGL, Three.js).
+
+This setup allows you to handle button press events effectively and manage the cube's rotation based on these events. Adjustments might be necessary depending on the specific details of the system API and the 3D rendering framework in use.

@@ -1,0 +1,28 @@
+Here's the TSL specification based on the provided natural language description and outlined requirements:
+
+```tsl
+always assume {
+  // Assuming the up key state is either pressed or not pressed
+  (pressUp(e) || !pressUp(e));
+}
+
+always guarantee {
+  // When the user presses the up button, increment the counter every frame
+  pressUp(e) -> [count <- count + 1];
+  
+  // When the user is not pressing the up button, reset the counter to 0.5
+  !pressUp(e) -> [count <- 0.5];
+  
+  // The scale value along the x-axis is updated with the value of the counter
+  [cube.scale.x <- count];
+}
+```
+
+### Explanation:
+
+- **Assumptions**: We assume the state of the up key is monitored, and it can either be pressed (`pressUp(e)`) or not pressed (`!pressUp(e)`). This input is considered as a binary state.
+  
+- **Guarantees**:
+  1. **Incremental Update**: When the up key is pressed (`pressUp(e)`), the counter (`count`) increments by 1 on each frame. This is ensured by the action `[count <- count + 1]`.
+  2. **Reset on Release**: When the up key is not being pressed (`!pressUp(e)`), the counter is reset to a default value of 0.5. This is captured by `[count <- 0.5]`.
+  3. **Update Scale**: Regardless of whether the key is pressed or not, the scale along the x-axis of the cube (`cube.scale.x`) is continuously updated to match the current value of `count`. This ensures that any changes in the counter due to key presses affect the scale of the cube in real-time.

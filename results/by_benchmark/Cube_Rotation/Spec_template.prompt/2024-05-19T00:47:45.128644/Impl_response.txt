@@ -1,0 +1,69 @@
+Below is a JavaScript implementation of the specified system using event listeners for predicates and straightforward functions for cube manipulations. This script assumes that the `cube` is an object available in your environment which has a `rotation` property with a `y` field that can be adjusted to rotate the cube.
+
+```javascript
+// Assuming we have a global 'cube' object with a rotation property
+var cube = {
+  rotation: {
+    y: 0
+  }
+};
+
+/**
+ * Function to rotate the cube to the left
+ * @param {object} cube - The cube object to manipulate
+ */
+function rotateLeft(cube) {
+  cube.rotation.y -= 0.1; // Decrease rotation; adjust the value as needed for smoothness
+  console.log('Rotated Left: New Y rotation = ', cube.rotation.y);
+}
+
+/**
+ * Function to rotate the cube to the right
+ * @param {object} cube - The cube object to manipulate
+ */
+function rotateRight(cube) {
+  cube.rotation.y += 0.1; // Increase rotation; adjust the value as needed for smoothness
+  console.log('Rotated Right: New Y rotation = ', cube.rotation.y);
+}
+
+// Predicates for button presses, using event listeners on the document or specific elements.
+// We're assuming 'e' is the event object from the event listeners.
+
+/**
+ * Predicate to determine if the left button is pressed
+ * @param {Event} e - The event object from the event listener
+ * @returns {boolean}
+ */
+function pressL(e) {
+  return e.key === 'ArrowLeft'; // Adjust key detection as needed
+}
+
+/**
+ * Predicate to determine if the right button is pressed
+ * @param {Event} e - The event object from the event listener
+ * @returns {boolean}
+ */
+function pressR(e) {
+  return e.key === 'ArrowRight'; // Adjust key detection as needed
+}
+
+// Setting up event listeners for the keys
+document.addEventListener('keydown', function(e) {
+  if (pressL(e)) {
+    rotateLeft(cube);
+  } else if (pressR(e)) {
+    rotateRight(cube);
+  }
+});
+```
+
+### Explanation:
+1. **Global `cube` Object**: This script starts with a predefined `cube` object which simulates an API that you might be using in a 3D environment or engine such as Three.js.
+
+2. **Rotation Functions**: The `rotateLeft` and `rotateRight` functions modify the `cube.rotation.y` property to rotate the cube. These functions include logging to verify the rotation direction and current state.
+
+3. **Predicates**: `pressL` and `pressR` are functions that check if the left or right arrow keys are pressed, respectively. The implementation here uses the keyboard event's `key` property to determine which key was pressed.
+
+4. **Event Listeners**: A `keydown` event listener is added to the entire document. This listener checks if either the left or right keys are pressed and calls the respective rotation function.
+
+Please ensure that this script is included in an environment where the `cube` object is defined and fits the expected structure, or modify the object access accordingly to fit your specific environment.

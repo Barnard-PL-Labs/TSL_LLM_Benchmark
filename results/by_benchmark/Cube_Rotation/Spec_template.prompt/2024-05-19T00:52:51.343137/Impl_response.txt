@@ -1,0 +1,59 @@
+To implement the specified functions and predicates using JavaScript, we will utilize the given system API that allows for modification and querying of `cube.rotation.y` for rotations. Below, I will provide the JavaScript code that implements the requested functionalities, respecting the structure of the system environment described.
+
+### Functions
+These functions will modify the cube's rotation. We will assume each rotation (left or right) modifies the cube's `rotation.y` property by a fixed angle. Here, let's assume a rotation angle of π/4 radians for each function call.
+
+```javascript
+function rotateLeft(cube) {
+    // Assuming cube.rotation.y is in radians and π (Math.PI) is available
+    cube.rotation.y -= Math.PI / 4;
+}
+
+function rotateRight(cube) {
+    cube.rotation.y += Math.PI / 4;
+}
+```
+
+### Predicates
+These predicates will be designed to return true when specific keyboard buttons (left or right) are pressed. We'll use the 'keydown' event listener to check for these button presses.
+
+```javascript
+// Global variables to track the state of key presses
+let leftPressed = false;
+let rightPressed = false;
+
+// Setting up event listeners for key press events
+document.addEventListener('keydown', function(e) {
+    if (e.key === "ArrowLeft") {
+        leftPressed = true;
+    } else if (e.key === "ArrowRight") {
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === "ArrowLeft") {
+        leftPressed = false;
+    } else if (e.key === "ArrowRight") {
+        rightPressed = false;
+    }
+});
+
+function pressL(e) {
+    return leftPressed;
+}
+
+function pressR(e) {
+    return rightPressed;
+}
+```
+
+### Explanation
+1. **rotateLeft** and **rotateRight** Functions:
+   - These functions adjust `cube.rotation.y` by adding or subtracting π/4 radians, corresponding to a left or right rotation respectively.
+
+2. **pressL** and **pressR** Predicates:
+   - These functions utilize global boolean flags (`leftPressed` and `rightPressed`) that are set based on 'keydown' events and cleared on 'keyup' events.
+   - The `pressL` function returns true if the left arrow key is currently pressed, and similarly, `pressR` returns true for the right arrow key being pressed.
+
+This implementation assumes the existence of a `cube` object with an accessible `rotation` property (specifically `cube.rotation.y`). Adjustments may be needed based on the actual structure and capabilities of the system API in use. The event listeners are set to respond to keyboard events globally, and they update the state variables that store whether specific keys are pressed.

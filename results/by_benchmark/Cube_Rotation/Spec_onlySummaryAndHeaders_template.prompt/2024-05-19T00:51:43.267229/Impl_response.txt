@@ -1,0 +1,84 @@
+To implement the requested functions and predicates for controlling and responding to a cube system, we'll use JavaScript. The functions will control rotation, and the predicates will detect button presses. Here’s a step-by-step guide for each implementation:
+
+## Functions
+### 1. rotateLeft(cube)
+This function will rotate the cube to the left by decreasing the `cube.rotation.y` value.
+
+```javascript
+function rotateLeft(cube) {
+  cube.rotation.y -= 0.1;  // Decrease the y rotation angle by 0.1 radians
+}
+```
+
+### 2. rotateRight(cube)
+This function will rotate the cube to the right by increasing the `cube.rotation.y` value.
+
+```javascript
+function rotateRight(cube) {
+  cube.rotation.y += 0.1;  // Increase the y rotation angle by 0.1 radians
+}
+```
+
+## Predicates
+For the predicates, we'll assume that there are buttons on a webpage or a user interface that users can press. We need to add event listeners to these buttons to detect when they are pressed. The predicates will return `true` when the respective buttons are pressed.
+
+### 1. pressL(e)
+This predicate sets up an event listener for the left button and checks if it is pressed.
+
+```javascript
+// Assuming the left button has an id of "leftButton"
+const leftButton = document.getElementById("leftButton");
+let leftPressed = false;
+
+leftButton.addEventListener("mousedown", function(e) {
+  leftPressed = true;
+});
+
+leftButton.addEventListener("mouseup", function(e) {
+  leftPressed = false;
+});
+
+function pressL() {
+  return leftPressed;  // Return true if the left button is pressed
+}
+```
+
+### 2. pressR(e)
+This predicate sets up an event listener for the right button and checks if it is pressed.
+
+```javascript
+// Assuming the right button has an id of "rightButton"
+const rightButton = document.getElementById("rightButton");
+let rightPressed = false;
+
+rightButton.addEventListener("mousedown", function(e) {
+  rightPressed = true;
+});
+
+rightButton.addEventListener("mouseup", function(e) {
+  rightPressed = false;
+});
+
+function pressR() {
+  return rightPressed;  // Return true if the right button is pressed
+}
+```
+
+## Integration
+To integrate these functions and predicates in a simulated environment, you would continuously check the predicates in your main animation or game loop, and call the appropriate rotation functions when necessary.
+
+```javascript
+function updateCube() {
+  if (pressL()) {
+    rotateLeft(cube);
+  }
+  if (pressR()) {
+    rotateRight(cube);
+  }
+  requestAnimationFrame(updateCube); // Continuously update the cube's position
+}
+
+updateCube(); // Start the update loop
+```
+
+This setup assumes you have a suitable HTML element for the cube and the buttons. It implements basic interaction handling, directly manipulating the cube's rotation based on user input. Adjust the rotation values and the event handling logic as needed to fit the specifics of your project and user interface setup.

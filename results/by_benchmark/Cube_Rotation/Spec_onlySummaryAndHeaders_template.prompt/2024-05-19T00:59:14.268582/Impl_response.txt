@@ -1,0 +1,54 @@
+Below are the JavaScript implementations for the specified functions and predicates based on the given API. These implementations make use of event listeners to catch button presses and modify the state of a 'cube' object accordingly.
+
+### Functions
+
+The following JavaScript functions, `rotateLeft` and `rotateRight`, modify the `cube` object's rotation on the Y-axis. This simulates the rotation of the cube to the left or right.
+
+```javascript
+function rotateLeft(cube) {
+    // Decrease the y rotation value to rotate the cube to the left
+    cube.rotation.y -= Math.PI / 4; // Rotate by 45 degrees for example
+    console.log('Rotated Left: New rotation y = ' + cube.rotation.y);
+}
+
+function rotateRight(cube) {
+    // Increase the y rotation value to rotate the cube to the right
+    cube.rotation.y += Math.PI / 4; // Rotate by 45 degrees for example
+    console.log('Rotated Right: New rotation y = ' + cube.rotation.y);
+}
+```
+
+### Predicates
+
+The predicates `pressL` and `pressR` check whether the left or right buttons are being pressed. These functions should be used with event listeners that trigger the appropriate responses.
+
+```javascript
+// Assuming 'e' is the event object passed by the event listeners
+function pressL(e) {
+    // Check if the pressed key is the 'left' arrow key
+    return e.keyCode === 37; // 37 is the keycode for the left arrow key
+}
+
+function pressR(e) {
+    // Check if the pressed key is the 'right' arrow key
+    return e.keyCode === 39; // 39 is the keycode for the right arrow key
+}
+
+// Example of setting up event listeners in the document
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        console.log('Left button pressed');
+        rotateLeft(cube); // Assume 'cube' is defined and accessible
+    } else if (pressR(e)) {
+        console.log('Right button pressed');
+        rotateRight(cube); // Assume 'cube' is defined and accessible
+    }
+});
+```
+
+### Explanation
+- The functions `rotateLeft` and `rotateRight` directly manipulate `cube.rotation.y` to change the cube's orientation. This fits with the API description, which specifically mentions modifying `cube.rotation.y` to adjust the cube's rotation in 3D space.
+- The predicates `pressL` and `pressR` use the event object `e` passed from the `keydown` event to check if the left or right arrow keys are pressed, respectively. This is done using the key codes for the left (`37`) and right (`39`) arrow keys.
+- An event listener for `keydown` is added to the document, which checks if either the left or right keys are pressed and then calls the appropriate rotation function for the cube.
+
+This setup should meet the requirements provided for function and predicate behaviors within the system environment.

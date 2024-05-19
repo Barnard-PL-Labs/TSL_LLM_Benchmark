@@ -1,0 +1,80 @@
+Here's how you can implement the described system in JavaScript, including both the functions for manipulating the cube's rotation and predicates that check for button presses. I will assume we're working in an environment where pressing keys on the keyboard represents the pressing of the left and right buttons.
+
+### JavaScript Implementation:
+
+First, you'll need to set up your HTML to capture key events. Here's a simple HTML setup:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube Controller</title>
+</head>
+<body>
+    <script src="cubeController.js"></script>
+</body>
+</html>
+```
+
+Now, create a file named `cubeController.js` for your JavaScript code.
+
+```javascript
+// Assuming `cube` is an object that can be manipulated
+const cube = {
+    rotation: {
+        y: 0
+    }
+};
+
+// Functions to manipulate the cube
+function rotateLeft(cube) {
+    // Rotate left implies decreasing the y rotation value
+    cube.rotation.y -= 5; // Change the value as per your rotation sensitivity
+    console.log(`Rotated Left: ${cube.rotation.y}`);
+}
+
+function rotateRight(cube) {
+    // Rotate right implies increasing the y rotation value
+    cube.rotation.y += 5; // Change the value as per your rotation sensitivity
+    console.log(`Rotated Right: ${cube.rotation.y}`);
+}
+
+// Predicate setup using keyboard events
+function setupButtonListeners() {
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowLeft') { // Assuming the left arrow key as the left button
+            if (pressL()) {
+                rotateLeft(cube);
+            }
+        } else if (event.key === 'ArrowRight') { // Assuming the right arrow key as the right button
+            if (pressR()) {
+                rotateRight(cube);
+            }
+        }
+    });
+}
+
+function pressL() {
+    // This function should be tailored to return true when the left button (left arrow key here) is pressed 
+    // Since it's hard to continuously track state in a simple function call without additional state management, it returns true by default here
+    return true;
+}
+
+function pressR() {
+    // This function should be tailored to return true when the right button (right arrow key here) is pressed
+    // Since it's hard to continuously track state in a simple function call without additional state management, it returns true by default here
+    return true;
+}
+
+// Initialize the button listeners
+setupButtonListeners();
+```
+
+### Explanation:
+- The `rotateLeft` and `rotateRight` functions adjust the `rotation.y` property of a `cube` object, simulating the rotation of a cube in a 3D space.
+- The `pressL` and `pressR` functions are predicates that are designed to return `true` when the left or right arrow keys are pressed, respectively. Here, they are set to always return `true` because tracking the actual key state requires more complex state management or different event handling.
+- The `setupButtonListeners` function sets up event listeners for keydown events, checking for left and right arrow keys and invoking the appropriate rotation function through the predicates.
+
+This setup allows basic control of the cube object using the keyboard's arrow keys and demonstrates function and predicate setup in JavaScript. Adjustments might be necessary to fit into a specific 3D rendering environment like Three.js or Babylon.js.

@@ -1,0 +1,28 @@
+Below is the TSL (Temporal Stream-based Specification Language) specification that translates your natural language description into appropriate assumptions and guarantees for the control system managing the rotation of a cube based on left and right button inputs.
+
+```tsl
+always assume {
+  // Assumption that left and right buttons are never pressed at the same time
+  !(pressLeft && pressRight);
+}
+
+always guarantee {
+  // Guarantee that if the left button is pressed, the cube rotates to the left
+  // and continues to do so until the right button is pressed
+  pressLeft -> ([cube.rotation <- "left"] W pressRight);
+
+  // Guarantee that if the right button is pressed, the cube rotates to the right
+  // and continues to do so until the left button is pressed
+  pressRight -> ([cube.rotation <- "right"] W pressLeft);
+}
+```
+
+### Explanation:
+- **Assumptions**:
+  - The system assumes that the `pressLeft` and `pressRight` buttons are not pressed simultaneously (`!(pressLeft && pressRight)`). This mutual exclusion ensures that the commands related to button presses do not conflict.
+
+- **Guarantees**:
+  - When the `pressLeft` button is pressed, the cube's rotation is set to "left". This rotation will continue until the `pressRight` button is pressed. Here, "W" (weak until) is used to specify that the rotation direction remains "left" until potentially overridden by pressing the right button.
+  - Similarly, when the `pressRight` button is pressed, the rotation is set to "right" and continues so until the `pressLeft` button is pressed.
+
+This specification ensures that the direction of rotation of the cube can be controlled by the user through the left and right buttons, with each direction maintained until the opposite command is issued, thereby meeting the requirements of smooth and accurate control without conflict.

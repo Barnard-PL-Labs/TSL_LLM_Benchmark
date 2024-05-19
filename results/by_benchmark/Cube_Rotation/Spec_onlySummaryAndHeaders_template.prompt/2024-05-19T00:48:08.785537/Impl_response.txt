@@ -1,0 +1,55 @@
+Here's a JavaScript implementation for the specified functions and predicates using an imagined event-driven system API. For simplicity, I assume that the system API allows for direct manipulation of the `cube.rotation.y` property and that event listeners can be added to capture button presses.
+
+```javascript
+// Assume this function is part of the system API for getting and setting cube rotation
+function getCubeRotation() {
+    return cube.rotation.y;
+}
+
+function setCubeRotation(newRotationY) {
+    cube.rotation.y = newRotationY;
+}
+
+// Functions for rotating the cube left and right
+function rotateLeft(cube) {
+    const currentRotation = getCubeRotation();
+    setCubeRotation(currentRotation - 0.1); // Rotate left by a small angle
+}
+
+function rotateRight(cube) {
+    const currentRotation = getCubeRotation();
+    setCubeRotation(currentRotation + 0.1); // Rotate right by a small angle
+}
+
+// Predicates to detect button presses
+function pressL(e) {
+    // Assuming 'e' is the event object from an event listener
+    return e.key === 'ArrowLeft'; // True if the left arrow key is pressed
+}
+
+function pressR(e) {
+    // Assuming 'e' is the event object from an event listener
+    return e.key === 'ArrowRight'; // True if the right arrow key is pressed
+}
+
+// Setting up event listeners for key presses
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        rotateLeft(cube); // Rotate cube left if left arrow key is pressed
+    } else if (pressR(e)) {
+        rotateRight(cube); // Rotate cube right if right arrow key is pressed
+    }
+});
+
+```
+
+### Explanation:
+1. **`getCubeRotation` and `setCubeRotation`**: These functions abstract the process of getting and setting the cube’s rotation. They act as a simple layer between your functions and the system API.
+
+2. **`rotateLeft` and `rotateRight`**: These functions modify the rotation of the cube around the y-axis to simulate left and right rotations. The amount of rotation (0.1 in this example) can be adjusted based on how significant you want each rotation step to be.
+
+3. **`pressL` and `pressR`**: These are predicates that check if the left or right arrow keys are being pressed. They are used within event listeners to trigger cube rotations.
+
+4. **Event Listeners**: An event listener is added to the document to listen for 'keydown' events. Inside this listener, the predicates `pressL` and `pressR` are used to determine if a rotation action should be triggered.
+
+This setup assumes a continuous environment where the cube's state is persistently available and can be manipulated in real-time with user input. Adjust the rotation step size and key bindings as necessary to fit the specific requirements and API capabilities of your system environment.

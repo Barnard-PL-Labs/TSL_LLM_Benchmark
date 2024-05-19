@@ -1,0 +1,14 @@
+always assume {
+  // This models the pressing and releasing of the up key but itself needs no assumption in TSL
+}
+
+always guarantee {
+  // The counter increments by 1 every frame when the up key is pressed
+  pressUp(e) -> [count <- count + 1];
+  
+  // When the up key is not pressed, the counter resets to 0.5
+  !pressUp(e) -> [count <- 0.5];
+  
+  // The cube's scale along the x-axis follows the value of the counter
+  [cube.scale.x <- count];
+}

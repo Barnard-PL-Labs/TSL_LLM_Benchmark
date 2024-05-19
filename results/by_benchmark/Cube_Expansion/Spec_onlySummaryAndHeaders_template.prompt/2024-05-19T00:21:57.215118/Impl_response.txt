@@ -1,0 +1,38 @@
+To implement the predicate `pressUp(e)` that checks if the user presses the up arrow key on their keyboard within the given system environment, you would typically add an event listener for keypress events and check if the pressed key is the up arrow key. Here's how you can implement this in JavaScript:
+
+```javascript
+// Tracks the state of the up arrow key
+let isUpKeyPressed = false;
+
+// Add an event listener to detect when the up arrow key is pressed
+document.addEventListener('keydown', function(event) {
+    // Check if the key pressed is the up arrow key
+    if (event.key === "ArrowUp") {
+        isUpKeyPressed = true;
+    }
+});
+
+// Add an event listener to handle when the up arrow key is released
+document.addEventListener('keyup', function(event) {
+    // Check if the key released is the up arrow key
+    if (event.key === "ArrowUp") {
+        isUpKeyPressed = false;
+    }
+});
+
+// Predicate function to check if the up arrow key is currently pressed
+function pressUp() {
+    return isUpKeyPressed;
+}
+```
+
+### Explanation:
+1. **State Management:** A variable `isUpKeyPressed` is used to track whether the up arrow key is currently pressed. It is initialized to `false`.
+
+2. **Event Listeners:**
+   - **Key Down:** A `keydown` event listener is attached to the whole document. When this event fires, it checks if the key pressed is the up arrow key (`ArrowUp`). If it is, `isUpKeyPressed` is set to `true`.
+   - **Key Up:** A `keyup` event listener is also attached to reset the `isUpKeyPressed` variable when the up arrow key is released.
+
+3. **Predicate Function:** The `pressUp()` function simply returns the current state of `isUpKeyPressed`, allowing other parts of your system to check if the up arrow key is currently being pressed.
+
+This setup ensures that the state of the up arrow key is accurately tracked across the whole application, and the predicate function provides a simple boolean output as required.

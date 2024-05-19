@@ -1,0 +1,18 @@
+```tsl
+always assume {
+  // Assume the state of the pressUp predicate based on user input.
+}
+
+always guarantee {
+  // Set the initial scale of the cube's x-axis to 0.5 when the up key is not pressed.
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+
+  // When the up key is pressed, increment the scale value according to a counter that increases with each frame.
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 0.1];
+
+  // When the up key is released, the scale immediately returns to 0.5.
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+}
+```
+
+In this TSL specification, the cube's x-axis scaling behavior is defined based on whether the user is pressing the up key or not. If the key is pressed, the cube's scale along the x-axis increases incrementally. When the key is released, the scale resets to the initial value of 0.5. This guarantees that the cube responds dynamically to user input, growing in size with continued pressure on the up key and shrinking back when the pressure is released.

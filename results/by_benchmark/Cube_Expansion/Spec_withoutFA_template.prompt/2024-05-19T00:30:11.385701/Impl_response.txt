@@ -1,0 +1,36 @@
+To implement the predicate `pressUp(e)` according to the requirements, we need to set up an event listener in JavaScript to detect when the up arrow key (identified by the event key code `ArrowUp`) is pressed on the keyboard. Since the predicate should return a boolean value, we will manage this by keeping track of the state of the up arrow key. Here is how you can implement it:
+
+```javascript
+let upKeyPressed = false;  // This will track the state of the up arrow key
+
+// Event listener for the 'keydown' event
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowUp') {
+        upKeyPressed = true;  // Set to true when the up key is pressed
+    }
+});
+
+// Event listener for the 'keyup' event
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowUp') {
+        upKeyPressed = false;  // Reset to false when the up key is released
+    }
+});
+
+// Predicate function to check if the up key is pressed
+function pressUp() {
+    return upKeyPressed;  // Returns the current state of the up key
+}
+```
+
+### Explanation
+
+1. **Variable Initialization**: `upKeyPressed` is initialized to `false`. This variable will help keep track of whether the up arrow key is pressed or not.
+
+2. **Key Down Listener**: An event listener for `keydown` is added to the `document`. Inside this listener, if the key pressed is `'ArrowUp'`, `upKeyPressed` is set to `true`. This indicates that the up key is currently being pressed.
+
+3. **Key Up Listener**: A second event listener for `keyup` is added. If the key released is `'ArrowUp'`, `upKeyPressed` is set to `false`. This indicates that the up key is no longer being pressed.
+
+4. **Predicate Function `pressUp`**: This function returns the boolean value of `upKeyPressed`. When called, it provides the current state of the up arrow key (true if pressed, false otherwise).
+
+This setup ensures that the predicate reflects the real-time state of the up arrow key, making it suitable for use in systems where real-time input detection is crucial.

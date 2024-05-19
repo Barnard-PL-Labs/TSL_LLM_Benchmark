@@ -1,0 +1,18 @@
+Here's a TSL specification that corresponds to your description:
+
+```tsl
+always assume {
+  // It is assumed that the left and right buttons are never pressed simultaneously
+  ! (pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // If the left button is pressed, the cube should rotate to the left until the right button is pressed
+  pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e));
+  
+  // If the right button is pressed, the cube should rotate to the right until the left button is pressed
+  pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e));
+}
+```
+
+This TSL definition makes use of the assumptions and guarantees blocks to ensure that the system behaves as described. The assumption block explicitly states that the left and right buttons cannot be pressed at the same time. In the guarantee block, the behavior of the cube's rotation is controlled based on which button is pressed, using the Temporal Stream Logic constructs to maintain the rotation until the opposite button is pressed. This ensures smooth and conflict-free control of the cube's rotation.

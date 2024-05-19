@@ -1,0 +1,20 @@
+Here's how you could translate that description into a TSL specification:
+
+```tsl
+always assume {
+  // Assumptions about key inputs would typically go here, but there aren't specific environmental conditions to assume other than key press
+}
+
+always guarantee {
+  // When the user presses the up button, increment the counter each frame
+  pressUp(e) -> [count <- count + 1];
+
+  // When the user is not pressing the up button, reset the counter to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // The cube's scale along the x-axis always follows the value of the counter
+  [cube.scale.x <- count];
+}
+```
+
+In this TSL specification, the `always assume` block doesn't contain any assumptions as the assumptions about environment inputs are minimal and straightforward (only related to the pressing of a button). The `always guarantee` block handles the logic related to the pressing and releasing of the up key, managing the `count` variable, and setting the cube's scale.

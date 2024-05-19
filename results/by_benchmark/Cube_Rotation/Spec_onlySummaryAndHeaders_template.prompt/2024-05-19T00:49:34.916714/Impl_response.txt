@@ -1,0 +1,77 @@
+Here is how you can implement the required functions and predicates in JavaScript, considering the constraints of the system environment:
+
+### 1. Setting up the JavaScript environment:
+Before we start writing our methods, we need to assume there is an HTML structure and a corresponding event system where user interactions can trigger events. 
+
+### 2. Implementing Functions:
+For the `rotateLeft` and `rotateRight` functions, we'll modify `cube.rotation.y`. Assuming that `cube.rotation.y` can be incremented or decremented to rotate the cube, we can define our functions as follows:
+
+```javascript
+/**
+ * Rotate the cube to the left by decrementing the y rotation angle.
+ * @param {object} cube - The cube object with a rotation property.
+ */
+function rotateLeft(cube) {
+    cube.rotation.y -= Math.PI / 2; // Rotate 90 degrees to the left
+}
+
+/**
+ * Rotate the cube to the right by incrementing the y rotation angle.
+ * @param {object} cube - The cube object with a rotation property.
+ */
+function rotateRight(cube) {
+    cube.rotation.y += Math.PI / 2; // Rotate 90 degrees to the right
+}
+```
+
+### 3. Implementing Predicates:
+The predicates `pressL` and `pressR` require event listener implementations to determine if a specific key (presumably for left and right movement) has been pressed. Here's how this could be implemented using JavaScript event listeners:
+
+```javascript
+/**
+ * Predicate to check if the left button is pressed.
+ * This function sets up an event listener and checks for a specific key press.
+ * @returns {boolean} - Returns true if the left key (e.g., ArrowLeft) is pressed.
+ */
+function pressL() {
+    let isLeftPressed = false;
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowLeft') {
+            isLeftPressed = true;
+        }
+    });
+    document.addEventListener('keyup', function(event) {
+        if (event.key === 'ArrowLeft') {
+            isLeftPressed = false;
+        }
+    });
+    return () => isLeftPressed;
+}
+
+/**
+ * Predicate to check if the right button is pressed.
+ * This function sets up an event listener and checks for a specific key press.
+ * @returns {boolean} - Returns true if the right key (e.g., ArrowRight) is pressed.
+ */
+function pressR() {
+    let isRightPressed = false;
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight') {
+            isRightPressed = true;
+        }
+    });
+    document.addEventListener('keyup', function(event) {
+        if (event.key === 'ArrowRight') {
+            isRightPressed = false;
+        }
+    });
+    return () => isRightPressed;
+}
+```
+
+### Notes:
+1. The `rotateLeft` and `rotateRight` functions assume you can directly manipulate `cube.rotation.y` as per the system's API. Adjust the increment/decrement values (here, `Math.PI / 2`) based on how much you need to rotate per invocation.
+
+2. The predicates `pressL` and `pressR` implement basic key event listeners. They check if the left or right arrow keys are pressed, respectively. The functions return a closure that captures whether the key is currently pressed, making it a callable predicate that returns a boolean.
+
+3. Ensure that your web environment supports the necessary JavaScript functionalities and that the 'cube' object conforms to the expected structure and behavior as outlined in the API.
