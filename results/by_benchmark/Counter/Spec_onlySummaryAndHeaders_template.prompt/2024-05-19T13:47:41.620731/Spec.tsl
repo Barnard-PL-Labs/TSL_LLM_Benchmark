@@ -1,0 +1,26 @@
+always assume {
+  // Ensure mutual exclusion between pressing A, B, and C
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // If A is pressed three times consecutively, multiply stepsize by 3, unless interrupted by B or C
+  pressA(e) -> (
+    [counter <- counter + stepsize] W (
+      pressB(e) || pressC(e) || 
+      (pressA(e) -> (
+        [counter <- counter + stepsize] W (
+          pressB(e) || pressC(e) || 
+          (pressA(e) -> (
+            [counter <- counter + stepsize];
+            [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e))
+          ))
+        ))
+      ))
+    );
+    
+  // If B or C is pressed, reset the stepsize to 1
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}

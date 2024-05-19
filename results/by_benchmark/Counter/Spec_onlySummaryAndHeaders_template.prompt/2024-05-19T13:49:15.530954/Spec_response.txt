@@ -1,0 +1,41 @@
+Here is a TSL specification that translates your natural language description into a formal specification:
+
+```tsl
+always assume {
+  // Ensure that no two button presses can happen at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Handle the increment logic for pressing the A key three times consecutively
+  pressA(e) -> (
+    [stepsize <- stepsize] W (pressB(e) || pressC(e))
+    && X (pressA(e) -> (
+      [stepsize <- stepsize] W (pressB(e) || pressC(e))
+      && X (pressA(e) -> (
+        [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e))
+      ))
+    ))
+  );
+  
+  // Reset stepsize to 1 if either B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - Mutual exclusivity is enforced so that no two button presses (A, B, C) can happen at the same time. This is essential as per the requirement that no two counter operations can be performed simultaneously.
+
+2. **Guarantees**:
+   - When the A key is pressed:
+     - The initial action is to keep the `stepsize` as it is unless either B or C is pressed. This is handled by the weak until (`W`) that looks for a press on B or C to interrupt the sequence.
+     - If A is pressed consecutively a second time, the same logic applies—`stepsize` remains unchanged until B or C is pressed.
+     - Upon the third consecutive press of A, the `stepsize` is multiplied by three using the function `multiplyByThree(stepsize)`. This change persists until either B or C is pressed, resetting the sequence.
+   - Pressing the B or C key:
+     - Either of these keys being pressed resets the `stepsize` to 1. This ensures that any sequence involving the A key is reset, and the counter increment size returns to its default state.
+
+This specification captures the behavior described in your natural language description using the constraints and capabilities of TSL.
