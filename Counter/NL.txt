@@ -5,7 +5,7 @@ Assumptions:
 
 Guarantees:
 
-2. When pressA is pushed, the system ensures that the counter will be incremented by 1. This is achieved by writing the value "count + 1" to the variable "count".
+2. When pressA is pushed, the system ensures that the counter will be incremented by stepsize, which starts at a value of 1. This is achieved by writing the value "count + stepsize" to the variable "count".
 
 3. When pressB is pushed, the system ensures that the counter will be incremented by 2. This is achieved by writing the value "count + 2" to the variable "count".
 

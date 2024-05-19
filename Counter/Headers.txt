@@ -1,5 +1,5 @@
 Cells: 
-    "stepsize" is a cell that represent the state of the signal that determines how much pressing the "a" key/button will increment the counter by.
+    "stepsize" is a cell that represent the state of the signal that determines how much pressing the "a" key/button will increment the counter by. Stepsize starts at the value of 1 each program start.
     "e" is a cell that represents the state of the signal that determines how the counter should act (how much it should increment by).
 
 Functions:
