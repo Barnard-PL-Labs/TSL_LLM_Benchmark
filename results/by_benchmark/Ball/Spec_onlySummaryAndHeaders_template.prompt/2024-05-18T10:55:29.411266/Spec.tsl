@@ -1,0 +1,18 @@
+always assume {
+  // The ball can either be at the leftmost or rightmost position but not both at the same time
+  !(leftmost(ball) && rightmost(ball));
+
+  // If the ball is at the leftmost position, it cannot be commanded to move left
+  leftmost(ball) -> ![ball <- moveLeft(ball)];
+
+  // If the ball is at the rightmost position, it cannot be commanded to move right
+  rightmost(ball) -> ![ball <- moveRight(ball)];
+}
+
+always guarantee {
+  // When the ball hits the leftmost wall, it should start moving right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+
+  // When the ball hits the rightmost wall, it should start moving left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+}

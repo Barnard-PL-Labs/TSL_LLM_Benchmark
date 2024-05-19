@@ -1,0 +1,18 @@
+always assume {
+  // Basic assumption that the ball must always be between the two walls (inclusively)
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // When the ball hits the leftmost wall, it should move right in the next state
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // When the ball hits the rightmost wall, it should move left in the next state
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+
+  // As long as the ball is not at either wall, it should continue moving in its current direction
+  (!leftmost(ball) && !rightmost(ball)) -> (
+    ([ball <- moveRight(ball)] W rightmost(ball)) ||
+    ([ball <- moveLeft(ball)] W leftmost(ball))
+  );
+}

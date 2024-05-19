@@ -1,0 +1,19 @@
+always assume {
+  // There are no specific environment assumptions provided
+}
+
+always guarantee {
+  // When the button for E4 is pressed, set noteToPlay to 'E4'
+  pressButtonE4 -> [noteToPlay <- 'E4'];
+
+  // When the button for G4 is pressed, set noteToPlay to 'G4'
+  pressButtonG4 -> [noteToPlay <- 'G4'];
+
+  // When the button for A4 is pressed, set noteToPlay to 'A4'
+  pressButtonA4 -> [noteToPlay <- 'A4'];
+
+  // Assuming another set of buttons can also trigger sounds simultaneously on noteToPlay2
+  pressButtonE4_2 -> [noteToPlay2 <- 'E4'];
+  pressButtonG4_2 -> [noteToPlay2 <- 'G4'];
+  pressButtonA4_2 -> [noteToPlay2 <- 'A4'];
+}

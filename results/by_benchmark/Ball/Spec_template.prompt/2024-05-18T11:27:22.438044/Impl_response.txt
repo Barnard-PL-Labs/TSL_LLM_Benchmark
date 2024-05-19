@@ -1,0 +1,77 @@
+To implement the given functions and predicates using JavaScript, we'll assume that information about the ball's position is encoded in the `ball` object. For the purposes of this example, let's suppose `ball` has properties such as `position` to represent its position on an axis, and `leftWall` and `rightWall` to indicate the boundaries it can move within. Here are the implementations:
+
+### JavaScript Implementation
+
+First, ensure your `ball` object might look something like this for our implementation:
+
+```javascript
+let ball = {
+    position: 5, // arbitrary starting position
+    leftWall: 0, // position of the leftmost wall
+    rightWall: 10 // position of the rightmost wall
+};
+```
+
+Now, let's implement the functions and predicates:
+
+```javascript
+// Functions
+function moveLeft(ball) {
+    // Move the ball to the left unless it's at the leftmost position
+    if (ball.position > ball.leftWall) {
+        ball.position -= 1; // decrement position to move left
+    }
+    return ball.position;
+}
+
+function moveRight(ball) {
+    // Move the ball to the right unless it's at the rightmost position
+    if (ball.position < ball.rightWall) {
+        ball.position += 1; // increment position to move right
+    }
+    return ball.position;
+}
+
+// Predicates
+function leftmost(ball) {
+    // Returns true if the ball is at the leftmost position
+    return ball.position === ball.leftWall;
+}
+
+function rightmost(ball) {
+    // Returns true if the ball is at the rightmost position
+    return ball.position === ball.rightWall;
+}
+```
+
+### Testing the Functions and Predicates
+
+Here's how you might test these functions to ensure they work as expected:
+
+```javascript
+// Test moving the ball
+console.log("Initial Position:", ball.position);
+moveLeft(ball);
+console.log("After moving left:", ball.position);
+moveRight(ball);
+moveRight(ball);
+console.log("After moving right twice:", ball.position);
+
+// Test predicates
+console.log("Is the ball at the leftmost position?", leftmost(ball));
+console.log("Is the ball at the rightmost position?", rightmost(ball));
+
+// Move the ball to the extreme left
+while (!leftmost(ball)) {
+    moveLeft(ball);
+}
+console.log("Moved to the leftmost position:", ball.position);
+
+// Move the ball to the extreme right
+while (!rightmost(ball)) {
+    moveRight(ball);
+}
+console.log("Moved to the rightmost position:", ball.position);
+```
+
+This implementation and testing ensure that the ball behaves correctly within defined boundaries and adheres to the specified API actions and checks. Adjust the implementation according to the actual structure and methods available in your specific system API.

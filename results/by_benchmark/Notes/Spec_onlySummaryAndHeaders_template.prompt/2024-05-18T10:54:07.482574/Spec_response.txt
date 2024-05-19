@@ -1,0 +1,17 @@
+```TSL
+always assume {
+  // There are no specific environmental inputs or conditions that affect the assumptions.
+}
+
+always guarantee {
+  // When buttonE is pressed, note E4 is played by setting noteToPlay or noteToPlay2.
+  pressButtonE -> ([noteToPlay <- "E4"] || [noteToPlay2 <- "E4"]);
+  
+  // When buttonG is pressed, note G4 is played by setting noteToPlay or noteToPlay2.
+  pressButtonG -> ([noteToPlay <- "G4"] || [noteToPlay2 <- "G4"]);
+  
+  // When buttonA is pressed, note A4 is played by setting noteToPlay or noteToPlay2.
+  pressButtonA -> ([noteToPlay <- "A4"] || [noteToPlay2 <- "A4"]);
+}
+```
+This specification ensures that when a specific button corresponding to a musical note (E4, G4, A4) is pressed, the appropriate note is set to be played in either of the two available variables for outputting musical notes, allowing for simultaneous note playing if desired.

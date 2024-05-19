@@ -1,0 +1,15 @@
+always assume {
+  // Define the constraints for ball movement based on its position
+  (ball = 0 -> leftmost(ball));
+  (ball = 10 -> rightmost(ball));
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // Ball behavior for bouncing between the walls
+  (leftmost(ball) -> X ([ball <- moveRight(ball)]));
+  (rightmost(ball) -> X ([ball <- moveLeft(ball)]));
+  (!leftmost(ball) && !rightmost(ball)) -> 
+      (ball@prev = ball - 1 -> X ([ball <- moveRight(ball)])) ||
+      (ball@prev = ball + 1 -> X ([ball <- moveLeft(ball)]));
+}

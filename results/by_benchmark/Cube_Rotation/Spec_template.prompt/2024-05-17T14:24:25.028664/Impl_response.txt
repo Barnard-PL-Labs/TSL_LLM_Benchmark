@@ -1,0 +1,86 @@
+Here is the JavaScript implementation according to the given description. This implementation assumes you have some HTML elements and event management setup for the cube rotations and button presses. The functions `rotateLeft` and `rotateRight` manipulate the `cube.rotation.y` property to simulate rotation. The predicates `pressL` and `pressR` set up event listeners to detect button presses.
+
+### JavaScript Code Implementation
+
+```javascript
+// Assume `cube` is an object with a `rotation` property that includes `y`
+let cube = {
+    rotation: {
+        y: 0
+    }
+};
+
+// Functions for rotating the cube
+function rotateLeft(cube) {
+    // Assuming each left rotation decreases the y rotation by some constant value, e.g., 0.1 radians
+    cube.rotation.y -= 0.1;
+    console.log(`Rotated left to ${cube.rotation.y} radians`);
+}
+
+function rotateRight(cube) {
+    // Assuming each right rotation increases the y rotation by some constant value, e.g., 0.1 radians
+    cube.rotation.y += 0.1;
+    console.log(`Rotated right to ${cube.rotation.y} radians`);
+}
+
+// Variables to track button states
+let leftPressed = false;
+let rightPressed = false;
+
+// Helper function to add event listeners to buttons
+function setupButtonListeners() {
+    document.getElementById('leftButton').addEventListener('mousedown', function() {
+        leftPressed = true;
+    });
+    document.getElementById('leftButton').addEventListener('mouseup', function() {
+        leftPressed = false;
+    });
+
+    document.getElementById('rightButton').addEventListener('mousedown', function() {
+        rightPressed = true;
+    });
+    document.getElementById('rightButton').addEventListener('mouseup', function() {
+        rightPressed = false;
+    });
+}
+
+// Predicates to check if a button is pressed
+function pressL() {
+    return leftPressed;
+}
+
+function pressR() {
+    return rightPressed;
+}
+
+// Initial setup of button listeners
+setupButtonListeners();
+
+// Example usage
+document.getElementById('leftButton').onclick = function() {
+    if (pressL()) {
+        rotateLeft(cube);
+    }
+};
+
+document.getElementById('rightButton').onclick = function() {
+    if (pressR()) {
+        rotateRight(cube);
+    }
+};
+```
+
+### HTML Elements for Buttons
+
+For this JavaScript to work, you should have the following HTML setup with buttons:
+
+```html
+<button id="leftButton">Rotate Left</button>
+<button id="rightButton">Rotate Right</button>
+```
+
+### Note:
+1. **Modularity**: The functions and predicates are modular. You can modify the rotation angles or the way the button states are checked if your project specifications differ.
+2. **Event Management**: This setup uses simple `mousedown` and `mouseup` to track button states, which are handled within the scope of this example. For more complex applications, consider handling additional states or debouncing.
+
+This code will provide the basic functionality to interact with a 3D cube object using two buttons in a web environment. Adjustments might be needed depending on the actual 3D rendering library used (like Three.js or Babylon.js).

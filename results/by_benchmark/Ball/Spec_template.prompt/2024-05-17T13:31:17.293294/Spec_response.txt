@@ -1,0 +1,33 @@
+```tsl
+always assume {
+  ([ball <- moveLeft(ball)] -> X !rightmost(ball));
+  ([ball <- moveRight(ball)] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F [ball <- moveLeft(ball)];
+  leftmost(ball) -> F [ball <- moveRight(ball)];
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+  
+  (leftmost(ball) && X ([ball <- moveRight(ball)]))
+    -> (!([ball <- moveLeft(ball)]) W rightmost(ball));
+    
+  (rightmost(ball) && X ([ball <- moveLeft(ball)]))
+    -> (!([ball <- moveRight(ball)]) W leftmost(ball));
+}
+```
+
+### Explanation:
+
+**Assumptions:**
+1. If the ball is commanded to move left, then in the next time step, it won't be found at the rightmost wall.
+2. Similarly, if the command is to move right, it won't be at the leftmost wall next.
+3. The ball can't simultaneously be at both the leftmost and rightmost walls.
+
+**Guarantees:**
+4. If the ball is at the rightmost wall, eventually it must receive a command to move left.
+5. Conversely, if it's at the leftmost wall, it must eventually receive a command to move right.
+6. If it's not at either wall, it must eventually move in either direction.
+7. Additionally, if the ball is at the leftmost wall and is set to move right, it should continue moving right until it reaches the rightmost wall.
+8. Similarly, if it's at the rightmost wall and begins moving left, it should continue in that direction until it reaches the leftmost wall.

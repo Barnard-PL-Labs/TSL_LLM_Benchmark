@@ -1,0 +1,15 @@
+always assume {
+  // Ensures that the pressUp(e) is correctly detected as either true or false
+  pressUp(e) || !pressUp(e);
+}
+
+always guarantee {
+  // When the up key is not pressed, the cube's scale along the x-axis is set to 0.5
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+
+  // When the up key is pressed, increment the cube's scale along the x-axis by t, where t increments each frame
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + t];
+
+  // Ensure that the value of cube.scale.x is reset to 0.5 once the up key is released
+  (!pressUp(e) W pressUp(e)) -> [cube.scale.x <- 0.5];
+}

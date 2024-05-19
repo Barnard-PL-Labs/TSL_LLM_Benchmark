@@ -1,0 +1,18 @@
+Here's the TSL specification for a ball bouncing between two walls, with the position represented as described:
+
+```tsl
+always assume {
+  // The ball must be within the bounds of 0 to 10 at all times
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, it should move right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+  
+  // If the ball is at the rightmost position, it should move left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+}
+```
+
+This specification ensures that the ball always stays within the defined boundaries and changes its direction appropriately when it hits either wall.

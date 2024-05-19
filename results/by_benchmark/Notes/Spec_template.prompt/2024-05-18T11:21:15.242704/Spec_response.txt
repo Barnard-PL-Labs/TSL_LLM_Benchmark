@@ -1,0 +1,28 @@
+```tsl
+always assume {
+  // Button presses are mutually exclusive in any single evaluation frame
+  !(button1 && button2);
+  !(button1 && button3);
+  !(button2 && button3);
+}
+
+always guarantee {
+  // Musical note E4 is played on noteToPlay when button1 is pressed
+  button1 -> X ([noteToPlay <- "E4"]);
+  
+  // Musical note G4 is played on noteToPlay when button2 is pressed
+  button2 -> X ([noteToPlay <- "G4"]);
+  
+  // Musical note A4 is played on noteToPlay2 when button3 is pressed
+  button3 -> X ([noteToPlay2 <- "A4"]);
+
+  // Prevent E4 on noteToPlay and A4 on noteToPlay2 from being played simultaneously
+  ([noteToPlay2 <- "A4"]) -> !([noteToPlay <- "E4"]);
+
+  // A4 on noteToPlay2 cannot be played until E4 on noteToPlay has stopped
+  ([noteToPlay <- "E4"]) -> F (!([noteToPlay <- "E4"]) && X ([noteToPlay2 <- "A4"]));
+
+  // If E4 is played, then A4 and G4 must eventually follow on noteToPlay2 and noteToPlay respectively
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}
+```

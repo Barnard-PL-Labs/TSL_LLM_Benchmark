@@ -1,0 +1,20 @@
+Here is the TSL specification based on the natural language description provided:
+
+```tsl
+always assume {
+  // Assuming the user input mechanism is defined elsewhere, capturing the up key being pressed or not
+}
+
+always guarantee {
+  // When the up key is pressed, increment the counter by 1 every frame
+  pressUp -> X ([ count <- count + 1 ]);
+
+  // When the up key is not pressed, the counter resets to 0.5
+  !pressUp -> [ count <- 0.5 ];
+
+  // The scale value along the x-axis of the cube is updated to match the counter
+  [ cube.scale.x <- count ];
+}
+```
+
+This TSL code defines the behavior of a system where a cube's scaling along the x-axis reacts to user input from the up key. The counter increments as long as the up key is held down and resets when the key is released, with the cube's scale value being directly tied to this counter.

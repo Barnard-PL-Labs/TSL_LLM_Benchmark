@@ -1,0 +1,23 @@
+To translate the described behavior of a ball bouncing between two walls into a TSL specification, we need to ensure that the ball moves left when it hits the rightmost wall and moves right when it hits the leftmost wall. This setup will also assume that the ball's movement is governed by either moving left or right based on its current position.
+
+Here's how this can be represented in TSL:
+
+```tsl
+always assume {
+  // Ensure the ball is either at the leftmost or rightmost position to trigger movement changes
+  (leftmost(ball) || rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the rightmost position, it should move left on the next move
+  rightmost(ball) -> X [ball <- moveLeft(ball)];
+
+  // When the ball is at the leftmost position, it should move right on the next move
+  leftmost(ball) -> X [ball <- moveRight(ball)];
+}
+```
+
+This specification ensures that:
+
+1. The assumptions are that the ball is either at the leftmost or rightmost position, which are the only points where the ball's movement direction needs to be changed.
+2. The guarantees dictate that if the ball is at the rightmost wall, the next state must involve moving the ball to the left, and similarly, if it is at the leftmost wall, the ball must move to the right in the next state.

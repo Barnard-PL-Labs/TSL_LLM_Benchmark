@@ -1,0 +1,18 @@
+always assume {
+  // Assumptions about button presses and their exclusivity
+  !(buttonE4 && buttonG4);
+  !(buttonE4 && buttonA4);
+  !(buttonG4 && buttonA4);
+}
+
+always guarantee {
+  // Guarantee that pressing each button plays the corresponding note
+  buttonE4 -> [noteToPlay <- "E4"];
+  buttonG4 -> [noteToPlay <- "G4"];
+  buttonA4 -> [noteToPlay <- "A4"];
+
+  // If two buttons are pressed, assign the second note to noteToPlay2
+  (buttonE4 && buttonG4) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "G4"]);
+  (buttonE4 && buttonA4) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]);
+  (buttonG4 && buttonA4) -> ([noteToPlay <- "G4"] && [noteToPlay2 <- "A4"]);
+}

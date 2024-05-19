@@ -1,0 +1,33 @@
+To convert the description of a ball bouncing between two walls into a TSL specification, consider how the ball should react depending on its position relative to either wall. The function `moveLeft(ball)` moves the ball to the left when triggered and `moveRight(ball)` moves it to the right. The predicates `leftmost(ball)` and `rightmost(ball)` indicate when the ball is at either the leftmost or rightmost extremity, respectively. 
+
+Here is the TSL specification that describes this behavior:
+
+```tsl
+always assume {
+  // These predicates manage the state of the ball's position on the edges
+  (leftmost(ball) -> (!rightmost(ball))) ;
+  (rightmost(ball) -> (!leftmost(ball))) ;
+}
+
+always guarantee {
+  // If the ball is at the rightmost position, move it left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+
+  // If the ball is at the leftmost position, move it right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+
+  // When the ball is not at any wall, continue moving in the current direction
+  (!leftmost(ball) && !rightmost(ball)) -> ([ball <- moveLeft(ball)] W rightmost(ball) || [ball <- moveRight(ball)] W leftmost(ball));
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - When the ball is at the leftmost point (`leftmost(ball)`), it cannot be at the rightmost point, and vice versa. These mutual exclusivity assumptions ensure logical consistency in the ball's position.
+
+2. **Guarantees**:
+   - If the ball reaches the rightmost wall (`rightmost(ball)`), the next action should be to move it left (`moveLeft(ball)`).
+   - Conversely, if it's at the leftmost wall (`leftmost(ball)`), then it should be moved right (`moveRight(ball)`).
+   - When the ball isn't touching either wall, it should keep moving in the current direction until it hits a wall. This is represented by the usage of the weak until operator (`W`), allowing the ball to keep moving left until it hits the rightmost wall or keep moving right until it hits the leftmost wall. 
+
+This TSL specification captures the continuous back-and-forth motion of a ball between two boundaries, reflecting its bouncing behavior.

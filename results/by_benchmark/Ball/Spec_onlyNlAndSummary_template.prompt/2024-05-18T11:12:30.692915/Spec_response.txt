@@ -1,0 +1,31 @@
+```
+always assume {
+  (moveLeft -> X !(ballPosition = 10));
+  (moveRight -> X !(ballPosition = 0));
+  !(ballPosition = 0 && ballPosition = 10);
+}
+
+always guarantee {
+  (ballPosition = 10) -> F (moveLeft);
+  (ballPosition = 0) -> F (moveRight);
+  (!(ballPosition = 0 || ballPosition = 10)) -> F (moveLeft || moveRight);
+  (ballPosition = 0 && X !(ballPosition = 0)) -> ([ballPosition <- ballPosition + 1]) W (ballPosition = 10);
+  (ballPosition = 10 && X !(ballPosition = 10)) -> ([ballPosition <- ballPosition - 1]) W (ballPosition = 0);
+}
+```
+
+Explanation of the TSL code:
+
+**Assumptions Section:**
+
+1. `(moveLeft -> X !(ballPosition = 10));` - If the ball moves left, then in the next state it cannot be at the position 10 (rightmost wall).
+2. `(moveRight -> X !(ballPosition = 0));` - If the ball moves right, then in the next state it cannot be at the position 0 (leftmost wall).
+3. `!(ballPosition = 0 && ballPosition = 10);` - The ball cannot be at both position 0 and position 10 simultaneously.
+
+**Guarantees Section:**
+
+4. `(ballPosition = 10) -> F (moveLeft);` - If the ball is at the rightmost wall, it is eventually required to move left.
+5. `(ballPosition = 0) -> F (moveRight);` - If the ball is at the leftmost wall, it is eventually required to move right.
+6. `(!(ballPosition = 0 || ballPosition = 10)) -> F (moveLeft || moveRight);` - If the ball is not at either wall, it must eventually move either left or right.
+7. `(ballPosition = 0 && X !(ballPosition = 0)) -> ([ballPosition <- ballPosition + 1]) W (ballPosition = 10);` - If the ball is at the leftmost wall and is going to move away (not staying at 0 in the next state), it should continue moving right until it reaches the rightmost wall.
+8. `(ballPosition = 10 && X !(ballPosition = 10)) -> ([ballPosition <- ballPosition - 1]) W (ballPosition = 0);` - If the ball is at the rightmost wall and is going to move away (not staying at 10 in the next state), it should continue moving left until it reaches the leftmost wall.

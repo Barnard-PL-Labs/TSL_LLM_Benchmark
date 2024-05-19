@@ -1,0 +1,1 @@
+Command '['tsl', 'synthesize', '-i', 'Notes/computed/Spec.tsl', '--js', '-o', 'Notes/computed/Synth.js']' returned non-zero exit status 1.

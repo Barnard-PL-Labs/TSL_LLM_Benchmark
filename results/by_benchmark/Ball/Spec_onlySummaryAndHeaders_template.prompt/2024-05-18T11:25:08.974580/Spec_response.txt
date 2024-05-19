@@ -1,0 +1,28 @@
+To translate the provided natural language description into a TSL specification, we need to ensure the ball moves between the two walls correctly, bouncing off each wall when it reaches the extreme positions of 0 or 10. Here's how this can be expressed in TSL:
+
+```tsl
+always assume {
+    // Assumptions about the state of the ball related to wall positions
+    (ball = 0 -> leftmost(ball));
+    (ball = 10 -> rightmost(ball));
+}
+
+always guarantee {
+    // Behavior to move the ball left if it is at the rightmost wall
+    rightmost(ball) -> X ([ball <- moveLeft(ball)] W !rightmost(ball));
+
+    // Behavior to move the ball right if it is at the leftmost wall
+    leftmost(ball) -> X ([ball <- moveRight(ball)] W !leftmost(ball));
+}
+```
+
+### Explanation:
+1. **Assumptions:**
+   - We assume that if the `ball` cell has a value of `0`, the ball is at the leftmost position (`leftmost(ball)`).
+   - Similarly, if the `ball` cell has a value of `10`, the ball is at the rightmost position (`rightmost(ball)`).
+
+2. **Guarantees:**
+   - When the ball is at the rightmost wall (`rightmost(ball)`), the next command moves the ball to the left (`moveLeft(ball)`). This command continues to execute until the ball is no longer at the rightmost wall (`!rightmost(ball)`).
+   - When the ball is at the leftmost wall (`leftmost(ball)`), the next command moves the ball to the right (`moveRight(ball)`). This command continues to execute until the ball is no longer at the leftmost wall (`!leftmost(ball)`).
+
+This specification ensures that the ball continuously bounces between the two walls, changing direction each time it reaches an edge.

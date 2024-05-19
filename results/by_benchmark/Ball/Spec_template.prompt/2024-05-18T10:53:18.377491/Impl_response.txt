@@ -1,0 +1,55 @@
+In order to implement the methods for controlling the movement of a ball and checking its position relative to the walls in JavaScript using the described API components, we need to understand the assumed functionalities of the cell "ball" and the environmental definitions of "leftmost" and "rightmost". Given no explicit API wrapper, we assume the "ball" cell can be directly manipulated or queried.
+
+### JavaScript Implementation:
+
+**1. Functions:**
+These functions will modify the state of the cell "ball" to signal movement directions.
+
+```javascript
+/**
+ * Moves the ball to the left by altering its state.
+ * @param {Object} ball - The cell representing the ball.
+ */
+function moveLeft(ball) {
+    ball.signal = 'moveLeft';  // Assuming 'signal' property directs the ball
+}
+
+/**
+ * Moves the ball to the right by altering its state.
+ * @param {Object} ball - The cell representing the ball.
+ */
+function moveRight(ball) {
+    ball.signal = 'moveRight';  // Assuming 'signal' property directs the ball
+}
+```
+
+**2. Predicates:**
+These predicates check if the ball is at the leftmost or rightmost positions. We assume that the ball cell has properties or methods that allow these checks, such as a coordinate property (`x`) or methods.
+
+```javascript
+/**
+ * Checks if the ball is at the leftmost position.
+ * @param {Object} ball - The cell representing the ball.
+ * @returns {boolean} - True if the ball is at the leftmost position.
+ */
+function leftmost(ball) {
+    return ball.x === 0;  // Assuming 'x' property gives the horizontal position, 0 for leftmost
+}
+
+/**
+ * Checks if the ball is at the rightmost position.
+ * @param {Object} ball - The cell representing the ball.
+ * @returns {boolean} - True if the ball is at the rightmost position.
+ */
+function rightmost(ball) {
+    return ball.x === (ball.maxX - 1);  // Assuming 'maxX' is the maximum value of 'x'
+}
+```
+
+### Assumptions:
+- The cell "ball" has properties that are manipulable or queryable:
+  - `signal` for setting movement directions.
+  - `x` for querying the horizontal position.
+  - `maxX` denotes the maximum x-coordinate on the rightmost wall.
+
+The specifics of the ball's properties like `signal`, `x`, and `maxX` need to be defined or clarified based on the actual system API. These implementations assume the existence of such properties based on the typical structure you might expect in a simplistic model of such a system. If the environment or API specifics are different, adjustments to the property accesses and method implementations will be necessary.

@@ -1,0 +1,17 @@
+```
+always assume {
+  // Ensure that no two notes are played on the same output simultaneously
+  !(noteToPlay == noteToPlay2);
+}
+
+always guarantee {
+  // When buttonE is pressed, play note E4
+  buttonE -> [noteToPlay <- "E4"];
+
+  // When buttonG is pressed, play note G4
+  buttonG -> [noteToPlay <- "G4"];
+
+  // When buttonA is pressed, play note A4
+  buttonA -> [noteToPlay <- "A4"];
+}
+```

@@ -1,0 +1,21 @@
+Here is the TSL specification based on your description:
+
+```
+always assume {
+  // Define the exclusive relationship between the notes being played simultaneously
+  !(noteToPlay = 'E4' && noteToPlay2 = 'E4');
+  !(noteToPlay = 'G4' && noteToPlay2 = 'G4');
+  !(noteToPlay = 'A4' && noteToPlay2 = 'A4');
+}
+
+always guarantee {
+  // Define the behavior of writing the note values to variables when specific buttons are pressed
+  pressButtonE4 -> [noteToPlay <- 'E4'];
+  pressButtonG4 -> [noteToPlay <- 'G4'];
+  pressButtonA4 -> [noteToPlay <- 'A4'];
+
+  pressButtonE4AndG4 -> ([noteToPlay <- 'E4'] && [noteToPlay2 <- 'G4']);
+  pressButtonE4AndA4 -> ([noteToPlay <- 'E4'] && [noteToPlay2 <- 'A4']);
+  pressButtonG4AndA4 -> ([noteToPlay <- 'G4'] && [noteToPlay2 <- 'A4']);
+}
+```

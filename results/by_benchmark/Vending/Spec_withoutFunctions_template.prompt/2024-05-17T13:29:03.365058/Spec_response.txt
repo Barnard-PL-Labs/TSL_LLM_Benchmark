@@ -1,0 +1,53 @@
+Here's the converted TSL specification for the vending machine based on the provided natural language description:
+
+```tsl
+always assume {
+  // Ensure that no two operations (button presses) can occur at the same time
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressD(e) && pressR(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressQ(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressR(e));
+  !(press2(e) && press3(e));
+  !(press2(e) && pressR(e));
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Increment total by 0.1 when the d key is pressed
+  pressD(e) -> [total <- total + 0.1];
+
+  // Increment total by 0.25 when the q key is pressed
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Increment total by 1 when the o key is pressed
+  pressO(e) -> [total <- total + 1];
+
+  // Decrement total by 0.75 when the 1 key is pressed and total is at least 0.75
+  press1(e) && isLessThanPoint75(total) -> [total <- total - 0.75];
+
+  // Decrement total by 1 when the 2 key is pressed and total is at least 1
+  press2(e) && isLessThanOne(total) -> [total <- total - 1];
+
+  // Decrement total by 1.25 when the 3 key is pressed and total is at least 1.25
+  press3(e) && isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+  // Set total to 0 when the r key is pressed
+  pressR(e) -> [total <- 0];
+}
+```
+
+This TSL specification satisfies the requirements as described: handling button presses to perform specific actions on a vending machine's total amount, ensuring mutual exclusions between button presses, and guarding actions with conditions about the current total.

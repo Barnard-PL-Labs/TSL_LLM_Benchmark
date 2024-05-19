@@ -1,0 +1,59 @@
+Here's a JavaScript implementation for the described system API, including the functions to rotate the cube and the predicates to check if the left or right button is pressed. For the predicates, I'll assume that the event `e` is passed from event listeners that we will set up on appropriate elements (e.g., buttons with specific IDs or classes).
+
+### JavaScript Code Implementation
+
+```javascript
+// Define the cube object with a rotation property
+let cube = {
+  rotation: {
+    y: 0 // Initial y rotation of the cube
+  }
+};
+
+// Function to rotate the cube to the left
+function rotateLeft(cube) {
+  cube.rotation.y -= 5;  // Decrease the rotation by 5 degrees
+  console.log(`Cube rotated left to ${cube.rotation.y} degrees`);
+}
+
+// Function to rotate the cube to the right
+function rotateRight(cube) {
+  cube.rotation.y += 5;  // Increase the rotation by 5 degrees
+  console.log(`Cube rotated right to ${cube.rotation.y} degrees`);
+}
+
+// Predicate to check if the left button is pressed
+function pressL(e) {
+  return e.key === 'ArrowLeft';  // Returns true if the left arrow key is pressed
+}
+
+// Predicate to check if the right button is pressed
+function pressR(e) {
+  return e.key === 'ArrowRight';  // Returns true if the right arrow key is pressed
+}
+
+// Event listeners for keyboard events
+document.addEventListener('keydown', function(e) {
+  if (pressL(e)) {
+    rotateLeft(cube);  // Rotate left if the left button is pressed
+  } else if (pressR(e)) {
+    rotateRight(cube);  // Rotate right if the right button is pressed
+  }
+});
+
+// Example usage to show rotation without user input (for demonstration)
+rotateLeft(cube);  // Manually rotate left
+rotateRight(cube); // Manually rotate right
+```
+
+### Explanation:
+
+1. **Cube Object**: We define a `cube` object with a `rotation` property, initializing the y-axis rotation to 0 degrees.
+
+2. **rotateLeft and rotateRight Functions**: These functions adjust the `y` rotation of the cube. Rotating left decrements the y value, while rotating right increments it. The rotation degree changes are logged to the console.
+
+3. **pressL and pressR Predicates**: These functions are predicates that check if the left or right arrow keys are pressed, respectively. They are designed to be used with keyboard events.
+
+4. **Event Listeners**: We add an event listener for the `keydown` event to capture key presses. Depending on the key pressed, the cube is rotated left or right.
+
+This setup allows for the cube's rotation to be controlled via left and right arrow keys, with the state of the rotation logged in the console. You can adjust the event source (e.g., from keyboard to buttons) based on your specific requirements.

@@ -1,0 +1,75 @@
+To implement the required functions and predicates in JavaScript based on your description, we first need to understand that the system interacts with a "ball" that can be controlled via signals to move either left or right. Additionally, we need predicates to check if the ball is at either the leftmost or rightmost positions.
+
+Here's how to implement these in JavaScript:
+
+### Functions
+1. **moveLeft(ball)** - This function should return a signal to move the ball to the left.
+2. **moveRight(ball)** - This function should return a signal to move the ball to the right.
+
+### Predicates
+1. **leftmost(ball)** - This predicate checks if the ball is against the leftmost wall.
+2. **rightmost(ball)** - This predicate checks if the ball is against the rightmost wall.
+
+### Implementation
+
+```javascript
+// Assuming 'ball' can accept commands as methods
+// Implementing the functions that return commands
+
+function moveLeft(ball) {
+    // Return a command or function that moves the ball to the left
+    return () => ball.move('left');
+}
+
+function moveRight(ball) {
+    // Return a command or function that moves the ball to the right
+    return () => ball.move('right');
+}
+
+// Implementing the predicates
+// Assuming that 'ball' has properties to check its position
+
+function leftmost(ball) {
+    // Check if the ball is at the leftmost position
+    // Assuming there's a method or property in 'ball' that can tell us its position
+    return ball.position === ball.minPosition;
+}
+
+function rightmost(ball) {
+    // Check if the ball is at the rightmost position
+    // Assuming there's a method or property in 'ball' that can tell us its position
+    return ball.position === ball.maxPosition;
+}
+
+// Usage of the functions and predicates
+// Example of creating a ball object
+let ball = {
+    position: 0,
+    minPosition: 0,
+    maxPosition: 10,
+    move: function(direction) {
+        if (direction === 'left' && this.position > this.minPosition) {
+            this.position--;
+        } else if (direction === 'right' && this.position < this.maxPosition) {
+            this.position++;
+        }
+    }
+};
+
+// Example of moving the ball
+let commandMoveLeft = moveLeft(ball);
+let commandMoveRight = moveRight(ball);
+
+// Execute the command
+commandMoveLeft();
+console.log("Ball's current position:", ball.position); // Should decrease
+
+commandMoveRight();
+console.log("Ball's current position:", ball.position); // Should increase
+
+// Check positions
+console.log("Is ball at leftmost position?", leftmost(ball));
+console.log("Is ball at rightmost position?", rightmost(ball));
+```
+
+This implementation assumes that the `ball` object has methods or properties that let you control and query its position. The `moveLeft` and `moveRight` functions return commands encapsulated as functions that, when executed, will alter the position of the ball. The predicates `leftmost` and `rightmost` use properties of the `ball` object to determine its position relative to predefined limits (`minPosition` and `maxPosition`). Adjust the `minPosition` and `maxPosition` and other details according to the actual implementation details or API specifics of the `ball` object in your system.

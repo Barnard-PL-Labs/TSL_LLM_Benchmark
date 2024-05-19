@@ -1,0 +1,12 @@
+always assume {
+  // comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive && comeDead);
+}
+
+always guarantee {
+  // If comeAlive is true, the cell should use changeState() to come alive
+  comeAlive -> [cellState <- changeState(true)];
+
+  // If comeDead is true, the cell should use changeState() to die
+  comeDead -> [cellState <- changeState(false)];
+}

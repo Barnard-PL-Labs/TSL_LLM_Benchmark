@@ -1,0 +1,58 @@
+Here is the TSL specification that follows the natural language description provided:
+
+```tsl
+always assume {
+  // Ensure that no two machine operations can occur simultaneously
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressD(e));
+  !(press1(e) && pressQ(e));
+  !(press1(e) && pressO(e));
+  !(press1(e) && pressR(e));
+
+  !(press2(e) && press3(e));
+  !(press2(e) && pressD(e));
+  !(press2(e) && pressQ(e));
+  !(press2(e) && pressO(e));
+  !(press2(e) && pressR(e));
+
+  !(press3(e) && pressD(e));
+  !(press3(e) && pressQ(e));
+  !(press3(e) && pressO(e));
+  !(press3(e) && pressR(e));
+
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+
+  !(pressO(e) && pressR(e));
+}
+
+always guarantee {
+  // If the 'd' key is pressed, add 0.10 to the total
+  pressD(e) -> [total <- total + 0.10];
+
+  // If the 'q' key is pressed, add 0.25 to the total
+  pressQ(e) -> [total <- total + 0.25];
+
+  // If the 'o' key is pressed, add 1.00 to the total
+  pressO(e) -> [total <- total + 1.00];
+
+  // If the 'r' key is pressed, reset the total to 0
+  pressR(e) -> [total <- 0];
+
+  // If the '1' key is pressed and the total is at least 0.75, deduct 0.75 from the total
+  (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+
+  // If the '2' key is pressed and the total is at least 1, deduct 1.00 from the total
+  (press2(e) && !isLessThanOne(total)) -> [total <- total - 1.00];
+
+  // If the '3' key is pressed and the total is at least 1.25, deduct 1.25 from the total
+  (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+}
+```
+
+This TSL specification correctly models the vending machine's operation according to the description, ensuring that operations are mutually exclusive and the appropriate amounts are added or subtracted from the total based on the button pressed and the total amount available.

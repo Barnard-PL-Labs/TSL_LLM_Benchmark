@@ -1,0 +1,21 @@
+
+A system environment has the following API. Using the API, implement the following methods in JavaScript. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
+
+Functions and predicates to implement:
+
+
+Cells:
+  "ball" is a cell that represents the state of the signal that determines how the ball should move
+Functions:
+  moveLeft(ball) => returns a signal to move the ball to the left
+  moveRight(ball) => returns a signal to move the ball to the right
+Predicates:
+  leftmost(ball) => is the ball against the leftmost wall?
+  rightmost(ball) => is the ball against the rightmost wall?
+
+
+System API:
+
+
+/* There is no wrapper api */
+

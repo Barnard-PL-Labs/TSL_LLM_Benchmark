@@ -1,0 +1,38 @@
+Here is the TSL specification based on the given natural language description and the required predicates:
+
+```
+always assume {
+  // Ensure that no two operations can be executed simultaneously
+  !(pressD(e) && (pressQ(e) || pressO(e) || press1(e) || press2(e) || press3(e) || pressR(e)));
+  !(pressQ(e) && (pressD(e) || pressO(e) || press1(e) || press2(e) || press3(e) || pressR(e)));
+  !(pressO(e) && (pressD(e) || pressQ(e) || press1(e) || press2(e) || press3(e) || pressR(e)));
+  !(press1(e) && (pressD(e) || pressQ(e) || pressO(e) || press2(e) || press3(e) || pressR(e)));
+  !(press2(e) && (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press3(e) || pressR(e)));
+  !(press3(e) && (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press2(e) || pressR(e)));
+  !(pressR(e) && (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press2(e) || press3(e)));
+}
+
+always guarantee {
+  // Increment total by 0.1 when pressD is pushed
+  pressD(e) -> [total <- total + 0.1];
+
+  // Increment total by 0.25 when pressQ is pushed
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Increment total by 1 when pressO is pushed
+  pressO(e) -> [total <- total + 1];
+
+  // Decrement total by 0.75 when press1 is pushed and total is >= 0.75
+  press1(e) && isLessThanPoint75(total) -> [total <- total - 0.75];
+
+  // Decrement total by 1 when press2 is pushed and total is >= 1
+  press2(e) && isLessThanOne(total) -> [total <- total - 1];
+
+  // Decrement total by 1.25 when press3 is pushed and total is >= 1.25
+  press3(e) && isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+  // Reset total to 0 when pressR is pushed
+  pressR(e) -> [total <- 0];
+}
+```
+This TSL specification captures the behavior described for a vending machine with multiple button inputs and actions associated with each button. The mutual exclusion of-button presses is ensured in the assumptions block. Each guarantee specifies the action to be taken when a particular button is pressed, including conditions for decrementing the total value, which depend on the current `total` value in the vending machine.

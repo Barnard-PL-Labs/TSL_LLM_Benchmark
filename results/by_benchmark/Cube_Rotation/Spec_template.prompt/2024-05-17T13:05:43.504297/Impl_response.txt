@@ -1,0 +1,56 @@
+To implement the described system, I'll write a JavaScript code that includes the functions `rotateLeft(cube)` and `rotateRight(cube)`, as well as the predicates `pressL(e)` and `pressR(e)`.
+
+Here's how you can structure the implementation:
+
+```javascript
+// Define the cube object with rotation property
+let cube = {
+    rotation: { y: 0 }
+};
+
+// Functions
+function rotateLeft(cube) {
+    // Assuming rotation to the left decreases the y-axis angle
+    cube.rotation.y -= 1;
+}
+
+function rotateRight(cube) {
+    // Assuming rotation to the right increases the y-axis angle
+    cube.rotation.y += 1;
+}
+
+// Predicates
+function pressL(e) {
+    // Check if the left arrow key is pressed
+    return e.key === "ArrowLeft";
+}
+
+function pressR(e) {
+    // Check if the right arrow key is pressed
+    return e.key === "ArrowRight";
+}
+
+// Event listeners for key presses
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        console.log("Left button pressed");
+        rotateLeft(cube);
+        console.log("Cube rotation (y):", cube.rotation.y);
+    } else if (pressR(e)) {
+        console.log("Right button pressed");
+        rotateRight(cube);
+        console.log("Cube rotation (y):", cube.rotation.y);
+    }
+});
+```
+
+### Explanation:
+1. **Cube Object:** Defined a simple object `cube` with a `rotation` property to simulate the cube's state.
+
+2. **Functions `rotateLeft` and `rotateRight`:** These functions modify the `cube.rotation.y` property to simulate rotation. Rotation left decreases the `y` value, and rotation right increases it.
+
+3. **Predicates `pressL` and `pressR`:** These functions use an event object `e` to determine if the respective left or right arrow keys were pressed.
+
+4. **Event Listener:** Added an event listener to the document to listen for keydown events. When a key is pressed, it checks whether it was the left or right arrow key and performs the respective cube rotation. It also logs the action and current rotation of the cube to the console for verification.
+
+This code setup assumes that the system environment where this script runs can interact with a user's keyboard and has a mechanism to visually represent changes in `cube.rotation.y`.

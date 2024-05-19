@@ -1,0 +1,29 @@
+To translate the natural language description into a TSL specification, we need to define both assumptions and guarantees involving the button presses (A, B, C) and their effects on the `stepsize`. Below is how you might structure this in TSL:
+
+```tsl
+always assume {
+  // Ensure that no two button operations are performed simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When A is pressed three times consecutively, multiply stepsize by 3 if neither B nor C is pressed in between
+  G (pressA(e) -> X (pressA(e) -> X (pressA(e) -> ([stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e)))));
+
+  // Reset stepsize to 1 if B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+
+#### Assumptions:
+1. Mutual exclusion is enforced among button presses to ensure that no two button operations occur at the same time. This is specified by using logical negations (`!`) and conjunctions (`&&`).
+
+#### Guarantees:
+1. The counter's behavior when the 'A' key is pressed three times consecutively involves checking for three consecutive presses of 'A' without intervening presses of 'B' or 'C'. If this condition is met, the `stepsize` is multiplied by three. This sequence is monitored continually and is enforced until either 'B' or 'C' is pressed, using the Weak Until (`W`) operator.
+2. Any press of 'B' or 'C' resets the `stepsize` to 1. This is implemented directly using the assignment operation in TSL (`[stepsize <- 1]`), which sets `stepsize` to 1 whenever 'B' or 'C' is pressed.
+
+This specification ensures that the system behaves as described, with the `stepsize` being modified based on the sequence and type of button presses as stipulated in the natural language description.

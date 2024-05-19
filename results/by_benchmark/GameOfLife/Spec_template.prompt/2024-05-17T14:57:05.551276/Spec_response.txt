@@ -1,0 +1,22 @@
+Below is the TSL specification based on the natural language description of simulating a single cell in the game of life with the provided assumptions and guarantees:
+
+```tsl
+always assume {
+  // Assumption that comeAlive and comeDead cannot both be true at the same time
+  !(comeAlive(index) && comeDead(index));
+}
+
+always guarantee {
+  // Guarantee that if comeAlive is true, the cell uses changeState() to come alive
+  comeAlive(index) -> [alive <- changeState()];
+
+  // Guarantee that if comeDead is true, the cell uses changeState() to die
+  comeDead(index) -> [alive <- changeState()];
+}
+```
+
+In this TSL specification:
+- The `assume` block ensures that the predicates `comeAlive` and `comeDead` are mutually exclusive for any given state, reflecting the rule that these conditions cannot be true simultaneously.
+- The `guarantee` block enacts the rules that if `comeAlive(index)` is true, then the cell's state is changed to alive by invoking `changeState()`. Similarly, if `comeDead(index)` is true, then the cell's state is changed to dead, also by invoking `changeState()`. 
+
+This specification manages the state transitions of a cell in the context of the game of life's rules using provided predicates and functions.

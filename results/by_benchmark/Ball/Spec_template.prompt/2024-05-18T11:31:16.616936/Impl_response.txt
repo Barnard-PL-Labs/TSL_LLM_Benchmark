@@ -1,0 +1,33 @@
+Given your description, I will provide the JavaScript implementation for the functions and predicates related to the ball object's movement and its position checks.
+
+### Functions Implementations
+```javascript
+// Function to move the ball left
+function moveLeft(ball) {
+  return ball.move(-1);  // Assuming 'move' method exists, and takes a parameter where negative means left
+}
+
+// Function to move the ball right
+function moveRight(ball) {
+  return ball.move(1);  // Assuming 'move' method exists, and takes a parameter where positive means right
+}
+```
+
+### Predicates Implementations
+```javascript
+// Predicate to check if the ball is at the leftmost position
+function leftmost(ball) {
+  return ball.position === 0;  // Assuming 'position' is a property of 'ball', and 0 is the leftmost index
+}
+
+// Predicate to check if the ball is at the rightmost position
+function rightmost(ball) {
+  return ball.position === ball.maxPosition;  // Assuming 'maxPosition' represents the rightmost index
+}
+```
+
+### Notes:
+- The implementations of the functions `moveLeft` and `moveRight` assume that there's a `move` method available in the `ball` object where passing a negative number moves the ball left and a positive number moves it right. Make sure the movement logic (e.g., increments or decrements, bounds checking) is properly implemented in the `move` method of the ball object or adjusted in the functions if the API differs.
+- The predicates `leftmost` and `rightmost` assume that the `ball` object has a `position` property that tracks its current position and a `maxPosition` property that defines the right boundary for the position. Ensure that these properties are correctly updated elsewhere in your application to reflect the ball's movement.
+
+If the API details or method signatures differ from my assumptions, please adjust the function and predicate implementations accordingly to match the actual behavior and properties of the `ball` object in your system API.

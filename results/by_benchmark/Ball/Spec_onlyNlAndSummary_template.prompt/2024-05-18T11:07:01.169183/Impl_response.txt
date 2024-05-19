@@ -1,0 +1,75 @@
+To implement the requested functions and predicates in JavaScript for the given system with a `ball` cell representing the state of the signal that determines the ball's movement, you can follow this structure. Since there's no additional context about how the `ball` cell is structured or how it interacts with the system, I'll provide a general example that assumes the `ball` object has `position` and `maxPosition` properties.
+
+Here is a basic implementation:
+
+### JavaScript Code:
+
+```javascript
+// Assuming 'ball' is an object with 'position' and possibly 'maxPosition' to determine boundaries
+
+/**
+ * Moves the ball to the left by decreasing its position.
+ * @param {Object} ball The ball object with its current state.
+ * @returns {Object} Updated state of the ball after moving left.
+ */
+function moveLeft(ball) {
+    if (!leftmost(ball)) { // Check to prevent moving past the left boundary
+        ball.position -= 1;
+    }
+    return ball;
+}
+
+/**
+ * Moves the ball to the right by increasing its position.
+ * @param {Object} ball The ball object with its current state.
+ * @returns {Object} Updated state of the ball after moving right.
+ */
+function moveRight(ball) {
+    if (!rightmost(ball)) { // Check to prevent moving past the right boundary
+        ball.position += 1;
+    }
+    return ball;
+}
+
+/**
+ * Checks if the ball is against the leftmost wall.
+ * @param {Object} ball The ball object with its current state.
+ * @returns {boolean} True if the ball is at the leftmost position, otherwise false.
+ */
+function leftmost(ball) {
+    return ball.position === 0; // Assuming '0' is the leftmost position
+}
+
+/**
+ * Checks if the ball is against the rightmost wall.
+ * @param {Object} ball The ball object with its current state.
+ * @returns {boolean} True if the ball is at the rightmost position, otherwise false.
+ */
+function rightmost(ball) {
+    return ball.position === ball.maxPosition; // Assuming 'maxPosition' is the rightmost position
+}
+
+// Example usage:
+let ball = { position: 5, maxPosition: 10 };
+
+// Move ball
+console.log("Initial Position:", ball.position);
+ball = moveRight(ball);
+console.log("Position after moving right:", ball.position);
+ball = moveLeft(ball);
+console.log("Position after moving left:", ball.position);
+
+// Check positions
+console.log("Is leftmost?", leftmost(ball));
+console.log("Is rightmost?", rightmost(ball));
+```
+
+### Notes:
+
+1. **Boundary Checking**: Both `moveLeft` and `moveRight` functions check whether the ball is at the boundary before moving it. This prevents the ball from moving beyond the playable area.
+   
+2. **State Management**: The ball's state is passed around and modified directly. Depending on the API's capabilities and requirements, you might need to adjust how state is managed or updated.
+
+3. **Testing**: The example includes simple log statements to demonstrate the functionality. You should consider more robust testing to ensure all edge cases are handled (like moving left from the leftmost position).
+
+This JavaScript implementation provides a basic framework and can be expanded or refined based on more specific details of the system's API and how the ball's state is stored and retrieved.

@@ -1,0 +1,26 @@
+always assume {
+  // Ensure mutual exclusion for key inputs (L, R)
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Manage ship movements and interactions
+  // Left movement
+  pressL -> ((!leftmost(ship)) -> X [ship.ctrl <- moveLeft(ship)]);
+  // Right movement
+  pressR -> ((!rightmost(ship)) -> X [ship.ctrl <- moveRight(ship)]);
+  // Shooting action
+  pressShoot -> [ship.ctrl <- shoot(ship)];
+  
+  // Handling hit detection and response
+  hit(ship) -> [ship.ctrl <- die(ship)];
+
+  // Ensure no movement occurs if at boundary or conflicting keys are pressed
+  (leftmost(ship) && pressL) -> [ship.ctrl <- idle];
+  (rightmost(ship) && pressR) -> [ship.ctrl <- idle];
+}

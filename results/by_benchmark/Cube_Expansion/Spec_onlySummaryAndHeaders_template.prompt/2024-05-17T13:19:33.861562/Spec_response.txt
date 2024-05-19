@@ -1,0 +1,21 @@
+Here is the TSL specification based on the given natural language description:
+
+```tsl
+always assume {
+  // No specific assumptions related to external conditions or other states.
+}
+
+always guarantee {
+  // When the up key is not pressed, the cube's scale.x is set to 0.5
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+
+  // When the up key is pressed, increment the cube.scale.x according to a frame counter 't'
+  pressUp(e) -> [cube.scale.x <- 0.5 + t * 0.1] W !pressUp(e);
+}
+```
+
+Explanation:
+1. **Assumptions**: There are no specific assumptions needed for this scenario as the behavior is purely reactive to user input.
+2. **Guarantees**: 
+   - When the up key is not pressed, `cube.scale.x` is continuously set to 0.5.
+   - When the up key is pressed, the scale along the x-axis of the cube (`cube.scale.x`) is updated incrementally by a factor that depends on the time `t` the key has been pressed (incremented by 0.1 each frame). This continues until the up key is released, whereupon it will reset to 0.5. The `W` (weak until) operator is used to ensure the scale is updated continuously while the key is pressed and immediately reverts when the key is released.

@@ -1,0 +1,58 @@
+To implement the required functions and predicates given the API description, I will provide sample JavaScript code. Since there's no specific API wrapper provided, I will define these functions and predicates based on typical JavaScript approaches and hypothetical behavior. You might need to adjust these implementations according to your actual environment API details if they differ.
+
+Below is the JavaScript code implementing the "functions" and "predicates":
+
+```javascript
+/**
+ * Assuming `ball` is an object that can have properties updated to reflect changes.
+ */
+
+// Functions
+function moveLeft(ball) {
+    // Assuming there's a way to set the ball's direction or position
+    // Here, we simulate sending a signal by updating a 'direction' property
+    ball.direction = 'left';
+    return ball;
+}
+
+function moveRight(ball) {
+    // Similarly, set the ball's direction or position to 'right'
+    ball.direction = 'right';
+    return ball;
+}
+
+// Predicates
+function leftmost(ball) {
+    // Check if the ball is at the leftmost position
+    // Assuming `position` is a property of `ball` indicating its current position
+    // '0' might represent the leftmost position in this context
+    return ball.position === 0;
+}
+
+function rightmost(ball) {
+    // Check if the ball is at the rightmost position
+    // Assuming there's a predefined limit for the rightmost position, say 'maxPosition'
+    return ball.position === ball.maxPosition;
+}
+
+// Example usage:
+let ball = {
+    position: 5,
+    maxPosition: 10,
+    direction: ''
+};
+
+// Move the ball to the left and check if it is on the leftmost position
+moveLeft(ball);
+console.log("Is the ball at the leftmost position?", leftmost(ball));
+
+// Move the ball to the right and check if it is on the rightmost position
+moveRight(ball);
+console.log("Is the ball at the rightmost position?", rightmost(ball));
+```
+
+### Explanation:
+- **Functions** (`moveLeft` and `moveRight`) modify the `direction` or similar property of the `ball` to reflect the desired movement. You might need specific API calls here if the `ball` object's attributes are controlled by a backend or a more complex system.
+- **Predicates** (`leftmost` and `rightmost`) check the `position` of the `ball` against predefined boundary conditions (like `0` for the leftmost and `maxPosition` for the rightmost).
+
+These functions and predicates assume that the ball's state is represented within an object with properties that can be checked and set. You'll need to integrate or modify these with actual system API calls depending on your setup.

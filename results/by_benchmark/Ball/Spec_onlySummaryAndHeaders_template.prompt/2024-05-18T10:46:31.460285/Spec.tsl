@@ -1,0 +1,12 @@
+always assume {
+  // The ball can only be at the leftmost or rightmost position
+  (leftmost(ball) || rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, it should move right in the next state
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+  
+  // If the ball is at the rightmost position, it should move left in the next state
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+}

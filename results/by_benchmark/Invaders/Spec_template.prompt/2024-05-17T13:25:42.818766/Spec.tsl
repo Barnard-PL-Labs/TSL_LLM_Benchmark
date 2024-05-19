@@ -1,0 +1,24 @@
+always assume {
+  // Ensure mutual exclusion among directional inputs to prevent conflicting movements
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Response to the ship being hit by an enemy or obstacle
+  hit(ship) -> [die(ship)];
+
+  // Movement and actions based on key inputs
+  // Left movement: move the ship to the left unless it's already at the leftmost position
+  (pressL && !leftmost(ship)) -> [moveLeft(ship)];
+
+  // Right movement: move the ship to the right unless it's already at the rightmost position
+  (pressR && !rightmost(ship)) -> [moveRight(ship)];
+
+  // Shooting action: trigger a shooting mechanism
+  pressS -> [shoot(ship)];
+}

@@ -1,0 +1,18 @@
+```TSL
+always assume {
+  // Assume that no two different notes are simultaneously requested for the same output variable
+  !(noteToPlay == 'E4' && noteToPlay == 'G4') &&
+  !(noteToPlay == 'E4' && noteToPlay == 'A4') &&
+  !(noteToPlay == 'G4' && noteToPlay == 'A4') &&
+  !(noteToPlay2 == 'E4' && noteToPlay2 == 'G4') &&
+  !(noteToPlay2 == 'E4' && noteToPlay2 == 'A4') &&
+  !(noteToPlay2 == 'G4' && noteToPlay2 == 'A4') ;
+}
+
+always guarantee {
+  // Define the behavior for playing notes possibly on two channels simultaneously
+  buttonPressE4 -> ([noteToPlay <- 'E4'] || [noteToPlay2 <- 'E4']);
+  buttonPressG4 -> ([noteToPlay <- 'G4'] || [noteToPlay2 <- 'G4']);
+  buttonPressA4 -> ([noteToPlay <- 'A4'] || [noteToPlay2 <- 'A4']);
+}
+```

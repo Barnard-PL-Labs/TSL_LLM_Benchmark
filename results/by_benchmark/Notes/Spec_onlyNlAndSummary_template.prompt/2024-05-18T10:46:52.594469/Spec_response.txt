@@ -1,0 +1,24 @@
+```tsl
+always assume {
+  // Define the inputs that can be received from the environment
+  button1 || button2 || button3;
+}
+
+always guarantee {
+  // Mapping button presses to musical note outputs with conditions
+  button1 -> (([noteToPlay <- "E4"] && X([noteToPlay <- "E4"] U !button1)) && F([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]));
+  button2 -> (([noteToPlay <- "G4"] && X([noteToPlay <- "G4"] U !button2)) && F(noteToPlay2));
+  button3 -> (([noteToPlay2 <- "A4"] && X([noteToPlay2 <- "A4"] U !button3)) && F([noteToPlay <- "E4"] W [noteToPlay2 <- "A4"]));
+
+  // Ensuring that E4 and A4 cannot be played simultaneously on different variables
+  ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]) -> false;
+
+  // A4 cannot be played on noteToPlay2 until E4 has stopped on noteToPlay
+  ([noteToPlay2 <- "A4"] -> (!([noteToPlay <- "E4"]) W !button1));
+
+  // If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2 and G4 on noteToPlay
+  ([noteToPlay <- "E4"] -> F([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]));
+}
+```
+
+This TSL specification translates the requirements from the natural language description into a formal structure that can be used for generating or verifying code that adheres to these rules. It defines the necessary relationships between button presses and the resulting musical notes, managing both immediate and eventual responses as well as ensuring certain conditions about which notes can be played simultaneously or in sequence.

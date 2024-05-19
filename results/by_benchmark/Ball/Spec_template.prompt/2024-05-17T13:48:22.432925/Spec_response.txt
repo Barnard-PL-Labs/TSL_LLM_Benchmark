@@ -1,0 +1,32 @@
+Here is the TSL specification derived from the provided natural language description:
+
+```tsl
+always assume {
+  ([ball <- moveLeft(ball)] -> X !rightmost(ball));
+  ([ball <- moveRight(ball)] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+  !(leftmost(ball) || rightmost(ball)) -> F (([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]));
+
+  (leftmost(ball) && X ([ball <- moveRight(ball)])) -> G (!leftmost(ball) W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft(ball)])) -> G (!rightmost(ball) W leftmost(ball));
+}
+```
+
+### Explanation of the Specification
+
+#### Assumptions:
+1. If the ball moves left, in the next state, it cannot be at the rightmost wall.
+2. If the ball moves right, in the next state, it cannot be at the leftmost wall.
+3. The ball cannot simultaneously be at the leftmost and rightmost positions.
+
+#### Guarantees:
+4. If the ball is at the rightmost position, it must eventually move left.
+5. If the ball is at the leftmost position, it must eventually move right.
+6. If the ball is neither at the leftmost nor at the rightmost, it must eventually move either left or right.
+7. If the ball is moving away from the leftmost position, it must continue moving right until it reaches the rightmost position.
+8. If the ball is moving away from the rightmost position, it must continue moving left until it reaches the leftmost position.

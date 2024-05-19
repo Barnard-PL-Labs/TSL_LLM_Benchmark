@@ -1,0 +1,33 @@
+Here is the TSL specification based on the provided natural language description and the functions and predicates for the ball movement scenario:
+
+```tsl
+always assume {
+  // If the ball is moved to the left, it's not at the rightmost wall in the next state
+  ([ ball <- moveLeft(ball) ] -> X !rightmost(ball));
+
+  // If the ball is moved to the right, it's not at the leftmost wall in the next state
+  ([ ball <- moveRight(ball) ] -> X !leftmost(ball));
+
+  // The ball cannot be at both the leftmost and the rightmost wall at the same time
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, it must eventually move left
+  rightmost(ball) -> F ([ ball <- moveLeft(ball) ]);
+
+  // If the ball is at the leftmost wall, it must eventually move right
+  leftmost(ball) -> F ([ ball <- moveRight(ball) ]);
+
+  // If the ball is neither at the leftmost nor the rightmost wall, it must eventually move either left or right
+  !(leftmost(ball) || rightmost(ball)) -> F ([ ball <- moveLeft(ball) ] || [ ball <- moveRight(ball) ]);
+
+  // If the ball is at the leftmost wall and will move away from it, it must not move to the left until it reaches the rightmost wall
+  (leftmost(ball) && X [ ball <- moveRight(ball) ]) -> ([ ball <- moveRight(ball) ] W rightmost(ball));
+
+  // If the ball is at the rightmost wall and will move away from it, it must not move to the right until it reaches the leftmost wall
+  (rightmost(ball) && X [ ball <- moveLeft(ball) ]) -> ([ ball <- moveLeft(ball) ] W leftmost(ball));
+}
+```
+
+This TSL specification captures all the assumptions and guarantees as described. Each assumption and guarantee directly corresponds to a statement or condition in the natural language description, ensuring that the ball behaves correctly as it bounces between the two walls.

@@ -1,0 +1,34 @@
+To translate the described behavior into a TSL specification, we need to define assumptions and guarantees that model the ball bouncing between the walls, with the position ranging from 0 to 10.
+
+Here is the TSL specification for this description:
+
+```tsl
+always assume {
+  // Ensure the ball can only be at positions ranging from 0 to 10
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // When the ball is at the leftmost position and not moving beyond, move it to the right
+  (ball == 0) -> [ball <- moveRight(ball)];
+
+  // When the ball reaches the rightmost position and not moving beyond, move it to the left
+  (ball == 10) -> [ball <- moveLeft(ball)];
+
+  // As long as the ball is not at either extreme, it should continue in the current direction
+  // If moving right and not at the rightmost, keep moving right
+  (!rightmost(ball) && [ball <- moveRight(ball)]) -> X (!leftmost(ball) -> [ball <- moveRight(ball)] W rightmost(ball));
+
+  // If moving left and not at the leftmost, keep moving left
+  (!leftmost(ball) && [ball <- moveLeft(ball)]) -> X (!rightmost(ball) -> [ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+Explanation:
+1. **Assumptions**: We assume that the ball can only be in positions from 0 to 10, which represents the range between the two walls.
+
+2. **Guarantees**:
+   - If the ball is at the leftmost position (0), it should move right. Similarly, if it's at the rightmost position (10), it should move left.
+   - Subsequent movements depend on the current direction, continuing to move in that direction unless it reaches an extreme position (either wall), at which point the direction changes.
+   
+This TSL specification models the ball bouncing continuously between two walls, responding to its position by moving accordingly in the environment simulated.

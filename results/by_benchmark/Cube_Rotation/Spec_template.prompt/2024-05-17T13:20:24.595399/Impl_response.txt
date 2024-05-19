@@ -1,0 +1,62 @@
+Since you've specified the JavaScript framework for handling cube rotations and button presses, below are implementations that use JavaScript functions and predicates based on the given description. The JavaScript code assumes some event handling for button presses and direct manipulation of the cube's rotation property.
+
+### JavaScript Implementations
+
+#### Functions:
+
+```javascript
+function rotateLeft(cube) {
+    // Assuming cube.rotation.y is accessible and represents the y-axis rotation in radians
+    cube.rotation.y -= Math.PI / 4; // Rotate left by 45 degrees
+}
+
+function rotateRight(cube) {
+    // Assuming cube.rotation.y is accessible and represents the y-axis rotation in radians
+    cube.rotation.y += Math.PI / 4; // Rotate right by 45 degrees
+}
+```
+
+These functions assume that the `cube` object has a `rotation` property with a `y` sub-property that can be directly manipulated to rotate the cube. The rotation values are in radians; π/4 radians equals 45 degrees.
+
+#### Predicates using Event Listeners:
+For predicates, we need to setup event listeners that modify state variables when certain keys are pressed. We'll assume that the keys for the left and right buttons can be identified (e.g., using key codes or key names).
+
+```javascript
+let leftPressed = false;
+let rightPressed = false;
+
+// Setup event listeners
+document.addEventListener('keydown', function(e) {
+    if (e.key === "ArrowLeft") { // Assuming the left arrow key for the left button
+        leftPressed = true;
+    }
+    if (e.key === "ArrowRight") { // Assuming the right arrow key for the right button
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === "ArrowLeft") {
+        leftPressed = false;
+    }
+    if (e.key === "ArrowRight") {
+        rightPressed = false;
+    }
+});
+
+function pressL(e) {
+    return leftPressed;
+}
+
+function pressR(e) {
+    return rightPressed;
+}
+```
+
+In this setup:
+- We track the state of the left and right keys using the `leftPressed` and `rightPressed` boolean variables.
+- `keydown` events set these variables to `true` when the respective keys are pressed.
+- `keyup` events set these variables back to `false` when the keys are released.
+- The `pressL` and `pressR` functions then simply return the current state of these boolean variables, effectively acting as predicates for whether the left or right buttons are pressed.
+
+This code setup should be included in an environment where it can interact with the actual page's DOM, typically within a script tag in an HTML document or as part of a larger JavaScript application managing 3D objects and event handling.

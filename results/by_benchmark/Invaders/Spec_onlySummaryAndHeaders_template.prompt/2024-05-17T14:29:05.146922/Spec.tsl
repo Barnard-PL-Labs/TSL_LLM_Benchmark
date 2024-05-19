@@ -1,0 +1,21 @@
+always assume {
+    // Assuming that if the ship is hit, it will react by either losing a life or ending the game
+    hit(ship) -> X die(ship);
+    // Assuming ship cannot move beyond leftmost or rightmost boundaries
+    leftmost(ship) -> !([ship <- moveLeft(ship)]);
+    rightmost(ship) -> !([ship <- moveRight(ship)]);
+}
+
+always guarantee {
+    // If the left arrow key is pressed and the ship is not at the leftmost position, then move left
+    pressLeft -> (!leftmost(ship) -> [ship <- moveLeft(ship)]);
+    
+    // If the right arrow key is pressed and the ship is not at the rightmost position, then move right
+    pressRight -> (!rightmost(ship) -> [ship <- moveRight(ship)]);
+    
+    // If the space bar is pressed, shoot
+    pressSpace -> [ship <- shoot(ship)];
+    
+    // If the ship is hit by an enemy, the ship dies
+    hit(ship) -> [ship <- die(ship)];
+}

@@ -1,0 +1,28 @@
+```
+always assume {
+  (moveLeft -> X !(position == 10));
+  (moveRight -> X !(position == 0));
+  !(position == 0 && position == 10);
+}
+
+always guarantee {
+  (position == 10) -> F (moveLeft);
+  (position == 0) -> F (moveRight);
+  !(position == 0 || position == 10) -> F (moveLeft || moveRight);
+  ((position == 0) && X (position > 0)) -> [position <- position + 1] W (position == 10);
+  ((position == 10) && X (position < 10)) -> [position <- position - 1] W (position == 0);
+}
+```
+
+This TSL code reflects the descriptions provided:
+
+1. If the ball moves left, the next state cannot find the ball at the rightmost wall (position 10).
+2. If the ball moves right, the next state cannot find the ball at the leftmost wall (position 0).
+3. The ball can't simultaneously be at both walls.
+
+Guarantees ensure that:
+1. When the ball is at the rightmost wall, it is eventually moved left.
+2. When the ball is at the leftmost wall, it is eventually moved right.
+3. If it's somewhere in between, it will be moved either left or right soon.
+4. If moving away from the left wall (position 0), it will keep moving right until it hits the rightmost wall (position 10).
+5. If moving away from the right wall (position 10), it will keep moving left until it hits the leftmost wall (position 0).

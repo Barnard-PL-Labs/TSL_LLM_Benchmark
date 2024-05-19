@@ -1,0 +1,52 @@
+```
+always assume {
+  // Ensure that no two operations can be performed simultaneously
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressD(e) && pressR(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressQ(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressR(e));
+  !(press2(e) && press3(e));
+  !(press2(e) && pressR(e));
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Inserting a dime
+  pressD(e) -> [total <- total + 0.1];
+
+  // Inserting a quarter
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Inserting a dollar
+  pressO(e) -> [total <- total + 1];
+
+  // Purchasing product option 1
+  (press1(e) && isLessThanPoint75(total)) -> [total <- total];
+  (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+
+  // Purchasing product option 2
+  (press2(e) && isLessThanOne(total)) -> [total <- total];
+  (press2(e) && !isLessThanOne(total)) -> [total <- total - 1];
+
+  // Purchasing product option 3
+  (press3(e) && isLessThanOnePoint25(total)) -> [total <- total];
+  (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+
+  // Refunding the money
+  pressR(e) -> [total <- 0];
+}
+```

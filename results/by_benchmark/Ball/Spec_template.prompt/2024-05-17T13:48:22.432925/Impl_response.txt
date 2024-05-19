@@ -1,0 +1,59 @@
+To implement the specified functions and predicates in JavaScript, we need to assume some behavior and states of the `ball` cell. Since we don't have specifics on how the state of `ball` is represented or updated, I'll outline a general structure for how these functions and predicates could be implemented if the `ball` holds information like its position.
+
+Assuming:
+- `ball` is an object with a `position` property.
+- There are predefined constants `LEFT_WALL` and `RIGHT_WALL` that define the bounds of the movement area.
+
+Here's a JavaScript implementation of the specified functions and predicates:
+
+```javascript
+// Constants defining the limits of the movement area
+const LEFT_WALL = 0;
+const RIGHT_WALL = 100; // Example boundary value
+
+// Functions
+function moveLeft(ball) {
+    if (ball.position > LEFT_WALL) {
+        return { ...ball, position: ball.position - 1 };
+    } else {
+        return ball; // No movement if against the left wall
+    }
+}
+
+function moveRight(ball) {
+    if (ball.position < RIGHT_WALL) {
+        return { ...ball, position: ball.position + 1 };
+    } else {
+        return ball; // No movement if against the right wall
+    }
+}
+
+// Predicates
+function leftmost(ball) {
+    return ball.position === LEFT_WALL;
+}
+
+function rightmost(ball) {
+    return ball.position === RIGHT_WALL;
+}
+
+// Example usage
+let ball = { position: 10 };
+
+console.log("Initial Position:", ball.position);
+ball = moveLeft(ball);
+console.log("Moved Left:", ball.position);
+ball = moveRight(ball);
+console.log("Moved Right:", ball.position);
+
+console.log("Is at Leftmost?", leftmost(ball));
+console.log("Is at Rightmost?", rightmost(ball));
+```
+
+### Explanation:
+- **moveLeft(ball)**: Decreases the `position` of `ball` by 1 if it is not already at the leftmost position (`LEFT_WALL`). Returns the updated `ball` object.
+- **moveRight(ball)**: Increases the `position` of `ball` by 1 if it is not already at the rightmost position (`RIGHT_WALL`). Returns the updated `ball` object.
+- **leftmost(ball)**: Returns `true` if `ball`'s `position` is equal to `LEFT_WALL`, `false` otherwise.
+- **rightmost(ball)**: Returns `true` if `ball`'s `position` is equal to `RIGHT_WALL`, `false` otherwise.
+
+This implementation assumes that the ball object can be modified and checks boundaries to prevent moving beyond them. Adjust the initial `position`, `LEFT_WALL`, and `RIGHT_WALL` as necessary based on the actual environmental setup.

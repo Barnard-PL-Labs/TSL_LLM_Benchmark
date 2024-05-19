@@ -1,0 +1,28 @@
+To create a TSL specification for the ball bouncing between two walls, we need to define the assumptions and guarantees based on the behavior of the ball as described. We would use the predicates `leftmost(ball)` and `rightmost(ball)` to check the position of the ball against walls, and functions `moveLeft(ball)` and `moveRight(ball)` to change the ball's position. Here's how this could be structured:
+
+```tsl
+always assume {
+  // Assume the ball can only be against either wall at any given time.
+  (leftmost(ball) && !rightmost(ball)) || (!leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the leftmost wall, it should move right next.
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // When the ball is at the rightmost wall, it should move left next.
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+
+  // The ball should continue moving in the same direction until it reaches the opposite wall.
+  (!leftmost(ball) && !rightmost(ball)) -> 
+    (([ball <- moveRight(ball)] W leftmost(ball)) || ([ball <- moveLeft(ball)] W rightmost(ball)));
+}
+```
+
+In this TSL specification:
+1. **Assumptions**: We assume that the ball can only be against one wall at any given time. It's either against the leftmost wall and not the rightmost, or against the rightmost wall and not the leftmost.
+
+2. **Guarantees**:
+   - If the ball is at the leftmost wall, it will move to the right in the next state.
+   - If the ball is at the rightmost wall, it will move to the left in the next state.
+   - If the ball is not at any wall, it continues moving in the same direction until it reaches a wall. This is achieved using the weak until operator `W`, which allows the ball to keep moving in the specified direction until it reaches a wall, without requiring it to ever actually reach the opposite wall (although in this scenario, it should eventually hit a wall because of the bounded space).

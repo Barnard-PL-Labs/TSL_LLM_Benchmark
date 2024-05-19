@@ -1,0 +1,26 @@
+Here is the TSL specification for the scenario where a ball bounces between two walls, with the position of the ball represented as a number between 0 (leftmost) and 10 (rightmost):
+
+```tsl
+always assume {
+  // Ensuring the ball does not exceed the boundaries
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the leftmost point, it should start moving to the right
+  leftmost(ball) -> ([ ball <- moveRight(ball) ]);
+  
+  // When the ball is at the rightmost point, it should start moving to the left
+  rightmost(ball) -> ([ ball <- moveLeft(ball) ]);
+
+  // When the ball is not at either boundary, it should continue in the current direction
+  !leftmost(ball) && !rightmost(ball) -> ([ ball <- ball ]);
+}
+```
+
+Explanation:
+- The assumptions ensure that the ball cannot simultaneously be at both boundaries (leftmost and rightmost), which would be contradictory.
+- The guarantees dictate the behavior of the ball:
+  - When at the leftmost position, the ball is commanded to move right.
+  - When at the rightmost position, the ball is commanded to move left.
+  - When in any other position, the ball's current state (direction and position) is maintained, allowing it to continue moving according to its last direction until it reaches a boundary.

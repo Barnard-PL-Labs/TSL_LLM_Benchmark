@@ -1,0 +1,38 @@
+Here is a TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Mutual exclusion for button presses, no two buttons can be pressed at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // If A button is pressed, increment the count by stepsize
+  pressA(e) -> [count <- count + stepsize];
+
+  // If B button is pressed, increment the count by 2 and reset stepsize to 1
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // If C button is pressed, increment the count by 3 and reset stepsize to 1
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // If A button is pressed three times in a row, change the stepsize to 3 times its current value
+  G (pressA(e) && X(pressA(e)) && X(X(pressA(e))) && X(X(X(pressA(e))))
+     -> X(X(X(X([stepsize <- multiplyByThree(stepsize)])))));
+
+  // If B or C is pressed, reset stepsize to 1
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+Explanation:
+
+- **Mutual Exclusion**: The assumption section ensures that no two buttons can be pressed at the same time. This is implemented using the logical negation `!` combined with the logical conjunction `&&`.
+
+- **Button Press Actions**: The guarantee section defines the actions taken when each button is pressed. For button A, it increments the counter by the current stepsize. For buttons B and C, it increments the counter by fixed values of 2 and 3, respectively, and resets the stepsize to 1.
+
+- **Stepsize Modification**: If the A button is pressed three times consecutively, the stepsize is modified to be three times its current value on the fourth consecutive press. This is controlled using a global (`G`) temporal operator to check for the sequence of A button presses.
+
+- **Reset Stepsize**: Whenever the B or C button is pressed, the stepsize is reset to 1 immediately. This ensures that the increment behavior of button A can be modified dynamically based on user input from buttons B and C.

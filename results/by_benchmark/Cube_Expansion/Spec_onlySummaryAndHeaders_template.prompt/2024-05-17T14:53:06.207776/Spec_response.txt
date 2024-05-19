@@ -1,0 +1,25 @@
+Here is the TSL specification based on the natural language description provided:
+
+```TSL
+always assume {
+  // there is no direct condition to assume other than the definition of the pressUp predicate
+}
+
+always guarantee {
+  // When the up key is pressed, increment the cube's scale.x by a counter value that increases each frame
+  pressUp(e) -> [cube.scale.x <- t + 0.5] W !pressUp(e);
+
+  // When the up key is not pressed, set the cube's scale.x to 0.5
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+}
+```
+
+Explanation:
+
+1. **Assumptions**: The specification does not require any complex assumptions because the behavior is directly driven by the `pressUp(e)` predicate.
+
+2. **Guarantees**:
+   - When the up key is pressed (`pressUp(e)`), the cube's scale along the x-axis (`cube.scale.x`) is incremented by a counter `t` each frame. This increment continues as long as the up key is pressed. This is captured by using the `W` (weak until) operator, which ensures that the scaling action continues until `pressUp(e)` is no longer true.
+   - When the up key is not pressed (`!pressUp(e)`), the scale of the cube along the x-axis is set to a constant value of 0.5.
+
+This TSL specification matches the requirements from the natural language description by controlling the cube's scale based on user interaction with the up key.

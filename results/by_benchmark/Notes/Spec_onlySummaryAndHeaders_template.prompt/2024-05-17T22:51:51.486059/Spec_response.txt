@@ -1,0 +1,12 @@
+```
+always assume {
+  // No specific assumptions about the environment are mentioned
+}
+
+always guarantee {
+  // Possible outcomes when buttons are pushed
+  pushButtonE -> ([noteToPlay <- "E4"] || [noteToPlay2 <- "E4"]);
+  pushButtonG -> ([noteToPlay <- "G4"] || [noteToPlay2 <- "G4"]);
+  pushButtonA -> ([noteToPlay <- "A4"] || [noteToPlay2 <- "A4"]);
+}
+```

@@ -1,0 +1,35 @@
+Here is the TSL specification for the scenario described:
+
+```tsl
+always assume {
+  ([ball <- moveLeft(ball)] -> X !rightmost(ball));
+  ([ball <- moveRight(ball)] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+  (leftmost(ball) && X ([ball <- moveRight(ball)])) -> (!leftmost(ball) W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft(ball)])) -> (!rightmost(ball) W leftmost(ball));
+}
+```
+
+### Explanation:
+
+#### Assumptions:
+
+1. **Movement to the left implies not being at the rightmost wall immediately after**: When the ball moves left, the next state ensures it's not at the rightmost wall.
+2. **Movement to the right ensures not being at the leftmost wall immediately after**: Moving the ball to the right ensures that it won't be at the leftmost wall in the following state.
+3. **Mutual exclusivity of wall positions**: The ball cannot be at the leftmost and rightmost walls at the same time.
+
+#### Guarantees:
+
+4. **Movement from the rightmost wall**: If the ball is at the rightmost wall, it must eventually move to the left.
+5. **Movement from the leftmost wall**: If the ball is positioned at the leftmost wall, it must eventually move to the right.
+6. **General movement directive**: If the ball is not at any wall, it must eventually move in either direction.
+7. **Leftmost to rightmost transition**: If the ball is at the leftmost wall and moves right in the next moment, it must continue moving right until it reaches the rightmost wall.
+8. **Rightmost to leftmost transition**: If the ball is at the rightmost wall and moves left in the next moment, it must continue moving left until it reaches the leftmost wall.
+
+This TSL specification ensures the behavior of the ball bouncing between two end walls while maintaining the logical constraints provided.

@@ -1,0 +1,11 @@
+always assume {
+  // No specific assumptions needed about environment inputs or states for this scenario
+}
+
+always guarantee {
+  // When the up key is not pressed, the cube's scale.x should be 0.5
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+
+  // When the up key is pressed, increment the scale.x value by a counter that increases each frame
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 0.1];
+}

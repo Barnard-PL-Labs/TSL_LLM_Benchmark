@@ -1,0 +1,16 @@
+always assume {
+  // These predicates manage the state of the ball's position on the edges
+  (leftmost(ball) -> (!rightmost(ball))) ;
+  (rightmost(ball) -> (!leftmost(ball))) ;
+}
+
+always guarantee {
+  // If the ball is at the rightmost position, move it left
+  rightmost(ball) -> [ball <- moveLeft(ball)];
+
+  // If the ball is at the leftmost position, move it right
+  leftmost(ball) -> [ball <- moveRight(ball)];
+
+  // When the ball is not at any wall, continue moving in the current direction
+  (!leftmost(ball) && !rightmost(ball)) -> ([ball <- moveLeft(ball)] W rightmost(ball) || [ball <- moveRight(ball)] W leftmost(ball));
+}

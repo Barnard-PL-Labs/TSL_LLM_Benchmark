@@ -1,0 +1,142 @@
+<style>
+	#debug {
+		margin: 50px;
+		font-size: 25px;
+	}
+
+	#ball {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		animation: bounce 2s infinite ease-in-out;
+	}
+
+	@keyframes bounce {
+
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-500px);
+		}
+	}
+</style>
+
+<div id="debug"></div>
+<div id="ball"></div>
+
+<script>
+
+// Assuming 'ball' is an object with properties that can be manipulated
+// Let's also assume it has properties 'position' and 'maxPosition' to determine its location
+
+// Functions
+function moveLeft(ball) {
+  // Check if ball can move left
+  if (ball.position > 0) {
+    ball.position -= 1; // Move the ball left by decrementing its position
+    return `Signal to move ball to position ${ball.position}`;
+  } else {
+    return "Ball is already at the leftmost position.";
+  }
+}
+
+function moveRight(ball) {
+  // Check if ball can move right
+  if (ball.position < ball.maxPosition) {
+    ball.position += 1; // Move the ball right by incrementing its position
+    return `Signal to move ball to position ${ball.position}`;
+  } else {
+    return "Ball is already at the rightmost position.";
+  }
+}
+
+// Predicates
+function leftmost(ball) {
+  // Check if the ball is at the leftmost position
+  return ball.position === 0;
+}
+
+function rightmost(ball) {
+  // Check if the ball is at the rightmost position
+  return ball.position === ball.maxPosition;
+}
+
+// Example usage
+let ball = { position: 5, maxPosition: 10 };
+
+console.log(moveLeft(ball));  // Expected output: "Signal to move ball to position 4"
+console.log(moveLeft(ball));  // Decrementing position further
+console.log(leftmost(ball));  // Expected output: false, since position is not 0
+
+console.log(moveRight(ball)); // Moving to the right
+console.log(rightmost(ball)); // Expected output: false, since position is not maxPosition
+
+ball.position = 0;
+console.log(leftmost(ball));  // Expected output: true, since position is 0
+
+ball.position = 10;
+console.log(rightmost(ball)); // Expected output: true, since position is maxPosition
+
+
+</script>
+<script src="computed/Synth.js" type="text/javascript"></script>
+
+<script>
+
+	(async () => {
+
+
+		// Wrapper
+
+		const X_STEP_DURATION = 200;
+
+		class Ball {
+			constructor() {
+				this.pos = 0
+			}
+
+			render() {
+				const ball = document.getElementById('ball');
+				ball.style.transition = `left ${X_STEP_DURATION}ms linear`;
+				ball.style.left = `${this.pos / 10 * (screen.availWidth - 100)}px`;
+
+				const debug = document.querySelector('#debug');
+				debug.textContent = 'Current State: ' + currentState
+			}
+		}
+
+		window.currentState = 0
+
+		const ball = new Ball()
+		ball.render()
+
+		// /*
+
+		// Wait for 1s to sync the up-and-down animationw with bouncing, in order to make it look like the
+		// ball is bouncing.
+
+		// */
+		// await new Promise(((resolve) => resolve()), 1000)
+
+		setInterval(
+			(() => {
+
+				ball_pos = ball.pos;
+				({ currentState, ball_pos }) = updateState({ currentState, ball_pos })
+				ball.pos = ball_pos
+				console.log('currentState', currentState, ball)
+				ball.render()
+
+			}),
+			X_STEP_DURATION
+		)
+
+	})()
+
+</script>

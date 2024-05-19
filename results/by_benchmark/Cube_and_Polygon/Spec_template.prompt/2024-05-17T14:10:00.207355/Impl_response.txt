@@ -1,0 +1,84 @@
+To implement the given tasks using JavaScript, we'll create a set of functions and predicates as specified. For the `pressL` and `pressR` predicates, we'll need to set up event listeners for button presses. Assuming that events `e` somehow carry information about which button is pressed (like a keyboard event with keys or a UI with specific buttons), we can use this information to determine the truth of each predicate.
+
+Here is how you could structure the JavaScript code:
+
+```javascript
+// Functions
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    // Implementing a sawtooth wave function
+    // Period of 2π
+    return 2 * (x / (2 * Math.PI) - Math.floor(0.5 + x / (2 * Math.PI)));
+}
+
+// Predicates
+let leftPressed = false;
+let rightPressed = false;
+
+function setupButtonListeners() {
+    // Assuming there are buttons with ids 'leftButton' and 'rightButton'
+    const leftButton = document.getElementById('leftButton');
+    const rightButton = document.getElementById('rightButton');
+
+    leftButton.addEventListener('mousedown', () => {
+        leftPressed = true;
+    });
+    leftButton.addEventListener('mouseup', () => {
+        leftPressed = false;
+    });
+
+    rightButton.addEventListener('mousedown', () => {
+        rightPressed = true;
+    });
+    rightButton.addEventListener('mouseup', () => {
+        rightPressed = false;
+    });
+}
+
+function pressL(e) {
+    return leftPressed;
+}
+
+function pressR(e) {
+    return rightPressed;
+}
+
+// System API Handling
+function setCubeScaleX(value) {
+    // Assuming cube is an object from a 3D library, e.g., Three.js
+    cube.scale.x = value;
+}
+
+function getCubeScaleX() {
+    return cube.scale.x;
+}
+
+// Set up the environment
+setupButtonListeners();
+
+// Example usage:
+// This could be part of an update loop in an animation or game
+function updateCubeScale() {
+    if (pressL()) {
+        // Set cube scale based on sawtooth wave
+        setCubeScaleX(saw(new Date().getTime() * 0.001));
+    } else if (pressR()) {
+        // Set cube scale based on sine wave
+        setCubeScaleX(sin(new Date().getTime() * 0.001));
+    }
+}
+
+// Call update function periodically
+setInterval(updateCubeScale, 100);  // Update every 100 milliseconds
+```
+
+### Explanation
+1. **sin(x)**: Uses JavaScript's Math.sin for the sine wave.
+2. **saw(x)**: Implements a sawtooth wave function. The formula `x / (2 * Math.PI) - Math.floor(0.5 + x / (2 * Math.PI))` generates a sawtooth wave with a range from -1 to 1 and a period of `2π`.
+3. **pressL** and **pressR**: These predicates are implemented using Boolean flags that change state when the corresponding buttons are pressed or released.
+4. **System API**: Functions `setCubeScaleX` and `getCubeScaleX` manipulate `cube.scale.x` directly, assuming `cube` is an accessible object within the environment.
+
+This setup ensures that the cube's scale along the x-axis can be adjusted in real-time based on user input from the left and right buttons, using the defined wave functions.

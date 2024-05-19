@@ -1,0 +1,33 @@
+Below is the TSL specification based on the description of a ball bouncing between two walls, with a position represented as a number between 0 and 10. The functions `moveLeft(ball)` and `moveRight(ball)` control the ball's movement, and the predicates `leftmost(ball)` and `rightmost(ball)` determine if the ball is against the respective walls.
+
+```tsl
+always assume {
+  // Ensure that the ball can only be at either of the two extreme positions, not both simultaneously
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball hits the leftmost wall, it should begin moving to the right
+  leftmost(ball) -> (X G !leftmost(ball) U rightmost(ball));
+
+  // When the ball hits the rightmost wall, it should begin moving to the left
+  rightmost(ball) -> (X G !rightmost(ball) U leftmost(ball));
+
+  // If the ball is not at the leftmost wall, it must be moving right
+  !leftmost(ball) -> [ball <- moveRight(ball)];
+
+  // If the ball is not at the rightmost wall, it must be moving left
+  !rightmost(ball) -> [ball <- moveLeft(ball)];
+}
+```
+
+### Explanation of Each Clause:
+1. **Assumptions:**
+   - The ball cannot be simultaneously at both walls, ensuring logical consistency in the ball's position.
+
+2. **Guarantees:**
+   - When the ball reaches the leftmost wall (`leftmost(ball)`), the next states (`X G`) will keep the ball moving to the right (`!leftmost(ball)`) until it reaches the rightmost wall (`rightmost(ball)`).
+   - Similarly, when the ball is at the rightmost wall (`rightmost(ball)`), it should start moving left until it hits the leftmost wall.
+   - The movement functions `moveRight(ball)` and `moveLeft(ball)` are triggered based on the ball's current position relative to the walls, ensuring the ball always moves towards the opposite wall when not at a wall. 
+
+This TSL specification models the continuous bouncing behavior of the ball between the two walls, governed by the predicates and functions provided.

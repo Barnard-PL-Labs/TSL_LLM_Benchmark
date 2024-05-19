@@ -1,0 +1,33 @@
+Here is the TSL (Temporal Stream Logic) specification based on the given natural language description of the ball bouncing between two walls:
+
+```tsl
+always assume {
+  // If the ball is moved to the left, then in the next moment, it is guaranteed that the ball is not at the rightmost wall
+  ([ballDirection <- left] -> X !(ballPosition = 10));
+
+  // If the ball is moved to the right, then in the next moment, it is ensured that the ball is not at the leftmost wall
+  ([ballDirection <- right] -> X !(ballPosition = 0));
+
+  // It is always the case that the ball cannot be at both the leftmost and the rightmost wall at the same time
+  !(ballPosition = 0 && ballPosition = 10);
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, eventually it must be moved to the left
+  (ballPosition = 10 -> F ([ballDirection <- left]));
+
+  // If the ball is at the leftmost wall, eventually it must be moved to the right
+  (ballPosition = 0 -> F ([ballDirection <- right]));
+
+  // If the ball is neither at the leftmost nor at the rightmost wall, then eventually, it must be moved either to the left or to the right
+  (!(ballPosition = 0 || ballPosition = 10) -> F ([ballDirection <- left] || [ballDirection <- right]));
+
+  // If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall
+  (ballPosition = 0 && X ([ballDirection <- right]) -> ![ballDirection <- left] W (ballPosition = 10));
+
+  // If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall
+  (ballPosition = 10 && X ([ballDirection <- left]) -> ![ballDirection <- right] W (ballPosition = 0));
+}
+```
+
+This specification includes assumptions about the immediate consequences of moving the ball in either direction and guarantees about what should happen when the ball is at either extremity or anywhere between. It uses temporal logic to ensure the ball's motion adheres to the described behaviors, such as ensuring that the ball cannot be at both walls simultaneously and must eventually move away from any wall it touches.

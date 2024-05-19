@@ -1,0 +1,36 @@
+To encode the rules of Conway's Game of Life for a single cell into TSL, let's consider the basic principles of the game:
+
+1. **Survival**: A cell stays alive if it has two or three living neighbors.
+2. **Death**: A cell dies if it has fewer than two or more than three living neighbors.
+3. **Birth**: A dead cell comes to life if it has exactly three living neighbors.
+
+Given the predicates `comeAlive(index)` and `comeDead(index)` which handle the neighbor count conditions, and the function `changeState` which toggles the life state of the cell, we can structure the TSL specification accordingly.
+
+### TSL Specification
+
+```tsl
+always assume {
+    // The conditions determining if a cell should come to life or die are mutually exclusive and cover all scenarios.
+    (alive && comeAlive(index)) || (!alive && comeAlive(index)) || (alive && comeDead(index)) || (!alive && comeDead(index));
+}
+
+always guarantee {
+    // If a cell is alive and it should stay alive according to the game's rules, its state remains unchanged.
+    (alive && comeAlive(index)) -> [alive <- true];
+    
+    // If a cell is dead and exactly three neighbors are alive, it should come to life.
+    (!alive && comeAlive(index)) -> [alive <- true];
+    
+    // If a cell is alive and it does not have two or three living neighbors, it should die.
+    (alive && comeDead(index)) -> [alive <- false];
+    
+    // A dead cell stays dead unless exactly three neighbors are alive.
+    (!alive && comeDead(index)) -> [alive <- false];
+}
+```
+
+### Explanation:
+
+- The `assume` block ensures that the game rules are acknowledged for both living and dead cells based on their neighbors.
+- The `guarantee` block defines actions based on the current state (`alive` or not) and the conditions checked by `comeAlive` and `comeDead`.
+- `changeState` function is abstracted in terms of direct state assignments in the TSL guarantees, assuming the function changes the state of the cell to what is specified on the right side of the assignments.

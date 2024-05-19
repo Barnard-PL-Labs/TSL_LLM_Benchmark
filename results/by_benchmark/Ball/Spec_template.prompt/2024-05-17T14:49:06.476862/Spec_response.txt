@@ -1,0 +1,35 @@
+Here is the TSL specification based on your description:
+
+```tsl
+always assume {
+  // If the ball is moved to the left, in the next moment, it cannot be at the rightmost wall.
+  ([ball <- moveLeft(ball)] -> X !(rightmost(ball)));
+
+  // If the ball is moved to the right, in the next moment, it cannot be at the leftmost wall.
+  ([ball <- moveRight(ball)] -> X !(leftmost(ball)));
+
+  // The ball can't be at both leftmost and rightmost walls at the same time.
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, it must eventually be moved to the left.
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+
+  // If the ball is at the leftmost wall, it must eventually be moved to the right.
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+
+  // If the ball is neither at the leftmost nor at the rightmost wall, it must eventually be moved either to the left or to the right.
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+
+  // If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall.
+  leftmost(ball) && X ([ball <- moveRight(ball)]) -> ([ball <- moveRight(ball)] W rightmost(ball));
+
+  // If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall.
+  rightmost(ball) && X ([ball <- moveLeft(ball)]) -> ([ball <- moveLeft(ball)] W leftmost(ball));
+}
+```
+
+In this TSL specification:
+- Assumptions ensure that when moving left or right, the ball won't suddenly appear at the opposite boundary in the next moment and that the ball cannot be in two places that are mutually exclusive (leftmost and rightmost positions).
+- Guarantees handle the bouncing logic: ensuring the ball moves away from each wall when it reaches it and does not move back in that direction until it reaches the opposite wall.

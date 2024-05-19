@@ -1,0 +1,37 @@
+Here's the TSL specification capturing the behavior of a player's ship in Space Invaders based on your description:
+
+```tsl
+always assume {
+    // Ensure that the ship is not at both the leftmost and rightmost positions simultaneously
+    !(leftmost(ship) && rightmost(ship));
+}
+
+always guarantee {
+    // If the ship is hit, the game should signal the end or loss of a life
+    hit(ship) -> [die(ship)];
+    
+    // Ship movement logic based on position constraints
+    // When the ship is not at the leftmost position, it can move left
+    !leftmost(ship) -> [moveLeft(ship)];
+    
+    // When the ship is not at the rightmost position, it can move right
+    !rightmost(ship) -> [moveRight(ship)];
+    
+    // The ship has the ability to shoot regardless of position
+    [shoot(ship)];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - The ship cannot simultaneously be at the leftmost and rightmost positions. This is to prevent any logical inconsistency in the game environment.
+
+2. **Guarantees**:
+   - If the ship is hit by incoming enemy fire or collision, the ship triggers a `die(ship)` action. This could represent losing a life or ending the game, depending on the game's design.
+   - Movement is restricted by the ship's position relative to the game boundaries:
+     - The `moveLeft(ship)` action is only guaranteed if the ship is not at the leftmost boundary, preventing it from moving out of the game area.
+     - Similarly, `moveRight(ship)` is only allowed when the ship is not at the rightmost boundary.
+   - The ship can shoot at any time. This function is included without conditionals to imply that shooting is an action decoupled from movement or being hit.
+
+This TSL specification thus tightly controls the movement actions within boundary conditions and allows for continuous interaction with the game environment via shooting, all the while handling the game-over scenario through the `hit(ship)` predicate.

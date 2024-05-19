@@ -1,0 +1,51 @@
+To implement the described methods in JavaScript, you will need to define the functions and predicates based on the behavior described. Let's assume that the `ball` cell has some properties or methods that allow us to update its state or check its position relative to the walls. 
+
+Here’s how you might define these functions and predicates in JavaScript:
+
+```javascript
+// Define the functions and predicates for handling the ball movement
+
+// Assuming 'ball' is an object with properties or methods to control its position
+
+// Function to move the ball to the left
+function moveLeft(ball) {
+    if (!leftmost(ball)) {
+        // Assuming 'ball' has a method 'move' or similar to update its position
+        ball.move(-1);  // Move ball one unit to the left
+        return "Move left signal sent";
+    }
+    return "Ball is at the leftmost position";
+}
+
+// Function to move the ball to the right
+function moveRight(ball) {
+    if (!rightmost(ball)) {
+        ball.move(1);  // Move ball one unit to the right
+        return "Move right signal sent";
+    }
+    return "Ball is at the rightmost position";
+}
+
+// Predicate to check if the ball is at the leftmost wall
+function leftmost(ball) {
+    // Assuming 'ball' has a property 'x' denoting its horizontal position
+    // and 'leftWall' represents the x-coordinate of the leftmost wall
+    return ball.x === ball.leftWall;
+}
+
+// Predicate to check if the ball is at the rightmost wall
+function rightmost(ball) {
+    // Assuming 'ball' has a property 'x' and 'rightWall' is the x-coordinate of the rightmost wall
+    return ball.x === ball.rightWall;
+}
+```
+
+**Explanation:**
+1. **moveLeft and moveRight Functions:**
+   - These functions check whether the ball is already at the respective wall using the `leftmost` and `rightmost` predicates.
+   - If not, they move the ball in the respective direction by updating its position (`ball.move(-1)` for left, `ball.move(1)` for right). The exact implementation of `ball.move` depends on how the ball's position is managed in your system. It might involve setting a new position or sending a command to a controller.
+
+2. **leftmost and rightmost Predicates:**
+   - These return `true` or `false` based on the current position of the ball (`ball.x`) compared to predefined limits (`ball.leftWall` and `ball.rightWall`). These limits need to be properties of the `ball` or globally known values within your application.
+
+This implementation is generic and assumes certain properties and methods exist on the `ball` object. You might need to adjust the implementation details based on the actual capabilities and API of your system.

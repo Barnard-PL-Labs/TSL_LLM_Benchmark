@@ -1,5 +1,5 @@
-
 from openai import OpenAI
+
 client = OpenAI()
 
 PRE_PROMPT = """This GPT creates TSL templates from natural language descriptions.
@@ -170,14 +170,51 @@ always guarantee {
 
 """
 
-def ask_chatgpt(prompt):
-  response = client.chat.completions.create(
-    model="gpt-4-turbo",
-    messages = [
-      { 'role': 'system', 'content': PRE_PROMPT },
-      { 'role': 'user', 'content': prompt },
-    ],
-    temperature = 0.8,
-  )
+# TODO Add three prompts. One for no html template, one for rudimentary, one for skeleton
+NO_CODE_GEN = """Using this description of a program, write a single html file that runs this in the script section"""
+NO_TEMPLATE_REGEN = """Using this code as insipiration generate a single html file that runs the js code
+{}"""
+SKELETON_REGEN = """Using this synthesized code and the following html template as an example complete the html. The html should run the functionality defined by the code, feel free to add any functionality you deem necessary.
+This is a nl prompt that describes the code and is what you should implement: 
+{}
 
-  return response
+This is the html:
+{}
+
+This is the synthesized code:
+{}"""
+
+BASE_HTML = """
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game of Life Simulation</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="gameOfLifeGrid"></div>
+    <script>
+    </script>
+    <script src="computed/Synth.js" type="text/javascript"></script>
+</body>
+
+</html>"""
+
+
+def ask_chatgpt(prompt):
+    response = client.chat.completions.create(
+        model="gpt-4-turbo",
+        messages=[
+            {"role": "system", "content": PRE_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.8,
+    )
+
+    return response

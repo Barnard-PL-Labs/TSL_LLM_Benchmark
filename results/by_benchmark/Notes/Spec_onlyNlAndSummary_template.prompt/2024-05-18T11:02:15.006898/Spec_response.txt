@@ -1,0 +1,41 @@
+Here's how you can convert the provided natural language description into a TSL (Temporal Stream Logic) specification:
+
+```tsl
+always assume {
+  // Button presses are exclusive events
+  !(button1 && button2);
+  !(button1 && button3);
+  !(button2 && button3);
+}
+
+always guarantee {
+  // Guarantee 1: When button1 is pressed, E4 is the next note to be played on noteToPlay
+  button1 -> X ([noteToPlay <- "E4"]);
+
+  // Guarantee 2: When button2 is pressed, G4 is the next note to be played on noteToPlay
+  button2 -> X ([noteToPlay <- "G4"]);
+
+  // Guarantee 3: When button3 is pressed, A4 is the next note to be played on noteToPlay2
+  button3 -> X ([noteToPlay2 <- "A4"]);
+
+  // Guarantee 5: If A4 is playing on noteToPlay2, E4 cannot play on noteToPlay at the same time
+  [noteToPlay2 <- "A4"] -> ![noteToPlay <- "E4"];
+
+  // Guarantee 6: A4 on noteToPlay2 cannot be played until E4 has stopped on noteToPlay
+  ([noteToPlay <- "E4"]) -> !F([noteToPlay2 <- "A4"]);
+
+  // Guarantee 7: If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2, and G4 on noteToPlay
+  [noteToPlay <- "E4"] -> F([noteToPlay2 <- "A4"] && F([noteToPlay <- "G4"]));
+}
+```
+
+### Explanation
+- **Assumptions:** We start by ensuring that the button presses are mutually exclusive using negations. This means you can't press two buttons at the same time.
+  
+- **Guarantees:**
+  - **Guarantee 1-3:** These directly translate the button presses into actions that write specific musical notes to their respective variables, and they ensure these are the next actions to occur.
+  - **Guarantee 5:** Implements the condition where two specific notes can't be played at the same time by negating the simultaneous output.
+  - **Guarantee 6:** Ensures that A4 on `noteToPlay2` does not play if E4 is currently playing on `noteToPlay`.
+  - **Guarantee 7:** Sets a sequential guarantee where if E4 is played, then A4 and G4 must follow in the order specified on the respective outputs.
+
+This TSL specification captures all the conditions and relationships expressed in the natural language requirements for managing the relationships between button presses and musical notes outputs, respecting temporal constraints.

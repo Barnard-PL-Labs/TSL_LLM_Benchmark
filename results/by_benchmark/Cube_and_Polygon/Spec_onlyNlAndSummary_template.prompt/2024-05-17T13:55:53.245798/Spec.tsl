@@ -1,0 +1,16 @@
+always assume {
+  // Ensure that the left and right buttons cannot be pressed simultaneously
+  !(pressR(e) && pressL(e));
+}
+
+always guarantee {
+  // Increment count by 0.1 and update rotation when the right key is pressed, until the left key is pressed
+  pressR(e) -> ([count <- count + 0.1] && [cube.rotation.y <- sin(2 * count)] && [polygon.rotation.y <- saw(0.5 * (1 + count))]) W pressL(e);
+  
+  // Decrement count by 0.1 and update rotation when the left key is pressed, until the right key is pressed
+  pressL(e) -> ([count <- count - 0.1] && [cube.rotation.y <- sin(2 * count)] && [polygon.rotation.y <- saw(0.5 * (1 + count))]) W pressR(e);
+  
+  // Set static positions for the cube and the polygon
+  [cube.position.x <- 1];
+  [polygon.position.x <- 3];
+}

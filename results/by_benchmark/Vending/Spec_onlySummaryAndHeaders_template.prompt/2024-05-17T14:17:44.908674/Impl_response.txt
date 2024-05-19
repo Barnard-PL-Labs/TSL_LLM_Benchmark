@@ -1,0 +1,29 @@
+To implement the predicates without using any functions, you can use the basic expressions and operators within Temporal Stream Logic (TSL) to define the conditions. Below, I'll define the predicates as TSL expressions based on the description you've provided.
+
+### TSL Implementation for Predicates
+
+```javascript
+always assume {
+  // Predicates for total cell
+  isLessThanPoint75(total) <-> (total < 0.75);
+  isLessThanOne(total) <-> (total < 1);
+  isLessThanOnePoint25(total) <-> (total < 1.25);
+
+  // Predicates for e cell based on user key presses
+  pressD(e) <-> (e == 'd');
+  pressQ(e) <-> (e == 'q');
+  pressO(e) <-> (e == 'o');
+  press1(e) <-> (e == '1');
+  press2(e) <-> (e == '2');
+  press3(e) <-> (e == '3');
+  pressR(e) <-> (e == 'r');
+}
+```
+
+### Explanation:
+- **`<->`** is used to denote equivalence, meaning the left side of the expression is true if and only if the right side is true.
+- The expressions inside the parentheses after each predicate name are the conditions that define when each predicate is true based on the values in the `total` and `e` cells.
+
+These TSL expressions are written under the `always assume` section, which typically includes assumptions about the environment or inputs. By defining these predicates, you are essentially setting the rules on how the system interprets certain conditions based on the inputs `total` and `e`.
+
+In a practical application, these definitions would be part of a larger TSL system description that includes guarantees about how the system should behave when these conditions are met. This allows a system to react to input changes over time, maintaining a set of assumptions and guarantees as part of its operation.

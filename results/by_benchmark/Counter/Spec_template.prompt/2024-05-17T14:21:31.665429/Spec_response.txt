@@ -1,0 +1,40 @@
+Here's the TSL specification based on your description:
+
+```tsl
+always assume {
+    // Mutual exclusion for button presses to ensure no two counter operations are performed at the same time
+    !(pressA(e) && pressB(e));
+    !(pressA(e) && pressC(e));
+    !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+    // Increment the counter by 1 when A is pressed
+    pressA(e) -> [count <- count + 1];
+
+    // Increment the counter by 2 when B is pressed
+    pressB(e) -> [count <- count + 2];
+
+    // Increment the counter by 3 when C is pressed
+    pressC(e) -> [count <- count + 3];
+
+    // Handle the special condition for pressing A three times in a row
+    pressA(e) && X(pressA(e)) && X(X(pressA(e))) && X(X(X(pressA(e)))) ->
+        [stepsize <- multiplyByThree(stepsize)];
+
+    // Reset the stepsize to 1 if either B or C is pressed
+    (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+- **Assume Block**:
+  - Ensures that no two buttons can be pressed simultaneously, which models the constraint that no two counter operations can be performed at the same time.
+
+- **Guarantee Block**:
+  - Defines the actions taken when each button is pressed:
+    - **pressA(e):** Increments the counter by the current `stepsize` value.
+    - **pressB(e):** Increments the counter by 2.
+    - **pressC(e):** Increments the counter by 3.
+  - Handles a special case where if A is pressed three consecutive times, the fourth consecutive press of A results in the `stepsize` being multiplied by three.
+  - Resets the `stepsize` to 1 whenever B or C is pressed. This resets the increment value for A after it has been modified.

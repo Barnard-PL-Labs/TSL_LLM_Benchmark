@@ -1,0 +1,72 @@
+Given the task description and the lack of a specific API wrapper, let's assume we have a direct way to manipulate the `ball` object's position and check relative positions (leftmost and rightmost) based on the system you're operating within. Below, I will provide JavaScript implementations for the requested functions and predicates based on a hypothetical understanding of how the `ball` object behaves or could be interpreted in a typical environment.
+
+### Functions
+
+1. `moveLeft(ball)`
+   - This function will decrease the position of the ball, typically by modifying a property, such as `x` (assuming a coordinate system where x represents the horizontal position).
+   
+2. `moveRight(ball)`
+   - This function will increase the position of the ball, similar to `moveLeft`, but in the opposite direction.
+
+### Predicates
+
+1. `leftmost(ball)`
+   - This predicate checks if the ball is at the leftmost position. We assume there's a boundary or a minimum value that defines this position.
+   
+2. `rightmost(ball)`
+   - Similar to `leftmost`, but checks if the ball is at the rightmost position, assuming a maximum value for the boundary.
+
+### JavaScript Implementation
+
+Let's implement these functions and predicates, assuming `ball` has properties `x`, `leftBound`, and `rightBound` that define its horizontal position and boundaries.
+
+```javascript
+// Mockup ball object structure for demonstration
+let ball = {
+  x: 50,          // Current horizontal position
+  leftBound: 0,   // Leftmost boundary
+  rightBound: 100 // Rightmost boundary
+};
+
+// Function: Move the ball to the left
+function moveLeft(ball) {
+  if (ball.x > ball.leftBound) {
+    ball.x -= 1; // Decrement to move left
+    return "left signal"; // Simulating a signal
+  }
+  return "already at leftmost";
+}
+
+// Function: Move the ball to the right
+function moveRight(ball) {
+  if (ball.x < ball.rightBound) {
+    ball.x += 1; // Increment to move right
+    return "right signal"; // Simulating a signal
+  }
+  return "already at rightmost";
+}
+
+// Predicate: Check if the ball is at the leftmost position
+function leftmost(ball) {
+  return ball.x === ball.leftBound;
+}
+
+// Predicate: Check if the ball is at the rightmost position
+function rightmost(ball) {
+  return ball.x === ball.rightBound;
+}
+
+// Example usage
+console.log("Initial position:", ball.x);
+console.log(moveLeft(ball)); // Moves ball left
+console.log("Position after moveLeft:", ball.x);
+console.log("Is leftmost?", leftmost(ball));
+console.log(moveRight(ball)); // Moves ball right
+console.log("Position after moveRight:", ball.x);
+console.log("Is rightmost?", rightmost(ball));
+```
+
+### Notes
+- The move functions here are illustrative. In a real environment, the `ball` object might interact with a physics engine or other system components that handle position updates more complexly.
+- The predicates assume you can directly compare the `ball.x` with its boundaries. This might change if the environment or ball's properties differ.
+- This implementation directly manipulates and checks properties on the `ball` object. In a practical scenario, especially in graphical or game environments, additional methods or checks may be necessary to handle physics, collision detection, or rendering updates.

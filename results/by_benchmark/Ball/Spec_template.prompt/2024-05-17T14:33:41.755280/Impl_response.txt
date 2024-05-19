@@ -1,0 +1,63 @@
+To implement the described methods in JavaScript without a specific API wrapper, you would typically define functions and predicates based on the available information about the ball's state and the system's environment. Here's a JavaScript implementation assuming `ball` is an object that includes properties for position (`x`), and hypothetical methods or properties to check bounds (`leftmost` and `rightmost`). We'll define `moveLeft` and `moveRight` as actions that modify the `x` position of the ball, and `leftmost` and `rightmost` as predicates to check against boundaries. Since the complete behavior of the ball and the environment is not fully specified, these implementations are based on common assumptions.
+
+### Functions Implementation
+These functions take a `ball` object and modify its position by changing the `x` property.
+
+```javascript
+function moveLeft(ball) {
+    // Assuming `ball.x` decreases as the ball moves left
+    if (!leftmost(ball)) {
+        ball.x -= 1;  // Move left by decrementing the x coordinate
+    }
+    return ball;  // Return the updated ball object
+}
+
+function moveRight(ball) {
+    // Assuming `ball.x` increases as the ball moves right
+    if (!rightmost(ball)) {
+        ball.x += 1;  // Move right by incrementing the x coordinate
+    }
+    return ball;  // Return the updated ball object
+}
+```
+
+### Predicates Implementation
+These predicates return a boolean value based on the ball's position relative to assumed environment boundaries.
+
+```javascript
+function leftmost(ball) {
+    // Assuming there's a known leftmost boundary, check if `ball.x` is at this boundary
+    return ball.x === 0;  // Example: `0` is the leftmost boundary
+}
+
+function rightmost(ball) {
+    // Assuming there's a known rightmost boundary, check if `ball.x` is at this boundary
+    const rightBoundary = 10;  // Example: `10` is the rightmost boundary
+    return ball.x === rightBoundary;
+}
+```
+
+### Usage Example
+Here's how you might use these functions with a hypothetical `ball` object.
+
+```javascript
+let ball = { x: 5 };
+
+// Move the ball to the left
+moveLeft(ball);
+console.log(ball.x);  // Output might be 4
+
+// Check if the ball is at the leftmost position
+console.log(leftmost(ball));  // Output: false
+
+// Move the ball to the right
+moveRight(ball);
+console.log(ball.x);  // Output might be 5 (if it was previously moved left)
+
+// Check if the ball is at the rightmost position
+console.log(rightmost(ball));  // Output: false
+```
+
+### Notes
+1. This implementation assumes specific behavior and properties (`x`, `leftmost`, `rightmost`) which may need to be adapted based on the actual system's API and environment specifics.
+2. Boundary values (`0` for leftmost and `10` for rightmost in this example) are arbitrary and should be adjusted based on the actual constraints of the environment where the ball is moving.

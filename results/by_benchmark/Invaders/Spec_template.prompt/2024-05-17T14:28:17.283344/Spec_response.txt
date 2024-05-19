@@ -1,0 +1,36 @@
+Here's the TSL specification based on your description. This specification will cover the behavior of a player's ship in a Space Invaders game, including movement controls, shooting, and handling when the ship gets hit.
+
+```tsl
+always assume {
+  // Ensure that no two movements or shooting commands conflict
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // If the left key is pressed and the ship is not at the leftmost position, move left
+  (pressL && !leftmost(ship)) -> [ship <- moveLeft(ship)];
+  
+  // If the right key is pressed and the ship is not at the rightmost position, move right
+  (pressR && !rightmost(ship)) -> [ship <- moveRight(ship)];
+  
+  // When shoot key is pressed, trigger shooting
+  pressS -> [ship <- shoot(ship)];
+  
+  // If the ship gets hit, trigger the end game or lose life
+  hit(ship) -> [ship <- die(ship)];
+  
+  // Ensure that when no movement or shooting keys are pressed, no actions are taken
+  !(pressL || pressR || pressS || hit(ship)) -> ([ship <- ship]);
+}
+```
+
+### Explanation:
+1. **Mutual Exclusion for Key Inputs:** It's specified that certain key combinations cannot occur simultaneously, ensuring only one action is processed at a time.
+2. **Left and Right Movement:** The ship moves left or right if the respective key is pressed, provided it's not already at the boundary of the game space.
+3. **Shooting Action:** Activated by pressing a designated shooting key.
+4. **Hit Detection:** If the ship is hit, the specified action (like a game over or losing a life) is triggered.

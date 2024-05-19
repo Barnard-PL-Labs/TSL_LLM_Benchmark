@@ -1,0 +1,35 @@
+Here's how you could translate the given natural language description into a TSL specification:
+
+```tsl
+always assume {
+  // If the ball is moved to the left, then in the next moment, it is guaranteed that the ball is not at the rightmost wall
+  ([ball <- moveLeft(ball)] -> X !rightmost(ball));
+  
+  // If the ball is moved to the right, then in the next moment, it is ensured that the ball is not at the leftmost wall
+  ([ball <- moveRight(ball)] -> X !leftmost(ball));
+  
+  // It is always the case that the ball cannot be at both the leftmost and the rightmost wall at the same time
+  ! (leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, eventually it must be moved to the left
+  rightmost(ball) -> F ([ball <- moveLeft(ball)]);
+
+  // If the ball is at the leftmost wall, eventually it must be moved to the right
+  leftmost(ball) -> F ([ball <- moveRight(ball)]);
+
+  // If the ball is neither at the leftmost nor at the rightmost wall, then eventually, it must be moved either to the left or to the right
+  !leftmost(ball) && !rightmost(ball) -> F ([ball <- moveLeft(ball)] || [ball <- moveRight(ball)]);
+
+  // If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall
+  leftmost(ball) && X ([ball <- moveRight(ball)]) -> G (!leftmost(ball) W rightmost(ball));
+
+  // If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall
+  rightmost(ball) && X ([ball <- moveLeft(ball)]) -> G (!rightmost(ball) W leftmost(ball));
+}
+```
+
+In this specification:
+- The `always assume` block outlines assumptions about the environment, ensuring that certain conditions hold based on actions taken.
+- The `always guarantee` block states what must be true about the system's behavior, specifying what actions should be taken under certain conditions and maintaining the system's integrity across states as described in your natural language conditions.

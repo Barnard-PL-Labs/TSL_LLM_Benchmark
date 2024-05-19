@@ -1,0 +1,53 @@
+Below is the JavaScript implementation for the functions and predicates described, as well as the integration with the system API for managing the cube's x-axis scale. This implementation includes the sine and sawtooth wave functions and predicates for button presses with event listeners.
+
+```javascript
+// Assuming an existing cube object in the 3D environment
+const cube = {
+    scale: {
+        x: 1,
+    }
+};
+
+// Functions to calculate sine and sawtooth waves
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    return x - Math.floor(x);  // A simple implementation of a sawtooth wave
+}
+
+// Predicates for button presses: pressL and pressR
+function pressL(e) {
+    return e.key === 'ArrowLeft' && e.type === 'keydown';  // True when left arrow key is pressed
+}
+
+function pressR(e) {
+    return e.key === 'ArrowRight' && e.type === 'keydown';  // True when right arrow key is pressed
+}
+
+// Event listeners to detect key presses and modify cube.scale.x accordingly
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        // If left button is pressed, apply sine wave to cube's scale on the x-axis
+        cube.scale.x = sin(new Date().getTime() / 1000);  // Using time to simulate continuous change
+        console.log(`Left pressed. Cube's scale.x set to sine wave: ${cube.scale.x}`);
+    } else if (pressR(e)) {
+        // If right button is pressed, apply sawtooth wave to cube's scale on the x-axis
+        cube.scale.x = saw(new Date().getTime() / 1000);  // Using time to simulate continuous change
+        console.log(`Right pressed. Cube's scale.x set to sawtooth wave: ${cube.scale.x}`);
+    }
+});
+```
+
+### Explanation:
+
+1. **Cube Object**: We assume a pre-existing `cube` object with a property `scale.x`, which we can modify to demonstrate changes in the cube's scale along the x-axis.
+
+2. **Sin and Saw Functions**: The `sin` function uses JavaScript's `Math.sin()` for the sine wave, while the `saw` function calculates a simple sawtooth wave.
+
+3. **Button Press Predicates**: The `pressL` and `pressR` functions are predicates that check if the left or right arrow keys are pressed respectively. They return true during a `keydown` event when the corresponding key is pressed.
+
+4. **Event Listeners**: We use `keydown` event listeners to detect when either the left or right arrow keys are pressed. Depending on which key is pressed, the cube's `scale.x` is updated using either the sine or sawtooth function. The current time divided by 1000 (to convert milliseconds to seconds) is used as the input to these functions to simulate dynamic changes over time.
+
+This implementation meets the provided specifications and utilizes the system's API to interact with the cube's scale property based on real-time user input.

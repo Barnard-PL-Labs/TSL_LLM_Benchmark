@@ -1,0 +1,28 @@
+Here is the TSL specification based on the given description of a ball bouncing between two walls with positions from 0 to 10:
+
+```tsl
+always assume {
+  // The ball cannot be at both the leftmost and rightmost positions simultaneously.
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball reaches the leftmost position, it should start moving to the right.
+  leftmost(ball) -> X ([ball <- moveRight(ball)] W !leftmost(ball));
+
+  // When the ball reaches the rightmost position, it should start moving to the left.
+  rightmost(ball) -> X ([ball <- moveLeft(ball)] W !rightmost(ball));
+
+  // If the ball is not at either boundary, it should continue in its current direction.
+  // Assuming a function "continueMovement(ball)" that continues the ball's current direction,
+  // which you might need to define or handle according to your system's needs.
+  !(leftmost(ball) || rightmost(ball)) -> X ([ball <- continueMovement(ball)]);
+}
+```
+
+Explanation:
+- The `assume` section ensures that the ball cannot be at both boundary positions (leftmost and rightmost) at the same time, which is a physical impossibility.
+- The `guarantee` section contains rules for the ball's behavior:
+  1. If the ball is at the leftmost wall, it should start moving to the right until it is no longer at the leftmost wall.
+  2. If the ball is at the rightmost wall, it should start moving to the left until it is no longer at the rightmost wall.
+  3. If the ball is not at any boundary, it should continue moving in its current direction. This might require implementing or specifying a function to handle the continuation of movement based on the current state of the ball.

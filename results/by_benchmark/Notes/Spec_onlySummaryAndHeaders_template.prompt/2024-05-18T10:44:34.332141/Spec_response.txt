@@ -1,0 +1,21 @@
+Here is the TSL specification based on your description:
+
+```TSL
+always assume {
+  // No special assumptions about the environment
+}
+
+always guarantee {
+  // Define actions to play notes based on button presses
+  pressButtonE -> [noteToPlay <- "E4"];
+  pressButtonG -> [noteToPlay <- "G4"];
+  pressButtonA -> [noteToPlay <- "A4"];
+  
+  // Conditions to potentially play two notes simultaneously
+  (pressButtonE && pressButtonG) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "G4"]);
+  (pressButtonE && pressButtonA) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]);
+  (pressButtonG && pressButtonA) -> ([noteToPlay <- "G4"] && [noteToPlay2 <- "A4"]);
+}
+```
+
+This specification assumes there are buttons corresponding to the musical notes E4, G4, and A4, and the variables `noteToPlay` and `noteToPlay2` are available to hold the values of the notes to be played. The `pressButtonX` predicates are triggers for pressing the respective note buttons.

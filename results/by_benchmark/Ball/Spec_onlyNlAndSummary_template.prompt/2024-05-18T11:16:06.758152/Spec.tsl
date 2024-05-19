@@ -1,0 +1,27 @@
+always assume {
+  // If the ball moves left, the next moment it cannot be at the rightmost position
+  (ball.moveLeft -> X !(ball.position = 10));
+
+  // If the ball moves right, the next moment it cannot be at the leftmost position
+  (ball.moveRight -> X !(ball.position = 0));
+
+  // The ball cannot be at both the leftmost and the rightmost positions at the same time
+  !(ball.position = 0 && ball.position = 10);
+}
+
+always guarantee {
+  // If the ball is at the rightmost wall, it must eventually be moved to the left
+  (ball.position = 10 -> F (ball.moveLeft));
+
+  // If the ball is at the leftmost wall, it must eventually be moved to the right
+  (ball.position = 0 -> F (ball.moveRight));
+
+  // If the ball is neither at the leftmost nor at the rightmost wall, it must eventually move either left or right
+  (!(ball.position = 0 || ball.position = 10) -> F (ball.moveLeft || ball.moveRight));
+
+  // If the ball is at the leftmost wall and is going to move, it must not move left until it reaches the rightmost wall
+  (ball.position = 0 && X !(ball.position = 0) -> (!ball.moveLeft W ball.position = 10));
+
+  // If the ball is at the rightmost wall and is going to move, it must not move right until it reaches the leftmost wall
+  (ball.position = 10 && X !(ball.position = 10) -> (!ball.moveRight W ball.position = 0));
+}

@@ -1,0 +1,17 @@
+```tsl
+always assume {
+  ([ball <- moveLeft()] -> X !rightmost(ball));
+  ([ball <- moveRight()] -> X !leftmost(ball));
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  rightmost(ball) -> F ([ball <- moveLeft()]);
+  leftmost(ball) -> F ([ball <- moveRight()]);
+  !(leftmost(ball) || rightmost(ball)) -> F ([ball <- moveLeft()] || [ball <- moveRight()]);
+  (leftmost(ball) && X ([ball <- moveRight()])) -> G (!leftmost(ball) W rightmost(ball));
+  (rightmost(ball) && X ([ball <- moveLeft()])) -> G (!rightmost(ball) W leftmost(ball));
+}
+```
+
+This TSL specification follows the natural language description to ensure that the ball bounces between two walls with specified behaviors at each wall and behaviors when the ball is between walls.

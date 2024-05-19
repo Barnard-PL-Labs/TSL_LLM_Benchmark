@@ -1,0 +1,16 @@
+always assume {
+  // Basic conditions and exclusions are not explicitly mentioned in the description,
+  // so we assume basic logical consistency and environmental constraints.
+}
+
+always guarantee {
+  // When the ball is at the leftmost position, the next action should be to move right.
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // When the ball is at the rightmost position, the next action should be to move left.
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+
+  // If the ball is not at either boundary, continue moving in the current direction.
+  // This assumes some mechanism to track current direction, not detailed in the description.
+  // Implementation depends on additional context or requires assumption of a direction state.
+}

@@ -1,0 +1,33 @@
+Based on the natural language description and the given information on functions and predicates, here is the TSL specification for the graphical interface:
+
+```TSL
+always assume {
+  // Assumption that left and right buttons are never pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the right key is pressed, increment the count by 0.1 until the left key is pressed
+  pressR(e) -> ([count <- count + 0.1] W pressL(e));
+
+  // When the left key is pressed, decrement the count by 0.1 until the right key is pressed
+  pressL(e) -> ([count <- count - 0.1] W pressR(e));
+
+  // Continuous update of the cube's rotation based on the sine of twice the count value
+  [cube.rotation.y <- sin(2 * count)];
+
+  // Continuous update of the polygon's rotation based on the sawtooth of 0.5 times (1 + count)
+  [polygon.rotation.y <- saw(0.5 * (1 + count))];
+
+  // Fixed x-positions of the cube and the polygon
+  [cube.position.x <- 1];
+  [polygon.position.x <- 3];
+}
+```
+
+This specification meets all the described requirements. Here are the key aspects reflected:
+
+1. Mutual exclusion of pressing left and right keys.
+2. Incremental and decremental update of a count variable on pressing right and left keys, respectively.
+3. Continuous update of the graphical rotation of both the cube and the polygon based on the count variable, using sinusoidal and sawtooth functions.
+4. Fixed positions for the cube and polygon to maintain geometric consistency in the scene.

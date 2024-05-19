@@ -1,0 +1,26 @@
+```tsl
+always assume {
+    // Assumptions about the buttons
+    (button1 || button2 || button3);
+}
+
+always guarantee {
+    // Guarantee handling for button1
+    button1 -> (X ([noteToPlay <- "E4"] U !button1));
+    
+    // Guarantee handling for button2
+    button2 -> (X ([noteToPlay <- "G4"] U !button2));
+    
+    // Guarantee handling for button3
+    button3 -> (X ([noteToPlay2 <- "A4"] U !button3));
+    
+    // Relationship between notes on noteToPlay and noteToPlay2
+    ([noteToPlay2 <- "A4"] -> !([noteToPlay <- "E4"]));
+    
+    // Condition for A4 not played until E4 stops
+    ([noteToPlay <- "E4"] -> G (!([noteToPlay2 <- "A4"])));
+    
+    // Sequence or chord requirements
+    ([noteToPlay <- "E4"] -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]));
+}
+```

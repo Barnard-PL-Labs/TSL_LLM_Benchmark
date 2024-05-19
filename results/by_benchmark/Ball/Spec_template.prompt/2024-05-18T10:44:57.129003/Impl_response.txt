@@ -1,0 +1,55 @@
+To implement the given functions and predicates in JavaScript within the context of a system that deals with the "ball" state and its movement, we'll create the functions `moveLeft`, `moveRight`, and predicates `leftmost`, `rightmost`. These will manipulate or check the state of the ball, presumably stored in some accessible state variable or object. Here's how we can define these methods:
+
+```javascript
+// Assuming 'ball' is an object that holds properties about its position.
+// Example structure of 'ball': { position: 0, leftWall: 0, rightWall: 100 }
+
+// Functions
+function moveLeft(ball) {
+    // Move the ball to the left by decreasing its position
+    if (ball.position > ball.leftWall) {
+        ball.position -= 1;
+    }
+    return ball;
+}
+
+function moveRight(ball) {
+    // Move the ball to the right by increasing its position
+    if (ball.position < ball.rightWall) {
+        ball.position += 1;
+    }
+    return ball;
+}
+
+// Predicates
+function leftmost(ball) {
+    // Check if the ball is against the leftmost wall
+    return ball.position === ball.leftWall;
+}
+
+function rightmost(ball) {
+    // Check if the ball is against the rightmost wall
+    return ball.position === ball.rightWall;
+}
+
+// Usage example
+let ball = {
+    position: 50,
+    leftWall: 0,
+    rightWall: 100
+};
+
+// Move the ball around and check positions
+moveLeft(ball); // ball.position should now be 49
+console.log(leftmost(ball)); // Should output false
+
+moveRight(ball); // ball.position goes back to 50
+console.log(rightmost(ball)); // Should output false
+```
+
+### Notes:
+1. **State Management**: The `ball` object should be accessible wherever these functions are called. It may need to be passed around functions or stored centrally.
+2. **Edge Handling**: `moveLeft` and `moveRight` check to ensure that the ball doesn't move beyond its boundaries (leftWall and rightWall).
+3. **Return Values**: Both `moveLeft` and `moveRight` return the `ball` object. This could be useful if you're chaining commands or need to inspect the ball's state after a move.
+4. **Modularity**: This code assumes a somewhat simplified model where the ball's position and walls are static, except for the movement commands. Real-world applications might have dynamic boundaries or additional factors influencing movement.
+5. **Testing and Debugging**: Include console logs or debugging tools to ensure the ball's position updates correctly and adheres to the defined boundaries.

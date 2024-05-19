@@ -1,0 +1,82 @@
+Here's the implementation in JavaScript for the functions and predicates based on the provided specifications and System API:
+
+### Functions Implementation
+
+For the `sin(x)` and `saw(x)` functions, we can use standard JavaScript math functions to calculate the sine and a custom implementation for the sawtooth wave:
+
+```javascript
+// Function to return the sine of x
+function sin(x) {
+    return Math.sin(x);
+}
+
+// Function to return the sawtooth wave of x
+function saw(x) {
+    // Normalize x to range from 0 to 2π
+    x = x % (2 * Math.PI);
+    
+    // Calculate sawtooth from sine function, translating it to a sawtooth pattern
+    if (x < Math.PI) {
+        return x / Math.PI;
+    } else {
+        return (x - 2 * Math.PI) / Math.PI;
+    }
+}
+```
+
+### Predicates Implementation
+
+For the predicates `pressL(e)` and `pressR(e)`, we will use event listeners in JavaScript to detect button presses:
+
+```javascript
+// Assuming 'document' is available to register event listeners for button key presses
+
+let leftPressed = false;
+let rightPressed = false;
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = true;
+    }
+    if (e.key === 'ArrowRight') {
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    }
+    if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+
+// Predicate that returns true when the left button is pressed
+function pressL() {
+    return leftPressed;
+}
+
+// Predicate that returns true when the right button is pressed
+function pressR() {
+    return rightPressed;
+}
+```
+
+### System API Use
+
+To interact with the cube's scale along the x-axis, we are given the `cube.scale.x` attribute. We can define a function to set or get the current scale based on your needs:
+
+```javascript
+// Set the scale of the cube along the x-axis
+function setCubeScaleX(value) {
+    cube.scale.x = value;
+}
+
+// Get the current scale of the cube along the x-axis
+function getCubeScaleX() {
+    return cube.scale.x;
+}
+```
+
+This setup allows you to control the cube's scaling with these utility functions, and monitor button presses with the predicates. Make sure to integrate these examples into your specific application environment correctly, keeping in mind any specific API or environment requirements.

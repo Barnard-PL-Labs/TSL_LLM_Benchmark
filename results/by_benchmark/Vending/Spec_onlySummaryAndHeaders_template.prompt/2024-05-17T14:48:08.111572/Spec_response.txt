@@ -1,0 +1,56 @@
+Here is the TSL specification based on the description provided:
+
+```TSL
+always assume {
+  // Mutual exclusion for all key inputs
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressR(e) && press1(e));
+  !(pressR(e) && press2(e));
+  !(pressR(e) && press3(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press2(e) && press3(e));
+}
+
+always guarantee {
+  // Inserting a dime increases the total by 0.10
+  pressD(e) -> [total <- total + 0.10];
+  
+  // Inserting a quarter increases the total by 0.25
+  pressQ(e) -> [total <- total + 0.25];
+  
+  // Inserting a dollar increases the total by 1.00
+  pressO(e) -> [total <- total + 1.00];
+  
+  // Refunding resets the total to 0
+  pressR(e) -> [total <- 0];
+  
+  // Purchasing product option 1 if total is >= 0.75
+  (press1(e) && isLessThanPoint75(total)) -> [total <- total];
+  (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+  
+  // Purchasing product option 2 if total is >= 1
+  (press2(e) && isLessThanOne(total)) -> [total <- total];
+  (press2(e) && !isLessThanOne(total)) -> [total <- total - 1.00];
+  
+  // Purchasing product option 3 if total is >= 1.25
+  (press3(e) && isLessThanOnePoint25(total)) -> [total <- total];
+  (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+}
+```
+
+This TSL specification models the behavior of a vending machine according to the rules provided. Mutual exclusions ensure that no two actions (such as pressing two different buttons) can occur at the same time, preserving the integrity of the machine's operations. Each key press results in a specified action, either adding to the total or deducting from it if a product is purchased, provided the user has inserted enough money. The reset action sets the total value back to zero.

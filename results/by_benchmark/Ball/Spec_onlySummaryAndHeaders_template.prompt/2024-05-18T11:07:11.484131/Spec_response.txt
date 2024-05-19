@@ -1,0 +1,36 @@
+### TSL Specification for a Bouncing Ball
+
+Here is a TSL specification based on your description of a ball bouncing between two walls.
+
+```tsl
+always assume {
+  // The ball can either be moving left or right at any given time, but not both.
+  (ball == moveLeft(ball) || ball == moveRight(ball));
+  // When the ball is at the leftmost position, it cannot move further left.
+  (leftmost(ball) -> ball == moveRight(ball));
+  // When the ball is at the rightmost position, it cannot move further right.
+  (rightmost(ball) -> ball == moveLeft(ball));
+}
+
+always guarantee {
+  // When the ball is not at either wall, it continues in its current direction.
+  (!leftmost(ball) && !rightmost(ball)) -> X (ball == ball);
+  // If the ball is at the leftmost position, it must move right.
+  leftmost(ball) -> (X (ball == moveRight(ball)) U rightmost(ball));
+  // If the ball is at the rightmost position, it must move left.
+  rightmost(ball) -> (X (ball == moveLeft(ball)) U leftmost(ball));
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - The `ball` can only hold a signal representing moving either left or right, ensuring that it does not try to do both simultaneously.
+   - If `ball` is at the leftmost wall (`leftmost(ball)`), it should only move right.
+   - If `ball` is at the rightmost wall (`rightmost(ball)`), it should only move left.
+
+2. **Guarantees**:
+   - If the `ball` is neither at the leftmost nor rightmost position, it continues its last movement in the next state.
+   - When `ball` is at the leftmost position, it will move to the right until it reaches the rightmost position.
+   - When `ball` is at the rightmost position, it will move to the left until it reaches the leftmost position.
+
+This specification captures the bouncing behavior of the ball between two walls, ensuring it changes direction upon hitting either wall.

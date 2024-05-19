@@ -1,0 +1,40 @@
+Based on the provided natural language description for the game "Space Invaders," here is how the TSL specification could be formulated:
+
+```tsl
+always assume {
+  // Ensure mutual exclusion among directional inputs to prevent conflicting movements
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Response to the ship being hit by an enemy or obstacle
+  hit(ship) -> [die(ship)];
+
+  // Movement and actions based on key inputs
+  // Left movement: move the ship to the left unless it's already at the leftmost position
+  (pressL && !leftmost(ship)) -> [moveLeft(ship)];
+
+  // Right movement: move the ship to the right unless it's already at the rightmost position
+  (pressR && !rightmost(ship)) -> [moveRight(ship)];
+
+  // Shooting action: trigger a shooting mechanism
+  pressS -> [shoot(ship)];
+}
+```
+
+### Explanation:
+1. **Mutual Exclusion for Key Inputs:** The assumptions section uses logical negations to ensure that no two directional keys can be pressed simultaneously, which is critical to prevent conflicting commands for ship movement.
+
+2. **Ship Hit Detection:** If the ship is hit (`hit(ship)` predicate is true), the `die(ship)` function is invoked, which could represent ending the game or losing a life.
+
+3. **Guarantees:**
+   - **Left Movement:** The ship moves left (using `moveLeft(ship)`) only if the left key is pressed and the ship is not at the leftmost boundary (`!leftmost(ship)`).
+   - **Right Movement:** Similarly, the ship moves right (using `moveRight(ship)`) only if the right key is pressed and the ship is not at the rightmost boundary (`!rightmost(ship)`).
+   - **Shooting Action:** The ship shoots (using `shoot(ship)`) when the shoot key is pressed, which could increment a shooting counter or similar action depending on game mechanics.
+
+This specification effectively captures the key dynamics of the ship's behavior in response to player inputs and interactions with game elements.

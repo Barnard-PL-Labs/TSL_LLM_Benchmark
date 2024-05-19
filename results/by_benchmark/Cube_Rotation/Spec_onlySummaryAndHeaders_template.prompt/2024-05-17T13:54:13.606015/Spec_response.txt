@@ -1,0 +1,22 @@
+Here's a TSL specification based on your description of a control system for a cube that rotates based on button presses:
+
+```tsl
+always assume {
+  // Ensure mutual exclusion between pressL and pressR
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, rotate the cube left until the right button is pressed
+  pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e));
+
+  // When the right button is pressed, rotate the cube right until the left button is pressed
+  pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e));
+}
+```
+
+In this specification:
+- The `always assume` section ensures that the left and right buttons cannot be pressed simultaneously.
+- The `always guarantee` section handles the cube's behavior:
+  - If the left button is pressed, the cube rotates to the left and continues to do so until the right button is pressed.
+  - If the right button is pressed, the cube rotates to the right and continues to do so until the left button is pressed.

@@ -1,0 +1,17 @@
+```tsl
+always assume {
+  // No specific assumptions provided, assume no mutual exclusion or dependencies needed
+}
+
+always guarantee {
+  // Guarantees based on button presses resulting in musical notes
+  pressButtonE -> [noteToPlay <- "E4"];
+  pressButtonG -> [noteToPlay <- "G4"];
+  pressButtonA -> [noteToPlay <- "A4"];
+
+  // Allowing two notes to be played simultaneously
+  pressButtonE && pressButtonG -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "G4"]);
+  pressButtonE && pressButtonA -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]);
+  pressButtonG && pressButtonA -> ([noteToPlay <- "G4"] && [noteToPlay2 <- "A4"]);
+}
+```

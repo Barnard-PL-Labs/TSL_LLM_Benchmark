@@ -1,0 +1,18 @@
+always assume {
+  // Ensure that the ball cannot be in a state less than 0 or greater than 10.
+  (ball >= 0 && ball <= 10);
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, the next move should be to the right.
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+
+  // If the ball is at the rightmost position, the next move should be to the left.
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+
+  // If the ball is not at either boundary, it should continue in the current direction.
+  (!leftmost(ball) && !rightmost(ball)) -> (
+    (lastCommand == moveRight(ball) -> X ([ball <- moveRight(ball)])) &&
+    (lastCommand == moveLeft(ball) -> X ([ball <- moveLeft(ball)]))
+  );
+}

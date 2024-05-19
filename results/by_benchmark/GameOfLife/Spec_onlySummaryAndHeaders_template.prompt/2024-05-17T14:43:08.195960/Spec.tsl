@@ -1,0 +1,18 @@
+always assume {
+    // The conditions determining if a cell should come to life or die are mutually exclusive and cover all scenarios.
+    (alive && comeAlive(index)) || (!alive && comeAlive(index)) || (alive && comeDead(index)) || (!alive && comeDead(index));
+}
+
+always guarantee {
+    // If a cell is alive and it should stay alive according to the game's rules, its state remains unchanged.
+    (alive && comeAlive(index)) -> [alive <- true];
+    
+    // If a cell is dead and exactly three neighbors are alive, it should come to life.
+    (!alive && comeAlive(index)) -> [alive <- true];
+    
+    // If a cell is alive and it does not have two or three living neighbors, it should die.
+    (alive && comeDead(index)) -> [alive <- false];
+    
+    // A dead cell stays dead unless exactly three neighbors are alive.
+    (!alive && comeDead(index)) -> [alive <- false];
+}

@@ -1,0 +1,62 @@
+In JavaScript, to implement the methods described, we would define the functions and predicates based on your specification. Since you've mentioned that "ball" is a cell representing the state of the signal to move the ball, we'll assume it carries all the necessary information about the ball's position and possibly other details like boundaries. Here is a simple implementation:
+
+```javascript
+// Assumed ball object structure for demonstration (you can adjust to your actual data structure):
+// ball = {
+//   position: current position number,
+//   leftWall: position of leftmost wall,
+//   rightWall: position of rightmost wall
+// }
+
+// Functions
+function moveLeft(ball) {
+  // Move the ball to the left by changing its position
+  if (ball.position > ball.leftWall) {
+    ball.position -= 1;  // Move left only if it's not at the leftmost wall
+  }
+  return ball; // Returns the updated state of the ball
+}
+
+function moveRight(ball) {
+  // Move the ball to the right by changing its position
+  if (ball.position < ball.rightWall) {
+    ball.position += 1;  // Move right only if it's not at the rightmost wall
+  }
+  return ball; // Returns the updated state of the ball
+}
+
+// Predicates
+function leftmost(ball) {
+  // Check if the ball is against the leftmost wall
+  return ball.position === ball.leftWall;
+}
+
+function rightmost(ball) {
+  // Check if the ball is against the rightmost wall
+  return ball.position === ball.rightWall;
+}
+
+// Example usage
+let ball = {
+  position: 5,
+  leftWall: 0,
+  rightWall: 10
+};
+
+console.log("Initial Position:", ball.position);
+ball = moveLeft(ball);
+console.log("After moving left:", ball.position);
+console.log("Is at leftmost?", leftmost(ball));
+ball = moveRight(ball);
+ball = moveRight(ball);
+console.log("After moving right twice:", ball.position);
+console.log("Is at rightmost?", rightmost(ball));
+```
+
+In this implementation:
+- The `moveLeft` function decreases the ball's position unless it's already at the leftmost wall.
+- The `moveRight` function increases the ball's position unless it's already at the rightmost wall.
+- The `leftmost` predicate checks if the ball's current position matches the left wall position.
+- The `rightmost` predicate checks if the ball's current position matches the right wall position.
+
+This setup assumes that you have a clear definition of where the walls are (as properties of the ball for simplicity). Adjust the structure and logic per your system's actual configuration and data handling requirements.

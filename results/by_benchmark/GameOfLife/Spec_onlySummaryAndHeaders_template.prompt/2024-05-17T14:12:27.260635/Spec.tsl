@@ -1,0 +1,19 @@
+always assume {
+  // Assuming the behavior of the predicates provided and the grid context
+  (alive && comeAlive(index)) || (!alive && comeAlive(index));
+  (alive && comeDead(index)) || (!alive && comeDead(index));
+}
+
+always guarantee {
+  // If the cell is alive and the conditions to remain alive are met, keep the state
+  (alive && comeAlive(index)) -> [changeState <- alive];
+
+  // If the cell is dead and the conditions to come alive are met, change state to alive
+  (!alive && comeAlive(index)) -> [changeState <- alive];
+
+  // If the cell is alive and the conditions to die are met, change state to dead
+  (alive && comeDead(index)) -> [changeState <- dead];
+
+  // If the cell is dead and the conditions to remain dead are met, keep the state
+  (!alive && comeDead(index)) -> [changeState <- dead];
+}

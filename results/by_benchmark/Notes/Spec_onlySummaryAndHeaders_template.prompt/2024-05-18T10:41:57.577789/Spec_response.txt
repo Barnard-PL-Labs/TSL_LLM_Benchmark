@@ -1,0 +1,26 @@
+```tsl
+always assume {
+  // Define the mutual exclusivity of button presses if needed
+}
+
+always guarantee {
+  // When buttonE is pressed, set noteToPlay to E4
+  buttonE -> [noteToPlay <- "E4"];
+  
+  // When buttonG is pressed, set noteToPlay to G4
+  buttonG -> [noteToPlay <- "G4"];
+  
+  // When buttonA is pressed, set noteToPlay to A4
+  buttonA -> [noteToPlay <- "A4"];
+  
+  // Allow simultaneous playing of two notes
+  // If buttonE and buttonG are pressed together
+  (buttonE && buttonG) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "G4"]);
+  
+  // If buttonE and buttonA are pressed together
+  (buttonE && buttonA) -> ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]);
+  
+  // If buttonG and buttonA are pressed together
+  (buttonG && buttonA) -> ([noteToPlay <- "G4"] && [noteToPlay2 <- "A4"]);
+}
+```

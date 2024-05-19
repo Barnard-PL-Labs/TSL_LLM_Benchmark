@@ -1,0 +1,40 @@
+Here is a TSL specification based on the provided natural language description for the behavior of a player's ship in Space Invaders:
+
+```tsl
+always assume {
+  // Mutual exclusion for key inputs, ensuring no two directional keys are pressed simultaneously
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressUp(e));
+  !(pressL(e) && pressDown(e));
+  !(pressR(e) && pressUp(e));
+  !(pressR(e) && pressDown(e));
+  !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+  // Handling ship hit by enemy or obstacle
+  (shipHit) -> [dead <- 1];
+
+  // Handling left movement key press
+  pressL(e) -> [ship.position.x <- ship.position.x - 1];
+  
+  // Handling right movement key press
+  pressR(e) -> [ship.position.x <- ship.position.x + 1];
+  
+  // Handling shooting action
+  pressS(e) -> [shooting.action <- shooting.action + 1];
+}
+```
+
+Explanation:
+
+1. **Assumptions**:
+    - The `always assume` block ensures that no two directional keys are pressed at the same time, maintaining the integrity of the input.
+
+2. **Guarantees**:
+    - When `shipHit` is true (i.e., when the ship is hit by an enemy or an obstacle), the `dead` flag is set to 1, which could be used to trigger a game over or damage sequence.
+    - Pressing the left key (`pressL(e)`) decrements the x-position of the ship by one unit, moving it to the left.
+    - Pressing the right key (`pressR(e)`) increments the x-position of the ship by one unit, moving it to the right.
+    - Pressing the shoot key (`pressS(e)`) triggers a shooting action by incrementing a shooting counter or activating a mechanism. This could, for example, instantiate a projectile in the game or perform an animation.
+
+This TSL specification follows the structure and behavioral logic outlined in the natural language description and adheres to the conventions and syntax of TSL for modeling reactive systems such as game player controls in Space Invaders.

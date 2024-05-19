@@ -1,0 +1,29 @@
+```
+always assume {
+  // Definition of button press exclusivity
+  !(button1 && button2);
+  !(button1 && button3);
+  !(button2 && button3);
+}
+
+always guarantee {
+  // Button1 triggers E4 to be played next
+  button1 -> X ([noteToPlay <- "E4"]);
+  
+  // Button2 triggers G4 to be played next
+  button2 -> X ([noteToPlay <- "G4"]);
+  
+  // Button3 triggers A4 to be played next, but on a separate variable
+  button3 -> X ([noteToPlay2 <- "A4"]);
+  
+  // Ensures that E4 on noteToPlay and A4 on noteToPlay2 are not played simultaneously
+  ([noteToPlay <- "E4"]) -> !(noteToPlay2 = "A4");
+  ([noteToPlay2 <- "A4"]) -> !(noteToPlay = "E4");
+  
+  // A4 on noteToPlay2 should not be played until E4 on noteToPlay has stopped
+  ([noteToPlay <- "E4"]) -> F (!([noteToPlay <- "E4"]) && ([noteToPlay2 <- "A4"]));
+  
+  // After E4 is played, ensure that A4 on noteToPlay2 and G4 on noteToPlay are played eventually
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}
+```

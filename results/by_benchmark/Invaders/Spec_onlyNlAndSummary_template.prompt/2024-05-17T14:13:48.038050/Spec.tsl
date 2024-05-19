@@ -1,0 +1,23 @@
+always assume {
+  // Mutual exclusion for key inputs to prevent simultaneous directional commands
+  !(pressL(e) && pressR(e));
+  !(pressL(e) && pressUp(e));
+  !(pressL(e) && pressDown(e));
+  !(pressR(e) && pressUp(e));
+  !(pressR(e) && pressDown(e));
+  !(pressUp(e) && pressDown(e));
+}
+
+always guarantee {
+  // Define behavior when the ship is hit by an enemy or obstacle
+  shipHit -> [dead <- 1];
+
+  // Behavior for left movement
+  pressL(e) -> [shipPosition.x <- shipPosition.x - 1];
+
+  // Behavior for right movement
+  pressR(e) -> [shipPosition.x <- shipPosition.x + 1];
+
+  // Behavior for shooting action
+  pressS(e) -> [shootCounter <- shootCounter + 1];
+}

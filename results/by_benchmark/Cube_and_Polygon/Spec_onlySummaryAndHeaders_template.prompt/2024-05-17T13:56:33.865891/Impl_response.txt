@@ -1,0 +1,90 @@
+Here's how you can implement the functions and predicates described using JavaScript. These implementations make use of JavaScript's `Math` object for mathematical calculations and event listeners for handling button presses in a hypothetical HTML environment.
+
+### Functions Implementation:
+
+1. **sin(x)** - This function returns the sine of `x`.
+
+```javascript
+function sin(x) {
+    return Math.sin(x);
+}
+```
+
+2. **saw(x)** - This function returns the sawtooth wave value of `x`. The sawtooth wave can be implemented by using the fractional part of `x` scaled appropriately.
+
+```javascript
+function saw(x) {
+    return 2 * (x - Math.floor(x + 0.5));
+}
+```
+
+### Predicates Implementation:
+
+Predicates will use event listeners to detect button presses. Assuming `e` is the event object, predicates `pressL(e)` and `pressR(e)` will check if the left or right button is pressed, respectively.
+
+First, ensure your HTML has buttons for these events:
+
+```html
+<button id="leftButton">Left</button>
+<button id="rightButton">Right</button>
+```
+
+Then implement the predicates:
+
+```javascript
+function setupPredicates() {
+    let leftPressed = false;
+    let rightPressed = false;
+
+    // Listen for left button press
+    document.getElementById('leftButton').addEventListener('mousedown', function(e) {
+        leftPressed = true;
+    });
+    document.getElementById('leftButton').addEventListener('mouseup', function(e) {
+        leftPressed = false;
+    });
+
+    // Listen for right button press
+    document.getElementById('rightButton').addEventListener('mousedown', function(e) {
+        rightPressed = true;
+    });
+    document.getElementById('rightButton').addEventListener('mouseup', function(e) {
+        rightPressed = false;
+    });
+
+    // Predicate to check if left button is pressed
+    function pressL(e) {
+        return leftPressed;
+    }
+
+    // Predicate to check if right button is pressed
+    function pressR(e) {
+        return rightPressed;
+    }
+
+    return { pressL, pressR };
+}
+
+const { pressL, pressR } = setupPredicates();
+```
+
+### Using System API:
+
+You can use these functions and predicates to manipulate `cube.scale.x` as per the provided System API. Here's an example of how you might use them:
+
+```javascript
+function updateCubeScale() {
+    if (pressL()) {
+        cube.scale.x = sin(t); // `t` should be defined based on your application's needs
+    }
+    if (pressR()) {
+        cube.scale.x = saw(t); // `t` should be defined based on your application's needs
+    }
+}
+
+// Call `updateCubeScale` in your application's render or update loop
+```
+
+This setup assumes the existence of a global object `cube` with a property `scale.x` that you can modify, which corresponds to the provided System API.
+
+Remember, the actual implementation details might vary depending on the specifics of your system, especially how events and rendering are managed.

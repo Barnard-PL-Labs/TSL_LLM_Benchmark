@@ -1,0 +1,27 @@
+always assume {
+  // Users can only push one button at a time
+  !(button1 && button2);
+  !(button1 && button3);
+  !(button2 && button3); 
+}
+
+always guarantee {
+  // When button1 is pushed, play E4 next
+  button1 -> X ([noteToPlay <- "E4"]);
+
+  // When button2 is pushed, play G4 next
+  button2 -> X ([noteToPlay <- "G4"]);
+
+  // When button3 is pushed, play A4 on noteToPlay2
+  button3 -> X ([noteToPlay2 <- "A4"]);
+
+  // Enforce exclusive playing of E4 on noteToPlay and A4 on noteToPlay2
+  ([noteToPlay <- "E4"]) -> !([noteToPlay2 <- "A4"]);
+  ([noteToPlay2 <- "A4"]) -> !([noteToPlay <- "E4"]);
+
+  // A4 can't play on noteToPlay2 until E4 has stopped playing on noteToPlay
+  ([noteToPlay2 <- "A4"]) -> (!([noteToPlay <- "E4"]) W ([noteToPlay <- "G4"]));
+
+  // If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2, and G4 on noteToPlay
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}

@@ -1,0 +1,18 @@
+always assume {
+  // Ensure no two button presses occur at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Pressing the A key consecutively three times multiplies the stepsize by 3, unless B or C is pressed which resets stepsize to 1
+  pressA(e) -> (
+    X (pressA(e) -> (
+      X (pressA(e) -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e)))
+    )) W (pressB(e) || pressC(e))
+  );
+  
+  // Pressing B or C resets the stepsize to 1
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}

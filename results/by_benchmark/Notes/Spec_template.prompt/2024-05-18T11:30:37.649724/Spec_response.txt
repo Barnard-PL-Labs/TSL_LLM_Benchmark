@@ -1,0 +1,25 @@
+```tsl
+always assume {
+  // There are three buttons: button1, button2, and button3
+}
+
+always guarantee {
+  // When button1 is pushed, immediately write E4 to noteToPlay
+  button1 -> X ([noteToPlay <- "E4"]);
+
+  // When button2 is pushed, immediately write G4 to noteToPlay
+  button2 -> X ([noteToPlay <- "G4"]);
+
+  // When button3 is pushed, eventually write A4 to noteToPlay2
+  button3 -> F ([noteToPlay2 <- "A4"]);
+
+  // If E4 is being played on noteToPlay, prevent it from being played simultaneously with A4 on noteToPlay2
+  ([noteToPlay <- "E4"]) -> !(X ([noteToPlay2 <- "A4"]));
+
+  // A4 cannot be played on noteToPlay2 until E4 has stopped being played on noteToPlay
+  ([noteToPlay <- "E4"]) -> G (!(noteToPlay2 <- "A4"));
+
+  // If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2 and G4 on noteToPlay
+  ([noteToPlay <- "E4"]) -> F (([noteToPlay2 <- "A4"]) && ([noteToPlay <- "G4"]));
+}
+```

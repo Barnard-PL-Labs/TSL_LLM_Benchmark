@@ -1,0 +1,15 @@
+always assume {
+  // Ensures mutual exclusion; the ball cannot be at both extremes at the same instant
+  !(leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // When the ball is at the leftmost position, the next action is to move right
+  leftmost(ball) -> X ([ball <- moveRight(ball)]);
+  
+  // When the ball is at the rightmost position, the next action is to move left
+  rightmost(ball) -> X ([ball <- moveLeft(ball)]);
+  
+  // While the ball isn't at either extreme, it should keep moving in the current direction
+  // Assuming some additional internal state to track direction is needed, not explicitly defined here.
+}

@@ -1,0 +1,85 @@
+To begin with, let's define the JavaScript functions and predicates based on the system API and the requirements provided. The system environment for this example will be mocked since the actual API functions are not detailed. Below is how you can implement these functions and predicates in JavaScript:
+
+### Functions
+These are actions that modify the state of the space ship or interact with the game state.
+
+```javascript
+function moveLeft(ship) {
+    // This function should send a signal to move the ship left by one unit.
+    // Assuming there is a system API function called `moveShipLeft`.
+    systemAPI.moveShipLeft(ship);
+}
+
+function moveRight(ship) {
+    // This function should send a signal to move the ship right by one unit.
+    // Assuming there is a system API function called `moveShipRight`.
+    systemAPI.moveShipRight(ship);
+}
+
+function shoot(ship) {
+    // This function should send a signal to perform a shooting action.
+    // Assuming there is a system API function called `shipShoot`.
+    systemAPI.shipShoot(ship);
+}
+
+function die(ship) {
+    // This function could either end the game or reduce life, depending on game logic.
+    // Assuming there is a system API function called `endGame` or `loseLife`.
+    systemAPI.endGame(ship);  // or systemAPI.loseLife(ship); depending on the specific game rules
+}
+```
+
+### Predicates
+These functions evaluate the state or position of the ship and return a boolean value.
+
+```javascript
+function leftmost(ship) {
+    // This function checks if the ship is at the leftmost position.
+    // Assuming the ship object has a property x which indicates its position.
+    return ship.x === 0;
+}
+
+function rightmost(ship) {
+    // This function checks if the ship is at the rightmost position.
+    // Assuming we know the boundary as `gameWidth` and ship width as `shipWidth`.
+    return ship.x >= (gameWidth - shipWidth);
+}
+
+function hit(ship) {
+    // This function checks if the ship has been hit by an incoming enemy.
+    // Assuming there's a state or method in system API to check this.
+    return systemAPI.isShipHit(ship);
+}
+```
+
+### Mocking System API
+For demonstration purposes, here is a simple mock-up of what the System API might look like based on the functions we are using.
+
+```javascript
+const systemAPI = {
+    moveShipLeft(ship) {
+        ship.x -= 1;
+        console.log("Ship moved left to position:", ship.x);
+    },
+    moveShipRight(ship) {
+        ship.x += 1;
+        console.log("Ship moved right to position:", ship.x);
+    },
+    shipShoot(ship) {
+        console.log("Ship shoots from position:", ship.x);
+    },
+    endGame(ship) {
+        console.log("Game Over!");
+    },
+    loseLife(ship) {
+        ship.lives -= 1;
+        console.log("Ship lost a life, lives remaining:", ship.lives);
+    },
+    isShipHit(ship) {
+        // Example condition: ship has been hit if it's at a specific position
+        return ship.x === enemyPositionX;
+    }
+};
+```
+
+Ensure that your actual implementation matches the methods and properties provided by the real system environment's API.

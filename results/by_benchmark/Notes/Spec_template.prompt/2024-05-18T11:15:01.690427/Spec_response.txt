@@ -1,0 +1,26 @@
+```tsl
+always assume {
+  // Assume buttons can be pushed by the user
+  (button1 || button2 || button3);
+}
+
+always guarantee {
+  // Guarantee that when button1 is pushed, E4 will be played next on noteToPlay
+  button1 -> X ([noteToPlay <- "E4"]);
+
+  // Guarantee that when button2 is pushed, G4 will be played next on noteToPlay
+  button2 -> X ([noteToPlay <- "G4"]);
+
+  // Guarantee that when button3 is pushed, A4 will be played eventually on noteToPlay2, allowing simultaneous play
+  button3 -> F ([noteToPlay2 <- "A4"]);
+
+  // Ensure that if A4 is played on noteToPlay2, E4 cannot be played on noteToPlay at the same time
+  ([noteToPlay2 <- "A4"]) -> !([noteToPlay <- "E4"]);
+
+  // A4 cannot be played on noteToPlay2 until E4 has stopped being played on noteToPlay
+  ([noteToPlay <- "E4"]) -> (!([noteToPlay2 <- "A4"]) W !([noteToPlay <- "E4"]));
+
+  // If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2 and G4 on noteToPlay
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}
+```

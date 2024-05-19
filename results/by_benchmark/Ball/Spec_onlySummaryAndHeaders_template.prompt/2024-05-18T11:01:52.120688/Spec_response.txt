@@ -1,0 +1,23 @@
+To translate your natural language description of a ball bouncing between two walls into a TSL specification, the system must handle mutual exclusions of the ball's position and ensure it changes direction appropriately upon hitting either wall. Here's how the TSL code would look for your scenario:
+
+```tsl
+always assume {
+  // The ball can only be at the leftmost or rightmost position but not both simultaneously
+  ! (leftmost(ball) && rightmost(ball));
+}
+
+always guarantee {
+  // If the ball is at the leftmost position, it should start moving to the right in the next state
+  leftmost(ball) -> X [ball <- moveRight(ball)];
+  
+  // If the ball is at the rightmost position, it should start moving to the left in the next state
+  rightmost(ball) -> X [ball <- moveLeft(ball)];
+}
+```
+
+This code ensures that:
+1. The ball cannot be simultaneously at both the leftmost and rightmost positions.
+2. When the ball hits the leftmost wall (position 0), a signal is generated to move it to the right.
+3. When the ball reaches the rightmost wall (position 10), a signal is generated to move it to the left.
+
+This specification captures the bouncing behavior between two endpoints as described.

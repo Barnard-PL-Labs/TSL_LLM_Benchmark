@@ -1,0 +1,24 @@
+always assume {
+  // Define the conditions for button presses by the user
+  (button1 || button2 || button3);
+}
+
+always guarantee {
+  // When button1 is pushed, ensure E4 is played next on noteToPlay
+  button1 -> X ([noteToPlay <- "E4"]);
+
+  // When button2 is pushed, ensure G4 is played next on noteToPlay
+  button2 -> X ([noteToPlay <- "G4"]);
+
+  // When button3 is pushed, ensure A4 is played eventually on noteToPlay2
+  button3 -> F ([noteToPlay2 <- "A4"]);
+
+  // Prevent E4 and A4 from being played at the same time on their respective variables
+  ([noteToPlay <- "E4"] && [noteToPlay2 <- "A4"]) -> false;
+
+  // A4 on noteToPlay2 must not play until E4 has stopped being played on noteToPlay
+  ([noteToPlay2 <- "A4"]) -> !([noteToPlay <- "E4"]);
+
+  // If E4 is played on noteToPlay, then A4 must eventually be played on noteToPlay2 and G4 on noteToPlay
+  ([noteToPlay <- "E4"]) -> F ([noteToPlay2 <- "A4"] && [noteToPlay <- "G4"]);
+}

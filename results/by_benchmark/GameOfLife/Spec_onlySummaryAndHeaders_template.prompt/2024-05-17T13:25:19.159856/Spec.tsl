@@ -1,0 +1,17 @@
+always assume {
+  // Assume that a cell's transition functions capture the game's rules correctly
+  (alive -> comeAlive(index)) ;
+  (!alive -> comeDead(index)) ;
+}
+
+always guarantee {
+  // If a cell is dead and the condition for coming alive is met, it becomes alive
+  (!alive && comeAlive(index)) -> [alive <- true];
+  
+  // If a cell is alive and the condition for dying is met, it becomes dead
+  (alive && comeDead(index)) -> [alive <- false];
+  
+  // Maintain the current state if conditions to change are not met
+  (alive && !comeDead(index)) -> [alive <- true];
+  (!alive && !comeAlive(index)) -> [alive <- false];
+}

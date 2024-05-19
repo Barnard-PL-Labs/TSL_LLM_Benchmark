@@ -1,0 +1,31 @@
+### TSL Specification
+
+The given natural language description can be translated into a TSL specification as follows:
+
+```tsl
+always assume {
+  // Not explicitly specified, but assumed from context:
+  (pressUp(e) || !pressUp(e));
+}
+
+always guarantee {
+  // When the up button is pressed, increment the counter each frame
+  pressUp(e) -> [count <- count + 1];
+
+  // When the up button is not pressed, reset the counter to 0.5
+  !pressUp(e) -> [count <- 0.5];
+
+  // Update the cube's scale.x to match the current counter value
+  [cube.scale.x <- count];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - A logical expression `pressUp(e) || !pressUp(e)` is assumed to handle the state of the up button being pressed or not pressed. This is necessary to define the behavior of the system based on whether the up key is pressed.
+
+2. **Guarantees**:
+   - The first guarantee statement `pressUp(e) -> [count <- count + 1]` ensures that the counter increments by 1 for each frame as long as the up key is pressed.
+   - The second guarantee `!pressUp(e) -> [count <- 0.5]` sets the counter to 0.5 when the up button is not pressed, effectively resetting it.
+   - The last guarantee `[cube.scale.x <- count]` continuously updates the cube's scale along the x-axis to reflect the value of the counter. This update happens regardless of the state of the up key, ensuring that the cube's scale always represents the current counter value.

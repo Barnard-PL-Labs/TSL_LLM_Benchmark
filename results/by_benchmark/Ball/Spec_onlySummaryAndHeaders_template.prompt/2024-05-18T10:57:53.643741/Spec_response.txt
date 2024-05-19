@@ -1,0 +1,23 @@
+Here's the TSL specification based on the provided natural language description and available functions and predicates:
+
+```TSL
+always assume {
+    // Valid position range for the ball
+    (ball >= 0 && ball <= 10);
+    // When the ball is at 0, it must be at the leftmost position
+    (ball == 0 -> leftmost(ball));
+    // When the ball is at 10, it must be at the rightmost position
+    (ball == 10 -> rightmost(ball));
+}
+
+always guarantee {
+    // If the ball is at the leftmost wall, it should move to the right in the next state
+    leftmost(ball) -> X ([ ball <- moveRight(ball) ]);
+    // If the ball is at the rightmost wall, it should move to the left in the next state
+    rightmost(ball) -> X ([ ball <- moveLeft(ball) ]);
+    // If the ball is not at either wall, it should continue in the current direction
+    // Assuming additional state tracking for direction is handled elsewhere
+}
+```
+
+This specification includes assumptions about the valid position range of the ball and its behavior when it is at either the leftmost or rightmost position. The guarantees enforce the movement pattern, ensuring the ball bounces between the walls correctly. Additional logic might be necessary to handle direction changes explicitly if not implicitly managed by the movement functions.

@@ -1,0 +1,31 @@
+Here's the TSL specification based on the provided natural language description and functions:
+
+```tsl
+always assume {
+  // Define the exclusive relationship between pressing the right button and the left button
+  !(pressR(e) && pressL(e));
+}
+
+always guarantee {
+  // When the right button is pressed, increment the count and update the cube's rotation using a sinusoidal function of the count
+  pressR(e) -> [
+    count <- count + 1,
+    cube.rotation <- sin(count)
+  ];
+
+  // When the left button is pressed, decrement the count and update the polygon's rotation using a sawtooth function of the count
+  pressL(e) -> [
+    count <- count - 1,
+    polygon.rotation <- saw(count)
+  ];
+
+  // Define static positions for the cube and polygon to ensure they remain visually static
+  [cube.position <- {x: 0, y: 0, z: 0}],
+  [polygon.position <- {x: 1, y: 1, z: 1}];
+}
+```
+
+In this TSL specification:
+- The `always assume` block ensures that the right and left buttons cannot be pressed simultaneously, which would potentially create conflicting updates for the `count`.
+- The `always guarantee` block updates the rotation of the `cube` using a sinusoidal function and the rotation of the `polygon` using a sawtooth function based on the value of `count`, which is incremented or decremented based on the right or left button presses, respectively.
+- Static positions for `cube` and `polygon` are defined to maintain a consistent visual placement in the scene.

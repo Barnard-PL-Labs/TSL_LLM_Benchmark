@@ -1,0 +1,17 @@
+always assume {
+    // Valid position range for the ball
+    (ball >= 0 && ball <= 10);
+    // When the ball is at 0, it must be at the leftmost position
+    (ball == 0 -> leftmost(ball));
+    // When the ball is at 10, it must be at the rightmost position
+    (ball == 10 -> rightmost(ball));
+}
+
+always guarantee {
+    // If the ball is at the leftmost wall, it should move to the right in the next state
+    leftmost(ball) -> X ([ ball <- moveRight(ball) ]);
+    // If the ball is at the rightmost wall, it should move to the left in the next state
+    rightmost(ball) -> X ([ ball <- moveLeft(ball) ]);
+    // If the ball is not at either wall, it should continue in the current direction
+    // Assuming additional state tracking for direction is handled elsewhere
+}

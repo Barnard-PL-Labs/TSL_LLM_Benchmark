@@ -1,0 +1,11 @@
+always assume {
+  // Assumption about the life conditions related to neighbors of a cell
+  (comeAlive(index) -> (alive || !alive)) ;
+  (comeDead(index) -> (alive || !alive)) ;
+}
+
+always guarantee {
+  // Guarantee that the cell changes state according to the game of life rules
+  comeAlive(index) && !alive -> [changeState()];  // If the cell should come alive and it's currently dead, change its state
+  comeDead(index) && alive -> [changeState()]; // If the cell should die and it's currently alive, change its state
+}

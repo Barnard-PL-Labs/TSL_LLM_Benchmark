@@ -1,0 +1,17 @@
+always assume {
+  // The ball can either be moving left or right at any given time, but not both.
+  (ball == moveLeft(ball) || ball == moveRight(ball));
+  // When the ball is at the leftmost position, it cannot move further left.
+  (leftmost(ball) -> ball == moveRight(ball));
+  // When the ball is at the rightmost position, it cannot move further right.
+  (rightmost(ball) -> ball == moveLeft(ball));
+}
+
+always guarantee {
+  // When the ball is not at either wall, it continues in its current direction.
+  (!leftmost(ball) && !rightmost(ball)) -> X (ball == ball);
+  // If the ball is at the leftmost position, it must move right.
+  leftmost(ball) -> (X (ball == moveRight(ball)) U rightmost(ball));
+  // If the ball is at the rightmost position, it must move left.
+  rightmost(ball) -> (X (ball == moveLeft(ball)) U leftmost(ball));
+}
