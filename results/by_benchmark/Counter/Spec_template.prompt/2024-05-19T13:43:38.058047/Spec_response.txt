@@ -1,0 +1,25 @@
+```
+always assume {
+  // Mutual exclusion for button presses, ensuring no two button operations happen simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Handle presses of button A
+  pressA(e) -> (
+    (X pressA(e) && X X pressA(e) && X X X pressA(e)) -> [stepsize <- multiplyByThree(stepsize)]
+    W (pressB(e) || pressC(e))
+  );
+  pressA(e) -> [count <- count + stepsize];
+
+  // Handle presses of button B
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // Handle presses of button C
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+}
+```
+
+This TSL specification embodies the natural language description by setting up exclusive operations for each button press and defining how the counter should be incremented. Specifically, it deals with the complex logic of pressing the A button multiple times to increase the step size unless interrupted by pressing B or C, which resets the step size.

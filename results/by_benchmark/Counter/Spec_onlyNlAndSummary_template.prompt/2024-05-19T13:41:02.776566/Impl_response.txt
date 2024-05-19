@@ -1,0 +1,92 @@
+To implement the required functions and predicates in JavaScript based on the given API and requirements, let's start by defining each function and predicate. Since we don't have the details of how the state of the `e` cell is structured, we'll make some assumptions about how the cell values might be represented and accessed.
+
+### Functions:
+
+#### `multiplyByThree(stepsize)`
+This function multiplies the input `stepsize` by 3 and returns the result.
+
+```javascript
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+```
+
+### Predicates:
+
+For the predicates, I'll assume that the `e` cell contains information about which keys are pressed. Let's define a hypothetical structure for `e`: 
+
+```javascript
+// Hypothetical structure of `e`
+// e = {
+//   a: true or false,
+//   b: true or false,
+//   c: true or false
+// }
+```
+
+Based on this structure, the predicates can be defined as follows:
+
+#### `pressA(e)`
+This predicate checks if the 'a' key is pressed.
+
+```javascript
+function pressA(e) {
+    return e.a;
+}
+```
+
+#### `pressB(e)`
+This predicate checks if the 'b' key is pressed.
+
+```javascript
+function pressB(e) {
+    return e.b;
+}
+```
+
+#### `pressC(e)`
+This predicate checks if the 'c' key is pressed.
+
+```javascript
+function pressC(e) {
+    return e.c;
+}
+```
+
+### Full JavaScript Implementation:
+
+Now, let's put everything together in one script:
+
+```javascript
+// Functions
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+
+// Predicates
+function pressA(e) {
+    return e.a;
+}
+
+function pressB(e) {
+    return e.b;
+}
+
+function pressC(e) {
+    return e.c;
+}
+
+// Example usage
+const e = {
+    a: true,
+    b: false,
+    c: true
+};
+
+console.log("Multiply by Three: " + multiplyByThree(10)); // Output: 30
+console.log("Press A: " + pressA(e)); // Output: true
+console.log("Press B: " + pressB(e)); // Output: false
+console.log("Press C: " + pressC(e)); // Output: true
+```
+
+Note: This implementation assumes specific behavior and structure for the `e` cell (which holds the state of key presses). Adjust the implementation as necessary based on the actual API details and how `e` is structured in the system you're working with.

@@ -13,7 +13,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 for spec_prompt_file in os.listdir(os.path.join(script_dir, 'results', 'by_benchmark', args.benchmark)):
 	for timestamp in os.listdir(os.path.join(script_dir, 'results', 'by_benchmark', args.benchmark, spec_prompt_file)):
 		result_dir = os.path.join(script_dir, 'results', 'by_benchmark', args.benchmark, spec_prompt_file, timestamp)
-		if all(not os.path.exists(os.path.join(result_dir, filename)) for filename in [ 'err.log', 'good.txt', 'bad.txt' ]):
+		if os.path.exists(os.path.join(result_dir, 'Spec.tsl')) and all(not os.path.exists(os.path.join(result_dir, filename)) for filename in [ 'good.txt', 'bad.txt' ]):
 			def get_yes_no_input(prompt="Please enter 'y' or 'n', or 's' to see the spec again: "):
 			    while True:
 			        user_input = input(prompt).strip().lower()

@@ -1,0 +1,18 @@
+always assume {
+  // Mutually exclusive key presses
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Pressing the A key three times in a row changes the stepsize by multiplying it by 3
+  (pressA(e) && X(pressA(e) && X(pressA(e))))
+    -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e));
+
+  // Pressing the B or C key resets the stepsize to 1
+  (pressB(e) || pressC(e))
+    -> [stepsize <- 1];
+
+  // Ensure no two operations can be performed simultaneously (handled in assumptions)
+}

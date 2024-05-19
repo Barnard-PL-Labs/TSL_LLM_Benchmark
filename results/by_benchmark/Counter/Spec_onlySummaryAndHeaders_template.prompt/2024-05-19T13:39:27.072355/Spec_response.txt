@@ -1,0 +1,32 @@
+Below is the TSL specification that captures the behavior as described in your natural language description, considering the functions and predicates available:
+
+```tsl
+always assume {
+    // Mutual exclusion for button presses: no two buttons can be pressed simultaneously
+    !(pressA(e) && pressB(e));
+    !(pressA(e) && pressC(e));
+    !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+    // If the A key is pressed 3 times consecutively, the stepsize is multiplied by 3
+    // This assumes some external counter or mechanism counts the consecutive presses
+    (pressA(e) && X(pressA(e) && X(pressA(e))))
+        -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e));
+
+    // Pressing either B or C resets the stepsize to 1
+    (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+    - The `always assume` block ensures that no two buttons can be pressed at the same time, which prevents simultaneous counter operations.
+
+2. **Guarantees**:
+    - The `always guarantee` block specifies two main behaviors:
+      - When the A button is pressed three times consecutively, without interruptions by pressing B or C, the stepsize is multiplied by three. This is captured by looking into the future states (`X` operator) to check if A is pressed two more times consecutively. The new stepsize remains effective until either button B or C is pressed, at which point it resets.
+      - Pressing either the B button or the C button resets the stepsize to 1 immediately.
+
+This TSL specification encapsulates the essential functionalities as per your description, ensuring the interactions between button presses and their effects on the counter's stepsize are correctly defined.

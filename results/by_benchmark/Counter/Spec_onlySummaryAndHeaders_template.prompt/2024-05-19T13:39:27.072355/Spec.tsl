@@ -1,0 +1,16 @@
+always assume {
+    // Mutual exclusion for button presses: no two buttons can be pressed simultaneously
+    !(pressA(e) && pressB(e));
+    !(pressA(e) && pressC(e));
+    !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+    // If the A key is pressed 3 times consecutively, the stepsize is multiplied by 3
+    // This assumes some external counter or mechanism counts the consecutive presses
+    (pressA(e) && X(pressA(e) && X(pressA(e))))
+        -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e));
+
+    // Pressing either B or C resets the stepsize to 1
+    (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}

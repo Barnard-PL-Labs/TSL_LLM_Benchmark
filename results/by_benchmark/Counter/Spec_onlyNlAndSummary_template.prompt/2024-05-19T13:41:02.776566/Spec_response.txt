@@ -1,0 +1,22 @@
+```
+always assume {
+  // Ensure no two button operations occur simultaneously
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  // Handling pressA increments
+  pressA -> [count <- count + stepsize];
+
+  // Count stepsize management for sequential pressA operations
+  pressA -> X (pressA -> X (pressA -> X (pressA -> [stepsize <- multiplyByThree(stepsize)])));
+
+  // Handling pressB increments
+  pressB -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // Handling pressC increments
+  pressC -> ([count <- count + 3] && [stepsize <- 1]);
+}
+```

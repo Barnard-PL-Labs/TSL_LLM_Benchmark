@@ -1,0 +1,17 @@
+always assume {
+  // Ensure that no two counter operations can be performed simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Pressing the A key increments the counter; if pressed three times consecutively, multiplies the size by 3, unless B or C is pressed
+  pressA(e) -> ([counter <- counter + stepsize] W (pressB(e) || pressC(e)));
+
+  // Pressing B or C resets the stepsize to 1
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // If A key is pressed three times in a row without B or C being pressed, multiply stepsize by 3
+  G(pressA(e) && X(pressA(e) && X(pressA(e)))) && !(X(pressB(e) || pressC(e)) || X(X(pressB(e) || pressC(e)))) -> [stepsize <- multiplyByThree(stepsize)];
+}

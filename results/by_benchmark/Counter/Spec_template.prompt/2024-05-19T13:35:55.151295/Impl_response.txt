@@ -1,0 +1,56 @@
+To implement the required functions and predicates as described, we can define JavaScript functions and utilize the properties of the API's `stepsize` and `e` cells. Below, you'll find the JavaScript functions for `multiplyByThree` and predicates `pressA`, `pressB`, and `pressC`. 
+
+Given that your description doesn't provide explicit detail on how the cells `stepsize` and `e` are structured, the following example assumes that `stepsize` can be used directly as a numerical value and that `e` contains information about which key is pressed. The exact handling may need adjustments based on the actual API details that you are using.
+
+### JavaScript Implementation
+
+#### Functions
+
+```javascript
+// Function to multiply the value of 'stepsize' by three
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+```
+
+#### Predicates
+
+Since the actual method for checking if a key is pressed is not specified in the API you provided, we assume `e` is an object representing the state of the system/environment where each key's state can be accessed (true for pressed, false otherwise).
+
+```javascript
+// Predicate to check if the 'a' key is pressed
+function pressA(e) {
+    return e.a === true;
+}
+
+// Predicate to check if the 'b' key is pressed
+function pressB(e) {
+    return e.b === true;
+}
+
+// Predicate to check if the 'c' key is pressed
+function pressC(e) {
+    return e.c === true;
+}
+```
+
+### Usage Example
+
+Here’s how you might use these functions and predicates:
+
+```javascript
+// Example usage of the functions and predicates
+let stepsize = 2;  // Example stepsize
+let e = {a: true, b: false, c: false};  // Example environment state
+
+console.log("stepsize multiplied by three:", multiplyByThree(stepsize));
+console.log("Is 'a' pressed?", pressA(e));
+console.log("Is 'b' pressed?", pressB(e));
+console.log("Is 'c' pressed?", pressC(e));
+```
+
+### Note
+
+- The functions and predicates are based on assumptions about the data structure of `e` and how `stepsize` can be manipulated. Adjustments might be necessary if `e` and `stepsize` are structured differently in your actual application.
+- The predicates return either `true` or `false` depending on whether the specific key they check is pressed, aligning with the definition that predicates are functions returning a boolean value.
+- Ensure that the environment variable `e` is properly updated in your actual system to reflect the current state of key presses for accurate functioning of the predicates.

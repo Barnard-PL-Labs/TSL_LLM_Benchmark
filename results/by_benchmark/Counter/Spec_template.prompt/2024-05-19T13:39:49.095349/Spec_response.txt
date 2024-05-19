@@ -1,0 +1,37 @@
+Here is the TSL specification based on your natural language description:
+
+```TSL
+always assume {
+  // Ensure mutual exclusion for button presses
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment counter by 1 when A is pressed
+  pressA(e) -> ([count <- count + 1]);
+
+  // Increment counter by 2 when B is pressed
+  pressB(e) -> ([count <- count + 2]);
+
+  // Increment counter by 3 when C is pressed
+  pressC(e) -> ([count <- count + 3]);
+
+  // When A is pressed three times in a row, the fourth press multiplies stepsize by 3
+  (pressA(e) && X(pressA(e)) && X(X(pressA(e))) && X(X(X(pressA(e)))))
+    -> [stepsize <- multiplyByThree(stepsize)];
+
+  // Reset stepsize to 1 when B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+Explanation:
+- **Assumptions**: The assumptions ensure that no two presses of A, B, and C can occur simultaneously, maintaining mutual exclusion.
+- **Guarantees**:
+  1. When A is pressed, the counter increments by 1 using the previous count value.
+  2. When B is pressed, the counter increments by 2.
+  3. When C is pressed, the counter increments by 3.
+  4. A special rule applies when A is pressed four times in sequence without interference from B or C: on the fourth press, the stepsize is increased by multiplying it by three. This is achieved by chaining the pressA predicate with temporal operators (`X` for next state).
+  5. The stepsize is reset to 1 if either B or C is pressed, ensuring that the customization by pressing A multiple times is removed upon pressing B or C.

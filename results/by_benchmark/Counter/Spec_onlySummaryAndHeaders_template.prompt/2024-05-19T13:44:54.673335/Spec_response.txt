@@ -1,0 +1,32 @@
+Here is how you can translate the given natural language description into a TSL specification:
+
+```tsl
+always assume {
+  // Ensure that no two button presses can occur simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // If the A key is pressed three times consecutively without B or C being pressed, multiply stepsize by 3
+  pressA(e) -> X(pressA(e) -> X(pressA(e) -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e))));
+
+  // If B or C key is pressed, reset the stepsize to 1
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // If no button press modifies the stepsize, it should remain the same
+  !(pressA(e) || pressB(e) || pressC(e)) -> [stepsize <- stepsize];
+}
+```
+
+### Explanation:
+1. **Assumptions:**
+   - The `always assume` block ensures mutual exclusion among the button presses. This means that pressing any two buttons at the same time is not allowed, which is coherent with the given specification that no two counter operations can be performed simultaneously.
+
+2. **Guarantees:**
+   - The first rule in the `always guarantee` block deals with the A button being pressed three times in a row without being interrupted by a press of B or C. If this condition is met, the `stepsize` is multiplied by three. The operation is wrapped in a Weak Until (`W`) to make the change persistent until either B or C is pressed.
+   - The second rule resets the `stepsize` to 1 if either the B or C button is pressed.
+   - The last rule ensures that if no button is pressed that affects `stepsize`, it remains unchanged.
+
+This TSL specification fully captures the described behavior for the button-pressing metaphor to control a counter's increment size based on specific interaction rules.

@@ -1,0 +1,27 @@
+always assume {
+  // Ensure that no two button operations can be performed at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When pressA is pressed, increment the counter by the current stepsize
+  pressA(e) -> ([count <- count + stepsize]);
+  
+  // When pressB is pressed, increment the counter by 2, reset stepsize to 1
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // When pressC is pressed, increment the counter by 3, reset stepsize to 1
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // When pressA is pressed three times in a row, on the fourth press, multiply stepsize by 3
+  // Use a counter to track consecutive pressA events
+  (pressA(e) && (consecutiveA == 0) -> X([consecutiveA <- 1]));
+  (pressA(e) && (consecutiveA == 1) -> X([consecutiveA <- 2]));
+  (pressA(e) && (consecutiveA == 2) -> X([consecutiveA <- 3]));
+  (pressA(e) && (consecutiveA == 3) -> ([stepsize <- multiplyByThree(stepsize)] && [consecutiveA <- 0]));
+  
+  // Reset consecutiveA counter if B or C is pressed
+  (pressB(e) || pressC(e)) -> [consecutiveA <- 0];
+}

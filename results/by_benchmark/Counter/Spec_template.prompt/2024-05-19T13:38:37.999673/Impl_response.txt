@@ -1,0 +1,60 @@
+Here's how you can implement the functions and predicates described using JavaScript. For the purposes of this example, I’ll also include an example setup on how you might simulate the test environment for these functions and predicates since we don't have a specified API to interact with:
+
+### Functions Implementation
+
+```javascript
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+```
+
+### Predicates Implementation
+
+To check if a specific key ('a', 'b', or 'c') was pressed, we assume that the object `e` captures the keypress event. You would typically use an event listener in a real-world scenario to update the `e` object with the last pressed key. Here, I'll provide a mock-up for how these predicates might be used:
+
+```javascript
+function pressA(e) {
+    return e.key === 'a';
+}
+
+function pressB(e) {
+    return e.key === 'b';
+}
+
+function pressC(e) {
+    return e.key === 'c';
+}
+```
+
+### Testing Setup
+
+Here's a simple setup to simulate keypress events and test the functions and predicates. This would typically be run in a browser environment:
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    const e = { key: event.key };
+    console.log('Key pressed:', e.key);
+    
+    // Testing predicates
+    if (pressA(e)) {
+        console.log('Function A triggered: Counter incremented by', multiplyByThree(1));
+    }
+    if (pressB(e)) {
+        console.log('Function B triggered: Counter incremented by', multiplyByThree(2));
+    }
+    if (pressC(e)) {
+        console.log('Function C triggered: Counter incremented by', multiplyByThree(3));
+    }
+});
+
+// Example of using the function directly
+console.log('Multiply 10 by three:', multiplyByThree(10));
+```
+
+### Explanation:
+
+1. **Functions**: `multiplyByThree` simply multiplies the given `stepsize` by 3.
+2. **Predicates**: `pressA`, `pressB`, and `pressC` check if the key `a`, `b`, or `c` respectively was pressed by examining the `key` property of the event object `e`.
+3. **Testing Setup**: Adds an event listener for the `keydown` event, which updates the `e` object to simulate a key press. Depending on which key is pressed, the respective predicate function is called, and the result of `multiplyByThree` function is logged to the console.
+
+This setup helps in understanding how the implemented functions and predicates would work in a realistic scenario and provides immediate feedback on their behavior.

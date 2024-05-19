@@ -1,0 +1,42 @@
+Here's the TSL specification based on your description:
+
+```tsl
+always assume {
+  // Mutually exclusive button presses
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment counter by 1 when A is pressed
+  pressA(e) -> [count <- count + 1];
+
+  // Increment counter by 2 when B is pressed
+  pressB(e) -> [count <- count + 2];
+
+  // Increment counter by 3 when C is pressed
+  pressC(e) -> [count <- count + 3];
+
+  // If A is pressed three times in a row, multiply stepsize by 3
+  // Using a state to track consecutive A presses
+  pressA(e) && [consecutiveA <- consecutiveA + 1];
+  pressB(e) || pressC(e) -> [consecutiveA <- 0];
+  (consecutiveA == 3) -> [stepsize <- multiplyByThree(stepsize)];
+
+  // Reset stepsize to 1 if B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - Only one button can be pressed at any one time, ensuring operations related to button presses do not interfere with each other.
+
+2. **Guarantees**:
+   - The counter increments by 1, 2, or 3 depending on whether button A, B, or C is pressed, respectively.
+   - If button A is pressed three consecutive times, the `stepsize` used for subsequent calculations is multiplied by three.
+   - Any press of button B or C resets the `stepsize` to 1.
+   
+Note: This specification uses a hypothetical state variable `consecutiveA` to track the number of consecutive presses of button A, which enables the application of the special rule for three consecutive A presses. This state needs to be defined appropriately in the actual system implementation where this TSL is used.
