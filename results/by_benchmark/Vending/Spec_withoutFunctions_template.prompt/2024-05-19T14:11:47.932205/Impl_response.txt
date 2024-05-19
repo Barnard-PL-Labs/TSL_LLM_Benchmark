@@ -1,0 +1,51 @@
+To implement the specified predicates in JavaScript for the system environment, we'll define functions that check conditions based on the provided inputs `total` and `e`. These functions will return a boolean indicating whether a certain condition is met. Given that the prompt does not allow the use of helper functions or an API, all predicates will be directly implemented.
+
+Here's the JavaScript code for the predicates:
+
+```javascript
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+function pressD(e) {
+    return e === 'd';
+}
+
+function pressQ(e) {
+    return e === 'q';
+}
+
+function pressO(e) {
+    return e === 'o';
+}
+
+function press1(e) {
+    return e === '1';
+}
+
+function press2(e) {
+    return e === '2';
+}
+
+function press3(e) {
+    return e === '3';
+}
+
+function pressR(e) {
+    return e === 'r';
+}
+```
+
+### Explanation:
+- For the `total` related functions (`isLessThanPoint75`, `isLessThanOne`, `isLessThanOnePoint25`), each function checks if the passed `total` argument is less than the specified amount. These functions utilize basic comparison operations.
+- For the key press functions (`pressD`, `pressQ`, `pressO`, `press1`, `press2`, `press3`, `pressR`), each function checks if the passed `e` argument (representing an event or key input) matches the specific key character. These are simple equality checks.
+
+These functions can be used in a system to respond to changes or conditions based on user inputs or system states, assuming that `total` and `e` are provided by the system environment in which these predicates are called.

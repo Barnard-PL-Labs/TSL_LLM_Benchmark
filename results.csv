@@ -24,5 +24,5 @@
 22,Counter,Spec_template.prompt,20,14,0,14
 23,Counter,Spec_onlySummaryAndHeaders_template.prompt,20,11,0,11
 24,Vending,Spec_onlyNlAndSummary_template.prompt,20,17,0,17
-25,Vending,Spec_withoutFunctions_template.prompt,5,5,0,5
+25,Vending,Spec_withoutFunctions_template.prompt,20,18,0,18
 26,Vending,Spec_onlySummaryAndHeaders_template.prompt,20,15,0,15

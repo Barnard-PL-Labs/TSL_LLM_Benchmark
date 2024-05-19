@@ -1,0 +1,40 @@
+Given the task requirement to implement predicates but not functions, and with no external System API available for interfacing, we'll directly define these predicates in the TSL environment. Here's the TSL template for the vending machine system:
+
+```tsl
+always assume {
+  // Define the predicates based on the boolean checks for various conditions.
+  isLessThanPoint75(total) -> (total < 0.75);
+  isLessThanOne(total) -> (total < 1);
+  isLessThanOnePoint25(total) -> (total < 1.25);
+  pressD(e) -> (e == 'd');
+  pressQ(e) -> (e == 'q');
+  pressO(e) -> (e == 'o');
+  press1(e) -> (e == '1');
+  press2(e) -> (e == '2');
+  press3(e) -> (e == '3');
+  pressR(e) -> (e == 'r');
+}
+
+always guarantee {
+  // Your system's behavior definitions will go here.
+  // Use these predicates to guide the system's guarantees about actions it should take.
+  // For example:
+  pressD(e) -> [action <- dispenseDrink];
+  pressQ(e) -> [action <- queryStatus];
+  pressO(e) -> [action <- openCompartment];
+  
+  isLessThanOne(total) -> [canPurchaseSmallItem <- false];
+  isLessThanOnePoint25(total) -> [canPurchaseLargeItem <- false];
+}
+```
+
+### Explanation
+1. **always assume**: This section defines the truth conditions for each predicate based on the description of the vending machine system:
+   - `isLessThanPoint75(total)`: True if the total amount in the machine is less than $0.75.
+   - `isLessThanOne(total)`: True if the total amount is less than $1.
+   - `isLessThanOnePoint25(total)`: True if the total amount is less than $1.25.
+   - `pressD(e)` through `pressR(e)`: Each of these predicates checks if a particular key (representing the user's action) is pressed.
+
+2. **always guarantee**: This section is where you define what the system should do based on the predicates. You can specify actions like dispensing items, querying the status, or enabling/disabling certain features based on the total amount the vending machine currently holds.
+
+This structure allows the TSL system to encode the logic for a vending machine, reacting based on user inputs and internal state conditions while respecting the relationships defined by the predicates. Adjust the guarantee section according to your system's specific needs and capabilities.
