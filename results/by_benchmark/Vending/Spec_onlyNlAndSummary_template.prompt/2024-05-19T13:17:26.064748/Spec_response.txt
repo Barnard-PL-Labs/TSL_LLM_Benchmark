@@ -1,0 +1,40 @@
+```
+always assume {
+  // Ensure that no two operations can be performed at the same time
+  !(pressD && pressQ) && !(pressD && pressO) && !(pressD && press1) &&
+  !(pressD && press2) && !(pressD && press3) && !(pressD && pressR) &&
+  !(pressQ && pressO) && !(pressQ && press1) && !(pressQ && press2) &&
+  !(pressQ && press3) && !(pressQ && pressR) &&
+  !(pressO && press1) && !(pressO && press2) && !(pressO && press3) &&
+  !(pressO && pressR) &&
+  !(press1 && press2) && !(press1 && press3) && !(press1 && pressR) &&
+  !(press2 && press3) && !(press2 && pressR) &&
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increase the total by 0.1 when pressD is activated
+  pressD -> [total <- total + 0.1];
+
+  // Increase the total by 0.25 when pressQ is activated
+  pressQ -> [total <- total + 0.25];
+
+  // Increase the total by 1 when pressO is activated
+  pressO -> [total <- total + 1];
+
+  // Decrement the total by 0.75 when press1 is activated, if total is 0.75 or greater
+  (press1 && total >= 0.75) -> [total <- total - 0.75];
+  (press1 && total < 0.75) -> [total <- total];
+
+  // Decrement the total by 1 when press2 is activated, if total is 1 or greater
+  (press2 && total >= 1) -> [total <- total - 1];
+  (press2 && total < 1) -> [total <- total];
+
+  // Decrement the total by 1.25 when press3 is activated, if total is 1.25 or greater
+  (press3 && total >= 1.25) -> [total <- total - 1.25];
+  (press3 && total < 1.25) -> [total <- total];
+
+  // Reset the total to 0 when pressR is activated
+  pressR -> [total <- 0];
+}
+```

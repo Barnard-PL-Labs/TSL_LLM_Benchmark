@@ -1,0 +1,59 @@
+Here is the TSL specification based on the provided description and functions:
+
+```tsl
+always assume {
+  // Mutual exclusion for all button presses
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressD(e) && pressR(e));
+
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressQ(e) && pressR(e));
+
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressO(e) && pressR(e));
+
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressR(e));
+
+  !(press2(e) && press3(e));
+  !(press2(e) && pressR(e));
+  
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Insertions increasing the total
+  pressD(e) -> [total <- total + 0.10];
+  pressQ(e) -> [total <- total + 0.25];
+  pressO(e) -> [total <- total + 1.00];
+
+  // Product purchase conditions
+  (press1(e) && isLessThanPoint75(total)) -> [total <- total - 0.75];
+  (press2(e) && isLessThanOne(total)) -> [total <- total - 1.00];
+  (press3(e) && isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+
+  // Refund action
+  pressR(e) -> [total <- 0];
+}
+```
+
+### Explanation:
+1. **Mutual Exclusion for Button Presses:** Ensures that no two buttons that trigger machine operations can be pressed at the same time. This prevents simultaneous operations which are not allowed in the system.
+
+2. **Guarantee for Insertions:** When 'd', 'q', or 'o' is pressed, add the respective amount to the 'total'. This simulates adding money into the vending machine.
+
+3. **Product Purchase Conditions:** Checks if the total meets the conditions to buy a product after pressing buttons '1', '2', or '3'. If conditions are met, the respective amount is subtracted from the total, representing the purchase.
+
+4. **Refund Action:** When 'r' is pressed, set the total amount back to 0, simulating a refund operation.
+
+This TSL specification effectively models the operation of a vending machine with inputs from various buttons altering the state of a 'total' cell based on predefined conditions and mutual exclusivity for operations.

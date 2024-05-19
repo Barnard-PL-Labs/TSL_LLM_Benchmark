@@ -1,0 +1,41 @@
+Here's how you can translate the predicates described into a TSL (Temporal Stream Logic) template. Since you asked not to use and implement any JavaScript functions, we will only define predicates in the TSL structure, suitable for a hypothetical vending machine system. The predicates mentioned will be assumed to be integrated into the environment's conditions and actions.
+
+```tsl
+always assume {
+  // Define the conditions for evaluating the total value
+  isLessThanPoint75(total) <=> (total < 0.75);
+  isLessThanOne(total) <=> (total < 1);
+  isLessThanOnePoint25(total) <=> (total < 1.25);
+  
+  // Define the conditions for evaluating key presses
+  pressD(e) <=> (e == 'D' || e == 'd');
+  pressQ(e) <=> (e == 'Q' || e == 'q');
+  pressO(e) <=> (e == 'O' || e == 'o');
+  press1(e) <=> (e == '1');
+  press2(e) <=> (e == '2');
+  press3(e) <=> (e == '3');
+  pressR(e) <=> (e == 'R' || e == 'r');
+}
+
+always guarantee {
+  // Here you can define how the system should guarantee the behavior based on these predicates
+  // Example: if total is less than 0.75, some action might be prohibited
+  isLessThanPoint75(total) -> [machine.allowTransaction <- false];
+
+  // Example: key press actions could trigger certain machine behaviors
+  pressQ(e) -> [machine.dispenseProduct <- 'soda'];
+  pressD(e) -> [machine.dispenseProduct <- 'chips'];
+  pressO(e) -> [machine.option <- 'openMenu'];
+  press1(e) -> [machine.selectItem <- 1];
+  press2(e) -> [machine.selectItem <- 2];
+  press3(e) -> [machine.selectItem <- 3];
+  pressR(e) -> [machine.reset <- true];
+}
+```
+
+Explanation:
+- **`always assume`**: This section defines the predicates based on the system's API inputs. Predicates are essentially boolean expressions based on the system's state or inputs.
+- **`<=>`**: This symbol is used to define equivalences in predicates, meaning the left side is true if and only if the right side is true.
+- **`always guarantee`**: This section defines the system's responses or actions based on the predicates. It uses the predicates defined in the `always assume` section to trigger specific behaviors or set certain system states.
+
+These definitions ensure that the system behaves correctly according to the inputs and maintains consistency across its operations. The actual integration and implementation would be dependent on the specific TSL processing or simulation environment used for testing and deploying the system.

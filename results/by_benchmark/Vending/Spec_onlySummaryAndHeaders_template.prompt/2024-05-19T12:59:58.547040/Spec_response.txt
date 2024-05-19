@@ -1,0 +1,45 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Mutual exclusion for all key inputs
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressD(e));
+  !(press1(e) && pressQ(e));
+  !(press1(e) && pressO(e));
+  !(press1(e) && pressR(e));
+  !(press2(e) && press3(e));
+  !(press2(e) && pressD(e));
+  !(press2(e) && pressQ(e));
+  !(press2(e) && pressO(e));
+  !(press2(e) && pressR(e));
+  !(press3(e) && pressD(e));
+  !(press3(e) && pressQ(e));
+  !(press3(e) && pressO(e));
+  !(press3(e) && pressR(e));
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressO(e) && pressR(e));
+}
+
+always guarantee {
+  // Purchasing options based on the total amount in the machine
+  (press1(e) && isLessThanPoint75(total)) -> [total <- total - 0.75];
+  (press2(e) && isLessThanOne(total)) -> [total <- total - 1];
+  (press3(e) && isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+
+  // Inserting money into the machine
+  pressD(e) -> [total <- total + 0.1];   // Dime
+  pressQ(e) -> [total <- total + 0.25];  // Quarter
+  pressO(e) -> [total <- total + 1];     // One dollar
+
+  // Refunding money
+  pressR(e) -> [total <- 0];
+}
+```
+
+In this TSL specification, mutual exclusion is enforced for all key inputs to ensure that no two operations can happen at the same time. The `always guarantee` block handles the specific operations of purchasing products if the total amount meets certain conditions, inserting various denominations of money, and refunding all money by resetting the `total` back to zero when the 'r' key is pressed.

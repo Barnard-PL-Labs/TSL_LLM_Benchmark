@@ -1,0 +1,32 @@
+To implement the predicates as specified using Temporal Stream Logic (TSL), we will describe how the system should behave or react based on the conditions defined by each predicate.
+
+Here is the implementation using the TSL framework:
+
+```plaintext
+always assume {
+    // Define the behavior of total based on different thresholds
+    (total < 0.75 -> isLessThanPoint75(total));
+    (total < 1 -> isLessThanOne(total));
+    (total < 1.25 -> isLessThanOnePoint25(total));
+
+    // Define the behavior of e based on different key presses
+    (e == 'd' -> pressD(e));
+    (e == 'q' -> pressQ(e));
+    (e == 'o' -> pressO(e));
+    (e == '1' -> press1(e));
+    (e == '2' -> press2(e));
+    (e == '3' -> press3(e));
+    (e == 'r' -> pressR(e));
+}
+
+always guarantee {
+    // These conditions define when each predicate holds true.
+    // As predicates, they do not directly impact the state but rather define conditions for state changes or behaviors.
+}
+```
+
+In this TSL template:
+- **always assume** block defines the conditions for the predicates based on the values of the cells "total" and "e". These assumptions set up the scenarios under which each predicate will return true.
+- **always guarantee** block is not used in this case, as we are not implementing functions that alter the state or command the system based on these predicates. If there were actions to be taken based on these predicates, they would be defined here.
+
+This TSL setup ensures that the predicates correctly reflect the state of the system based on the inputs and the defined conditions.

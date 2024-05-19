@@ -1,0 +1,55 @@
+Since the objective is to implement predicates using a hypothetical API that involves signal states of a vending machine, and considering that the actual implementation of interaction with the API isn't specified, the following are purely conceptual implementations in JavaScript. Each predicate function will assume access to the cells `total` for monetary values and `e` for event inputs. Note that the actual methods to retrieve values from these cells depend on how the system API is set up. Here, we'll assume direct access or simple mock functions to represent these interactions.
+
+```javascript
+// Predicate to check if the total is less than 0.75
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+// Predicate to check if the total is less than 1
+function isLessThanOne(total) {
+    return total < 1.0;
+}
+
+// Predicate to check if the total is less than 1.25
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicate to check if the 'd' key was pressed
+function pressD(e) {
+    return e.key === 'd';
+}
+
+// Predicate to check if the 'q' key was pressed
+function pressQ(e) {
+    return e.key === 'q';
+}
+
+// Predicate to check if the 'o' key was pressed
+function pressO(e) {
+    return e.key === 'o';
+}
+
+// Predicate to check if the '1' key was pressed
+function press1(e) {
+    return e.key === '1';
+}
+
+// Predicate to check if the '2' key was pressed
+function press2(e) {
+    return e.key === '2';
+}
+
+// Predicate to check if the '3' key was pressed
+function press3(e) {
+    return e.key === '3';
+}
+
+// Predicate to check if the 'r' key was pressed
+function pressR(e) {
+    return e.key === 'r';
+}
+```
+
+These functions are designed to be used within a context where the `total` and `e` values are provided properly by the system through events or state updates. For example, in a real-world application, these predicates might be used within an event handler that reacts to user inputs or changes in the vending machine's state. Ensure you properly integrate these predicates within the event loop and state management of your vending machine system.

@@ -1,0 +1,47 @@
+always assume {
+  // Ensure that no two machine operations can be performed at the same time
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressD(e));
+  !(press1(e) && pressQ(e));
+  !(press1(e) && pressO(e));
+  !(press1(e) && pressR(e));
+  !(press2(e) && press3(e));
+  !(press2(e) && pressD(e));
+  !(press2(e) && pressQ(e));
+  !(press2(e) && pressO(e));
+  !(press2(e) && pressR(e));
+  !(press3(e) && pressD(e));
+  !(press3(e) && pressQ(e));
+  !(press3(e) && pressO(e));
+  !(press3(e) && pressR(e));
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressO(e) && pressR(e));
+}
+
+always guarantee {
+  // Purchase product option 1 when the total is 0.75 or more and button 1 is pressed
+  press1(e) && isLessThanPoint75(total) == false -> [total <- total - 0.75];
+  
+  // Purchase product option 2 when the total is 1 or more and button 2 is pressed
+  press2(e) && isLessThanOne(total) == false -> [total <- total - 1];
+  
+  // Purchase product option 3 when the total is 1.25 or more and button 3 is pressed
+  press3(e) && isLessThanOnePoint25(total) == false -> [total <- total - 1.25];
+  
+  // Insert a dime by pressing the d key/button
+  pressD(e) -> [total <- total + 0.10];
+  
+  // Insert a quarter by pressing the q key/button
+  pressQ(e) -> [total <- total + 0.25];
+  
+  // Insert a dollar by pressing the o key/button
+  pressO(e) -> [total <- total + 1.00];
+  
+  // Refund the money by pressing the r key/button
+  pressR(e) -> [total <- 0];
+}

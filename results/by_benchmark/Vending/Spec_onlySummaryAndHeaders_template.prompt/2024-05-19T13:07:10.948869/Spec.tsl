@@ -1,0 +1,48 @@
+always assume {
+  // Assume mutual exclusion for all button presses
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressR(e) && press1(e));
+  !(pressR(e) && press2(e));
+  !(pressR(e) && press3(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press2(e) && press3(e));
+}
+
+always guarantee {
+  // Inserting a dime increases the total by 0.10
+  pressD(e) -> [total <- total + 0.10];
+
+  // Inserting a quarter increases the total by 0.25
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Inserting a dollar increases the total by 1.00
+  pressO(e) -> [total <- total + 1.00];
+
+  // Refunding money resets the total to 0
+  pressR(e) -> [total <- 0];
+
+  // Purchasing products conditionally based on the total amount
+  (press1(e) && isLessThanPoint75(total)) -> [e <- "Not enough funds for product 1"];
+  (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75, e <- "Product 1 dispensed"];
+
+  (press2(e) && isLessThanOne(total)) -> [e <- "Not enough funds for product 2"];
+  (press2(e) && !isLessThanOne(total)) -> [total <- total - 1.00, e <- "Product 2 dispensed"];
+
+  (press3(e) && isLessThanOnePoint25(total)) -> [e <- "Not enough funds for product 3"];
+  (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25, e <- "Product 3 dispensed"];
+}

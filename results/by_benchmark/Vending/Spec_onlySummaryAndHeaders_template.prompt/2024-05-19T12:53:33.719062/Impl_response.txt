@@ -1,0 +1,70 @@
+Since the system environment does not have a direct API wrapper for implementing the required predicates in JavaScript, we will manually implement these predicates based on the provided descriptions. Each predicate will function as a condition checker for a given input parameter.
+
+Here are the JavaScript implementations for the predicates listed:
+
+```javascript
+// Predicate implementations for "total" cell
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicate implementations for "e" cell (assuming 'e' is an event object)
+function pressD(e) {
+    return e.key === 'd';
+}
+
+function pressQ(e) {
+    return e.key === 'q';
+}
+
+function pressO(e) {
+    return e.key === 'o';
+}
+
+function press1(e) {
+    return e.key === '1';
+}
+
+function press2(e) {
+    return e.key === '2';
+}
+
+function press3(e) {
+    return e.key === '3';
+}
+
+function pressR(e) {
+    return e.key === 'r';
+}
+```
+
+### Explanation:
+1. **For the predicates related to `total`:** 
+   - The functions `isLessThanPoint75`, `isLessThanOne`, and `isLessThanOnePoint25` check if the `total` value is less than the specified amounts (0.75, 1, and 1.25, respectively). The comparison is straightforward and directly uses the `<` operator to compare the `total` parameter against the constant values.
+
+2. **For the predicates related to `e` (event object):**
+   - The functions such as `pressD`, `pressQ`, `pressO`, `press1`, `press2`, `press3`, and `pressR` are designed to check if specific keys ('d', 'q', 'o', '1', '2', '3', 'r') were pressed during an event. These functions assume that the input parameter `e` is an event object that contains a `key` property, which holds the value of the key pressed.
+
+### Usage Example:
+To use these predicates, you might typically have event handlers or conditions within your code that utilize these checks, for example:
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    if (pressD(event)) {
+        console.log("D key was pressed.");
+    }
+    if (isLessThanOne(0.5)) {
+        console.log("Total is less than 1.");
+    }
+});
+```
+
+This example would log a corresponding message when the 'D' key is pressed or when the total is less than one, demonstrating how these predicates might be employed in a practical scenario.

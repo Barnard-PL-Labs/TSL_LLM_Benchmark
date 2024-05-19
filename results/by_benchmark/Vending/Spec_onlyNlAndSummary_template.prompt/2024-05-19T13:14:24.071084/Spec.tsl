@@ -1,0 +1,33 @@
+always assume {
+  // Mutual exclusion: No two machine operations can be performed at the same time
+  !(press1 && (press2 || press3 || pressD || pressQ || pressO || pressR));
+  !(press2 && (press1 || press3 || pressD || pressQ || pressO || pressR));
+  !(press3 && (press1 || press2 || pressD || pressQ || pressO || pressR));
+  !(pressD && (press1 || press2 || press3 || pressQ || pressO || pressR));
+  !(pressQ && (press1 || press2 || press3 || pressD || pressO || pressR));
+  !(pressO && (press1 || press2 || press3 || pressD || pressQ || pressR));
+  !(pressR && (press1 || press2 || press3 || pressD || pressQ || pressO));
+}
+
+always guarantee {
+  // When pressD is pushed, increment the vending machine's value by 0.1
+  pressD -> [total <- total + 0.10];
+
+  // When pressQ is pushed, increment the vending machine's value by 0.25
+  pressQ -> [total <- total + 0.25];
+
+  // When pressO is pushed, increment the vending machine's value by 1
+  pressO -> [total <- total + 1];
+
+  // When press1 is pushed and the total is at least 0.75, decrement by 0.75
+  press1 && total >= 0.75 -> [total <- total - 0.75];
+
+  // When press2 is pushed and the total is at least 1, decrement by 1
+  press2 && total >= 1 -> [total <- total - 1];
+
+  // When press3 is pushed and the total is at least 1.25, decrement by 1.25
+  press3 && total >= 1.25 -> [total <- total - 1.25];
+
+  // When pressR is pushed, set the vending machine's value to zero
+  pressR -> [total <- 0];
+}

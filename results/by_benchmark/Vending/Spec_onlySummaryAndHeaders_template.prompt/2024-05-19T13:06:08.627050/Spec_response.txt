@@ -1,0 +1,57 @@
+To translate your requirements into a TSL specification, we need to cover the assumptions about input interactions and the guarantees concerning how the vending machine reacts to these inputs. Here's the TSL code based on your description:
+
+```tsl
+always assume {
+  // Mutual exclusion for all key inputs to ensure no two operations occur at the same time
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressO(e) && pressR(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressD(e));
+  !(press1(e) && pressQ(e));
+  !(press1(e) && pressO(e));
+  !(press1(e) && pressR(e));
+  !(press2(e) && press3(e));
+  !(press2(e) && pressD(e));
+  !(press2(e) && pressQ(e));
+  !(press2(e) && pressO(e));
+  !(press2(e) && pressR(e));
+  !(press3(e) && pressD(e));
+  !(press3(e) && pressQ(e));
+  !(press3(e) && pressO(e));
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Adding a dime increases the total by 0.10
+  pressD(e) -> [total <- total + 0.10];
+  // Adding a quarter increases the total by 0.25
+  pressQ(e) -> [total <- total + 0.25];
+  // Adding a dollar increases the total by 1.00
+  pressO(e) -> [total <- total + 1.00];
+  // Refunding resets the total to 0
+  pressR(e) -> [total <- 0];
+  
+  // Purchasing product option 1 (costs 0.75)
+  (press1(e) && isLessThanPoint75(total)) -> [total <- total - 0.75];
+  // Purchasing product option 2 (costs 1.00)
+  (press2(e) && isLessThanOne(total)) -> [total <- total - 1.00];
+  // Purchasing product option 3 (costs 1.25)
+  (press3(e) && isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**: The assumption block ensures that no two operations can be performed at the same time by making sure that no two button presses happen simultaneously. This mutual exclusion is critical for the correct operation of the vending machine.
+
+2. **Guarantees**: This section dictates the changes in the `total` cell based on the button pressed:
+   - Dime (`pressD`), quarter (`pressQ`), and dollar (`pressO`) additions increase the `total` by their respective amounts.
+   - The refund operation (`pressR`) resets the `total` to zero.
+   - Purchasing operations (`press1`, `press2`, `press3`) check if the `total` is sufficient for the transaction (using predicates like `isLessThanPoint75`) and then subtract the cost of the product from `total` if the condition is met.
+
+This TSL specification effectively manages the state of the vending machine based on user inputs and ensures that operations are mutually exclusive to prevent conflicting actions.

@@ -1,0 +1,48 @@
+To implement the predicates required using Temporal Stream Logic (TSL), we need to define how the system should behave in reaction to the environment, based on the provided specifications. Below, the predicates are translated into TSL expressions under the sections `always assume` for environmental inputs and `always guarantee` for system reactions.
+
+However, since you requested not to use any JavaScript functions and purely focus on the implementation in TSL format, the predicates will be represented in a way that could be used in a TSL-based system specification. For the sake of understanding, I'm assuming a hypothetical scenario where these predicates control or influence the behavior of a vending machine system.
+
+Here's the TSL template based on the predicates and functionalities mentioned:
+
+```tsl
+always assume {
+    // Define input signals from the environment
+    // Conditions for total amount checks
+    (total < 0.75);
+    (total < 1);
+    (total < 1.25);
+
+    // Conditions for key presses
+    (pressD(e));
+    (pressQ(e));
+    (pressO(e));
+    (press1(e));
+    (press2(e));
+    (press3(e));
+    (pressR(e));
+}
+
+always guarantee {
+    // System response based on the input conditions
+    // Respond to total amount checks
+    (total < 0.75) -> [isLessThanPoint75(total) <- true];
+    (total < 1) -> [isLessThanOne(total) <- true];
+    (total < 1.25) -> [isLessThanOnePoint25(total) <- true];
+
+    // React to key presses
+    (pressD(e)) -> [pressD(e) <- true];
+    (pressQ(e)) -> [pressQ(e) <- true];
+    (pressO(e)) -> [pressO(e) <- true];
+    (press1(e)) -> [press1(e) <- true];
+    (press2(e)) -> [press2(e) <- true];
+    (press3(e)) -> [press3(e) <- true];
+    (pressR(e)) -> [pressR(e) <- true];
+}
+```
+
+### Explanation:
+- **Assumptions**: This section specifies the conditions or signals the system expects from the environment. It includes checks for the 'total' to determine thresholds and checks for key presses which are inputs from the user.
+  
+- **Guarantees**: This section defines how the system should react when certain conditions are met. For instance, when the total is less than 0.75, the predicate `isLessThanPoint75(total)` becomes true, indicating this status in the system.
+
+These predicates can be used within a more complex system to inform decisions, such as enabling/disabling certain functionalities of a vending machine based on the amount of money inserted or responding to specific user inputs. This template only outlines the logical structure and should be implemented with actual system interaction commands and APIs in a real-world coding environment.

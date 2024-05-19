@@ -1,0 +1,33 @@
+always assume {
+  // Mutual exclusion of button presses, ensuring only one button is pressed at a time.
+  !(press1(e) && (press2(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(press2(e) && (press1(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(press3(e) && (press1(e) || press2(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(pressD(e) && (press1(e) || press2(e) || press3(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(pressQ(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressO(e) || pressR(e)));
+  !(pressO(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressQ(e) || pressR(e)));
+  !(pressR(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e)));
+}
+
+always guarantee {
+  // Purchase option 1 if the total amount is at least 0.75 and button 1 is pressed.
+  (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+
+  // Purchase option 2 if the total amount is at least 1.00 and button 2 is pressed.
+  (press2(e) && !isLessThanOne(total)) -> [total <- total - 1.00];
+
+  // Purchase option 3 if the total amount is at least 1.25 and button 3 is pressed.
+  (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+
+  // Insert a dime into the machine by pressing the d button.
+  pressD(e) -> [total <- total + 0.10];
+
+  // Insert a quarter into the machine by pressing the q button.
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Insert a dollar into the machine by pressing the o button.
+  pressO(e) -> [total <- total + 1.00];
+
+  // Refund the total money by pressing the r button.
+  pressR(e) -> [total <- 0];
+}

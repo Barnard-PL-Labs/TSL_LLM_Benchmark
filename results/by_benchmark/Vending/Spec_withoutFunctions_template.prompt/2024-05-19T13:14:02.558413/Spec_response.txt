@@ -1,0 +1,62 @@
+Here is a TSL specification based on the given description and constraints:
+
+```tsl
+always assume {
+    // Ensure mutual exclusivity of button presses
+    !(pressD(e) && pressQ(e));
+    !(pressD(e) && pressO(e));
+    !(pressD(e) && press1(e));
+    !(pressD(e) && press2(e));
+    !(pressD(e) && press3(e));
+    !(pressD(e) && pressR(e));
+    !(pressQ(e) && pressO(e));
+    !(pressQ(e) && press1(e));
+    !(pressQ(e) && press2(e));
+    !(pressQ(e) && press3(e));
+    !(pressQ(e) && pressR(e));
+    !(pressO(e) && press1(e));
+    !(pressO(e) && press2(e));
+    !(pressO(e) && press3(e));
+    !(pressO(e) && pressR(e));
+    !(press1(e) && press2(e));
+    !(press1(e) && press3(e));
+    !(press1(e) && pressR(e));
+    !(press2(e) && press3(e));
+    !(press2(e) && pressR(e));
+    !(press3(e) && pressR(e));
+}
+
+always guarantee {
+    // Handle dime insertion
+    pressD(e) -> [total <- total + 0.1];
+
+    // Handle quarter insertion
+    pressQ(e) -> [total <- total + 0.25];
+
+    // Handle dollar insertion
+    pressO(e) -> [total <- total + 1];
+
+    // Handle purchasing product 1
+    press1(e) && isLessThanPoint75(total) -> [total <- total - 0.75];
+
+    // Handle purchasing product 2
+    press2(e) && isLessThanOne(total) -> [total <- total - 1];
+
+    // Handle purchasing product 3
+    press3(e) && isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+    // Handle refund
+    pressR(e) -> [total <- 0];
+}
+```
+
+### Explanation
+
+1. **Mutual Exclusivity**: The assumption part ensures that no two operations that interact with the machine can occur simultaneously. This is essential to prevent conflicting operations that could result in undefined behavior or errors in the vending machine's logic.
+
+2. **Operational Logic**:
+    - **Insertions**: For each type of money insertion (dime, quarter, dollar), there's a corresponding guarantee that updates the `total` by adding the respective amount.
+    - **Purchases**: For purchasing actions, there's a check to ensure that the `total` is sufficient for the transaction (using predicates provided like `isLessThanPoint75`). If the condition is met, the `total` is decremented by the cost of the product.
+    - **Refund**: When the refund button is pressed, the `total` is reset to 0, effectively clearing any amount inserted into the machine.
+
+This specification closely follows the natural language description provided, translating each operation into a TSL guarantee with corresponding conditions and outcomes.

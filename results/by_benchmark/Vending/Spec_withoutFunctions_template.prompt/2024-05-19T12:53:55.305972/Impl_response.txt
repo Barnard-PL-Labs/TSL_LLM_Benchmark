@@ -1,0 +1,34 @@
+In TSL (Temporal Stream Logic), predicates are logical conditions that evaluate to true or false based on the state of cells or events. Since we are not implementing JavaScript functions but rather expressing predicates directly in TSL, we can describe how each predicate should be expressed using available cells and hypothetical signals or events.
+
+Here is how you would define each of the predicates in TSL given the descriptions:
+
+```tsl
+always assume {
+    // Predicates for checking the value of "total"
+    isLessThanPoint75(total) -> total < 0.75;
+    isLessThanOne(total) -> total < 1;
+    isLessThanOnePoint25(total) -> total < 1.25;
+
+    // Predicates for checking if a specific key is pressed, represented by the cell 'e'
+    pressD(e) -> (e == 'd');
+    pressQ(e) -> (e == 'q');
+    pressO(e) -> (e == 'o');
+    press1(e) -> (e == '1');
+    press2(e) -> (e == '2');
+    press3(e) -> (e == '3');
+    pressR(e) -> (e == 'r');
+}
+
+always guarantee {
+    // Here you would define the responses or guarantees based on these predicates,
+    // but as per the instructions no functions or further actions are defined.
+}
+```
+
+In this TSL template:
+
+- **always assume**: Here we define the conditions (predicates) under which certain truths hold. These are assumptions about the input or environment.
+- **isLessThanPoint75, isLessThanOne, isLessThanOnePoint25**: These predicates check if the `total` is below certain thresholds.
+- **pressD, pressQ, pressO, press1, press2, press3, pressR**: These predicates check if the specific keys are being pressed, assuming `e` represents the last key pressed.
+
+The `->` operator in TSL is used for implication in the context of assumptions about the system's environment or the system's guaranteed responses. Since you mentioned not to use or implement any functions, only the predicates are defined under assumptions without any actions or outcomes specified under guarantees. If actions were to be defined, they would typically go under the `always guarantee` block, specifying the system's behavior in response to the predicates.

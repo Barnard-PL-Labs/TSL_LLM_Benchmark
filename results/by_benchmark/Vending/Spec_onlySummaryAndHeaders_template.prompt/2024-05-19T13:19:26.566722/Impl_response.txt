@@ -1,0 +1,42 @@
+To implement the predicates for the vending machine system environment as described, you need to use TSL formulas. Below are the TSL predicates implemented based on your provided API and requirements.
+
+```tsl
+always assume {
+    // Define the predicates related to cell "total"
+    (total < 0.75 -> isLessThanPoint75(total));
+    (total < 1 -> isLessThanOne(total));
+    (total < 1.25 -> isLessThanOnePoint25(total));
+
+    // Define the predicates related to cell "e" for various key presses
+    (pressD(e) -> dKeyPressed);
+    (pressQ(e) -> qKeyPressed);
+    (pressO(e) -> oKeyPressed);
+    (press1(e) -> oneKeyPressed);
+    (press2(e) -> twoKeyPressed);
+    (press3(e) -> threeKeyPressed);
+    (pressR(e) -> rKeyPressed);
+}
+
+always guarantee {
+    // The logic of predicates suggesting the reaction of vending machine
+    // based on the key presses and total value can be added here accordingly
+}
+```
+
+### Description of the TSL Predicates:
+1. **isLessThanPoint75(total)**: This condition becomes true if the total is less than 0.75.
+2. **isLessThanOne(total)**: This condition becomes true if the total is less than 1.
+3. **isLessThanOnePoint25(total)**: This condition becomes true if the total is less than 1.25.
+4. **pressD(e)**: Becomes true if the 'd' key is pressed.
+5. **pressQ(e)**: Becomes true if the 'q' key is pressed.
+6. **pressO(e)**: Becomes true if the 'o' key is pressed.
+7. **press1(e)**: Becomes true if the '1' key is pressed.
+8. **press2(e)**: Becomes true if the '2' key is pressed.
+9. **press3(e)**: Becomes true if the '3' key is pressed.
+10. **pressR(e)**: Becomes true if the 'r' key is pressed.
+
+The `always assume` block defines the conditions under which each predicate becomes true based on the inputs `total` and `e`. The `always guarantee` block should contain the logic that describes how the system should react based on the predicates.
+
+### Note:
+- Ensure that the defined predicates (`dKeyPressed`, `qKeyPressed`, etc.) are consistently used in the `always guarantee` block to determine the system's actions based on key presses.
+- The exact syntax might need adjustments based on the specific TSL parser and environment setup you are using. Ensure the logical operators and function calls are compatible with your TSL environment.

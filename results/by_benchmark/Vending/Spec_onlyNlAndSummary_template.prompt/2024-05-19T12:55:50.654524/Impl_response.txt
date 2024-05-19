@@ -1,0 +1,40 @@
+Given the requirements and the API limitations stated, here's how you can set up the predicates in TSL (Temporal Stream Logic) for the vending machine:
+
+```tsl
+always assume {
+    // Total amount predicates
+    isLessThanPoint75(total) -> (total < 0.75);
+    isLessThanOne(total) -> (total < 1.0);
+    isLessThanOnePoint25(total) -> (total < 1.25);
+
+    // Key press predicates
+    pressD(e) -> (e.key == 'd');
+    pressQ(e) -> (e.key == 'q');
+    pressO(e) -> (e.key == 'o');
+    press1(e) -> (e.key == '1');
+    press2(e) -> (e.key == '2');
+    press3(e) -> (e.key == '3');
+    pressR(e) -> (e.key == 'r');
+}
+always guarantee {
+    // Describe how the system reacts to these inputs
+    // This part would be specific to the vending machine logic, for example:
+    pressQ(e) -> [displayMessage <- "Quit Requested"];
+    pressD(e) -> [displayMessage <- "Drink Dispensed"] W pressR(e);
+    isLessThanPoint75(total) -> [displayMessage <- "Insufficient Funds"] W (total >= 0.75);
+}
+```
+
+### Explanation
+1. **Predicates Definition**:
+   - `isLessThanPoint75(total)`, `isLessThanOne(total)`, and `isLessThanOnePoint25(total)` are implemented based on the 'total' input, which is a numerical value representing the amount of money inserted into the vending machine.
+   - The key press predicates like `pressD(e)`, `pressQ(e)`, and others are implemented based on the 'e' input, which is an event object that contains information about the key pressed (`e.key`).
+
+2. **Always Assume Block**:
+   - This block contains the definitions of predicates based on the inputs. These are assumptions about how the input can be interpreted (e.g., when a certain key is pressed or when the total amount meets specific conditions).
+
+3. **Always Guarantee Block**:
+   - This block would typically contain the system's responses or guarantees based on the assumed conditions. For instance, if the 'Q' key is pressed, the machine might display a message that a quit request has been made.
+   - The `W` (weak until) operator is used here to demonstrate an ongoing condition until another condition is met, such as displaying a message about insufficient funds until enough money is inserted.
+
+This TSL template defines the environment's assumptions and the system's guarantees, which can be used to model the behavior of the vending machine based on inputs from the environment.

@@ -1,0 +1,28 @@
+```tsl
+always assume {
+  // Ensure no two buttons are pressed at the same time
+  !(pressD && pressQ) && !(pressD && pressO) && !(pressD && press1) && !(pressD && press2) && !(pressD && press3) && !(pressD && pressR) &&
+  !(pressQ && pressO) && !(pressQ && press1) && !(pressQ && press2) && !(pressQ && press3) && !(pressQ && pressR) &&
+  !(pressO && press1) && !(pressO && press2) && !(pressO && press3) && !(pressO && pressR) &&
+  !(press1 && press2) && !(press1 && press3) && !(press1 && pressR) &&
+  !(press2 && press3) && !(press2 && pressR) &&
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increment the total value when coins or bills are inserted
+  pressD -> [total <- total + 0.1];
+  pressQ -> [total <- total + 0.25];
+  pressO -> [total <- total + 1];
+
+  // Decrement the total value when products are purchased, ensuring sufficient funds exist
+  (press1 && total >= 0.75) -> [total <- total - 0.75];
+  (press2 && total >= 1) -> [total <- total - 1];
+  (press3 && total >= 1.25) -> [total <- total - 1.25];
+
+  // Refund the money
+  pressR -> [total <- 0];
+}
+``` 
+
+This TSL specification ensures that the vending machine handles monetary inputs and product selections correctly, based on the conditions mentioned in the natural language description. It ensures mutual exclusivity between button presses to prevent simultaneous operations that could lead to inconsistent states.

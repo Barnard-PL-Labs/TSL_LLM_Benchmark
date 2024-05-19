@@ -1,0 +1,37 @@
+To create the TSL (Temporal Stream Logic) templates for the predicates provided, we need to define the specifications as per the descriptions without using JavaScript functions, focusing only on using predicates and integrating the presumed environment signals (`total` and `e`). Here’s how you can define these predicates in a TSL environment.
+
+```tsl
+always assume {
+    // Define the nature of the total and e cells, assuming they correctly reflect the system state.
+    (total >= 0);
+    (e != null);
+}
+
+always guarantee {
+    // Predicates for the cell "total"
+    isLessThanPoint75(total) <-> (total < 0.75);
+    isLessThanOne(total) <-> (total < 1);
+    isLessThanOnePoint25(total) <-> (total < 1.25);
+
+    // Predicates for the cell "e" representing user inputs
+    pressD(e) <-> (e == 'd');
+    pressQ(e) <-> (e == 'q');
+    pressO(e) <-> (e == 'o');
+    press1(e) <-> (e == '1');
+    press2(e) <-> (e == '2');
+    press3(e) <-> (e == '3');
+    pressR(e) <-> (e == 'r');
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - The `total` should always be non-negative.
+   - The `e` should always contain some value (not null) as it represents user input.
+
+2. **Guarantees**:
+   - For each of the predicates related to `total`, the relationship is defined straightforwardly comparing `total` with specific values (`0.75`, `1`, `1.25`). 
+   - For predicates related to user inputs (`e`), each predicate checks equality with a specific character representing a key press.
+
+This TSL template ensures that the vending machine's logic reacts properly to changes in `total` and `e`, corresponding to the system's state and user actions, respectively. This approach is purely declarative and relies on the environment to provide accurate signals for `total` and `e`.

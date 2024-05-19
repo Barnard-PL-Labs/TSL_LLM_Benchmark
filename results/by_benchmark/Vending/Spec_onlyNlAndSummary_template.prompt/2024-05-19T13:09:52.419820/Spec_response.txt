@@ -1,0 +1,26 @@
+```tsl
+always assume {
+  // Mutual exclusion for button presses
+  !(pressD && pressQ) && !(pressD && pressO) && !(pressD && press1) && !(pressD && press2) && !(pressD && press3) && !(pressD && pressR);
+  !(pressQ && pressO) && !(pressQ && press1) && !(pressQ && press2) && !(pressQ && press3) && !(pressQ && pressR);
+  !(pressO && press1) && !(pressO && press2) && !(pressO && press3) && !(pressO && pressR);
+  !(press1 && press2) && !(press1 && press3) && !(press1 && pressR);
+  !(press2 && press3) && !(press2 && pressR);
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increment total when coins are inserted
+  pressD -> [total <- total + 0.10];
+  pressQ -> [total <- total + 0.25];
+  pressO -> [total <- total + 1.00];
+
+  // Check conditions and purchase products
+  press1 && (total >= 0.75) -> [total <- total - 0.75];
+  press2 && (total >= 1.00) -> [total <- total - 1.00];
+  press3 && (total >= 1.25) -> [total <- total - 1.25];
+
+  // Refund the money
+  pressR -> [total <- 0];
+}
+```

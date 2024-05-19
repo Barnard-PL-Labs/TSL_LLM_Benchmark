@@ -1,0 +1,31 @@
+To translate the given natural language description into a TSL specification for a vending machine scenario, we will define the assumptions and guarantees to handle the operations based on button presses and conditions related to the total dollar amount in the machine.
+
+```tsl
+always assume {
+  // Ensure that no two machine operations can be performed at the same time
+  !(press1(e) && (press2(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(press2(e) && (press1(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(press3(e) && (press1(e) || press2(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(pressD(e) && (press1(e) || press2(e) || press3(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(pressQ(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressO(e) || pressR(e)));
+  !(pressO(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressQ(e) || pressR(e)));
+  !(pressR(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e)));
+}
+
+always guarantee {
+  // Purchasing products based on total dollar amount and key presses
+  press1(e) && isLessThanPoint75(total) -> [total <- total - 0.75]; // Purchase option 1 if total is at least $0.75
+  press2(e) && isLessThanOne(total) -> [total <- total - 1.00]; // Purchase option 2 if total is at least $1.00
+  press3(e) && isLessThanOnePoint25(total) -> [total <- total - 1.25]; // Purchase option 3 if total is at least $1.25
+
+  // Inserting money into the machine
+  pressD(e) -> [total <- total + 0.10]; // Inserting a dime
+  pressQ(e) -> [total <- total + 0.25]; // Inserting a quarter
+  pressO(e) -> [total <- total + 1.00]; // Inserting a dollar
+
+  // Refunding money
+  pressR(e) -> [total <- 0]; // Reset total to zero on refund
+}
+```
+
+This TSL specification defines assumptions to ensure that no two operations (represented by key presses) are executed simultaneously. Guarantees define the effects of each key press on the total money in the machine, conditioned on the current amount and specific key pressed for both purchasing products and inserting money. The operation to refund the money resets the total amount to zero.

@@ -1,0 +1,35 @@
+To translate your natural language description into a TSL specification, we need to ensure mutual exclusivity of operations and conditionally enable actions based on the total amount in the vending machine. Here's how the TSL code might look based on your specifications:
+
+```tsl
+always assume {
+  // Ensure no two operations can be performed simultaneously
+  !(press1(e) && (press2(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(press2(e) && (press1(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(press3(e) && (press1(e) || press2(e) || pressD(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(pressD(e) && (press1(e) || press2(e) || press3(e) || pressQ(e) || pressO(e) || pressR(e)));
+  !(pressQ(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressO(e) || pressR(e)));
+  !(pressO(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressQ(e) || pressR(e)));
+  !(pressR(e) && (press1(e) || press2(e) || press3(e) || pressD(e) || pressQ(e) || pressO(e)));
+}
+
+always guarantee {
+  // Conditions for purchasing products based on the total amount
+  press1(e) -> (isLessThanPoint75(total) -> [total <- total - 0.75]);
+  press2(e) -> (isLessThanOne(total) -> [total <- total - 1]);
+  press3(e) -> (isLessThanOnePoint25(total) -> [total <- total - 1.25]);
+
+  // Conditions for inserting money
+  pressD(e) -> [total <- total + 0.10]; // Dime adds 0.10
+  pressQ(e) -> [total <- total + 0.25]; // Quarter adds 0.25
+  pressO(e) -> [total <- total + 1]; // Dollar adds 1
+
+  // Refunding the money
+  pressR(e) -> [total <- 0]; // Reset total to 0
+}
+```
+
+### Key Points:
+- **Mutual Exclusivity:** Each `!(pressX(e) && (pressY(e) || ...))` ensures that no two operations (button presses) happen at the same time.
+- **Conditional Actions:** Each `pressX(e) -> (condition -> [total <- computation])` ensures that an action only occurs if the condition (sufficient funds) is met. If the condition isn't met, the operation should not adjust the total, simulating that the product cannot be purchased.
+- **Adding Funds:** For dime, quarter, and dollar inserts, the total is straightforwardly increased.
+- **Refund Operation:** Resets the total funds to zero.

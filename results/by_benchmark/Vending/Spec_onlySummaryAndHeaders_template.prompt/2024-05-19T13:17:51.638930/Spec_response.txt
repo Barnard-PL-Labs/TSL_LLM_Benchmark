@@ -1,0 +1,45 @@
+Below is a TSL specification based on the provided natural language description and the list of functions, predicates, and cells. The spec details the conditions under which various vending machine operations can occur, ensuring mutual exclusion of these operations.
+
+```tsl
+always assume {
+  // Ensure mutual exclusivity of button presses: no two operations can be performed at the same time
+  ! (press1(e) && press2(e));
+  ! (press1(e) && press3(e));
+  ! (press1(e) && pressD(e));
+  ! (press1(e) && pressQ(e));
+  ! (press1(e) && pressO(e));
+  ! (press1(e) && pressR(e));
+  ! (press2(e) && press3(e));
+  ! (press2(e) && pressD(e));
+  ! (press2(e) && pressQ(e));
+  ! (press2(e) && pressO(e));
+  ! (press2(e) && pressR(e));
+  ! (press3(e) && pressD(e));
+  ! (press3(e) && pressQ(e));
+  ! (press3(e) && pressO(e));
+  ! (press3(e) && pressR(e));
+  ! (pressD(e) && pressQ(e));
+  ! (pressD(e) && pressO(e));
+  ! (pressD(e) && pressR(e));
+  ! (pressQ(e) && pressO(e));
+  ! (pressQ(e) && pressR(e));
+  ! (pressO(e) && pressR(e));
+}
+
+always guarantee {
+  // Purchasing product options based on total dollar amount in the machine
+  press1(e) && !isLessThanPoint75(total) -> [total <- total - 0.75]; // Purchasing option 1 if total >= 0.75
+  press2(e) && !isLessThanOne(total) -> [total <- total - 1]; // Purchasing option 2 if total >= 1
+  press3(e) && !isLessThanOnePoint25(total) -> [total <- total - 1.25]; // Purchasing option 3 if total >= 1.25
+
+  // Inserting money into the machine
+  pressD(e) -> [total <- total + 0.10]; // Inserting a dime
+  pressQ(e) -> [total <- total + 0.25]; // Inserting a quarter
+  pressO(e) -> [total <- total + 1]; // Inserting a dollar
+
+  // Refunding money
+  pressR(e) -> [total <- 0]; // Refund all money
+}
+```
+
+This TSL specification adheres to the requirement that no two operations can be performed simultaneously by ensuring mutual exclusivity of button presses through the assumptions. The guarantee section specifies the effects of each operation on the state of the vending machine's total dollar amount based on the button pressed, ensuring the conditions for each operation are met before they are performed.

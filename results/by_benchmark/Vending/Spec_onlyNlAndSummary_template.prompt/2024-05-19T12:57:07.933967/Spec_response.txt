@@ -1,0 +1,31 @@
+Here's the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Ensure that no two machine operations can be performed at the same time
+  !(pressD && (pressQ || pressO || press1 || press2 || press3 || pressR));
+  !(pressQ && (pressD || pressO || press1 || press2 || press3 || pressR));
+  !(pressO && (pressD || pressQ || press1 || press2 || press3 || pressR));
+  !(press1 && (pressD || pressQ || pressO || press2 || press3 || pressR));
+  !(press2 && (pressD || pressQ || pressO || press1 || press3 || pressR));
+  !(press3 && (pressD || pressQ || pressO || press1 || press2 || pressR));
+  !(pressR && (pressD || pressQ || pressO || press1 || press2 || press3));
+}
+
+always guarantee {
+  // Increment total when d, q, or o is pressed
+  pressD -> [total <- total + 0.1];
+  pressQ -> [total <- total + 0.25];
+  pressO -> [total <- total + 1];
+
+  // Decrement total for product purchases if conditions are met
+  (press1 && total >= 0.75) -> [total <- total - 0.75];
+  (press2 && total >= 1) -> [total <- total - 1];
+  (press3 && total >= 1.25) -> [total <- total - 1.25];
+
+  // Reset total to 0 when r is pressed
+  pressR -> [total <- 0];
+}
+```
+
+This TSL specification accurately implements the operational logic described, ensuring that button presses interact with the vending machine's monetary total as specified. It also enforces mutual exclusivity between button operations to prevent simultaneous actions that could conflict or lead to erroneous states.

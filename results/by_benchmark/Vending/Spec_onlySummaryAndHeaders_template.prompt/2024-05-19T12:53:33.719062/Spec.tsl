@@ -1,0 +1,39 @@
+always assume {
+  // Mutual exclusion for all input buttons
+  ! (pressD(e) && pressQ(e));
+  ! (pressD(e) && pressO(e));
+  ! (pressD(e) && pressR(e));
+  ! (pressD(e) && press1(e));
+  ! (pressD(e) && press2(e));
+  ! (pressD(e) && press3(e));
+  ! (pressQ(e) && pressO(e));
+  ! (pressQ(e) && pressR(e));
+  ! (pressQ(e) && press1(e));
+  ! (pressQ(e) && press2(e));
+  ! (pressQ(e) && press3(e));
+  ! (pressO(e) && pressR(e));
+  ! (pressO(e) && press1(e));
+  ! (pressO(e) && press2(e));
+  ! (pressO(e) && press3(e));
+  ! (pressR(e) && press1(e));
+  ! (pressR(e) && press2(e));
+  ! (pressR(e) && press3(e));
+  ! (press1(e) && press2(e));
+  ! (press1(e) && press3(e));
+  ! (press2(e) && press3(e));
+}
+
+always guarantee {
+  // Inserting coins
+  pressD(e) -> [total <- total + 0.10]; // Dime increases total by $0.10
+  pressQ(e) -> [total <- total + 0.25]; // Quarter increases total by $0.25
+  pressO(e) -> [total <- total + 1.00]; // Dollar increases total by $1.00
+
+  // Refunding money
+  pressR(e) -> [total <- 0]; // Refund resets total to $0
+
+  // Purchasing products
+  (press1(e) && isLessThanPoint75(total)) -> [total <- total - 0.75]; // Purchase option 1 if total >= $0.75
+  (press2(e) && isLessThanOne(total)) -> [total <- total - 1.00]; // Purchase option 2 if total >= $1
+  (press3(e) && isLessThanOnePoint25(total)) -> [total <- total - 1.25]; // Purchase option 3 if total >= $1.25
+}

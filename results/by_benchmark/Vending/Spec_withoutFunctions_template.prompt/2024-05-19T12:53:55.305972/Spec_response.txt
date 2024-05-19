@@ -1,0 +1,37 @@
+```tsl
+always assume {
+    // Define the mutual exclusivity between pressing different buttons
+    !(pressD(e) && pressQ(e)) && !(pressD(e) && pressO(e)) && !(pressD(e) && press1(e)) && !(pressD(e) && press2(e)) &&
+    !(pressD(e) && press3(e)) && !(pressD(e) && pressR(e)) &&
+    !(pressQ(e) && pressO(e)) && !(pressQ(e) && press1(e)) && !(pressQ(e) && press2(e)) &&
+    !(pressQ(e) && press3(e)) && !(pressQ(e) && pressR(e)) &&
+    !(pressO(e) && press1(e)) && !(pressO(e) && press2(e)) && !(pressO(e) && press3(e)) &&
+    !(pressO(e) && pressR(e)) &&
+    !(press1(e) && press2(e)) && !(press1(e) && press3(e)) && !(press1(e) && pressR(e)) &&
+    !(press2(e) && press3(e)) && !(press2(e) && pressR(e)) &&
+    !(press3(e) && pressR(e));
+}
+
+always guarantee {
+    // When D (dime) is pressed, add 0.1 to total
+    pressD(e) -> [total <- total + 0.1];
+
+    // When Q (quarter) is pressed, add 0.25 to total
+    pressQ(e) -> [total <- total + 0.25];
+
+    // When O (dollar) is pressed, add 1 to total
+    pressO(e) -> [total <- total + 1];
+
+    // When 1 is pressed and total is at least 0.75, subtract 0.75 from total
+    press1(e) && isLessThanPoint75(total) -> [total <- total - 0.75];
+
+    // When 2 is pressed and total is at least 1, subtract 1 from total
+    press2(e) && isLessThanOne(total) -> [total <- total - 1];
+
+    // When 3 is pressed and total is at least 1.25, subtract 1.25 from total
+    press3(e) && isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+    // When R (refund) is pressed, set total to 0
+    pressR(e) -> [total <- 0];
+}
+```

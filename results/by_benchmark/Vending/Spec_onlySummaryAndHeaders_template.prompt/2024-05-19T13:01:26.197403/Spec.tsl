@@ -1,0 +1,39 @@
+always assume {
+    // Ensure no two machine operations can be performed at the same time
+    !(pressD(e) && pressQ(e)) &&
+    !(pressD(e) && pressO(e)) &&
+    !(pressD(e) && pressR(e)) &&
+    !(pressD(e) && press1(e)) &&
+    !(pressD(e) && press2(e)) &&
+    !(pressD(e) && press3(e)) &&
+    !(pressQ(e) && pressO(e)) &&
+    !(pressQ(e) && pressR(e)) &&
+    !(pressQ(e) && press1(e)) &&
+    !(pressQ(e) && press2(e)) &&
+    !(pressQ(e) && press3(e)) &&
+    !(pressO(e) && pressR(e)) &&
+    !(pressO(e) && press1(e)) &&
+    !(pressO(e) && press2(e)) &&
+    !(pressO(e) && press3(e)) &&
+    !(pressR(e) && press1(e)) &&
+    !(pressR(e) && press2(e)) &&
+    !(pressR(e) && press3(e)) &&
+    !(press1(e) && press2(e)) &&
+    !(press1(e) && press3(e)) &&
+    !(press2(e) && press3(e));
+}
+
+always guarantee {
+    // Money insertion operations
+    pressD(e) -> [total <- total + 0.10];
+    pressQ(e) -> [total <- total + 0.25];
+    pressO(e) -> [total <- total + 1.00];
+
+    // Refund operation
+    pressR(e) -> [total <- 0];
+
+    // Product purchasing operations
+    (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+    (press2(e) && !isLessThanOne(total)) -> [total <- total - 1.00];
+    (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+}
