@@ -1,0 +1,71 @@
+To implement the predicates as described using JavaScript, we can define simple functions that each take the relevant input and check the condition specified. Here's how you can define these JavaScript functions for the predicates related to a vending machine system:
+
+```javascript
+// Predicate functions related to the 'total' cell
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicate functions related to the 'e' cell (event)
+function pressD(e) {
+    return e.key === 'd' || e.key === 'D';
+}
+
+function pressQ(e) {
+    return e.key === 'q' || e.key === 'Q';
+}
+
+function pressO(e) {
+    return e.key === 'o' || e.key === 'O';
+}
+
+function press1(e) {
+    return e.key === '1';
+}
+
+function press2(e) {
+    return e.key === '2';
+}
+
+function press3(e) {
+    return e.key === '3';
+}
+
+function pressR(e) {
+    return e.key === 'r' || e.key === 'R';
+}
+```
+
+### Usage
+These functions can be used in an event-driven context or in any situation where you have a `total` value or an `e` event object available. For example, in an event listener for key presses:
+
+```javascript
+document.addEventListener('keydown', function(e) {
+    if (pressD(e)) {
+        console.log('D key was pressed');
+    }
+    if (pressQ(e)) {
+        console.log('Q key was pressed');
+    }
+});
+```
+
+Similarly, the functions related to the `total` can be used when calculating or updating the total amount:
+
+```javascript
+let total = 0.5; // Example total value
+
+if (isLessThanOne(total)) {
+    console.log('Total is less than 1');
+}
+```
+
+This setup assumes that the `total` variable and `e` object are provided correctly in the context where these functions are called.

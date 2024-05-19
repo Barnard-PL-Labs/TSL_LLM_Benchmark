@@ -23,6 +23,6 @@
 21,Counter,Spec_onlyNlAndSummary_template.prompt,20,9,0,9
 22,Counter,Spec_template.prompt,20,14,0,14
 23,Counter,Spec_onlySummaryAndHeaders_template.prompt,20,11,0,11
-24,Vending,Spec_onlyNlAndSummary_template.prompt,28,23,0,23
-25,Vending,Spec_withoutFunctions_template.prompt,28,27,0,27
-26,Vending,Spec_onlySummaryAndHeaders_template.prompt,28,22,0,22
+24,Vending,Spec_onlyNlAndSummary_template.prompt,20,17,0,17
+25,Vending,Spec_withoutFunctions_template.prompt,5,5,0,5
+26,Vending,Spec_onlySummaryAndHeaders_template.prompt,20,15,0,15
