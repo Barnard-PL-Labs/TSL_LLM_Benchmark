@@ -1,0 +1,10 @@
+always assume {
+  // pressUp(e) is true when the up key is pressed, handled via an event listener for keydown events
+}
+
+always guarantee {
+  // When the up key is pressed, increment the scale.x value of the cube each frame
+  // When the up key is not pressed, reset the scale.x value of the cube to 0.5
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 0.1];
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+}

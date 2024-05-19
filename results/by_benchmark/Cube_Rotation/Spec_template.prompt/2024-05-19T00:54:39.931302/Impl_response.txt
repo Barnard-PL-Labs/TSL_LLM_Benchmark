@@ -1,0 +1,101 @@
+To implement the described system behavior using JavaScript, we need to create functions that manipulate the cube's rotation based on button presses and predicates that determine when these buttons are pressed. Below, I'll provide an implementation for the "functions" and "predicates" as specified.
+
+### JavaScript Implementation
+
+First, we'll create the functions `rotateLeft` and `rotateRight` which modify the cube's rotation. Then we'll define the predicates `pressL` and `pressR` that listen to keypress events and return `true` if the specified keys are pressed.
+
+#### Functions to Rotate Cube
+
+These functions modify the `rotation.y` property of a `cube` object.
+
+```javascript
+function rotateLeft(cube) {
+    cube.rotation.y -= Math.PI / 4;  // Rotate left by 45 degrees
+}
+
+function rotateRight(cube) {
+    cube.rotation.y += Math.PI / 4;  // Rotate right by 45 degrees
+}
+```
+
+#### Predicates for Button Presses
+
+For the predicates, we'll assume that the left and right arrow keys are used to trigger the rotation. Thus, we'll listen for keyboard events and check if the left or right arrow keys are pressed.
+
+```javascript
+function pressL(e) {
+    return e.keyCode === 37;  // 37 is the key code for the left arrow key
+}
+
+function pressR(e) {
+    return e.keyCode === 39;  // 39 is the key code for the right arrow key
+}
+```
+
+#### Adding Event Listeners
+
+To tie everything together, we'll add event listeners to the document that listen for `keydown` events and trigger the appropriate rotation functions when the corresponding keys are pressed.
+
+```javascript
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        rotateLeft(cube);
+    } else if (pressR(e)) {
+        rotateRight(cube);
+    }
+});
+```
+
+#### Complete Example
+
+Putting it all together in a simple HTML and JavaScript setup:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube Rotation Control</title>
+    <script>
+        // Cube object to simulate the cube in the system
+        const cube = {
+            rotation: {
+                y: 0  // Initial rotation
+            }
+        };
+
+        function rotateLeft(cube) {
+            cube.rotation.y -= Math.PI / 4;  // Rotate left by 45 degrees
+            console.log('Cube rotated left. Current rotation:', cube.rotation.y);
+        }
+
+        function rotateRight(cube) {
+            cube.rotation.y += Math.PI / 4;  // Rotate right by 45 degrees
+            console.log('Cube rotated right. Current rotation:', cube.rotation.y);
+        }
+
+        function pressL(e) {
+            return e.keyCode === 37;  // Left arrow key
+        }
+
+        function pressR(e) {
+            return e.keyCode === 39;  // Right arrow key
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (pressL(e)) {
+                rotateLeft(cube);
+            } else if (pressR(e)) {
+                rotateRight(cube);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Press Left/Right Arrow Keys to Rotate the Cube</h1>
+</body>
+</html>
+```
+
+This setup provides a basic simulation of rotating a cube left or right based on keyboard input, and it logs the current rotation to the console.

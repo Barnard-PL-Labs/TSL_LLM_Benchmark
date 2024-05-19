@@ -1,0 +1,62 @@
+To implement the specified system using the given API, we need to create functions and predicates in JavaScript. Here's how you can set it up:
+
+### Step 1: Define the Functions
+
+These functions manipulate the cube's rotation based on the input.
+
+```javascript
+function rotateLeft(cube) {
+    // Decrease the y rotation to rotate the cube to the left
+    cube.rotation.y -= Math.PI / 4; // Adjust according to desired rotation step (example: 45 degrees)
+}
+
+function rotateRight(cube) {
+    // Increase the y rotation to rotate the cube to the right
+    cube.rotation.y += Math.PI / 4; // Adjust according to desired rotation step (example: 45 degrees)
+}
+```
+
+### Step 2: Define the Predicates
+
+Predicates will use event listeners to detect button presses. Given we are using predicates within an event-driven context, it's important to define how these functions will be used. Below is an example of setting up event listeners for keyboard events that trigger these predicates:
+
+```javascript
+// Predicate for pressing the left button
+function pressL(e) {
+    return e.key === 'ArrowLeft';
+}
+
+// Predicate for pressing the right button
+function pressR(e) {
+    return e.key === 'ArrowRight';
+}
+
+// Event listeners for detecting key presses
+document.addEventListener('keydown', (e) => {
+    if (pressL(e)) {
+        console.log('Left button pressed');
+        // Call the rotateLeft function to rotate the cube to the left
+        // Assuming the cube object is globally accessible or passed appropriately
+        rotateLeft(cube);
+    } else if (pressR(e)) {
+        console.log('Right button pressed');
+        // Call the rotateRight function to rotate the cube to the right
+        // Assuming the cube object is globally accessible or passed appropriately
+        rotateRight(cube);
+    }
+});
+```
+
+### Explanation
+
+- The `rotateLeft` and `rotateRight` functions manipulate the `rotation.y` property of the `cube` which is assumed to be an object with a `rotation` property that has a `y` sub-property.
+- The `pressL` and `pressR` predicates are designed to return `true` when specific keys (left arrow and right arrow, respectively) are pressed.
+- The event listener checks for keydown events and uses these predicates to determine which action to take (rotate left or right).
+
+### Additional Considerations
+
+- Ensure that the `cube` object is accessible where needed, or adjust the functions to accept it as a parameter if necessary.
+- Adjust the rotation angle (`Math.PI / 4` in the example) based on the desired sensitivity and the specifics of the 3D environment.
+- Add error handling and state management as needed based on the broader application context.
+
+This setup provides a basic framework to integrate with a 3D system and handle input for manipulating a cube's orientation based on keyboard events.

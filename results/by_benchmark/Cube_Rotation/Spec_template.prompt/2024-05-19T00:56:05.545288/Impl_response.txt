@@ -1,0 +1,86 @@
+To implement the specified methods using JavaScript, we'll first need to define the functions and predicates according to the provided API and the system's requirements. Below are the implementations for each of the functions and predicates:
+
+### Functions
+
+#### 1. rotateLeft(cube)
+This function will decrease the `rotation.y` value of the cube, effectively rotating it to the left.
+
+```javascript
+function rotateLeft(cube) {
+    cube.rotation.y -= Math.PI / 4;  // Rotate left by 45 degrees
+}
+```
+
+#### 2. rotateRight(cube)
+This function will increase the `rotation.y` value of the cube, effectively rotating it to the right.
+
+```javascript
+function rotateRight(cube) {
+    cube.rotation.y += Math.PI / 4;  // Rotate right by 45 degrees
+}
+```
+
+### Predicates
+
+#### 1. pressL(e)
+This predicate will return `true` if the left button is pressed. Here, since the specific key for the left button isn't defined, I'll assume it's the left arrow key (`ArrowLeft`).
+
+```javascript
+function pressL(e) {
+    return e.key === "ArrowLeft";
+}
+```
+
+To use this predicate effectively in a context where event listeners are required, you would typically set it up in an event listener like this:
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    if (pressL(event)) {
+        console.log("Left button pressed");
+        // Additional actions when left is pressed
+    }
+});
+```
+
+#### 2. pressR(e)
+This predicate will return `true` if the right button is pressed. Assuming the right arrow key (`ArrowRight`) is the right button:
+
+```javascript
+function pressR(e) {
+    return e.key === "ArrowRight";
+}
+```
+
+Similarly, to use this predicate in an event-driven context, you can set up an event listener like this:
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    if (pressR(event)) {
+        console.log("Right button pressed");
+        // Additional actions when right is pressed
+    }
+});
+```
+
+### Integration
+
+To integrate these functions and predicates into a system where the cube is manipulated based on button presses, you might have a setup similar to this (assuming `cube` is an object with a `rotation` property):
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    if (pressL(event)) {
+        rotateLeft(cube);
+    } else if (pressR(event)) {
+        rotateRight(cube);
+    }
+});
+
+// Example cube object
+const cube = {
+    rotation: {
+        y: 0
+    }
+};
+```
+
+This setup would allow the cube to rotate left or right based on the user's key presses, using the event-driven programming model typical in JavaScript for handling user input.

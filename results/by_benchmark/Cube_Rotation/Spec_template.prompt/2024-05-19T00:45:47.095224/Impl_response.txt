@@ -1,0 +1,63 @@
+To implement the requested functions and predicates in JavaScript, we need to define functions that interact with a cube object and predicates that determine when specific button presses occur. We'll handle the button press detection using event listeners. Here is how you could write this in JavaScript:
+
+```javascript
+// Assuming "cube" is an object that has a property "rotation" which is also an object having a "y" property.
+// This "y" property represents the rotation around the y-axis in radians.
+
+// Functions to rotate the cube
+function rotateLeft(cube) {
+    // Assuming that rotating left means decreasing the rotation.y value
+    cube.rotation.y -= Math.PI / 18;  // Rotate left by 10 degrees
+}
+
+function rotateRight(cube) {
+    // Assuming that rotating right means increasing the rotation.y value
+    cube.rotation.y += Math.PI / 18;  // Rotate right by 10 degrees
+}
+
+// Predicates to check for button presses
+// We'll need to add event listeners to the document or a specific element to capture key presses.
+
+let leftPressed = false;
+let rightPressed = false;
+
+// Event listener for keydown to update the state
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {  // Assuming the left arrow key for "left"
+        leftPressed = true;
+    }
+    if (e.key === 'ArrowRight') {  // Assuming the right arrow key for "right"
+        rightPressed = true;
+    }
+});
+
+// Event listener for keyup to reset the state
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    }
+    if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+
+// Predicate functions
+function pressL() {
+    return leftPressed;
+}
+
+function pressR() {
+    return rightPressed;
+}
+
+// Usage of functions and predicates can be done within an interactive loop or part of an update function.
+```
+
+### Explanation
+1. **rotateLeft & rotateRight Functions**: These functions modify the `cube.rotation.y` property based on whether we want to rotate left (decrease y) or right (increase y). The amount of rotation is done in radians, and `Math.PI / 18` provides a 10-degree rotation.
+
+2. **Event Listeners**: We add event listeners for `keydown` and `keyup` to track when the left or right arrow keys are pressed. We use two boolean flags (`leftPressed` and `rightPressed`) to track the current state of each key.
+
+3. **pressL & pressR Predicates**: These functions return the current state of their respective keys by accessing the boolean flags updated by the event listeners.
+
+This setup ensures we can control the cube's rotation based on real-time key presses and check the state of each button press through the predicates.

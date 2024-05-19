@@ -1,0 +1,25 @@
+Here is the TSL template for the described scenario:
+
+```tsl
+always assume {
+  // States that the up key is either pressed or not pressed
+  pressUp(e) || !pressUp(e);
+}
+
+always guarantee {
+  // When the up key is not pressed, the scale of the cube on the x-axis should be 0.5
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+  
+  // When the up key is pressed, incrementally increase the scale value as long as the key is pressed
+  pressUp(e) -> [cube.scale.x <- t] W !pressUp(e);
+}
+```
+
+Explanation:
+
+1. **Assumptions:**
+   - The system assumes two possible states of the predicate `pressUp(e)`: either it is true (the up key is pressed) or false (the up key is not pressed).
+
+2. **Guarantees:**
+   - If the up key is not pressed (`!pressUp(e)`), the cube's x-axis scale is set to 0.5.
+   - If the up key is pressed (`pressUp(e)`), the cube’s scale along the x-axis increases incrementally (`cube.scale.x <- t`). This scaling continues until the key is released. The temporal operator `W` (weak until) is used, which ensures that the cube’s scale is maintained or changed only when the `pressUp(e)` predicate is false, reflecting the key release.

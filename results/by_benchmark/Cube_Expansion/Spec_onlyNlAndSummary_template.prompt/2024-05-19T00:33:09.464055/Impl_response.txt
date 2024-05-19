@@ -1,0 +1,43 @@
+To build this setup using TSL (Temporal Stream Logic) and JavaScript, we would need to ensure that JavaScript is handling the event-driven parts, such as detecting key presses. Below, I'll provide a TSL template and the necessary JavaScript code to integrate with the system API for handling the `pressUp` predicate.
+
+### TSL Template Implementation
+
+For the TSL part, we define the environment interaction and the system's guarantee based on the `pressUp` predicate:
+
+```tsl
+always assume {
+}
+
+always guarantee {
+    pressUp(e) -> [cube.scale.x <- 1.5];
+    !pressUp(e) -> [cube.scale.x <- 1.0];
+}
+```
+
+This TSL template specifies that when the up arrow key is pressed (`pressUp(e)` returns true), the cube's x-axis scale should increase to 1.5. When the up arrow key is not pressed, the cube's x-axis scale should return to 1.0.
+
+### JavaScript Integration
+
+To implement the `pressUp` predicate in JavaScript and to integrate it with the cube scaling, we would use event listeners to detect key presses. Here's how you might set that up:
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowUp') {
+        cube.scale.x = 1.5;
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    if (event.key === 'ArrowUp') {
+        cube.scale.x = 1.0;
+    }
+});
+```
+
+### Explanation
+
+1. **JavaScript Event Listeners:** The `keydown` event listener checks for the 'ArrowUp' key, and if it's pressed, the cube's scale on the x-axis is set to 1.5. The `keyup` event sets the scale back to 1.0 when the 'ArrowUp' key is released.
+
+2. **TSL Guarantees:** The TSL template reflects these changes by adjusting the scale based on the predicate `pressUp(e)`. The system guarantees that the cube's scale changes are correctly represented and managed over time based on the user input.
+
+This setup combines both TSL for defining temporal guarantees and JavaScript for implementing the event-driven logic, with changes affecting a graphical element like a cube in a 3D environment.

@@ -1,0 +1,28 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Ensure user is either pressing or not pressing the up key at any time
+  (pressUp || !pressUp);
+}
+
+always guarantee {
+  // When the user presses the up button, increment the counter each frame
+  pressUp -> [count <- count + 1];
+
+  // When the user is not pressing the up button, reset the counter to 0.5
+  !pressUp -> [count <- 0.5];
+
+  // Continuously update the cube's scale.x with the value of the counter
+  [cube.scale.x <- count];
+}
+```
+
+Explanation:
+
+- **Assumptions**: The assumption that the user is either pressing or not pressing the up key at any time is necessary to clearly define the conditions under the guarantees. This helps in differentiating the behavior of the system when the key is pressed versus when it is not pressed.
+
+- **Guarantees**:
+  1. When the up key is pressed (`pressUp` is `true`), the counter is incremented by 1 each frame. This is shown by `[count <- count + 1]`.
+  2. When the up key is not pressed (`pressUp` is `false`), the counter is reset to 0.5. The syntax `[count <- 0.5]` accomplishes this.
+  3. The cube's scale along the x-axis (`cube.scale.x`) is continuously updated to match the value of the counter (`count`). The operation `[cube.scale.x <- count]` ensures this link between the counter and the cube’s scale.

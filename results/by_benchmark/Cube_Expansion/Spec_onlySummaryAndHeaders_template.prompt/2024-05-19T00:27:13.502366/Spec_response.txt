@@ -1,0 +1,19 @@
+Based on the given description, here is how you can translate the scenario into a TSL specification:
+
+```
+always assume {
+  // We assume that pressUp(e) is properly defined and reacts to the user's input
+}
+
+always guarantee {
+  // When up key is not pressed, the cube's scale along the x-axis remains at 0.5
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+
+  // When up key is pressed, increment the value of cube.scale.x each frame
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 0.1];
+}
+```
+
+This specification ensures that:
+- The cube's x-axis scale is set to 0.5 whenever the up key is not being pressed.
+- When the up key is pressed, the x-axis scale of the cube is incrementally increased by 0.1 for each frame during which the key remains pressed.

@@ -1,0 +1,21 @@
+Here is how you can formulate the given natural language description into a TSL specification:
+
+```tsl
+always assume {
+    // Ensure that the left and right buttons are never pressed simultaneously
+    !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+    // If the left button is pressed, rotate the cube left until the right button is pressed
+    pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e));
+
+    // If the right button is pressed, rotate the cube right until the left button is pressed
+    pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e));
+}
+```
+
+This TSL code corresponds to the requirements:
+1. It assumes that both buttons cannot be pressed at the same time (`!(pressL(e) && pressR(e))`).
+2. It guarantees that pressing the left button will start rotating the cube to the left and will continue until the right button is pressed (`pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e))`).
+3. Similarly, it ensures that pressing the right button will rotate the cube to the right and will continue until the left button is pressed (`pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e))`).

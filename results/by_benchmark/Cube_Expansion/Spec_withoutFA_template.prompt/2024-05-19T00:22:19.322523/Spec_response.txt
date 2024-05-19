@@ -1,0 +1,25 @@
+Here's the TSL specification based on the given description:
+
+```tsl
+always assume {
+    // There are no specific assumptions to note beyond the keyboard press.
+}
+
+always guarantee {
+    // When the user presses the up button, increment the counter every frame.
+    pressUp(e) -> [count <- count + 1];
+
+    // When the user is not pressing the up button, reset the counter to 0.5.
+    !pressUp(e) -> [count <- 0.5];
+
+    // The scale value along the x-axis is updated with the value of the counter.
+    [cube.scale.x <- count];
+}
+```
+
+Explanation:
+- In the `always assume` section, there are no specific environmental conditions or other predicates that need to be continuously checked; hence, it is empty.
+- In the `always guarantee` section, the behavior is defined based on whether the up key (`pressUp(e)`) is pressed or not:
+  - If `pressUp(e)` is true, the counter (`count`) increments by 1 every frame, simulating a continuous press.
+  - If `pressUp(e)` is false, the counter is reset to 0.5, indicating the key is not being pressed.
+  - Independently of the key press state, the cube's x-axis scale (`cube.scale.x`) is always updated to match the current value of the counter. This ensures that the scale reflects the duration for which the key has been pressed or the default value when it is not pressed.

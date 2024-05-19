@@ -1,0 +1,65 @@
+To implement the given requirements using JavaScript, we will need to define the functions `rotateLeft` and `rotateRight` to manipulate the cube's rotation, along with predicates `pressL` and `pressR` that detect button presses. Here's how you can do it:
+
+### Functions to Rotate the Cube
+
+```javascript
+function rotateLeft(cube) {
+    // Assuming cube.rotation.y is a numeric value representing the rotation in degrees or radians
+    // This function will increase the rotation to the left
+    cube.rotation.y -= 5; // rotate left by 5 units; adjust as necessary
+}
+
+function rotateRight(cube) {
+    // This function will increase the rotation to the right
+    cube.rotation.y += 5; // rotate right by 5 units; adjust as necessary
+}
+```
+
+### Predicates to Detect Button Presses
+
+For the predicates, you'll want to setup event listeners that can update a state based on button presses. Assuming that `e` represents an event object, you might typically check if a specific key is pressed for keyboard events. Let's say the left arrow key (`ArrowLeft`) corresponds to rotating left and the right arrow key (`ArrowRight`) to rotating right.
+
+```javascript
+// Initialize state variables to track button presses
+let leftPressed = false;
+let rightPressed = false;
+
+// Setup event listeners
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+
+// Predicate functions
+function pressL(e) {
+    return leftPressed; // returns true if the left arrow key is currently pressed
+}
+
+function pressR(e) {
+    return rightPressed; // returns true if the right arrow key is currently pressed
+}
+```
+
+### Explanation:
+
+1. **rotateLeft** and **rotateRight** Functions:
+   - These functions modify `cube.rotation.y` to change the cube's orientation in the Y-axis.
+   - Adjust the rotation value (`5` in this example) based on how sensitive the rotation should be.
+
+2. **pressL** and **pressR** Predicates:
+   - Use the `keydown` and `keyup` events to track when specific keys are pressed and released.
+   - Update the `leftPressed` and `rightPressed` boolean flags accordingly.
+   - The predicate functions return the current state of these flags, indicating whether the respective keys are pressed.
+
+This setup assumes that `cube` is an object accessible within the scope of these functions and has a `rotation` property with a `y` sub-property that can be modified to affect the cube's rotation. Adjustments might be needed depending on the actual implementation details of your cube object and the environment it's used in.

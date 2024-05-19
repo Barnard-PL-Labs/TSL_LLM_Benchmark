@@ -1,0 +1,28 @@
+Here's the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Define behavior of the input, 'pressUp', which can either be true or false.
+}
+
+always guarantee {
+  // The counter (count) increments by 1 every frame when the 'up' button is pressed.
+  pressUp -> [count <- count + 1];
+
+  // The counter (count) resets to 0.5 when the 'up' button is not pressed.
+  !pressUp -> [count <- 0.5];
+
+  // The cube's scale along the x-axis (cube.scale.x) is updated with the value of the counter (count).
+  [cube.scale.x <- count];
+}
+```
+
+### Explanation of TSL Code:
+1. **Assumptions**: We do not need to assume anything specific about other conditions or inputs besides the `pressUp` button. The `pressUp` input is assumed to be either true or false based on user interaction.
+
+2. **Guarantees**:
+   - **Increment Counter**: When the `pressUp` button is pressed (`pressUp`), the value of `count` is incremented by 1 in each frame.
+   - **Reset Counter**: When the `pressUp` button is not pressed (`!pressUp`), the counter is reset to 0.5.
+   - **Update Cube's Scale**: The cube's x-axis scaling (`cube.scale.x`) is continually updated to match the current value of `count`.
+
+This TSL setup ensures that the cube reacts appropriately to user input by dynamically adjusting its scale along the x-axis, demonstrating a direct dependency of the cube's appearance on user interaction.

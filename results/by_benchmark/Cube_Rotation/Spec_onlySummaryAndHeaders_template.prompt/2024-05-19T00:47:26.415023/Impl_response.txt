@@ -1,0 +1,69 @@
+To implement the provided methods in JavaScript, you can use event listeners to handle the predicates and direct modifications of the cube's properties for the functions. Below, I provide JavaScript code that fulfills the requirements using the system API, focusing on the cube's rotation and the detection of button presses via event listeners.
+
+### JavaScript Implementation:
+
+1. **Functions:**
+   - `rotateLeft(cube)`
+   - `rotateRight(cube)`
+
+2. **Predicates:**
+   - `pressL(e)`
+   - `pressR(e)`
+
+Here's the code implementing these functions and predicates:
+
+```javascript
+// Assuming 'cube' is already defined in the scope that represents your 3D cube object
+// For demonstration, let's consider 'cube' is an object with a property 'rotation' which in turn has a property 'y'
+
+// Functions
+function rotateLeft(cube) {
+    // Rotate the cube to the left by decreasing the y rotation
+    cube.rotation.y -= Math.PI / 18;  // Rotate by 10 degrees
+}
+
+function rotateRight(cube) {
+    // Rotate the cube to the right by increasing the y rotation
+    cube.rotation.y += Math.PI / 18;  // Rotate by 10 degrees
+}
+
+// Predicates
+// Assuming we are adding event listeners to the window or some specific element that captures key events
+let leftPressed = false;
+let rightPressed = false;
+
+window.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = true;
+    }
+});
+
+window.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+
+function pressL(e) {
+    return leftPressed;  // Returns true if the left arrow key is pressed
+}
+
+function pressR(e) {
+    return rightPressed; // Returns true if the right arrow key is pressed
+}
+```
+
+### Explanation:
+
+- **Functions**:
+  - `rotateLeft` and `rotateRight` directly manipulate the `cube.rotation.y` property to change the cube's orientation in 3D space. The rotation values are adjusted by a fixed amount, which corresponds to a rotation of approximately 10 degrees (`Math.PI / 18` radians).
+
+- **Predicates**:
+  - `pressL` and `pressR` are implemented using JavaScript's event listeners for keyboard events. They track whether the left or right arrow keys are pressed. These functions then return boolean values based on the state of these keys.
+  - `leftPressed` and `rightPressed` are flags that maintain the state of the respective keys. The state is updated whenever a keydown or keyup event occurs.
+
+This implementation effectively splits the control logic (functions) and the input detection (predicates), allowing straightforward integration with various user interface or game loop architectures.

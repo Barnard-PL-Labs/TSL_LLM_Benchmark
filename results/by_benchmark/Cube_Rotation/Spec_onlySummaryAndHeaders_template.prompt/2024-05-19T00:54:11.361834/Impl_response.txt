@@ -1,0 +1,46 @@
+Below is an implementation in JavaScript that corresponds to your specifications for handling cube rotations and button press detections. The cube's rotation is controlled via modifications to its `rotation.y` property, and button presses are detected through event listeners.
+
+```javascript
+// Assuming 'cube' is an object that has a 'rotation' property which, in turn, has a 'y' property.
+
+// Functions
+function rotateLeft(cube) {
+    // Increment the rotation on the y-axis to rotate left
+    cube.rotation.y -= Math.PI / 4; // Adjust the angle as per requirement
+    console.log('Rotated Left: ', cube.rotation.y);
+}
+
+function rotateRight(cube) {
+    // Decrement the rotation on the y-axis to rotate right
+    cube.rotation.y += Math.PI / 4; // Adjust the angle as per requirement
+    console.log('Rotated Right: ', cube.rotation.y);
+}
+
+// Predicates
+function pressL(e) {
+    return e.key === 'ArrowLeft'; // Returns true if left arrow key is pressed
+}
+
+function pressR(e) {
+    return e.key === 'ArrowRight'; // Returns true if right arrow key is pressed
+}
+
+// Setting up event listeners to detect key presses and rotate the cube accordingly
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        rotateLeft(cube);
+    } else if (pressR(e)) {
+        rotateRight(cube);
+    }
+});
+```
+
+### Explanation:
+
+1. **rotateLeft & rotateRight Functions**: These functions take a `cube` object as an argument and adjust its `rotation.y` property. The `Math.PI / 4` represents a 45-degree rotation but can be adjusted based on how much you want the cube to rotate per key press.
+
+2. **pressL & pressR Predicates**: These are functions that take an event `e` as an argument and return `true` if the left or right arrow key is pressed, respectively.
+
+3. **Event Listener**: An event listener is added to the entire document that listens for `keydown` events. When a key is pressed, it checks if it was the left or right arrow key and, if so, rotates the cube accordingly.
+
+This setup assumes that the `cube` object and its properties (`rotation.y`) are accessible and modifiable as outlined. In an actual implementation, ensure that the `cube` object is properly defined and initialized before these functions are called.

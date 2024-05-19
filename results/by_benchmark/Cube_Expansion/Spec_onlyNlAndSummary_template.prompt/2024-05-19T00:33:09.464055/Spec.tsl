@@ -1,0 +1,15 @@
+always assume {
+  // Define the event of pressing and releasing the up button
+  (pressUp(e) -> X (!pressUp(e) W releaseUp(e))) ;
+}
+
+always guarantee {
+  // Guarantee 1: When the user presses the up button, the counter increments by 1 every frame
+  pressUp(e) -> ([count <- count + 1]) ;
+
+  // Guarantee 2: When the user is not pressing the up button, the counter remains at 0.5
+  !pressUp(e) -> ([count <- 0.5]) ;
+
+  // Guarantee 3: The scale value along the x-axis is updated with the value of the counter
+  [cube.scale.x <- count] ;
+}

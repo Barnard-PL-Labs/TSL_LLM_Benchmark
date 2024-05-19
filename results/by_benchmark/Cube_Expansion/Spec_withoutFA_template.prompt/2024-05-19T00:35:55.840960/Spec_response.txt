@@ -1,0 +1,18 @@
+Here is the TSL specification based on the given natural language description:
+
+```tsl
+always assume {
+  // There are no specific environmental assumptions mentioned that affect the guarantees.
+}
+
+always guarantee {
+  // When the user presses the up button, the counter increments by 1 each frame.
+  pressUp(e) -> [count <- count + 1];
+
+  // When the user is not pressing the up button, reset the counter to 0.5.
+  !pressUp(e) -> [count <- 0.5];
+
+  // The scale x of the cube is updated to match the current counter value.
+  [cube.scale.x <- count];
+}
+```

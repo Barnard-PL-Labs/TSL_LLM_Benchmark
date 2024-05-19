@@ -1,0 +1,15 @@
+always assume {
+  // Ensure user is either pressing or not pressing the up key at any time
+  (pressUp || !pressUp);
+}
+
+always guarantee {
+  // When the user presses the up button, increment the counter each frame
+  pressUp -> [count <- count + 1];
+
+  // When the user is not pressing the up button, reset the counter to 0.5
+  !pressUp -> [count <- 0.5];
+
+  // Continuously update the cube's scale.x with the value of the counter
+  [cube.scale.x <- count];
+}

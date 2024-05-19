@@ -1,0 +1,39 @@
+To implement the predicates using the system API for a cube's scaling and detecting when the up arrow key is pressed, you would write the JavaScript code as follows. Note that we're using event listeners to detect the key presses and will modify the state of predicates based on these events.
+
+Here's how you can implement the given requirements:
+
+```javascript
+// This variable will hold the state of the up arrow key
+let pressUpState = false;
+
+// Add an event listener for the keydown event to check if the up arrow key is pressed
+document.addEventListener('keydown', function(event) {
+    if (event.key === "ArrowUp") {
+        pressUpState = true; // Set the predicate to true when the up key is pressed
+    }
+});
+
+// Add an event listener for the keyup event to reset the state when the up arrow key is released
+document.addEventListener('keyup', function(event) {
+    if (event.key === "ArrowUp") {
+        pressUpState = false; // Reset the predicate to false when the up key is released
+    }
+});
+
+// The pressUp predicate function
+function pressUp() {
+    return pressUpState; // Returns the current state of the up arrow key press
+}
+
+// Example usage: Call this function periodically to check the state of the predicate
+function checkPressUp() {
+    if (pressUp()) {
+        console.log("The up arrow key is currently pressed.");
+        // Additional actions when the up key is pressed can be added here
+    } else {
+        console.log("The up arrow key is not pressed.");
+    }
+}
+```
+
+This implementation creates two event listeners to track when the up arrow key is pressed and released. The state of the key press is maintained in the `pressUpState` variable, and the predicate function `pressUp()` returns this state, which can be used wherever this predicate logic is needed in the application. The `checkPressUp()` function demonstrates how you might poll this state periodically, which can be adapted based on how frequently you need to check this state in your application logic.

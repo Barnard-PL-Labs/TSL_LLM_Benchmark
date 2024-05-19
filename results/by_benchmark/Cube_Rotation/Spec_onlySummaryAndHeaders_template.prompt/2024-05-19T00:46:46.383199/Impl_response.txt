@@ -1,0 +1,55 @@
+To implement the required functions and predicates using JavaScript, we will make use of event listeners for detecting key presses and modify the cube's rotation accordingly. Below is a detailed implementation:
+
+### JavaScript Implementation
+
+```javascript
+// Cell to represent the cube's state
+let cube = {
+  rotation: {
+    y: 0
+  }
+};
+
+// Function to rotate the cube to the left
+function rotateLeft(cube) {
+  cube.rotation.y -= 10; // Decrease y rotation value to rotate left
+  console.log(`Rotated Left: New rotation.y = ${cube.rotation.y}`);
+}
+
+// Function to rotate the cube to the right
+function rotateRight(cube) {
+  cube.rotation.y += 10; // Increase y rotation value to rotate right
+  console.log(`Rotated Right: New rotation.y = ${cube.rotation.y}`);
+}
+
+// Predicate to check if the left button is pressed
+function pressL(e) {
+  return e.key === 'ArrowLeft'; // Return true if the left arrow key is pressed
+}
+
+// Predicate to check if the right button is pressed
+function pressR(e) {
+  return e.key === 'ArrowRight'; // Return true if the right arrow key is pressed
+}
+
+// Event listener for key presses
+document.addEventListener('keydown', function(e) {
+  if (pressL(e)) {
+    rotateLeft(cube); // Rotate the cube left if the left key is pressed
+  } else if (pressR(e)) {
+    rotateRight(cube); // Rotate the cube right if the right key is pressed
+  }
+});
+```
+
+### Explanation
+
+1. **Cube State**: We define a `cube` object with a `rotation` property to hold its current rotation state in the `y` direction.
+   
+2. **Rotation Functions**: `rotateLeft` and `rotateRight` functions adjust the cube's `rotation.y` property, decreasing or increasing it respectively to simulate rotation.
+
+3. **Predicates**: `pressL` and `pressR` are functions that return true when the Left or Right arrow keys are pressed. They are used within the event listener to determine which action to take.
+
+4. **Event Listener**: We add a keydown event listener to the document to capture key presses. Based on the key pressed, identified by the predicates, we call the appropriate rotation function to adjust the cube's rotation.
+
+This setup ensures that pressing the left or right arrow keys will trigger a rotation of the cube to the left or right, respectively, demonstrating a basic interaction model using JavaScript with browser events.

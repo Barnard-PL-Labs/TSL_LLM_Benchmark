@@ -1,0 +1,32 @@
+Here's the TSL specification based on the natural language description provided:
+
+```tsl
+always assume {
+  // Define how the up key interaction is assumed to work
+  (pressUp(e) && !pressUp(e')) -> X !pressUp(e);
+  (!pressUp(e) && pressUp(e')) -> X pressUp(e);
+}
+
+always guarantee {
+  // Increment the counter each frame while the up key is pressed
+  pressUp(e) -> [count <- count + 1];
+
+  // Reset the counter to 0.5 when the up key is not pressed
+  !pressUp(e) -> [count <- 0.5];
+
+  // Update the cube's x-axis scale with the counter value
+  [cube.scale.x <- count];
+}
+```
+
+### Explanation
+1. **Assumptions**:
+   - If the up key is pressed and then released the very next moment, the next state should not detect the up key as pressed.
+   - If the up key is not pressed and is pressed the very next moment, the next state should detect the up key as pressed.
+
+2. **Guarantees**:
+   - When the user presses the up button, the counter increments by 1 for every frame during which the key remains pressed.
+   - When the user is not pressing the up button, the counter is set to 0.5.
+   - The scale of the cube along the x-axis (`cube.scale.x`) is continuously updated to match the current count value.
+
+This TSL specification ensures that the cube's scaling behavior reacts dynamically and precisely to the user's interaction with the up key, reflecting changes in real-time.

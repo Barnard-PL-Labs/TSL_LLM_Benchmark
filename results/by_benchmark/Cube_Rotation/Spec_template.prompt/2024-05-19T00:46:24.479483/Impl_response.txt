@@ -1,0 +1,57 @@
+To implement the requested functions and predicates in JavaScript, we need to create functions that manipulate `cube.rotation.y` to represent the rotation of the cube, and predicates that check for left or right button presses. Here is a possible implementation based on the given API and requirements:
+
+### JavaScript Implementation
+
+First, let's define the rotation functions:
+
+```javascript
+// Function to rotate the cube to the left
+function rotateLeft(cube) {
+    // Rotating left can be achieved by decrementing the rotation on the y-axis
+    cube.rotation.y -= 0.1; // Rotate by 0.1 radians to the left
+}
+
+// Function to rotate the cube to the right
+function rotateRight(cube) {
+    // Rotating right can be achieved by incrementing the rotation on the y-axis
+    cube.rotation.y += 0.1; // Rotate by 0.1 radians to the right
+}
+```
+
+Next, let's implement the predicates that listen for button presses. Assuming we are working in a browser environment, we can use the `keydown` event to detect if the left or right buttons (typically arrow keys) are pressed:
+
+```javascript
+// Predicate to check if the left arrow key is pressed
+function pressL(e) {
+    return e.key === 'ArrowLeft';
+}
+
+// Predicate to check if the right arrow key is pressed
+function pressR(e) {
+    return e.key === 'ArrowRight';
+}
+```
+
+To integrate these predicates into an event listener setup that makes use of these predicates, you can add event listeners to the document:
+
+```javascript
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        console.log('Left button pressed');
+        // Additionally, you can call rotateLeft here if needed
+        rotateLeft(cube);
+    } else if (pressR(e)) {
+        console.log('Right button pressed');
+        // Additionally, you can call rotateRight here if needed
+        rotateRight(cube);
+    }
+});
+```
+
+This setup listens for keydown events and checks if either the left or right arrow key is pressed. Depending on which key is pressed, it logs to the console and calls the respective rotation function.
+
+### Notes:
+- The rotation values (`0.1`) are arbitrary and can be adjusted based on how fast or slow you want the cube to rotate.
+- Ensure that the `cube` object is correctly defined with a `rotation` property that has a `y` sub-property.
+- This code assumes that the environment where this JavaScript is running has access to the DOM (like a typical web browser).
+- Make sure to add error handling if necessary, especially if `cube` might not always be properly initialized.

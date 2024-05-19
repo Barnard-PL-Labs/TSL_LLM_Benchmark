@@ -1,0 +1,14 @@
+always assume {
+  // It is assumed that both the left and right buttons cannot be pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // If the left button is pressed, the cube starts rotating to the left
+  // This rotation continues until the right button is pressed
+  pressL(e) -> [cube <- rotateLeft(cube)] W pressR(e);
+
+  // Conversely, if the right button is pressed, the cube starts rotating to the right
+  // This rotation continues until the left button is pressed
+  pressR(e) -> [cube <- rotateRight(cube)] W pressL(e);
+}

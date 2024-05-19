@@ -1,0 +1,63 @@
+To implement the required functionality in JavaScript, we'll create functions for rotating the cube left and right, as well as predicates that check whether the left or right button is pressed based on event listeners. Since predicates involve listening to button presses, we can utilize the keyboard events for simplicity.
+
+Here is the JavaScript code to achieve the desired behavior:
+
+```javascript
+// Assumed HTML structure for testing purposes:
+// <div id="cube" style="width: 100px; height: 100px; background: red;"></div>
+// <button id="leftButton">Left</button>
+// <button id="rightButton">Right</button>
+
+// Represents the cube in the DOM for manipulation
+const cube = document.getElementById('cube');
+cube.rotation = { y: 0 };  // Simulate a rotation property
+
+// Function to rotate the cube left
+function rotateLeft() {
+    cube.rotation.y -= 10;  // Decrease the y rotation by 10 degrees
+    console.log(`Rotated Left: ${cube.rotation.y} degrees`);
+}
+
+// Function to rotate the cube right
+function rotateRight() {
+    cube.rotation.y += 10;  // Increase the y rotation by 10 degrees
+    console.log(`Rotated Right: ${cube.rotation.y} degrees`);
+}
+
+// Predicate to detect left button press
+function pressL(e) {
+    return e.key === 'ArrowLeft';  // Returns true if the left arrow key is pressed
+}
+
+// Predicate to detect right button press
+function pressR(e) {
+    return e.key === 'ArrowRight';  // Returns true if the right arrow key is pressed
+}
+
+// Adding event listeners to document to handle key presses
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        rotateLeft();  // Rotate the cube left if the left arrow key is pressed
+    } else if (pressR(e)) {
+        rotateRight();  // Rotate the cube right if the right arrow key is pressed
+    }
+});
+
+// Optionally, for button elements in HTML, we can add click listeners
+const leftButton = document.getElementById('leftButton');
+const rightButton = document.getElementById('rightButton');
+
+leftButton.addEventListener('click', rotateLeft);
+rightButton.addEventListener('click', rotateRight);
+```
+
+### Explanation:
+1. **Cube Manipulation**: We simulate a cube object with a rotation property. In a full 3D application, you would use a proper 3D library like Three.js, but for demonstration purposes, we are just manipulating a simple object.
+
+2. **rotateLeft** and **rotateRight Functions**: These functions modify the `cube.rotation.y` property to simulate rotation. The console logs the updated rotation degree.
+
+3. **pressL** and **pressR Predicates**: These functions return `true` if the left or right arrow keys are pressed, respectively. They are used to check the keypress in the event listener.
+
+4. **Event Listeners**: We add a 'keydown' event listener to the entire document that checks for left and right arrow key presses to rotate the cube accordingly. Additionally, if there are actual buttons in the HTML (not shown in your request), we can add click event listeners to these buttons to trigger rotations.
+
+This setup should provide a functional example of how to integrate simple 3D manipulations and event-driven interactions in a web application.

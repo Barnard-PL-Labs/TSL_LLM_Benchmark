@@ -1,0 +1,20 @@
+Here is the TSL specification based on the provided description of the cube control system using two buttons for rotating the cube left or right:
+
+```tsl
+always assume {
+  // Assume that the left and right buttons are never pressed at the same time
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // If the left button is pressed, rotate the cube to the left until the right button is pressed
+  pressL(e) -> [cube <- rotateLeft(cube)] W pressR(e);
+
+  // If the right button is pressed, rotate the cube to the right until the left button is pressed
+  pressR(e) -> [cube <- rotateRight(cube)] W pressL(e);
+}
+```
+
+This specification meets the criteria outlined:
+- It assumes that both buttons cannot be pressed simultaneously.
+- It guarantees that pressing the left button causes the cube to rotate left until the right button is pressed and vice versa, ensuring smooth control of the cube's rotation direction.

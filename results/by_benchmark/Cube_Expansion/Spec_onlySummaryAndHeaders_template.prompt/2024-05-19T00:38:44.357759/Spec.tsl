@@ -1,0 +1,14 @@
+always assume {
+  //No explicit assumptions other than the definition of the pressUp predicate
+}
+
+always guarantee {
+  // When the up key is not pressed, set the cube's scale.x to 0.5
+  !(pressUp(e)) -> [cube.scale.x <- 0.5];
+
+  // When the up key is pressed, increment the cube's scale.x by 0.1 every frame
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 0.1];
+
+  // When the key is released, immediately return the scale value to 0.5
+  // This behavior is already covered by the first guarantee when the key is not pressed
+}

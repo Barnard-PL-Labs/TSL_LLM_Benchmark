@@ -1,0 +1,25 @@
+Here's the TSL specification based on the natural language description provided:
+
+```tsl
+always assume {
+  // Ensure that left and right buttons are never pressed at the same time
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, rotate the cube to the left until the right button is pressed
+  pressL(e) -> [cube <- rotateLeft(cube)] W pressR(e);
+
+  // When the right button is pressed, rotate the cube to the right until the left button is pressed
+  pressR(e) -> [cube <- rotateRight(cube)] W pressL(e);
+}
+```
+
+### Explanation:
+- **Assumptions:**
+  - The `always assume` block includes a condition to ensure that the left (`pressL(e)`) and right (`pressR(e)`) buttons are not pressed simultaneously. This prevents conflicts in button inputs that could send conflicting commands to the cube's rotation mechanism.
+
+- **Guarantees:**
+  - In the `always guarantee` block:
+    - If the left button is pressed (`pressL(e)`), the cube is rotated to the left (`rotateLeft(cube)`) and this action continues until the right button is pressed (`pressR(e)`). This is represented by the "Weak Until" (`W`) operator, which ensures that the action on the left of `W` continues until the condition on the right of `W` becomes true.
+    - Similarly, if the right button is pressed, the cube is rotated to the right (`rotateRight(cube)`) until the left button is pressed. This ensures uninterrupted rotation in the specified direction until the opposite button is pressed, providing a responsive and controlled interaction for rotating the cube.

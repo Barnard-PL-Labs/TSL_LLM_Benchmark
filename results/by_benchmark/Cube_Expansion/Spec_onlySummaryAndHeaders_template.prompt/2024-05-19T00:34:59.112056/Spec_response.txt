@@ -1,0 +1,15 @@
+Here's the TSL specification that represents the natural language description provided:
+
+```tsl
+always assume {
+  // No specific assumptions related to external conditions are necessary
+}
+
+always guarantee {
+  // When the up key is not pressed, the cube's scale along the x-axis remains at 0.5
+  !pressUp(e) -> [cube.scale.x <- 0.5];
+
+  // When the up key is pressed, the cube's scale along the x-axis increases incrementally each frame
+  pressUp(e) -> [cube.scale.x <- cube.scale.x + 0.1];
+}
+```
