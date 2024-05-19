@@ -1,0 +1,29 @@
+Here is the TSL specification based on the provided description and functions:
+
+```TSL
+always assume {
+  // Ensure that the left and right buttons are not pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, increment the count for the cube's rotation and update using the sinusoidal function
+  pressL(e) -> ([count <- count + 1] && [cube.rotation.y <- sin(count)]);
+
+  // When the right button is pressed, increment the count for the polygon's rotation and update using the sawtooth function
+  pressR(e) -> ([count <- count + 1] && [polygon.rotation.y <- saw(count)]);
+
+  // Set initial or static positions of the cube and polygon
+  true -> ([cube.position <- (1, 1, 1)] && [polygon.position <- (2, 2, 2)]);
+}
+```
+
+### Explanation of TSL Specification:
+1. **Assumptions**: The specification starts by ensuring mutual exclusion of left and right button presses, which means they cannot be pressed simultaneously.
+
+2. **Guarantees**:
+   - **Rotation of Cube**: When the left button is pressed, it increases a counter and applies a sinusoidal function to the cube's rotation around the y-axis.
+   - **Rotation of Polygon**: Similarly, pressing the right button increments the same counter but applies a sawtooth function to the polygon's rotation.
+   - **Static Positions**: Regardless of the state, the cube and polygon have fixed positions set to predefined coordinates. This means their position in space does not change dynamically, only their rotation does.
+
+This setup creates a dynamic interaction where user inputs adjust the rotations of two objects through different mathematical functions, thereby creating a visually interesting and interactive scene.

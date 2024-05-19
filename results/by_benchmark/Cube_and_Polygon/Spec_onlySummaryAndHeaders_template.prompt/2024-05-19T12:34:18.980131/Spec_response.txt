@@ -1,0 +1,36 @@
+Here's the TSL specification based on the provided natural language description and available functions and predicates:
+
+```tsl
+always assume {
+  // Define mutual exclusion between left and right button presses
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, update the cube's rotation based on a sinusoidal function of a count variable
+  pressL(e) -> [Cube.rotation <- sin(count)];
+  
+  // When the right button is pressed, update the polygon's rotation based on a sawtooth function of the count variable
+  pressR(e) -> [Polygon.rotation <- saw(count)];
+  
+  // Increment the count when either button is pressed
+  (pressL(e) || pressR(e)) -> [count <- count + 1];
+  
+  // Maintain the static position of the cube and polygon
+  true -> ([Cube.position.x <- 0] && [Cube.position.y <- 0]);
+  true -> ([Polygon.position.x <- 5] && [Polygon.position.y <- 5]);
+}
+```
+
+### Explanation:
+1. **Mutual Exclusion of Button Presses**: The assumption ensures that the left and right buttons cannot be pressed simultaneously, preventing conflicting updates.
+
+2. **Graphical Updates**:
+   - The cube's rotation is updated using a sinusoidal function of a variable `count`, which changes whenever the left button (`pressL(e)`) is pressed.
+   - Similarly, the polygon's rotation is updated using a sawtooth function of `count`, which is updated when the right button (`pressR(e)`) is pressed.
+
+3. **Incrementing Count**: The count variable is incremented each time either button is pressed, influencing the rotation computations for both graphical objects.
+
+4. **Static Positioning**: The cube and polygon have fixed positions in the graphical scene, defined to be constant regardless of any other changes happening in the system.
+
+This specification achieves a dynamic rotation effect for the cube and polygon while keeping their positions fixed, all controlled by user inputs from left and right keys.

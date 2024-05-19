@@ -1,0 +1,57 @@
+Based on the description provided, below is an implementation in JavaScript for the functions and predicates that interact with a hypothetical `cube` object and handle button presses. This setup assumes that the cube manipulation depends on certain events like button presses.
+
+First, let's define the `rotateLeft` and `rotateRight` functions which will modify the `cube.rotation.y` property to rotate the cube. Afterwards, I'll set up the predicates `pressL` and `pressR` which detect left and right button presses respectively.
+
+```javascript
+// Definition of the `cube` object for demonstration purposes. 
+// In a real application, this would be provided by the system API.
+const cube = {
+    rotation: {
+        y: 0
+    }
+};
+
+// Functions to manipulate the cube
+function rotateLeft(cube) {
+    cube.rotation.y -= 10; // Decrements the y rotation; adjust the value as needed for visible rotation
+    console.log(`Rotated Left: cube.rotation.y is now ${cube.rotation.y}`);
+}
+
+function rotateRight(cube) {
+    cube.rotation.y += 10; // Increments the y rotation; adjust the value as needed for visible rotation
+    console.log(`Rotated Right: cube.rotation.y is now ${cube.rotation.y}`);
+}
+
+// Predicate function factories for detecting button presses.
+// These functions accept an event argument and check if a specific button was pressed.
+// Assuming that `e` is an event object with a property `button` where 
+// left button is represented as 0 and right button as 1.
+
+function pressL(e) {
+    return e.button === 0; // Left mouse button
+}
+
+function pressR(e) {
+    return e.button === 1; // Right mouse button
+}
+
+// Example usage with event listeners
+document.addEventListener('mousedown', function(e) {
+    if (pressL(e)) {
+        rotateLeft(cube);
+    } else if (pressR(e)) {
+        rotateRight(cube);
+    }
+});
+```
+
+### Explanation:
+1. **cube**: The `cube` object has a property `rotation` which in turn has a `y` property representing the rotation around the y-axis.
+
+2. **rotateLeft** and **rotateRight**: These functions adjust the `y` rotation of the cube by a fixed amount. You can change the rotation amount (`10` in this example) as needed.
+
+3. **pressL** and **pressR**: These functions return `true` if the left or right mouse buttons are pressed, respectively. They are designed to be used within event listeners or other functions to conditionally execute logic based on button presses.
+
+4. **Event Listeners**: The `mousedown` event listener is used to handle mouse clicks. Depending on which button is pressed, it either rotates the cube left or right.
+
+Make sure to adjust and test this code depending on the specific API and environment details you have, as this example assumes a very basic setup and standard web APIs for demonstrative purposes.

@@ -1,0 +1,19 @@
+always assume {
+    // Define the exclusive relationship between pressing the right button and the left button
+    !(pressR(e) && pressL(e));
+}
+
+always guarantee {
+    // When the right key is pressed, increment the count which affects the cube's rotation using a sinusoidal function
+    pressR(e) -> [cube.rotation.y <- sin(count)];
+    
+    // When the left key is pressed, increment the count which affects the polygon's rotation using a sawtooth wave function
+    pressL(e) -> [polygon.rotation.y <- saw(count)];
+    
+    // Static positions for the cube and polygon are maintained
+    [cube.position <- staticCubePosition];
+    [polygon.position <- staticPolygonPosition];
+    
+    // Increment the count whenever a key is pressed
+    (pressR(e) || pressL(e)) -> [count <- count + 1];
+}

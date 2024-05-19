@@ -1,0 +1,78 @@
+To implement the described system, we will need to create both the functions and predicates in the JavaScript environment, using the guidelines provided. Below are the JavaScript implementations of the prescribed functions and predicates, ensuring that they utilize the provided API and event listeners as indicated.
+
+### Functions
+
+1. **rotateLeft(cube)**
+   - This function will decrement the y-rotation of the cube, effectively rotating it to the left.
+
+2. **rotateRight(cube)**
+   - This function will increment the y-rotation of the cube, rotating it to the right.
+
+### Predicates
+
+1. **pressL(e)**
+   - This predicate will return `true` if the left button is pressed. We'll assume a particular key (e.g., arrow left) represents the left button in this case.
+
+2. **pressR(e)**
+   - This predicate will return `true` if the right button is pressed. Similarly, we'll assume a particular key (e.g., arrow right) represents the right button.
+
+For the predicates, we will use JavaScript's event listeners to capture key presses. Let's start coding:
+
+```javascript
+// Functions
+function rotateLeft(cube) {
+    // Decrement the rotation on the y-axis to rotate left
+    cube.rotation.y -= 0.1;
+}
+
+function rotateRight(cube) {
+    // Increment the rotation on the y-axis to rotate right
+    cube.rotation.y += 0.1;
+}
+
+// Predicates
+// We will use key codes for the left (37) and right (39) arrows
+let leftPressed = false;
+let rightPressed = false;
+
+document.addEventListener('keydown', function(e) {
+    if (e.keyCode === 37) {  // Left arrow key
+        leftPressed = true;
+    } else if (e.keyCode === 39) {  // Right arrow key
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.keyCode === 37) {  // Left arrow key
+        leftPressed = false;
+    } else if (e.keyCode === 39) {  // Right arrow key
+        rightPressed = false;
+    }
+});
+
+function pressL() {
+    return leftPressed;
+}
+
+function pressR() {
+    return rightPressed;
+}
+
+// Usage example within an update function or game loop
+function updateCube(cube) {
+    if (pressL()) {
+        rotateLeft(cube);
+    }
+    if (pressR()) {
+        rotateRight(cube);
+    }
+}
+```
+
+### Explanation:
+- **Functions**: `rotateLeft()` and `rotateRight()` modify the `cube.rotation.y` property to rotate the cube left or right respectively.
+- **Predicates**: `pressL()` and `pressR()` use a pair of boolean flags (`leftPressed` and `rightPressed`) that are toggled by keyboard event listeners. These functions return the current state of these flags, indicating whether the respective keys are currently pressed.
+- **Event Listeners**: We use 'keydown' to set the flags to `true` when the corresponding key is pressed and 'keyup' to reset them to `false` when released.
+
+This setup will allow the cube to respond to left and right key presses by rotating accordingly, leveraging the provided API effectively.

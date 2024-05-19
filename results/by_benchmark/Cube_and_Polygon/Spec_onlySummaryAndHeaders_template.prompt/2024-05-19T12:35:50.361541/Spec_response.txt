@@ -1,0 +1,31 @@
+Below is the TSL specification for managing a graphical interface where user inputs from the right and left keys affect a numerical count that directly influences the rotation of a cube and a polygon, based on sinusoidal and sawtooth functions, while maintaining static positions for these objects:
+
+```tsl
+always assume {
+    // Assume the mutual exclusion of left and right button presses
+    !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+    // Initialize count as a static value
+    [count <- 0];
+
+    // When the right button is pressed, increment the count
+    pressR(e) -> [count <- count + 1];
+
+    // When the left button is pressed, decrement the count
+    pressL(e) -> [count <- count - 1];
+
+    // The cube's rotation along the y-axis follows a sinusoidal function of the count
+    [cube.rotation.y <- sin(count)];
+
+    // The polygon's rotation along the y-axis follows a sawtooth wave function of the count
+    [polygon.rotation.y <- saw(count)];
+
+    // Static position settings for the cube and polygon
+    [cube.position <- {x: 0, y: 0, z: 0}];
+    [polygon.position <- {x: 10, y: 0, z: 0}];
+}
+```
+
+This TSL specification outlines the behavior of a graphical interface where interactive key presses manipulate the rotation of objects based on mathematical functions, while maintaining predetermined positions.

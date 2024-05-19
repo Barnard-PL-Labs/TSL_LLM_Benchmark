@@ -1,0 +1,34 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Specify that the left and right buttons are never pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // Increment count by 0.1 when the right key is pressed until the left key is pressed
+  pressR(e) -> ([count <- count + 0.1] W pressL(e));
+
+  // Decrement count by 0.1 when the left key is pressed until the right key is pressed
+  pressL(e) -> ([count <- count - 0.1] W pressR(e));
+
+  // The rotation of the cube along the y-axis follows the sine of twice the count value
+  [cube.rotation.y <- sin(2 * count)];
+
+  // The rotation of the polygon along the y-axis follows a sawtooth function calculated as described
+  [polygon.rotation.y <- saw(0.5 * (1 + count))];
+
+  // Set the static position of the cube on the x-axis
+  [cube.position.x <- 1];
+
+  // Set the static position of the polygon on the x-axis
+  [polygon.position.x <- 3];
+}
+```
+
+### Explanation
+- The `always assume` section ensures the mutual exclusion of the left and right key presses.
+- The `always guarantee` section outlines the behavior for incrementing and decrementing the `count` variable based on key presses. The `W` (weak until) operator allows the count modification to continue until the opposite key is pressed.
+- The sinusoidal and sawtooth functions for the rotation angles of the cube and polygon are updated continually as the `count` value changes.
+- The positions of the cube and polygon are kept constant as specified.

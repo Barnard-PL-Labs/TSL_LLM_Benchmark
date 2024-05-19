@@ -1,0 +1,52 @@
+To implement the requested system, we will first define the JavaScript functions and predicates that interact with the `cube` object and respond to button presses. Below is the code that includes these implementations using an event-driven approach.
+
+```javascript
+// Assuming cube is an object accessible within this scope with a property rotation that is also an object having a y property
+const cube = {
+  rotation: {
+    y: 0
+  }
+};
+
+// Functions to rotate the cube
+function rotateLeft(cube) {
+  cube.rotation.y -= 0.1; // Decrease the y rotation to rotate left
+  console.log(`Rotated Left: New y rotation = ${cube.rotation.y}`);
+}
+
+function rotateRight(cube) {
+  cube.rotation.y += 0.1; // Increase the y rotation to rotate right
+  console.log(`Rotated Right: New y rotation = ${cube.rotation.y}`);
+}
+
+// Predicates for button presses, simulated using event listeners on the document
+// Assume 'e' is an event object with a property 'key' indicating which key was pressed
+
+function pressL(e) {
+  return e.key === 'ArrowLeft'; // Returns true when the left arrow key is pressed
+}
+
+function pressR(e) {
+  return e.key === 'ArrowRight'; // Returns true when the right arrow key is pressed
+}
+
+// Adding event listeners to the document to handle key presses
+document.addEventListener('keydown', function(e) {
+  if (pressL(e)) {
+    rotateLeft(cube); // Rotate cube left if left arrow key is pressed
+  } else if (pressR(e)) {
+    rotateRight(cube); // Rotate cube right if right arrow key is pressed
+  }
+});
+```
+
+### Explanation:
+1. **Cube Object**: We assume there's a `cube` object with a nested `rotation` object, which has a `y` property used to determine its rotation along the Y-axis.
+
+2. **Rotation Functions**: `rotateLeft` and `rotateRight` modify the `y` property of `cube.rotation` to rotate the cube. We use increments and decrements of `0.1` for this example, but this can be adjusted based on the actual rotation sensitivity required.
+
+3. **Predicates for Button Presses**: `pressL` and `pressR` are functions that return `true` when the left or right arrow keys are pressed, respectively.
+
+4. **Event Listener**: An event listener is added to the document to listen for `keydown` events. When a key is pressed, it checks which key was activated and calls the respective rotation function based on the result from the predicates.
+
+This setup assumes a simple browser environment where such interactions make sense (i.e., within a webpage with access to the DOM). Adjustments might be needed based on the specifics of the execution environment or additional requirements.

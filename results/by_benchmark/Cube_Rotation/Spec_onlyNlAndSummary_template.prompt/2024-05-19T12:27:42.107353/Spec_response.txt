@@ -1,0 +1,29 @@
+Here is the TSL specification based on your description:
+
+```TSL
+always assume {
+  // Assumption that left and right buttons are never pressed at the same time
+  !(pressLeft && pressRight);
+}
+
+always guarantee {
+  // Guarantee that if the left button is pressed, the cube rotates to the left
+  // until the right button is pressed
+  pressLeft -> [cube.rotationDirection <- "left"] W pressRight;
+
+  // Guarantee that if the right button is pressed, the cube rotates to the right
+  // until the left button is pressed
+  pressRight -> [cube.rotationDirection <- "right"] W pressLeft;
+}
+```
+
+Explanation:
+
+- **Assumptions**:
+  - The system assumes that both the left (`pressLeft`) and right (`pressRight`) buttons are never pressed simultaneously. This is crucial to prevent conflicting commands for rotation.
+
+- **Guarantees**:
+  - If the left button is pressed, the cube's rotation direction is set to "left." This state continues until the right button is pressed, which is indicated by the Weak Until (`W`) operator. This ensures that even if the right button is never pressed, the rotation direction remains left.
+  - Similarly, pressing the right button sets the cube's rotation direction to "right," and it stays this way until the left button is pressed. Here again, the Weak Until (`W`) operator is used to maintain the right rotation as long as the left button isn't pressed.
+
+This TSL specification captures the operational requirements for the control system of the cube, ensuring that the rotation direction is controlled smoothly and without conflicts between button presses.

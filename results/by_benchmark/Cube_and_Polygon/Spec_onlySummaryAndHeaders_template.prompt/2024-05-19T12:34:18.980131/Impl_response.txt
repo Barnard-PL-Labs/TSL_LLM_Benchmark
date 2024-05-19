@@ -1,0 +1,60 @@
+Below is the JavaScript implementation addressing the requirements for functions, predicates, and the system API. The script includes functions for computing the sine and sawtooth wave values, and predicates for detecting left and right button presses using event listeners.
+
+```javascript
+// Functions
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    // Implementing a simple sawtooth wave function
+    // Period of the sawtooth wave could be adjusted if needed; here we assume it to be 2π
+    return 2 * (x / (2 * Math.PI) - Math.floor(0.5 + x / (2 * Math.PI)));
+}
+
+// Predicates with event listeners for button presses
+function setupButtonListeners(cube) {
+    // Assuming the cube object is passed and it has a scale property we can manipulate
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowLeft") {
+            if (pressL(e)) {
+                // Perform an action when the left button is pressed
+                console.log('Left button pressed.');
+                cube.scale.x = sin(Math.PI / 4);  // Example action: set cube's x-scale to sin(π/4)
+            }
+        } else if (e.key === "ArrowRight") {
+            if (pressR(e)) {
+                // Perform an action when the right button is pressed
+                console.log('Right button pressed.');
+                cube.scale.x = saw(Math.PI / 2);  // Example action: set cube's x-scale to saw(π/2)
+            }
+        }
+    });
+}
+
+function pressL(e) {
+    return e.key === "ArrowLeft";
+}
+
+function pressR(e) {
+    return e.key === "ArrowRight";
+}
+
+// Example usage, assuming a cube object exists
+// In a real implementation, ensure the cube object is defined and has a scale property.
+const exampleCube = {
+    scale: {
+        x: 1,  // Initial scale along x-axis
+    }
+};
+
+setupButtonListeners(exampleCube);
+```
+
+### Explanation
+- **Functions (`sin` and `saw`)**: These functions compute the sine of a given number and a sawtooth wave, respectively. The sine function uses JavaScript's built-in `Math.sin()`, while the sawtooth wave function is implemented manually.
+- **Predicates (`pressL` and `pressR`)**: These are simple functions that check if the left or right arrow key is pressed. They return a boolean value accordingly.
+- **Event Listeners**: The `setupButtonListeners` function attaches an event listener to the document for keyboard events. When the left or right arrow key is pressed, it checks the predicate, performs an action, and logs the event.
+- **System API**: The cube's scale manipulation is shown in the `setupButtonListeners` function as an example of how you could link the scale to different wave functions based on button presses.
+
+This script should be adapted to fit into an environment where the `cube` object (representing a 3D cube in a graphical application) is properly defined and manipulated according to the specific requirements of the environment.

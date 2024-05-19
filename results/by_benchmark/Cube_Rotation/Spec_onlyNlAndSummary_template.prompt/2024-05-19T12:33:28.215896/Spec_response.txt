@@ -1,0 +1,20 @@
+Here is the TSL specification that corresponds to the given natural language description:
+
+```TSL
+always assume {
+  // Assume that the left and right buttons are never pressed simultaneously
+  !(pressLeft && pressRight);
+}
+
+always guarantee {
+  // Guarantee that if the left button is pressed, the cube begins rotating to the left until the right button is pressed
+  pressLeft -> ([cube.rotation <- "left"] W pressRight);
+
+  // Guarantee that if the right button is pressed, the cube begins rotating to the right until the left button is pressed
+  pressRight -> ([cube.rotation <- "right"] W pressLeft);
+}
+```
+
+In this TSL specification:
+- The `assume` block ensures mutual exclusion between the left and right button presses.
+- The `guarantee` block defines the rotation behavior of the cube based on the button pressed. The syntax `[cube.rotation <- "left"]` means setting the cube's rotation to left, and similarly `[cube.rotation <- "right"]` sets the rotation to right. The 'W' operator is used to maintain this state until the opposite button is pressed, ensuring the rotation direction is maintained continuously until interrupted by pressing the other button.

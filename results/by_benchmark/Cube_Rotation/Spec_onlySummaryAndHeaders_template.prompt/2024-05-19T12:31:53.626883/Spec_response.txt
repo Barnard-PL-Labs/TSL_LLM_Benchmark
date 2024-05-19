@@ -1,0 +1,20 @@
+To translate the natural language description into a TSL specification, we'll define assumptions to prevent simultaneous button presses and guarantees to manage the cube's rotation based on the button pressed. Here is the complete TSL specification based on the provided functions, predicates, and description:
+
+```tsl
+always assume {
+  // Ensure that both left and right buttons are not pressed at the same time
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, rotate the cube to the left until the right button is pressed
+  pressL(e) -> ([cube <- rotateLeft(cube)] W pressR(e));
+
+  // When the right button is pressed, rotate the cube to the right until the left button is pressed
+  pressR(e) -> ([cube <- rotateRight(cube)] W pressL(e));
+}
+```
+
+This TSL code captures the required behavior for the cube control system:
+- The `assume` section ensures mutual exclusivity between the left and right button presses.
+- The `guarantee` section specifies that pressing the left button causes the cube to rotate left until the right button is pressed, and vice versa. These guarantees align with the requirement to maintain the rotation direction based on the button pressed and change it only when the opposite button is pressed.

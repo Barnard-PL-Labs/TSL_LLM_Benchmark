@@ -1,0 +1,75 @@
+To implement the specified functions and predicates using JavaScript, you can follow the structure below. Note that for predicates related to button presses, we'll use an event listener approach, assuming you're working in an environment like a browser where such event listeners are applicable. If this code is intended for a different environment (e.g., a server-side application or a specific framework), adjustments will need to be made accordingly.
+
+### Functions Implementation
+
+The `sin(x)` and `saw(x)` functions are straightforward mathematical functions. The sawtooth wave function can be implemented using a periodic function with a waveform that ramps upwards and drops sharply:
+
+```javascript
+// Function to compute the sine of x
+function sin(x) {
+    return Math.sin(x);
+}
+
+// Function to compute the sawtooth wave of x
+function saw(x) {
+    // `x % (2 * Math.PI)` normalizes x to a repetitive interval [0, 2*PI)
+    // `(2/Math.PI)` scales it to range [-1, 1]
+    return 2 * (x / Math.PI - Math.floor(0.5 + x / Math.PI));
+}
+```
+
+### Predicates Implementation
+
+For the predicates `pressL(e)` and `pressR(e)`, you can set up event listeners that update flags when the left or right buttons are pressed. Here is how you might do it in a browser-like environment:
+
+```javascript
+// Flags to track button presses
+let leftPressed = false;
+let rightPressed = false;
+
+// Function to check if the left button is pressed
+function pressL() {
+    return leftPressed;
+}
+
+// Function to check if the right button is pressed
+function pressR() {
+    return rightPressed;
+}
+
+// Setting up event listeners
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+```
+
+### System API Usage
+
+The API regarding adjusting `cube.scale.x` in a 3D environment could resemble the following, depending on how the `cube` object and its properties are managed:
+
+```javascript
+// Example function to set cube's scale along x-axis
+function setCubeScaleX(value) {
+    cube.scale.x = value;
+}
+
+// Example usage of the sawtooth function to set the cube's scale
+function updateCubeScale() {
+    const timeInSeconds = new Date().getTime() / 1000;
+    setCubeScaleX(saw(timeInSeconds));
+}
+```
+
+This example assumes that `cube` is a globally accessible object representing a 3D entity where its `scale.x` property controls the scaling along the x-axis. Adjustments may be necessary based on your actual 3D environment or framework.

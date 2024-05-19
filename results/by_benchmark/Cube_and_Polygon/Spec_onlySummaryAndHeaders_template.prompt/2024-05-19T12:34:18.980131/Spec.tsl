@@ -1,0 +1,19 @@
+always assume {
+  // Define mutual exclusion between left and right button presses
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, update the cube's rotation based on a sinusoidal function of a count variable
+  pressL(e) -> [Cube.rotation <- sin(count)];
+  
+  // When the right button is pressed, update the polygon's rotation based on a sawtooth function of the count variable
+  pressR(e) -> [Polygon.rotation <- saw(count)];
+  
+  // Increment the count when either button is pressed
+  (pressL(e) || pressR(e)) -> [count <- count + 1];
+  
+  // Maintain the static position of the cube and polygon
+  true -> ([Cube.position.x <- 0] && [Cube.position.y <- 0]);
+  true -> ([Polygon.position.x <- 5] && [Polygon.position.y <- 5]);
+}

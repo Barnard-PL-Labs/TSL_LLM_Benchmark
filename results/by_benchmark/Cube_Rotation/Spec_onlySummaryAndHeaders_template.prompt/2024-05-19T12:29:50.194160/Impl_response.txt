@@ -1,0 +1,63 @@
+To implement the required functions and predicates for controlling a cube's movement based on button presses, we will use JavaScript. This involves creating functions to rotate the cube left and right, and predicates to determine if the left or right button is pressed. Here is how you can set this up:
+
+### JavaScript Implementation
+
+```javascript
+// Assuming cube is an object with a rotation property which itself is an object with a y property.
+let cube = {
+  rotation: {
+    y: 0 // Initial rotation of the cube on the y-axis
+  }
+};
+
+// Functions to rotate the cube
+function rotateLeft(cube) {
+  // Rotates the cube to the left by decreasing the y rotation
+  cube.rotation.y -= 10;
+  console.log(`Cube rotated to the left. New rotation: ${cube.rotation.y} degrees.`);
+}
+
+function rotateRight(cube) {
+  // Rotates the cube to the right by increasing the y rotation
+  cube.rotation.y += 10;
+  console.log(`Cube rotated to the right. New rotation: ${cube.rotation.y} degrees.`);
+}
+
+// Predicates for button presses using event listeners
+function setupButtonListeners() {
+  document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+      rotateLeft(cube);
+    } else if (pressR(e)) {
+      rotateRight(cube);
+    }
+  });
+}
+
+function pressL(e) {
+  // Returns true if the left arrow key is pressed
+  return e.key === 'ArrowLeft';
+}
+
+function pressR(e) {
+  // Returns true if the right arrow key is pressed
+  return e.key === 'ArrowRight';
+}
+
+// Initialize button listeners
+setupButtonListeners();
+```
+
+### Explanation
+
+1. **Global Cube Object**: We start by defining a `cube` object which holds its rotation states. Here, `rotation.y` is the angle of the cube on the y-axis.
+
+2. **Rotation Functions**: `rotateLeft` and `rotateRight` are functions that modify the `rotation.y` property of the cube to rotate it left or right respectively. For simplicity, each rotation changes the angle by 10 degrees, and logs the new rotation.
+
+3. **Event Listener Setup**: `setupButtonListeners` function sets up a keydown event listener that triggers `rotateLeft` or `rotateRight` when the left or right arrow keys are pressed, which are detected by the `pressL` and `pressR` predicates.
+
+4. **Predicates**: `pressL` and `pressR` are functions that check if the left or right arrow keys are pressed during a keydown event, returning a boolean accordingly.
+
+5. **Initialization**: The `setupButtonListeners` function is called to activate the event listeners when the script is loaded, thereby making the cube interactive with keyboard input.
+
+This setup allows the cube to be controlled by the left and right arrow keys on the keyboard, responding to user input in real-time. Note that for this script to work, it needs to be included in an HTML document that is capable of capturing keydown events, typically in a full page or a focused element that can capture key presses.

@@ -1,0 +1,52 @@
+Here are the JavaScript implementations for the functions and predicates as described. We will handle the event listeners as well as the functional logic for rotating the cube based on the inputs:
+
+```javascript
+// Assuming that `cube` is an object with a property `rotation` which is another object containing a property `y`.
+// This cube object might come from a 3D library like Three.js where cube.rotation.y corresponds to the rotation around the y-axis.
+
+// Functions
+function rotateLeft(cube) {
+    // Rotates the cube to the left by decrementing the y rotation value
+    cube.rotation.y -= Math.PI / 4; // Rotate left by 45 degrees
+}
+
+function rotateRight(cube) {
+    // Rotates the cube to the right by incrementing the y rotation value
+    cube.rotation.y += Math.PI / 4; // Rotate right by 45 degrees
+}
+
+// Predicates
+function pressL(e) {
+    // Returns true if the left arrow key is pressed
+    return e.keyCode === 37; // 37 is the key code for the left arrow key
+}
+
+function pressR(e) {
+    // Returns true if the right arrow key is pressed
+    return e.keyCode === 39; // 39 is the key code for the right arrow key
+}
+
+// To use these predicates in event listeners:
+document.addEventListener('keydown', function(e) {
+    if (pressL(e)) {
+        console.log('Left button pressed');
+        rotateLeft(cube); // Assuming `cube` is defined and accessible in this scope
+    }
+    if (pressR(e)) {
+        console.log('Right button pressed');
+        rotateRight(cube); // Assuming `cube` is defined and accessible in this scope
+    }
+});
+```
+
+### Explanation:
+1. **rotateLeft** and **rotateRight** functions:
+   - These functions take a `cube` object which has a `rotation.y` property. The function modifies this property by adding or subtracting a fixed amount (`Math.PI / 4`), which corresponds to a 45-degree rotation. This can be adjusted based on the desired rotation granularity.
+  
+2. **pressL** and **pressR** predicates:
+   - These functions are designed to be used within event listeners. They check the `keyCode` property of the event object to determine if the left (37) or right (39) arrow key is pressed, respectively.
+  
+3. **Event Listeners**:
+   - An event listener for `keydown` is added to `document`. Inside the handler, the predicates `pressL` and `pressR` are used to check if the relevant keys are pressed. If they are, the corresponding rotation functions are called.
+
+Ensure that the `cube` object is properly defined and accessible where these functions are being called. This might typically be in a scope where the 3D environment or scene is being managed. Adjust the rotation values (`Math.PI / 4`) based on how sensitive you want the rotation to be.

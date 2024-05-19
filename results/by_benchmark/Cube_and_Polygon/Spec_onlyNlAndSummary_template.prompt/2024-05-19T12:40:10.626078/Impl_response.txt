@@ -1,0 +1,91 @@
+Here's how you can implement the functions and predicates in JavaScript using the provided descriptions and system API:
+
+### Functions Implementation
+
+1. **sin(x)**: This function will return the sine of `x`, using JavaScript's Math library.
+2. **saw(x)**: This function will compute the sawtooth wave for `x`. A typical sawtooth wave can be represented as \( x - \text{floor}(x) \).
+
+```javascript
+// Function to calculate sine of x
+function sin(x) {
+    return Math.sin(x);
+}
+
+// Function to calculate sawtooth wave of x
+function saw(x) {
+    return x - Math.floor(x);
+}
+```
+
+### Predicates Implementation
+
+For the predicates, since they need to detect button presses and you've mentioned "Event listener should be inside the function," I'll assume a setup where you have HTML buttons and we will add event listeners in JavaScript which update boolean flags.
+
+1. **pressL(e)**: This predicate will return `true` when the left button is pressed.
+2. **pressR(e)**: This predicate will return `true` when the right button is pressed.
+
+For simplicity, I'll assume there are buttons with IDs `"leftButton"` and `"rightButton"`. The predicates will work by setting a flag when the button is pressed and resetting it when released.
+
+```html
+<!-- HTML structure -->
+<button id="leftButton">Left</button>
+<button id="rightButton">Right</button>
+```
+
+```javascript
+// JavaScript for predicates
+
+let leftPressed = false;
+let rightPressed = false;
+
+// Function to check if left button is pressed
+function pressL(e) {
+    return leftPressed;
+}
+
+// Function to check if right button is pressed
+function pressR(e) {
+    return rightPressed;
+}
+
+// Setting up event listeners for the left button
+document.getElementById('leftButton').addEventListener('mousedown', function() {
+    leftPressed = true;
+});
+document.getElementById('leftButton').addEventListener('mouseup', function() {
+    leftPressed = false;
+});
+
+// Setting up event listeners for the right button
+document.getElementById('rightButton').addEventListener('mousedown', function() {
+    rightPressed = true;
+});
+document.getElementById('rightButton').addEventListener('mouseup', function() {
+    rightPressed = false;
+});
+```
+
+### System API Usage
+
+Using the system API to "Get or set `cube.scale.x` in 3D" would typically involve interacting with a 3D library like Three.js, but it could also be a simple object if this is a conceptual example:
+
+```javascript
+// Assuming a "cube" object exists
+let cube = {
+    scale: {
+        x: 1
+    }
+};
+
+// Example function to set scale of cube
+function setCubeScaleX(value) {
+    cube.scale.x = value;
+}
+
+// Example function to get scale of cube
+function getCubeScaleX() {
+    return cube.scale.x;
+}
+```
+
+This setup gives you a functional JavaScript environment that responds to button presses and manipulates functions as specified. Note that actual interaction with 3D objects like scaling would depend on the specifics of the 3D framework or library you are using, such as Three.js.

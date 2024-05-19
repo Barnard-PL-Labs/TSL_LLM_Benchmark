@@ -1,0 +1,36 @@
+Below is the TSL specification based on your provided description:
+
+```tsl
+always assume {
+  // Mutual exclusion of right and left key presses
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // Define initial static positions for cube and polygon
+  [cube.position <- 0]; // Static position for the cube
+  [polygon.position <- 0]; // Static position for the polygon
+
+  // When the left key is pressed, decrement the count and update the cube's rotation using the sine function
+  pressL(e) -> {
+    [count <- count - 1];
+    [cube.rotation <- sin(count)];
+  };
+
+  // When the right key is pressed, increment the count and update the polygon's rotation using the sawtooth function
+  pressR(e) -> {
+    [count <- count + 1];
+    [polygon.rotation <- saw(count)];
+  };
+
+  // Ensure graphical objects remain at their defined positions
+  [cube.position <- 0];
+  [polygon.position <- 0];
+}
+```
+
+Explanation:
+- The `always assume` block enforces that the right and left keys cannot be pressed simultaneously.
+- The `always guarantee` block sets static initial positions for the cube and polygon to ensure they remain stationary in terms of position while their rotations are updated based on user inputs.
+- Pressing the left key decreases a variable `count`, which influences the cube's rotation via a sinusoidal function.
+- Pressing the right key increases the `count`, affecting the polygon's rotation through a sawtooth function. This ensures dynamic visual effects while maintaining fixed positions.

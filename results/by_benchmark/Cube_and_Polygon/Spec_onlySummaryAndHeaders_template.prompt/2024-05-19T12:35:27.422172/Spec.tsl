@@ -1,0 +1,16 @@
+always assume {
+  // Ensure that the left and right buttons are never pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, update the cube's rotation using a sinusoidal function
+  pressL(e) -> [cube.rotation <- sin(t)];
+
+  // When the right button is pressed, update the polygon's rotation using a sawtooth wave function
+  pressR(e) -> [polygon.rotation <- saw(t)];
+
+  // Define the static positions of the cube and polygon
+  [cube.position <- (1, 1, 1)];
+  [polygon.position <- (2, 2, 2)];
+}

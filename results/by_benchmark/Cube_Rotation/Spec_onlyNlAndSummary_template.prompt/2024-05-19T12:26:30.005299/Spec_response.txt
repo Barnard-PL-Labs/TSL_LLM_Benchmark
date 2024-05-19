@@ -1,0 +1,18 @@
+Here's the TSL specification for the control system described above:
+
+```tsl
+always assume {
+  // Assumption that left and right buttons are not pressed at the same time
+  !(pressLeft && pressRight);
+}
+
+always guarantee {
+  // Guarantee that pressing the left button starts the cube rotating left and continues until the right button is pressed
+  pressLeft -> [cube.rotationDirection <- "left"] W pressRight;
+
+  // Guarantee that pressing the right button starts the cube rotating right and continues until the left button is pressed
+  pressRight -> [cube.rotationDirection <- "right"] W pressLeft;
+}
+```
+
+This TSL specification defines the interaction of the cube's rotation with the pressing of left and right buttons under specified assumptions and guarantees.

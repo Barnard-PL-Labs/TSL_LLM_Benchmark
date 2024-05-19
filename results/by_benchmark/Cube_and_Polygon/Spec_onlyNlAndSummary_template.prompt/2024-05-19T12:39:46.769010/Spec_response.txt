@@ -1,0 +1,34 @@
+Here's how the TSL specification looks for the described system that manages a graphical interface with key interactions affecting the rotation of a cube and a polygon:
+
+```tsl
+always assume {
+  // The left and right buttons cannot be pressed simultaneously.
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the right key is pressed, increment the count by 0.1 until the left key is pressed.
+  pressR(e) -> ([count <- count + 0.1] W pressL(e));
+  
+  // When the left key is pressed, decrement the count by 0.1 until the right key is pressed.
+  pressL(e) -> ([count <- count - 0.1] W pressR(e));
+  
+  // The rotation of the cube along the y-axis is set to the sine of twice the count value, continuously.
+  [cube.rotation.y <- sin(2 * count)];
+  
+  // The rotation of the polygon along the y-axis is set to a sawtooth pattern of 0.5 times (1 + count).
+  [polygon.rotation.y <- saw(0.5 * (1 + count))];
+  
+  // The x-position of the cube is fixed at 1.
+  [cube.position.x <- 1];
+  
+  // The x-position of the polygon is fixed at 3.
+  [polygon.position.x <- 3];
+}
+```
+
+In this TSL specification:
+- `pressR(e)` and `pressL(e)` represent the events of pressing the right and left keys, respectively.
+- `count` variable is used to maintain the incremental and decremental values that affect the rotation.
+- `saw()` function represents a sawtooth function, which must be predefined in the context of the tool or environment where this TSL code is executed.
+- The cube and polygon's rotations and positions are updated based on the described interactions and mathematical functions.

@@ -1,0 +1,27 @@
+Here's the TSL specification based on the provided natural language description for a cube control system where left and right button presses influence the cube's rotation:
+
+```tsl
+always assume {
+  //Assume mutual exclusion: left and right buttons cannot be pressed simultaneously
+  !(pressLeft && pressRight);
+}
+
+always guarantee {
+  //If the left button is pressed, rotate the cube to the left until the right button is pressed
+  pressLeft -> ([cube.rotation <- 'left'] W pressRight);
+  
+  //If the right button is pressed, rotate the cube to the right until the left button is pressed
+  pressRight -> ([cube.rotation <- 'right'] W pressLeft);
+}
+```
+
+Explanation:
+
+1. **Assumptions**:
+   - `!(pressLeft && pressRight)`: This ensures that the inputs for left and right button presses are mutually exclusive, which means both buttons cannot be pressed at the same time.
+
+2. **Guarantees**:
+   - `pressLeft -> ([cube.rotation <- 'left'] W pressRight)`: When the left button is pressed, it sets the rotation of the cube to 'left' and maintains this rotation state until the right button is pressed.
+   - `pressRight -> ([cube.rotation <- 'right'] W pressLeft)`: Similarly, when the right button is pressed, it sets the rotation of the cube to 'right' and maintains this rotation state until the left button is pressed.
+
+This specification ensures that the cube's rotation can be smoothly and accurately controlled by the user, alternating direction based on the button pressed without any conflicts.

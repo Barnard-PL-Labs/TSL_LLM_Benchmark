@@ -1,0 +1,81 @@
+To implement the specified functions and predicates in JavaScript, we will be creating several distinct functions. For the functions `sin(x)` and `saw(x)`, they are straightforward mathematical functions. The predicates `pressL(e)` and `pressR(e)` will require setting up event listeners to detect button presses.
+
+Below is the JavaScript code implementing these requirements:
+
+### Functions:
+
+#### 1. `sin(x)`
+This function simply returns the sine of `x`, which is a standard JavaScript Math function.
+
+```javascript
+function sin(x) {
+    return Math.sin(x);
+}
+```
+
+#### 2. `saw(x)`
+The sawtooth wave function can be implemented using a simple formula that calculates the fractional part of `x / (2 * Math.PI)`, scaled and shifted appropriately.
+
+```javascript
+function saw(x) {
+    return 2 * (x / (2 * Math.PI) - Math.floor(0.5 + x / (2 * Math.PI)));
+}
+```
+
+### Predicates:
+
+For the predicates, we assume that the system allows for some kind of event listener setup, as typically found in environments like browsers or Node.js with specific libraries. We will simulate this with typical browser-style event handling.
+
+#### 1. `pressL(e)`
+This function sets up an event listener for a 'keydown' event and checks if the left arrow key (key code 37) is pressed.
+
+```javascript
+function pressL(e) {
+    let leftPressed = false;
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 37) {  // Left arrow key code
+            leftPressed = true;
+        }
+    });
+    document.addEventListener('keyup', function(event) {
+        if (event.keyCode === 37) {
+            leftPressed = false;
+        }
+    });
+    return function() {
+        return leftPressed;
+    };
+}
+```
+
+#### 2. `pressR(e)`
+Similarly, this function sets up an event listener for the right arrow key (key code 39).
+
+```javascript
+function pressR(e) {
+    let rightPressed = false;
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 39) {  // Right arrow key code
+            rightPressed = true;
+        }
+    });
+    document.addEventListener('keyup', function(event) {
+        if (event.keyCode === 39) {
+            rightPressed = false;
+        }
+    });
+    return function() {
+        return rightPressed;
+    };
+}
+```
+
+### System API Usage
+
+The provided API mentions modifying `cube.scale.x` to change the scale of a 3D object. If needed in the application, you can directly set or get this value using `cube.scale.x = newValue` or by reading `cube.scale.x`.
+
+### Example Usage
+
+To use these functions and predicates, you could potentially link them into an animation loop or event-driven controls in a 3D application environment that supports JavaScript, such as three.js or similar frameworks.
+
+Please ensure that the environment where this code is run supports the needed DOM APIs for event handling if testing in a non-browser context, additional setup like importing specific libraries might be required.

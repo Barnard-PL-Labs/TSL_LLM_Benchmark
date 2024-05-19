@@ -1,0 +1,33 @@
+Here's the TSL specification based on the provided description and functions:
+
+```tsl
+always assume {
+  // Define the mutual exclusivity of left and right button presses
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, increment the count and apply the sine function to the cube's rotation
+  pressL(e) -> [
+    count <- count + 1,
+    cube.rotation.y <- sin(count)
+  ];
+
+  // When the right button is pressed, decrement the count and apply the sawtooth function to the polygon's rotation
+  pressR(e) -> [
+    count <- count - 1,
+    polygon.rotation.y <- saw(count)
+  ];
+
+  // Static positioning for the cube and the polygon
+  [cube.position <- staticPositionCube],
+  [polygon.position <- staticPositionPolygon];
+}
+```
+
+Explanation:
+- The `assume` block ensures that the left and right buttons cannot be pressed simultaneously, which simplifies the logic in the `guarantee` block.
+- The `guarantee` block describes the effects of pressing each button:
+  - Pressing the left button (`pressL(e)`) increments a `count` variable and updates the cube's rotation using the sine of the count.
+  - Pressing the right button (`pressR(e)`) decrements the `count` and updates the polygon's rotation using a sawtooth wave function based on the count.
+- Additionally, it sets static positions for the cube and polygon which do not change over time regardless of button presses. This maintains a "geometrically static scene" as described.

@@ -1,0 +1,67 @@
+Here's a JavaScript implementation that includes both the functions and predicates as specified, along with setting up event listeners for detecting button presses using keyboard events:
+
+### JavaScript Implementation
+
+```javascript
+// Assuming the presence of a `cube` object which is your 3D model in the scene
+const cube = {
+    scale: {
+        x: 1 // initial scale of the cube along the x-axis
+    }
+};
+
+// Functions
+function sin(x) {
+    return Math.sin(x);
+}
+
+function saw(x) {
+    // A simple sawtooth wave function implementation
+    return 2 * (x - Math.floor(x + 0.5));
+}
+
+// Predicates - Using keyboard events to detect left and right button presses
+let leftPressed = false;
+let rightPressed = false;
+
+document.addEventListener('keydown', function(e) {
+    // Assuming 'ArrowLeft' for left and 'ArrowRight' for right button presses
+    if (e.key === 'ArrowLeft') {
+        leftPressed = true;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = true;
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'ArrowLeft') {
+        leftPressed = false;
+    } else if (e.key === 'ArrowRight') {
+        rightPressed = false;
+    }
+});
+
+function pressL(e) {
+    // Returns true if the left arrow key is currently pressed
+    return leftPressed;
+}
+
+function pressR(e) {
+    // Returns true if the right arrow key is currently pressed
+    return rightPressed;
+}
+
+// Example usage
+console.log(sin(Math.PI / 2));  // Should log 1
+console.log(saw(0.75));        // Should log -0.5
+
+// The keyboard listeners will update the `leftPressed` and `rightPressed` booleans
+// which can then be used with `pressL()` and `pressR()` to determine button state.
+```
+
+### Additional Notes:
+
+- **3D Model Access**: The code assumes there's a `cube` object defined globally that represents your 3D model. You might need to adapt the code to fit the actual 3D environment API that you are using, like Three.js, A-Frame, or Babylon.js.
+- **Event Handling**: Keyboard event handling is used to monitor button presses. This can also be adapted to other types of inputs, such as gamepad or touchscreen, depending on your application needs.
+- **Sawtooth Wave Function**: The `saw` function provided generates a basic sawtooth wave. For more precise waveform generation, especially for audio or signal processing, you might need a more sophisticated implementation.
+- **Testing**: Remember to test these functions in the environment where the `cube` object exists and can be manipulated as expected. The effects of changing `cube.scale.x` will depend on how the rendering loop is set up in your 3D application.

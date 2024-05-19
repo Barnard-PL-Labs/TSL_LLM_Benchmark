@@ -1,0 +1,18 @@
+Here is the TSL specification for the described control system for a cube, based on the natural language description provided:
+
+```tsl
+always assume {
+  // Assume that the left and right buttons are never pressed at the same time
+  !(pressLeft && pressRight);
+}
+
+always guarantee {
+  // If the left button is pressed, set the cube's rotation to the left, and continue this rotation until the right button is pressed
+  pressLeft -> [cube.rotation <- "left"] W pressRight;
+
+  // If the right button is pressed, set the cube's rotation to the right, and continue this rotation until the left button is pressed
+  pressRight -> [cube.rotation <- "right"] W pressLeft;
+}
+```
+
+This TSL specification fulfills the requirements laid out in the assumptions and guarantees. It uses the `W` (weak until) operator to specify that once a button is pressed, the cube's rotation in the specified direction continues until the opposite button is pressed. This ensures smooth and conflict-free control of the cube's rotation.

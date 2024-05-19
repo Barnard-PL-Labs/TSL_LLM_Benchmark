@@ -1,0 +1,40 @@
+To translate the given natural language description into a TSL specification, we create `always assume` and `always guarantee` sections that capture the dynamics of user interactions and the effects on the graphical objects' properties. The user inputs from the right and left keys will influence a count that adjusts the angular rotation of a cube and a polygon through sinusoidal and sawtooth functions, respectively. Here's how that can be structured in TSL:
+
+```tsl
+always assume {
+  // Defines the exclusive relationship between pressing the left and right buttons
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, increment `t` and update the cube's rotation using a sine wave of `t`
+  pressL(e) -> {
+    [t <- t + 1];
+    [cube.rotation <- sin(t)];
+  };
+  
+  // When the right button is pressed, increment `t` and update the polygon's rotation using a sawtooth wave of `t`
+  pressR(e) -> {
+    [t <- t + 1];
+    [polygon.rotation <- saw(t)];
+  };
+  
+  // Set static positions for the cube and polygon to establish a fixed spatial configuration
+  [cube.position.x <- 1];
+  [cube.position.y <- 1];
+  [cube.position.z <- 1];
+  
+  [polygon.position.x <- 2];
+  [polygon.position.y <- 2];
+  [polygon.position.z <- 2];
+}
+```
+
+### Explanation
+- **Assumptions**: This part ensures that the left and right buttons cannot be pressed simultaneously, avoiding conflicting input signals.
+- **Guarantees**: 
+  - When the left button (`pressL(e)`) is pressed, the counter `t` increments by one, and the cube's rotation is updated based on the sine function value of `t`.
+  - When the right button (`pressR(e)`) is pressed, similarly, `t` increments by one, and the polygon's rotation is updated based on the sawtooth function value of `t`.
+  - The cube and polygon have fixed positions in the graphical space as specified, ensuring they remain statically positioned while their rotations dynamically change according to the input. 
+
+This TSL specification covers user interactions, object transformations, and static positioning as described in the natural language input.

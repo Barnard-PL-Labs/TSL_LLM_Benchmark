@@ -1,0 +1,29 @@
+Here is the TSL specification for the given natural language description, which manages a graphical interface where user inputs from the right and left keys affect the rotation of graphical objects (a cube and a polygon) based on sinusoidal and sawtooth functions:
+
+```TSL
+always assume {
+  // Ensure that both buttons are not pressed simultaneously
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, update the cube's rotation using a sinusoidal function of a numerical count
+  pressL(e) -> [cube.rotation.y <- sin(t)];
+
+  // When the right button is pressed, update the polygon's rotation using a sawtooth function of a numerical count
+  pressR(e) -> [polygon.rotation.y <- saw(t)];
+
+  // Establish static positions for the cube and polygon, ensuring they do not move positionally
+  [cube.position <- (0, 0, 0)];
+  [polygon.position <- (5, 0, 0)];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+   - The `always assume` section ensures that the left and right buttons are never pressed at the same time, which avoids conflicting input.
+
+2. **Guarantees**:
+   - The `always guarantee` section defines the behavior of the cube's and polygon's rotation based on the left and right button presses, respectively. The cube's rotation is determined by a sinusoidal function, and the polygon's rotation is determined by a sawtooth function, both dependent on a numerical count `t` (typically representing time or frame count).
+   - Static positions for the cube and polygon are set to ensure they remain visually static in position while their rotations are dynamically updated. This creates a dynamic scene with the objects rotating but not moving from their set positions.

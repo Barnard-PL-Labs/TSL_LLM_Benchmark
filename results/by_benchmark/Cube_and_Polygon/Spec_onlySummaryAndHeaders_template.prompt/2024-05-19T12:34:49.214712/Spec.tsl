@@ -1,0 +1,22 @@
+always assume {
+  // Define the mutual exclusivity of left and right button presses
+  !(pressL(e) && pressR(e));
+}
+
+always guarantee {
+  // When the left button is pressed, increment the count and apply the sine function to the cube's rotation
+  pressL(e) -> [
+    count <- count + 1,
+    cube.rotation.y <- sin(count)
+  ];
+
+  // When the right button is pressed, decrement the count and apply the sawtooth function to the polygon's rotation
+  pressR(e) -> [
+    count <- count - 1,
+    polygon.rotation.y <- saw(count)
+  ];
+
+  // Static positioning for the cube and the polygon
+  [cube.position <- staticPositionCube],
+  [polygon.position <- staticPositionPolygon];
+}

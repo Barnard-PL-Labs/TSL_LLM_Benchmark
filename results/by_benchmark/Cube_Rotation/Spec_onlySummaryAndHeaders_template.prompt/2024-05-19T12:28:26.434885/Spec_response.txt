@@ -1,0 +1,23 @@
+Below is the TSL specification for the control system described, which features a cube that rotates left or right based on button presses:
+
+```tsl
+always assume {
+  // Define the exclusive relationship between pressing the right button and the left button
+  !(pressR(e) && pressL(e));
+}
+
+always guarantee {
+  // When the right button is pressed, rotate the cube to the right, maintaining this until the left button is pressed
+  pressR(e) -> [cube <- rotateRight(cube)] W pressL(e);
+
+  // When the left button is pressed, rotate the cube to the left, maintaining this until the right button is pressed
+  pressL(e) -> [cube <- rotateLeft(cube)] W pressR(e);
+}
+```
+
+This TSL code aligns with your requirements:
+
+1. It uses the predicates `pressL(e)` and `pressR(e)` to detect when the left or right button is pressed respectively.
+2. It ensures mutual exclusion between the two button presses, meaning both buttons cannot be pressed at the same time.
+3. On pressing the right button, the cube is rotated to the right and continues this rotation until the left button is pressed. Similarly, pressing the left button rotates the cube to the left until the right button is pressed.
+4. The `rotateLeft(cube)` and `rotateRight(cube)` functions are employed to manage the rotation direction of the cube based on the button presses.
