@@ -1,0 +1,29 @@
+always assume {
+  // Define the exclusive relationship between pressing the A, B, and C keys
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Handle the pressA operation
+  pressA(e) -> {
+    [count <- count + stepsize];
+    // Check if A was pressed three times in a row
+    (pressA(e) && X(pressA(e) && X(pressA(e)))) -> [stepsize <- multiplyByThree(stepsize)];
+    // Reset stepsize if B or C is pressed
+    (pressB(e) || pressC(e)) -> [stepsize <- 1];
+  };
+  
+  // Handle the pressB operation
+  pressB(e) -> {
+    [count <- count + 2];
+    [stepsize <- 1];
+  };
+  
+  // Handle the pressC operation
+  pressC(e) -> {
+    [count <- count + 3];
+    [stepsize <- 1];
+  };
+}

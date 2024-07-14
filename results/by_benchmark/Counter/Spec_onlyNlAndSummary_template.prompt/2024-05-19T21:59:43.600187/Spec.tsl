@@ -1,0 +1,23 @@
+always assume {
+  // Define the mutual exclusivity of button presses
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  // When the A button is pressed, increment the counter by 'stepsize'
+  pressA -> [count <- count + stepsize];
+
+  // When the B button is pressed, increment the counter by 2
+  pressB -> [count <- count + 2];
+
+  // When the C button is pressed, increment the counter by 3
+  pressC -> [count <- count + 3];
+
+  // Continuous press of A key three times in a row changes the stepsize
+  (pressA && (X (pressA && (X (pressA))))) -> (X (X (X [stepsize <- multiplyByThree(stepsize)])));
+
+  // Reset the stepsize to 1 when either the B or C button is pressed
+  (pressB || pressC) -> [stepsize <- 1];
+}

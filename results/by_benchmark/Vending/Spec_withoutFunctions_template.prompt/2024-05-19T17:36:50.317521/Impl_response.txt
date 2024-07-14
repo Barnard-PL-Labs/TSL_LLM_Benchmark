@@ -1,0 +1,44 @@
+In TSL, we can define the predicates that are used to check conditions based on the inputs to the system. We'll assume the environment provides us with the necessary inputs as per the API descriptions you've mentioned. Below is the TSL template that integrates these predicates:
+
+```tsl
+always assume {
+  // Predicates to determine the amount in the 'total' cell
+  isLessThanPoint75(total) ; // total < 0.75
+  isLessThanOne(total) ; // total < 1.00
+  isLessThanOnePoint25(total) ; // total < 1.25
+
+  // Predicates to determine which key was pressed in the 'e' cell
+  pressD(e) ; // the 'd' key is pressed
+  pressQ(e) ; // the 'q' key is pressed
+  pressO(e) ; // the 'o' key is pressed
+  press1(e) ; // the '1' key is pressed
+  press2(e) ; // the '2' key is pressed
+  press3(e) ; // the '3' key is pressed
+  pressR(e) ; // the 'r' key is pressed
+}
+always guarantee {
+  // Your system's reactions based on the predicates can be defined here.
+  // For example:
+  pressD(e) -> [action <- dispenseDrink] ;
+  pressQ(e) -> [action <- queryBalance] ;
+
+  // Handling different payment amounts based on 'total'
+  isLessThanPoint75(total) -> [action <- displayMessage("Insufficient balance for any item")] ;
+  isLessThanOne(total) && !isLessThanPoint75(total) -> [action <- displayMessage("Available item: Small Snack")] ;
+  isLessThanOnePoint25(total) && !isLessThanOne(total) -> [action <- displayMessage("Available items: Small Snack, Medium Snack")] ;
+
+  // Reset operation on pressing 'r'
+  pressR(e) -> [resetSystem] ;
+}
+```
+
+### Explanation:
+1. **Predicates**:
+   - `isLessThanPoint75(total)`, `isLessThanOne(total)`, and `isLessThanOnePoint25(total)` are used to check the amount in the `total` cell against specific values.
+   - `pressD(e)`, `pressQ(e)`, etc., are used to check if specific keys are pressed.
+
+2. **Guarantee Block**:
+   - Actions are triggered based on the predicates. For instance, if 'd' is pressed (`pressD(e)`), the system might be set to dispense a drink. If the `total` is less than $0.75, a message indicating insufficient balance can be displayed.
+   - This section can be expanded based on what actions the system should perform in response to various inputs.
+
+This TSL template assumes that the API provides real-time updates on `total` and `e`, and the system reacts accordingly. Adjustments might be needed based on the specific implementation details of the environment and the system's API.

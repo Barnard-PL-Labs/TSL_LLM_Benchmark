@@ -1,0 +1,33 @@
+Here's the TSL specification based on your description for the button press scenario involving incrementing a counter:
+
+```tsl
+always assume {
+  // Ensure mutual exclusion between button press actions
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Action when the A button is pressed
+  pressA(e) -> ([count <- count + stepsize] && X(pressA(e) -> X(pressA(e) -> X(pressA(e) -> [stepsize <- multiplyByThree(stepsize)]))));
+  
+  // Action when the B button is pressed
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+  
+  // Action when the C button is pressed
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+}
+```
+
+### Explanation:
+
+1. **Assumptions**:
+    - Mutual exclusion is enforced to ensure that no two button presses can occur at the same time. This prevents any overlapping or conflicting counter increments.
+
+2. **Guarantees**:
+    - `pressA(e)`: When the A key is pressed, the counter is incremented by the current `stepsize`. If A is pressed three times consecutively, on the fourth press, `stepsize` is multiplied by three. This is achieved by nesting `X` (next) operators to check for three consecutive A presses, then applying the `multiplyByThree(stepsize)` function.
+    - `pressB(e)`: When the B key is pressed, the counter is incremented by 2, and `stepsize` is reset to 1.
+    - `pressC(e)`: When the C key is pressed, the counter is incremented by 3, and `stepsize` is reset to 1.
+
+This specification fulfills the requirements stated in the natural language description, ensuring the proper function and interaction of button presses and their effects on the counter and stepsize.

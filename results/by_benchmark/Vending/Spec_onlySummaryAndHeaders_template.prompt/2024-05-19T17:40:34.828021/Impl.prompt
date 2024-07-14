@@ -1,0 +1,31 @@
+
+A system environment has the following API. Using the API, implement the following methods in JavaScript. The methods are divided into two categories, "functions" and "predicates". "functions" can be arbitrary functions, but "predicates" always return a boolean.
+
+In this case, don't use and implement any functions.
+
+Predicates to implement:
+
+
+Cells:
+    "total" is a cell that represents the state of the signal that determines whether or not the vending machine can perform certain tasks.
+    "e" is a cell that represents the state of the signal that determines how the vending machine should act.
+Functions:
+
+Predicates:
+    isLessThanPoint75(total) => checks to see if the total is less than 0.75?
+    isLessThanOne(total) => checks to see if the total is less than 1?
+    isLessThanOnePoint25(total) => checks to see if the total is less than 1.25?
+    pressD(e) => did the user press the d key?
+    pressQ(e) => did the user press the q key?
+    pressO(e) => did the user press the o key?
+    press1(e) => did the user press the 1 key?
+    press2(e) => did the user press the 2 key?
+    press3(e) => did the user press the 3 key?
+    pressR(e) => did the user press the r key?
+
+
+System API:
+
+
+/* There is no wrapper api */
+

@@ -1,0 +1,53 @@
+Below is the TSL specification that captures the functionality of a vending machine based on the provided natural language description:
+
+```TSL
+always assume {
+  // Mutual exclusion for all button presses
+  !(pressD && pressQ);
+  !(pressD && pressO);
+  !(pressD && press1);
+  !(pressD && press2);
+  !(pressD && press3);
+  !(pressD && pressR);
+  !(pressQ && pressO);
+  !(pressQ && press1);
+  !(pressQ && press2);
+  !(pressQ && press3);
+  !(pressQ && pressR);
+  !(pressO && press1);
+  !(pressO && press2);
+  !(pressO && press3);
+  !(pressO && pressR);
+  !(press1 && press2);
+  !(press1 && press3);
+  !(press1 && pressR);
+  !(press2 && press3);
+  !(press2 && pressR);
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increment the machine's total by 0.1 when 'D' is pressed
+  pressD -> [total <- total + 0.1];
+
+  // Increment the machine's total by 0.25 when 'Q' is pressed
+  pressQ -> [total <- total + 0.25];
+
+  // Increment the machine's total by 1 when 'O' is pressed
+  pressO -> [total <- total + 1];
+
+  // Decrement the machine's total by 0.75 when '1' is pressed if the total is 0.75 or greater
+  (press1 && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+  
+  // Decrement the machine's total by 1 when '2' is pressed if the total is 1 or greater
+  (press2 && !isLessThanOne(total)) -> [total <- total - 1];
+  
+  // Decrement the machine's total by 1.25 when '3' is pressed if the total is 1.25 or greater
+  (press3 && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+
+  // Reset the machine's total to 0 when 'R' is pressed
+  pressR -> [total <- 0];
+}
+```
+
+This TSL specification ensures mutual exclusion between all button presses and performs the appropriate actions when each button is pressed, including incrementing or decrementing the vending machine's available balance (total) and handling edge cases such as insufficient funds.

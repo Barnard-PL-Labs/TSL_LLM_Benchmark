@@ -1,0 +1,27 @@
+```
+always assume {
+  // Ensure mutual exclusion between pressing A, B, and C.
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment counter by stepsize when A is pressed.
+  pressA(e) -> [count <- count + stepsize];
+
+  // Increment counter by 2 when B is pressed.
+  pressB(e) -> [count <- count + 2];
+
+  // Increment counter by 3 when C is pressed.
+  pressC(e) -> [count <- count + 3];
+
+  // If A is pressed three times consecutively, multiply stepsize by three.
+  pressA(e) && X(pressA(e) && X(pressA(e) && !pressB(e) && !pressC(e))) -> X(X(X([stepsize <- multiplyByThree(stepsize)])));
+
+  // Reset stepsize to 1 if B or C is pressed.
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+This TSL specification ensures that the counter is correctly incremented based on which button is pressed and handles the special condition of pressing the A key three times consecutively to change the increment step size. The mutual exclusion assumption ensures that no two buttons are pressed simultaneously, which is necessary for the correct operation of this system.

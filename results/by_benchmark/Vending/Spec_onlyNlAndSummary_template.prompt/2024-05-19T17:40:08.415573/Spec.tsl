@@ -1,0 +1,24 @@
+always assume {
+  // Mutual exclusion between button presses: at most one operation can be performed at any time
+  !(pressD && pressQ) && !(pressD && pressO) && !(pressD && press1) && !(pressD && press2) && !(pressD && press3) && !(pressD && pressR) &&
+  !(pressQ && pressO) && !(pressQ && press1) && !(pressQ && press2) && !(pressQ && press3) && !(pressQ && pressR) &&
+  !(pressO && press1) && !(pressO && press2) && !(pressO && press3) && !(pressO && pressR) &&
+  !(press1 && press2) && !(press1 && press3) && !(press1 && pressR) &&
+  !(press2 && press3) && !(press2 && pressR) &&
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Incrementing value operations
+  pressD -> [total <- total + 0.1];
+  pressQ -> [total <- total + 0.25];
+  pressO -> [total <- total + 1];
+
+  // Decrementing value operations for purchasing products
+  press1 && !isLessThanPoint75(total) -> [total <- total - 0.75];
+  press2 && !isLessThanOne(total) -> [total <- total - 1];
+  press3 && !isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+  // Refunding operation resets the total
+  pressR -> [total <- 0];
+}

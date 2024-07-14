@@ -1,0 +1,46 @@
+Here's the TSL specification based on the given description and requirements:
+
+```tsl
+always assume {
+  // Ensure that no two button presses can occur at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When A is pressed, increment count by stepsize
+  pressA(e) -> [count <- count + stepsize];
+
+  // When B is pressed, increment count by 2 and reset stepsize to 1
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // When C is pressed, increment count by 3 and reset stepsize to 1
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // If A is pressed three times consecutively, multiply stepsize by 3
+  // Assuming a state variable pressCountA to track consecutive presses of A
+  (pressA(e) && (pressCountA == 3)) -> ([stepsize <- multiplyByThree(stepsize)] && [pressCountA <- 0]);
+  
+  // Reset pressCountA to 0 if B or C is pressed
+  (pressB(e) || pressC(e)) -> [pressCountA <- 0];
+
+  // Increment pressCountA if A is pressed, reset if B or C is pressed
+  pressA(e) -> [pressCountA <- pressCountA + 1];
+}
+```
+
+### Explanation:
+
+1. **Assumptions**: The assumptions section ensures mutual exclusion between button presses, meaning only one button can be pressed at any given time.
+
+2. **Guarantees**:
+   - **Incrementing the Counter**: 
+     - If the A key is pressed, the counter is incremented by the current `stepsize`.
+     - If the B key is pressed, the counter is incremented by 2, and `stepsize` is reset to 1.
+     - If the C key is pressed, the counter is incremented by 3, and `stepsize` is reset to 1.
+   - **Changing Step Size**:
+     - There's a condition to detect three consecutive A button presses to enhance the `stepsize` by multiplying it by three using the `multiplyByThree` function. This requires an extra state variable `pressCountA` to count consecutive presses of the A button.
+     - If either B or C is pressed, `pressCountA` is reset to zero and `stepsize` is set to 1, ensuring that the enhancement of the stepsize is only relevant if A is pressed three consecutive times without interruption by pressing B or C.
+
+This specification handles the basic functionalities as described and maintains the integrity of operations as per the described logic.

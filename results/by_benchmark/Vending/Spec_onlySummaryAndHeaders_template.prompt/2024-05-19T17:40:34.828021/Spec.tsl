@@ -1,0 +1,47 @@
+always assume {
+  // Ensure no two buttons are pressed simultaneously
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressR(e) && press1(e));
+  !(pressR(e) && press2(e));
+  !(pressR(e) && press3(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press2(e) && press3(e));
+}
+
+always guarantee {
+  // Insert a dime by pressing 'd'
+  pressD(e) -> [total <- total + 0.10];
+
+  // Insert a quarter by pressing 'q'
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Insert a dollar by pressing 'o'
+  pressO(e) -> [total <- total + 1.00];
+
+  // Refund money by pressing 'r'
+  pressR(e) -> [total <- 0];
+
+  // Purchasing product option 1 (requires $0.75 or more)
+  (!isLessThanPoint75(total) && press1(e)) -> [total <- total - 0.75];
+
+  // Purchasing product option 2 (requires $1 or more)
+  (!isLessThanOne(total) && press2(e)) -> [total <- total - 1.00];
+
+  // Purchasing product option 3 (requires $1.25 or more)
+  (!isLessThanOnePoint25(total) && press3(e)) -> [total <- total - 1.25];
+}

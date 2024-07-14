@@ -1,0 +1,34 @@
+To implement the predicates using Temporal Stream Logic (TSL), we will define how the system should react to various inputs over time. The predicates you mentioned will be specified under the `always assume` section since they are conditions based on the environment's input.
+
+Here is how we can write the TSL for the given predicates:
+
+```tsl
+always assume {
+  // Predicates to check the value of 'total'
+  isLessThanPoint75(total) <-> (total < 0.75);
+  isLessThanOne(total) <-> (total < 1);
+  isLessThanOnePoint25(total) <-> (total < 1.25);
+
+  // Predicates to check whether specific keys are pressed in 'e'
+  pressD(e) <-> (e == 'd');
+  pressQ(e) <-> (e == 'q');
+  pressO(e) <-> (e == 'o');
+  press1(e) <-> (e == '1');
+  press2(e) <-> (e == '2');
+  press3(e) <-> (e == '3');
+  pressR(e) <-> (e == 'r');
+}
+```
+
+### Explanation:
+1. **Comparators for `total`:**
+   - `isLessThanPoint75(total)` checks if `total` is less than 0.75.
+   - `isLessThanOne(total)` checks if `total` is less than 1.
+   - `isLessThanOnePoint25(total)` checks if `total` is less than 1.25.
+   These are represented in TSL using `<` comparator inside the definition stated as a bi-implication (`<->`), binding the predicate directly to the condition.
+
+2. **Key press predicates for `e`:**
+   - Each `pressKey(e)` predicate checks if the character representing the key press in `e` matches a specific character.
+   - These are expressed with equality checks where `e` must be equal to a specific character (`'d'`, `'q'`, `'o'`, etc.).
+
+This TSL template assumes that the environment continuously updates `total` and `e` based on the state of the vending machine and user interactions, respectively. The system should be set up to evaluate these predicates as true or false based on these updates. Each predicate represents a boolean condition that the system will check continually to determine the appropriate reaction or state.

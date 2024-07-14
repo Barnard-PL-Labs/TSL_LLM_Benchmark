@@ -1,0 +1,39 @@
+always assume {
+  // Mutual exclusion for button presses, to ensure no two operations can happen at the same time
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressD(e));
+  !(press1(e) && pressQ(e));
+  !(press1(e) && pressO(e));
+  !(press1(e) && pressR(e));
+  !(press2(e) && press3(e));
+  !(press2(e) && pressD(e));
+  !(press2(e) && pressQ(e));
+  !(press2(e) && pressO(e));
+  !(press2(e) && pressR(e));
+  !(press3(e) && pressD(e));
+  !(press3(e) && pressQ(e));
+  !(press3(e) && pressO(e));
+  !(press3(e) && pressR(e));
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressO(e) && pressR(e));
+}
+
+always guarantee {
+  // Purchasing operations are contingent on having enough total in the machine
+  (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+  (press2(e) && !isLessThanOne(total)) -> [total <- total - 1.00];
+  (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+
+  // Inserting money into the machine by pressing d, q, or o
+  pressD(e) -> [total <- total + 0.10]; // Dime
+  pressQ(e) -> [total <- total + 0.25]; // Quarter
+  pressO(e) -> [total <- total + 1.00]; // Dollar
+
+  // Refunding money
+  pressR(e) -> [total <- 0]; // Reset total to zero
+}

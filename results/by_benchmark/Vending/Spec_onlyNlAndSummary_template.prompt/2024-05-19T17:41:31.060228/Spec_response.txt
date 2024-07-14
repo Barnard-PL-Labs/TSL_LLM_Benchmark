@@ -1,0 +1,30 @@
+Here is the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  // Mutual exclusion for button presses: No two machine operations can be performed at the same time
+  !(pressD && pressQ) && !(pressD && pressO) && !(pressD && press1) && !(pressD && press2) && !(pressD && press3) && !(pressD && pressR) &&
+  !(pressQ && pressO) && !(pressQ && press1) && !(pressQ && press2) && !(pressQ && press3) && !(pressQ && pressR) &&
+  !(pressO && press1) && !(pressO && press2) && !(pressO && press3) && !(pressO && pressR) &&
+  !(press1 && press2) && !(press1 && press3) && !(press1 && pressR) &&
+  !(press2 && press3) && !(press2 && pressR) &&
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increment the machine's total value when coins are inserted
+  pressD -> [total <- total + 0.1];
+  pressQ -> [total <- total + 0.25];
+  pressO -> [total <- total + 1];
+
+  // Decrement the machine's total value when a product is purchased, depending on the total value
+  press1 -> (!isLessThanPoint75(total) -> [total <- total - 0.75]);
+  press2 -> (!isLessThanOne(total) -> [total <- total - 1]);
+  press3 -> (!isLessThanOnePoint25(total) -> [total <- total - 1.25]);
+
+  // Refund the money by setting the machine's total value to zero
+  pressR -> [total <- 0];
+}
+```
+
+This TSL specification ensures that each button press either alters the vending machine's total amount according to the rules provided or enforces mutual exclusion so that no two operations can be performed simultaneously. Each condition or action is guaranteed based on the assumption of exclusive button presses.

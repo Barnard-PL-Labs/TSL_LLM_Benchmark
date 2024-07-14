@@ -1,0 +1,41 @@
+Below is the TSL (Temporal Stream Logic) specification for the described scenario where a user interacts with buttons A, B, and C to increment a counter by varying amounts, with specific rules for changing the increment size on consecutive presses:
+
+```tsl
+always assume {
+  // Mutual exclusion between button presses
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  // Increment count by stepsize when pressA is clicked
+  pressA -> [count <- count + stepsize];
+
+  // Increment count by 2 when pressB is clicked
+  pressB -> [count <- count + 2];
+
+  // Increment count by 3 when pressC is clicked
+  pressC -> [count <- count + 3];
+
+  // Increase stepsize by 3 times if pressA is clicked three times in a row
+  (pressA && X (pressA && X (pressA))) -> [stepsize <- multiplyByThree(stepsize)];
+
+  // Reset stepsize to 1 if pressB or pressC is pressed
+  (pressB || pressC) -> [stepsize <- 1];
+}
+```
+
+### Explanation:
+1. **Mutual Exclusion for Button Presses**: This ensures no two buttons can be pressed simultaneously, complying with the requirement that no two counter operations occur at the same time.
+  
+2. **Button Press Actions**:
+   - **A Key**: When the A button is pressed, the counter is incremented by the current `stepsize`. The starting value of `stepsize` is 1.
+   - **B Key**: When the B button is pressed, the counter is incremented by 2.
+   - **C Key**: When the C button is pressed, the counter is incremented by 3.
+
+3. **Stepsize Management**:
+   - **Three Consecutive A Presses**: If the A button is pressed three times consecutively, the `stepsize` is multiplied by three. This uses temporal logic to check the sequence of button presses.
+   - **Reset on B or C Press**: If either the B or C button is pressed, `stepsize` is reset to 1.
+
+This TSL specification effectively models the scenario described, ensuring the counter behaves according to the rules laid out for the button presses and their effects on the increment size (stepsize).

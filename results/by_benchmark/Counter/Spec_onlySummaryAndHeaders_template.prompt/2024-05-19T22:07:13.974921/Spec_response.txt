@@ -1,0 +1,33 @@
+Here is the TSL specification derived from the natural language description given:
+
+```tsl
+always assume {
+  // Ensures exclusive key press at any time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When A is pressed, increase counter by stepsize; after 3 consecutive presses, change stepsize, unless B or C is pressed which resets stepsize to 1
+  pressA(e) -> ([counter <- counter + stepsize] && (X (pressA(e) -> (X (pressA(e) -> ([stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e))))))));
+  
+  // When B is pressed, increase counter by 2 and reset stepsize to 1
+  pressB(e) -> ([counter <- counter + 2] && [stepsize <- 1]);
+  
+  // When C is pressed, increase counter by 3 and reset stepsize to 1
+  pressC(e) -> ([counter <- counter + 3] && [stepsize <- 1]);
+}
+```
+
+Explanation of the code:
+
+1. **Assumptions**: 
+   - Ensure that no two keys are pressed at the same time using mutual exclusion with the `!(p1 && p2)` pattern for each pair of keys (A/B, A/C, B/C).
+
+2. **Guarantees**:
+   - **Pressing A**: Increase the counter by the stepsize. If A is pressed three times consecutively, the stepsize is multiplied by 3 using the function `multiplyByThree(stepsize)`, unless B or C is pressed in between, which would reset the stepsize to 1 immediately.
+   - **Pressing B**: Increase the counter by 2 and reset the stepsize to 1.
+   - **Pressing C**: Increase the counter by 3 and reset the stepsize to 1.
+
+This specification covers the incremental logic based on button presses and resets the increment step size depending on specified conditions, handling exclusion efficiently by ensuring key actions are mutually exclusive.

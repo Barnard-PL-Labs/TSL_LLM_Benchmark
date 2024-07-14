@@ -1,0 +1,34 @@
+Here is the corresponding TSL code based on the described functionality:
+
+```tsl
+always assume {
+  // Mutual exclusion for button presses
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  // Increment counter by stepsize when pressA is pressed
+  pressA -> [count <- count + stepsize];
+  
+  // Increment counter by 2 when pressB is pressed
+  pressB -> [count <- count + 2];
+  
+  // Increment counter by 3 when pressC is pressed
+  pressC -> [count <- count + 3];
+
+  // Triple the stepsize after three consecutive pressA without pressB or pressC
+  (pressA && X(pressA && X(pressA))) -> X(X(X(stepsize <- multiplyByThree(stepsize)) W (pressB || pressC)));
+
+  // Reset stepsize to 1 if pressB or pressC is pressed
+  (pressB || pressC) -> [stepsize <- 1];
+}
+```
+
+Explanation:
+
+- **Mutual Exclusion**: The assumptions section ensures that no two buttons are pressed at the same time.
+- **Incrementing Count**: Each button increases the `count` by a fixed amount. For `pressA`, the increment is by the current `stepsize`; for `pressB` and `pressC`, the increments are by 2 and 3, respectively.
+- **Adjusting Stepsize**: After pressing the A key three consecutive times without an intervening B or C key press, the stepsize is multiplied by three. This is captured using the temporal operator `X` (next) to chain the condition across three states. The `W` (weak until) operator ensures that this adjustment only happens if no B or C key is pressed in between these states.
+- **Resetting Stepsize**: If either `pressB` or `pressC` is pressed, the stepsize is reset to 1 immediately. This is implemented with a direct assignment within the corresponding conditions.

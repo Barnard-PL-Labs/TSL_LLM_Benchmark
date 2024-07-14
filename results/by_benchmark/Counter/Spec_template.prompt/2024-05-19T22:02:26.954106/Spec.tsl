@@ -1,0 +1,25 @@
+always assume {
+  !(pressA(e) && pressB(e));    // No two button operations can be performed at the same time
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment counter by stepsize when A is pressed
+  pressA(e) -> [count <- count + stepsize];
+
+  // Increment counter by 2 when B is pressed
+  pressB(e) -> [count <- count + 2]; 
+
+  // Increment counter by 3 when C is pressed
+  pressC(e) -> [count <- count + 3];
+
+  // Reset stepsize to 1 when B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // If A is pressed three times in a row, multiply stepsize by 3 on the fourth consecutive press
+  X((pressA(e) && X(pressA(e) && X(pressA(e) && X(pressA(e)))))) -> [stepsize <- multiplyByThree(stepsize)];
+  
+  // Ensure stepsize starts at 1 each program start
+  G ([stepsize <- 1] W (pressA(e) || pressB(e) || pressC(e)));
+}

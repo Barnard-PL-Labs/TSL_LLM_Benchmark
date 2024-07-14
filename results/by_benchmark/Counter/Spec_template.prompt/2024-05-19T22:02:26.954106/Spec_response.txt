@@ -1,0 +1,37 @@
+Here's the TSL specification based on the provided natural language description:
+
+```tsl
+always assume {
+  !(pressA(e) && pressB(e));    // No two button operations can be performed at the same time
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment counter by stepsize when A is pressed
+  pressA(e) -> [count <- count + stepsize];
+
+  // Increment counter by 2 when B is pressed
+  pressB(e) -> [count <- count + 2]; 
+
+  // Increment counter by 3 when C is pressed
+  pressC(e) -> [count <- count + 3];
+
+  // Reset stepsize to 1 when B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+
+  // If A is pressed three times in a row, multiply stepsize by 3 on the fourth consecutive press
+  X((pressA(e) && X(pressA(e) && X(pressA(e) && X(pressA(e)))))) -> [stepsize <- multiplyByThree(stepsize)];
+  
+  // Ensure stepsize starts at 1 each program start
+  G ([stepsize <- 1] W (pressA(e) || pressB(e) || pressC(e)));
+}
+```
+
+### Explanation:
+1. **Assumptions** ensure that no two counter operations (button presses) can happen at the same time.
+2. **Guarantees** handle the logic for incrementing the counter based on which button is pressed and managing the `stepsize` when certain conditions are met:
+   - Direct increments are applied when each button is pressed.
+   - The stepsize is reset when either the B or C key is pressed.
+   - If the A key is pressed four times consecutively, the stepsize is increased by multiplying it by three on the fourth press.
+   - The stepsize is initialized to 1 and resets to 1 at the start or upon any button press until another button is pressed, ensuring it always starts correctly when the program runs.

@@ -1,0 +1,35 @@
+Here's the TSL specification based on the provided natural language description and details about the functions and predicates:
+
+```tsl
+always assume {
+  !(pressA(e) && pressB(e));  // Mutual exclusion between pressing A and B
+  !(pressA(e) && pressC(e));  // Mutual exclusion between pressing A and C
+  !(pressB(e) && pressC(e));  // Mutual exclusion between pressing B and C
+}
+
+always guarantee {
+  // When the A button is pressed, increment the counter by the current stepsize
+  pressA(e) -> [count <- count + stepsize];
+
+  // When the B button is pressed, increment the counter by 2 and reset stepsize to 1
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // When the C button is pressed, increment the counter by 3 and reset stepsize to 1
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // When the A button is pressed three times consecutively, increase stepsize by multiplying it by three
+  // Using a counter for A presses to trigger the multiplier after three consecutive presses
+  ((pressA(e) && X (pressA(e) && X pressA(e))) -> X X X [stepsize <- multiplyByThree(stepsize)]);
+}
+```
+
+Explanation of the TSL specification:
+
+1. **Assumptions** - Ensures mutual exclusivity between button presses (A, B, and C), meaning no two buttons can be pressed at the same time, adhering to the requirement that no two counter operations are performed simultaneously.
+
+2. **Guarantees**:
+    - **Increment Counter**: When the A, B, or C buttons are pressed, the counter is incremented by `stepsize`, 2, and 3 respectively. 
+    - **Reset Stepsize**: Both B and C button presses reset the `stepsize` to 1.
+    - **Multiply Stepsize**: After three consecutive presses of the A button, the `stepsize` is increased by multiplying it by three. This uses a temporal sequence to count consecutive A button presses and apply the multiplication after the third press.
+
+This specification adheres to the given requirements and uses temporal logic to manage the state and sequence of button presses effectively.

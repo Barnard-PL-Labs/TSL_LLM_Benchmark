@@ -1,0 +1,29 @@
+Here's the TSL specification based on the given description:
+
+```
+always assume {
+  // mutual exclusivity for button presses
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  // Increment counter by stepsize when A is pressed
+  pressA -> [count <- count + stepsize];
+
+  // Increment counter by 2 when B is pressed
+  pressB -> [count <- count + 2];
+
+  // Increment counter by 3 when C is pressed
+  pressC -> [count <- count + 3];
+
+  // After pressing A three times consecutively, multiply stepsize by 3
+  (X (pressA && X (pressA && X pressA))) -> [stepsize <- stepsize * 3];
+
+  // Reset stepsize to 1 on pressing B or C
+  (pressB || pressC) -> [stepsize <- 1];
+}
+``` 
+
+This TSL code uses the assumption block to ensure that no two button press operations can happen simultaneously. The guarantee block defines actions for incrementing the counter with specific values depending on the button pressed and adjusting the `stepsize` according to the specified rules related to consecutive presses of button A and any presses of buttons B or C.

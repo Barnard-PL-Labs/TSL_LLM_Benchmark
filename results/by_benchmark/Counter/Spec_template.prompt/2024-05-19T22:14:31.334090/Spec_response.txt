@@ -1,0 +1,25 @@
+```tsl
+always assume {
+    // Define the mutual exclusion between button presses
+    !(pressA(e) && pressB(e));
+    !(pressA(e) && pressC(e));
+    !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+    // Increment the counter by stepsize when pressA is pressed
+    pressA(e) -> [count <- count + stepsize];
+    
+    // Increment the counter by 2 when pressB is pressed
+    pressB(e) -> [count <- count + 2];
+    
+    // Increment the counter by 3 when pressC is pressed
+    pressC(e) -> [count <- count + 3];
+    
+    // Triple the stepsize after pressA is pressed three times consecutively without pressB or pressC interrupting
+    (pressA(e) && X (pressA(e) && X (pressA(e) && X (pressA(e))))) -> [stepsize <- multiplyByThree(stepsize)];
+    
+    // Reset stepsize to 1 if either pressB or pressC is pressed
+    (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```

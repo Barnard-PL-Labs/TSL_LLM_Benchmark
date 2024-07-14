@@ -1,0 +1,39 @@
+always assume {
+  // Ensure mutual exclusivity between all button presses
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressD(e) && pressR(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressQ(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressR(e));
+  !(press2(e) && press3(e));
+  !(press2(e) && pressR(e));
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Increment the vending machine's total value when money is inserted
+  pressD(e) -> [total <- total + 0.1];
+  pressQ(e) -> [total <- total + 0.25];
+  pressO(e) -> [total <- total + 1];
+  
+  // Handle purchasing products based on the amount available in the vending machine
+  press1(e) -> !isLessThanPoint75(total) -> [total <- total - 0.75];
+  press2(e) -> !isLessThanOne(total) -> [total <- total - 1];
+  press3(e) -> !isLessThanOnePoint25(total) -> [total <- total - 1.25];
+  
+  // Handle refund
+  pressR(e) -> [total <- 0];
+}

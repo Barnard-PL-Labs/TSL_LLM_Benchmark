@@ -1,0 +1,24 @@
+always assume {
+  // Mutually exclusive key presses
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Initial step size is set to 1 at the start
+  [stepsize <- 1];
+
+  // Pressing A increments the counter by the current stepsize
+  pressA(e) -> ([counter <- counter + stepsize]);
+
+  // Pressing A three times in a row multiplies the stepsize by 3 unless B or C is pressed
+  pressA(e) && X (pressA(e) && X pressA(e))
+    -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e));
+
+  // Pressing B increments the counter by 2 and resets stepsize to 1
+  pressB(e) -> ([counter <- counter + 2] && [stepsize <- 1]);
+
+  // Pressing C increments the counter by 3 and resets stepsize to 1
+  pressC(e) -> ([counter <- counter + 3] && [stepsize <- 1]);
+}

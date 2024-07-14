@@ -1,0 +1,30 @@
+always assume {
+  !(pressA(e) && pressB(e)) ;  // Mutual exclusion between pressA and pressB
+  !(pressA(e) && pressC(e)) ;  // Mutual exclusion between pressA and pressC
+  !(pressB(e) && pressC(e)) ;  // Mutual exclusion between pressB and pressC
+}
+
+always guarantee {
+  pressA(e) -> [count <- count + stepsize]; // Increment counter by stepsize when A is pressed
+
+  pressB(e) -> {
+    [count <- count + 2];  // Increment counter by 2 when B is pressed
+    [stepsize <- 1];      // Reset stepsize to 1 when B is pressed
+  };
+
+  pressC(e) -> {
+    [count <- count + 3];  // Increment counter by 3 when C is pressed
+    [stepsize <- 1];      // Reset stepsize to 1 when C is pressed
+  };
+
+  // Handling when A is pressed three consecutive times
+  // Assuming a counter or mechanism to track consecutive A presses is implemented as "aPressCount"
+  pressA(e) -> {
+    [aPressCount <- aPressCount + 1]; // Increment A press count
+    (aPressCount == 4) -> {           // If A is pressed four times in a row
+      [stepsize <- multiplyByThree(stepsize)];  // Multiply stepsize by three
+      [aPressCount <- 0];             // Reset A press count
+    };
+    (pressB(e) || pressC(e)) -> [aPressCount <- 0]; // Reset A press count if B or C is pressed
+  };
+}

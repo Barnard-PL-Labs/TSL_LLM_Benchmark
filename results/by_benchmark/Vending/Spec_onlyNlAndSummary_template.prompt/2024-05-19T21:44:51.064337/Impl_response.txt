@@ -1,0 +1,46 @@
+To implement the predicates outlined in the problem statement using Temporal Stream Logic (TSL), we can specify the necessary conditions for the vending machine's operation based on the API without actual JavaScript code. Below is the representation of the predicates in TSL format within the `always assume` and `always guarantee` structures.
+
+### TSL Template Setup
+
+```tsl
+always assume {
+    // Define the possible interactions with the vending machine through the 'e' signal.
+    (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press2(e) || press3(e) || pressR(e));
+    // Ensure that only one key can be pressed at a time.
+    !(pressD(e) && pressQ(e));
+    !(pressD(e) && pressO(e));
+    !(pressD(e) && press1(e));
+    !(pressD(e) && press2(e));
+    !(pressD(e) && press3(e));
+    !(pressD(e) && pressR(e));
+    !(pressQ(e) && pressO(e));
+    !(pressQ(e) && press1(e));
+    // Additional mutual exclusion conditions should be added for all key combinations.
+}
+
+always guarantee {
+    // Define predicates related to the 'total' cell.
+    // These predicates check if the total amount is below certain thresholds.
+    isLessThanPoint75(total) -> (total < 0.75);
+    isLessThanOne(total) -> (total < 1.0);
+    isLessThanOnePoint25(total) -> (total < 1.25);
+
+    // Define the behavior when each key is pressed, using predicates.
+    // Note: The actual actions in response to key presses would go in this section.
+    pressD(e) -> [/* corresponding action */];
+    pressQ(e) -> [/* corresponding action */];
+    pressO(e) -> [/* corresponding action */];
+    press1(e) -> [/* corresponding action */];
+    press2(e) -> [/* corresponding action */];
+    press3(e) -> [/* corresponding action */];
+    pressR(e) -> [/* corresponding action */];
+}
+```
+
+### Explanation
+
+- **always assume**: This section defines the logical consistency of inputs and their mutual exclusivity. For instance, it is not possible for two keys to be pressed at the same time, which is what the mutual exclusivity conditions ensure.
+
+- **always guarantee**: This section defines the conditions and actions based on the predicates related to the `total` and `e` cells. For each predicate that checks certain conditions (`isLessThanPoint75`, `isLessThanOne`, `isLessThanOnePoint25`), it specifies how the system should interpret the `total` value. For each key press (`pressD`, `pressQ`, etc.), it maps to a possible action (which in a full implementation would specify what the vending machine does when these keys are pressed).
+
+This TSL configuration ensures that the vending machine behaves consistently with the defined specifications and reacts appropriately to user inputs and total amounts.

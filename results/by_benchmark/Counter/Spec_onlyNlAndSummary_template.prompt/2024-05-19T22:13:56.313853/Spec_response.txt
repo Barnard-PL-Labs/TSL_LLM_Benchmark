@@ -1,0 +1,33 @@
+Based on the description provided, here is how the TSL specification could be structured:
+
+```tsl
+always assume {
+  // Ensuring mutual exclusivity of button presses
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  // Increment the counter by the current step size when A is pressed
+  pressA -> [count <- count + stepsize];
+
+  // Increment the counter by 2 when B is pressed
+  pressB -> [count <- count + 2];
+
+  // Increment the counter by 3 when C is pressed
+  pressC -> [count <- count + 3];
+
+  // Handling the step size change after pressing A three times in succession
+  (pressA && X(pressA && X(pressA && X(pressA)))) -> [stepsize <- multiplyByThree(stepsize)];
+
+  // Reset the step size to 1 if B or C is pressed
+  (pressB || pressC) -> [stepsize <- 1];
+}
+```
+
+Explanation:
+- **Mutual Exclusivity**: This ensures that no two button operations are performed at the same time.
+- **Incrementing Count**: The counter is incremented by the `stepsize` when `A` is pressed, by `2` when `B` is pressed, and by `3` when `C` is pressed.
+- **Step Size Change**: If the `A` button is pressed four times consecutively, the `stepsize` is increased threefold. This is implemented using nested `X` (next) operators to detect the sequence.
+- **Reset Step Size**: If either `B` or `C` is pressed, the `stepsize` is reset to `1`. This helps in managing the dynamic change in increment value when `A` is repeatedly pressed.

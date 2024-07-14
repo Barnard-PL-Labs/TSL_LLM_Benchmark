@@ -1,0 +1,60 @@
+To implement the specified functions and predicates in JavaScript, we'll assume that we have an underlying system API that can handle keypress events. This API would allow us to detect when specific keys are pressed. However, as the specific API methods aren't provided, I'll mock this functionality using general JavaScript practices, such as using event listeners for key presses.
+
+Here's a simple implementation for the given requirements:
+
+```javascript
+// Create a cell to keep track of the step size
+let stepsize = 1; // This resets to 1 on each program start as per specification
+
+// Create a cell to keep track of the event state
+let e = {};
+
+// Function to multiply stepsize by three
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+
+// Predicate functions to determine which key was pressed
+function pressA(event) {
+    return event.key === 'a';
+}
+
+function pressB(event) {
+    return event.key === 'b';
+}
+
+function pressC(event) {
+    return event.key === 'c';
+}
+
+// Add event listeners to capture key presses
+document.addEventListener('keydown', function(event) {
+    // Update the event state 'e' with the current event
+    e = event;
+
+    // Example usage of the predicates and function
+    if (pressA(e)) {
+        console.log("Key 'a' was pressed.");
+        // Demonstrating the function usage
+        console.log("Stepsize before multiplying by three:", stepsize);
+        stepsize = multiplyByThree(stepsize);
+        console.log("Stepsize after multiplying by three:", stepsize);
+    } else if (pressB(e)) {
+        console.log("Key 'b' was pressed.");
+    } else if (pressC(e)) {
+        console.log("Key 'c' was pressed.");
+    }
+});
+
+```
+
+### Explanation:
+1. **Stepsize and Event State**: We initialize `stepsize` and `e` as described. `stepsize` is straightforward, just a number. `e` is an object representing the latest keyboard event.
+
+2. **multiplyByThree Function**: This function takes `stepsize` as an argument and returns it multiplied by three.
+
+3. **Predicate Functions**: `pressA`, `pressB`, and `pressC` check if the respective key was pressed by examining the `key` attribute of the event object.
+
+4. **Event Listener**: The `keydown` event listener updates `e` whenever a key is pressed and uses the predicate functions to check which key was pressed. If 'a' is pressed, it also demonstrates how `multiplyByThree` can modify `stepsize`.
+
+This setup assumes that the browser environment is used for simplicity, as it allows using `document.addEventListener`. For a different environment (e.g., server-side or a different client setup), the method to capture events and handle them might vary.

@@ -1,0 +1,40 @@
+always assume {
+  // Ensure that no two operations can occur at the same time
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press1(e) && pressD(e));
+  !(press1(e) && pressQ(e));
+  !(press1(e) && pressO(e));
+  !(press1(e) && pressR(e));
+
+  !(press2(e) && press3(e));
+  !(press2(e) && pressD(e));
+  !(press2(e) && pressQ(e));
+  !(press2(e) && pressO(e));
+  !(press2(e) && pressR(e));
+
+  !(press3(e) && pressD(e));
+  !(press3(e) && pressQ(e));
+  !(press3(e) && pressO(e));
+  !(press3(e) && pressR(e));
+
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+
+  !(pressO(e) && pressR(e));
+}
+
+always guarantee {
+  // Define the behavior for each button press according to the total
+  press1(e) && !isLessThanPoint75(total) -> [total <- total - 0.75];
+  press2(e) && !isLessThanOne(total) -> [total <- total - 1.00];
+  press3(e) && !isLessThanOnePoint25(total) -> [total <- total - 1.25];
+  pressD(e) -> [total <- total + 0.10];
+  pressQ(e) -> [total <- total + 0.25];
+  pressO(e) -> [total <- total + 1.00];
+  pressR(e) -> [total <- 0];
+}

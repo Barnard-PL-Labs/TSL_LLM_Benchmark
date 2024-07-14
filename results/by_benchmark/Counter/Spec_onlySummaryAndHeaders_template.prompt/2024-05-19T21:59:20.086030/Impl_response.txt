@@ -1,0 +1,76 @@
+To implement the system environment's behavior in JavaScript using the given API, we start by defining the functions and predicates for the cell manipulation and key press detection. Below are the JavaScript implementations for these functionalities.
+
+### Functions
+```javascript
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+```
+
+### Predicates
+```javascript
+function pressA(e) {
+    return e.key === 'a' || e.key === 'A';
+}
+
+function pressB(e) {
+    return e.key === 'b' || e.key === 'B';
+}
+
+function pressC(e) {
+    return e.key === 'c' || e.key === 'C';
+}
+```
+
+### Example Usage
+To use these functions, you might typically bind them to some key event listeners if this involves interaction with a webpage. Here is how you might integrate this with an HTML page:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Key Press Counter</title>
+    <script>
+        let stepsize = 1;
+        let counter = 0;
+
+        function multiplyByThree(x) {
+            return x * 3;
+        }
+
+        function pressA(e) {
+            return e.key === 'a' || e.key === 'A';
+        }
+
+        function pressB(e) {
+            return e.key === 'b' || e.key === 'B';
+        }
+
+        function pressC(e) {
+            return e.key === 'c' || e.key === 'C';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (pressA(e)) {
+                counter += stepsize;
+                console.log(`Counter incremented by ${stepsize}, total: ${counter}`);
+            } else if (pressB(e)) {
+                stepsize = multiplyByThree(stepsize);
+                console.log(`Stepsize multiplied by three, new stepsize: ${stepsize}`);
+            } else if (pressC(e)) {
+                stepsize = 1;
+                console.log(`Stepsize reset to 1`);
+            }
+        });
+    </script>
+</head>
+<body>
+    <p>Press 'A' to increment the counter by the current stepsize.</p>
+    <p>Press 'B' to multiply the stepsize by three.</p>
+    <p>Press 'C' to reset the stepsize to 1.</p>
+</body>
+</html>
+```
+
+In this setup, pressing 'A' increments a counter by the current stepsize, pressing 'B' multiplies the stepsize by three, and pressing 'C' resets the stepsize to 1. The values are logged to the console for visibility.

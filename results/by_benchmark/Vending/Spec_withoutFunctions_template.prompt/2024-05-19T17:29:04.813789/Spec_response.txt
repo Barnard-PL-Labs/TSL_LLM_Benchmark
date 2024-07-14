@@ -1,0 +1,45 @@
+Below is the TSL specification derived from the given natural language description, considering the operations and requirements of a vending machine controlled through key/button presses:
+
+```tsl
+always assume {
+    // Mutual exclusion for button presses - only one button can be pressed at a time
+    !(pressD(e) && pressQ(e));
+    !(pressD(e) && pressO(e));
+    !(pressD(e) && press1(e));
+    !(pressD(e) && press2(e));
+    !(pressD(e) && press3(e));
+    !(pressD(e) && pressR(e));
+    !(pressQ(e) && pressO(e));
+    !(pressQ(e) && press1(e));
+    !(pressQ(e) && press2(e));
+    !(pressQ(e) && press3(e));
+    !(pressQ(e) && pressR(e));
+    !(pressO(e) && press1(e));
+    !(pressO(e) && press2(e));
+    !(pressO(e) && press3(e));
+    !(pressO(e) && pressR(e));
+    !(press1(e) && press2(e));
+    !(press1(e) && press3(e));
+    !(press1(e) && pressR(e));
+    !(press2(e) && press3(e));
+    !(press2(e) && pressR(e));
+    !(press3(e) && pressR(e));
+}
+
+always guarantee {
+    // Incrementing the total value when coins or bills are inserted
+    pressD(e) -> [total <- total + 0.10];
+    pressQ(e) -> [total <- total + 0.25];
+    pressO(e) -> [total <- total + 1.00];
+
+    // Handling product selections only if sufficient total is available
+    press1(e) -> (!isLessThanPoint75(total) -> [total <- total - 0.75]);
+    press2(e) -> (!isLessThanOne(total) -> [total <- total - 1.00]);
+    press3(e) -> (!isLessThanOnePoint25(total) -> [total <- total - 1.25]);
+
+    // Refunding and resetting the total
+    pressR(e) -> [total <- 0];
+}
+```
+
+This TSL specification ensures that only one button can be pressed at any given time, increments the machine's total accordingly when coins or bills are inserted, adjusts the total when a product is selected (if enough credit is present), and resets the total when the refund button is pressed. Each button press leads to a specific action, and these actions are mutually exclusive to avoid simultaneous operations that could result in incorrect behavior or state of the machine.

@@ -1,0 +1,68 @@
+To implement the methods described in JavaScript using the provided cells (`stepsize` and `e`), and adhering to your requirements, we need to define both functions and predicates. Below is the basic implementation:
+
+### JavaScript Implementation
+
+First, let's define the cells and functions:
+
+```javascript
+// Initial setup for cells
+let stepsize = 1;
+let e = { key: null };
+
+// Functions
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+```
+
+Now, let's define the predicates that check whether specific keys ('a', 'b', 'c') are pressed based on the state of `e`. These predicates will return `true` if the correct key is pressed, otherwise `false`:
+
+```javascript
+// Predicates
+function pressA(e) {
+    return e.key === 'a';
+}
+
+function pressB(e) {
+    return e.key === 'b';
+}
+
+function pressC(e) {
+    return e.key === 'c';
+}
+```
+
+### Example Usage
+
+To demonstrate how these functions and predicates can be used in a program, here’s a simple example that listens to keydown events and updates the cell `e` accordingly. It also manages a counter that increments based on the key pressed:
+
+```javascript
+// Counter to increment based on key press
+let counter = 0;
+
+// Event listener for key presses
+document.addEventListener('keydown', function(event) {
+    e.key = event.key;  // Update the cell `e` with the currently pressed key
+    if (pressA(e)) {
+        counter += stepsize;  // Increment by stepsize
+        console.log(`Key 'a' pressed. Counter incremented by ${stepsize}. New counter value: ${counter}`);
+    } else if (pressB(e)) {
+        stepsize = multiplyByThree(stepsize);  // Multiply stepsize by three
+        console.log(`Key 'b' pressed. Step size updated to ${stepsize}`);
+    } else if (pressC(e)) {
+        stepsize = 1;  // Reset stepsize to 1
+        console.log(`Key 'c' pressed. Step size reset to 1`);
+    }
+    // Reset e.key after handling the event
+    e.key = null;
+});
+```
+
+### Explanation
+
+1. **Cells (`stepsize` and `e`)**: These are used to hold the current step size for incrementing the counter and the last key event state, respectively.
+2. **Function (`multiplyByThree`)**: This function takes an integer and returns it multiplied by three. It is used to change the increment step size.
+3. **Predicates (`pressA`, `pressB`, `pressC`)**: These functions check if a specific key ('a', 'b', or 'c') was pressed. They help in making decisions based on user input.
+4. **Event Listener**: This listens for `keydown` events, updates the cell `e`, and performs actions based on which key was pressed, demonstrating the use of both the predicates and the function.
+
+This setup allows you to have a dynamic response to user input, modifying the application state (`counter` and `stepsize`) based on different keys pressed, showcasing how functions and predicates can interact with an application's state effectively.

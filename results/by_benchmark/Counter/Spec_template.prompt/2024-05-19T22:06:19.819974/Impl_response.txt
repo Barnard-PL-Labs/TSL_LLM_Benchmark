@@ -1,0 +1,96 @@
+To implement the specified functions and predicates in JavaScript, we will start by defining the necessary variables and function implementations. Since the system API isn't specified beyond indicating there's no wrapper API, we'll assume we have to create all the necessary bindings and behavior for key presses and management of the `stepsize` cell.
+
+First, let's define a basic structure to manage the cell states and the key press events:
+
+```javascript
+// Define the cell states
+let cells = {
+    stepsize: 1,
+    e: {
+        aPressed: false,
+        bPressed: false,
+        cPressed: false
+    }
+};
+
+// Functions
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+
+// Predicates
+function pressA(e) {
+    return e.aPressed;
+}
+
+function pressB(e) {
+    return e.bPressed;
+}
+
+function pressC(e) {
+    return e.cPressed;
+}
+
+// Helper function to reset the state of key presses
+function resetKeyPresses() {
+    cells.e.aPressed = false;
+    cells.e.bPressed = false;
+    cells.e.cPressed = false;
+}
+```
+
+Next, we need to bind these behaviors to actual key events. This can be done using event listeners if this code runs in a browser environment:
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    switch (event.key) {
+        case 'a':
+            cells.e.aPressed = true;
+            break;
+        case 'b':
+            cells.e.bPressed = true;
+            break;
+        case 'c':
+            cells.e.cPressed = true;
+            break;
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    // Optionally reset the key state on key up to simulate a press
+    switch (event.key) {
+        case 'a':
+            cells.e.aPressed = false;
+            break;
+        case 'b':
+            cells.e.bPressed = false;
+            break;
+        case 'c':
+            cells.e.cPressed = false;
+            break;
+    }
+});
+```
+
+To simulate the counter increment behavior based on these key presses, you can create a function that updates based on the `stepsize` and which key was pressed:
+
+```javascript
+function updateCounter() {
+    if (pressA(cells.e)) {
+        console.log(`Counter incremented by ${cells.stepsize}`);
+    }
+    if (pressB(cells.e)) {
+        cells.stepsize = multiplyByThree(cells.stepsize);
+        console.log(`Stepsize updated to ${cells.stepsize}`);
+    }
+    if (pressC(cells.e)) {
+        console.log("Press C detected. No specific action defined.");
+    }
+    resetKeyPresses(); // Reset keypress states after handling them
+}
+
+// Setup a interval to check for updates (simulation of a game loop or similar)
+setInterval(updateCounter, 100);  // Check the counter every 100 milliseconds
+```
+
+This code demonstrates a simplistic way to handle state changes based on key press events and modify internal states accordingly. The use of `setInterval` simulates polling, but in a real application, especially for games or simulations, a more sophisticated event-driven or loop mechanism may be used.

@@ -1,0 +1,39 @@
+always assume {
+  // Ensure no two machine operations occur at the same time
+  !(pressD(e) && pressQ(e)) &&
+  !(pressD(e) && pressO(e)) &&
+  !(pressD(e) && pressR(e)) &&
+  !(pressD(e) && press1(e)) &&
+  !(pressD(e) && press2(e)) &&
+  !(pressD(e) && press3(e)) &&
+  !(pressQ(e) && pressO(e)) &&
+  !(pressQ(e) && pressR(e)) &&
+  !(pressQ(e) && press1(e)) &&
+  !(pressQ(e) && press2(e)) &&
+  !(pressQ(e) && press3(e)) &&
+  !(pressO(e) && pressR(e)) &&
+  !(pressO(e) && press1(e)) &&
+  !(pressO(e) && press2(e)) &&
+  !(pressO(e) && press3(e)) &&
+  !(pressR(e) && press1(e)) &&
+  !(pressR(e) && press2(e)) &&
+  !(pressR(e) && press3(e)) &&
+  !(press1(e) && press2(e)) &&
+  !(press1(e) && press3(e)) &&
+  !(press2(e) && press3(e));
+}
+
+always guarantee {
+  // Handling coin and dollar insertions
+  pressD(e) -> [total <- total + 0.1]; // Increase total by 0.10 for dime
+  pressQ(e) -> [total <- total + 0.25]; // Increase total by 0.25 for quarter
+  pressO(e) -> [total <- total + 1]; // Increase total by 1 for dollar
+
+  // Handling refunds
+  pressR(e) -> [total <- 0]; // Refund the money
+
+  // Handling product purchases
+  (!isLessThanPoint75(total) && press1(e)) -> [total <- total - 0.75]; // Purchase option 1 if enough funds are available
+  (!isLessThanOne(total) && press2(e)) -> [total <- total - 1]; // Purchase option 2 if enough funds are available
+  (!isLessThanOnePoint25(total) && press3(e)) -> [total <- total - 1.25]; // Purchase option 3 if enough funds are available
+}

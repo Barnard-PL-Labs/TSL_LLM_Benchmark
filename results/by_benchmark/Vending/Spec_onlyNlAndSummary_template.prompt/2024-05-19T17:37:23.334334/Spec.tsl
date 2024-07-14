@@ -1,0 +1,23 @@
+always assume {
+  // Ensure mutual exclusion between button presses
+  !(press1 && (press2 || press3 || pressD || pressQ || pressO || pressR));
+  !(press2 && (press1 || press3 || pressD || pressQ || pressO || pressR));
+  !(press3 && (press1 || press2 || pressD || pressQ || pressO || pressR));
+  !(pressD && (press1 || press2 || press3 || pressQ || pressO || pressR));
+  !(pressQ && (press1 || press2 || press3 || pressD || pressO || pressR));
+  !(pressO && (press1 || press2 || press3 || pressD || pressQ || pressR));
+  !(pressR && (press1 || press2 || press3 || pressD || pressQ || pressO));
+}
+
+always guarantee {
+  // Button presses increment or decrement the total dollar amount in the vending machine.
+  pressD -> [total <- total + 0.1];
+  pressQ -> [total <- total + 0.25];
+  pressO -> [total <- total + 1];
+  pressR -> [total <- 0];
+
+  // Checking conditions before allowing product purchase
+  (press1 && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+  (press2 && !isLessThanOne(total)) -> [total <- total - 1];
+  (press3 && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+}

@@ -1,0 +1,49 @@
+To implement the predicates in Temporal Stream Logic (TSL) for the vending machine environment described, we will define a set of predicates that will evaluate based on the state of the system. Since TSL expressions are evaluated over time, these predicates can be used to evaluate conditions and determine actions in the system, reflecting changes in states.
+
+Here are the TSL expressions implementing the predicates:
+
+```tsl
+always assume {
+  // Definition of inputs (total and e) based on the system environment states
+  (total < 0.75) ;
+  (total < 1) ;
+  (total < 1.25) ;
+  pressD(e) ;
+  pressQ(e) ;
+  pressO(e) ;
+  press1(e) ;
+  press2(e) ;
+  press3(e) ;
+  pressR(e) ;
+}
+
+always guarantee {
+  // Predicate Implementations:
+  // Checking if total is less than 0.75
+  isLessThanPoint75(total) -> (total < 0.75);
+
+  // Checking if total is less than 1
+  isLessThanOne(total) -> (total < 1);
+
+  // Checking if total is less than 1.25
+  isLessThanOnePoint25(total) -> (total < 1.25);
+
+  // Checking key presses
+  pressD(e) -> (e == 'd'); // assumes e is the input character signal
+  pressQ(e) -> (e == 'q');
+  pressO(e) -> (e == 'o');
+  press1(e) -> (e == '1');
+  press2(e) -> (e == '2');
+  press3(e) -> (e == '3');
+  pressR(e) -> (e == 'r');
+}
+```
+
+### Explanation:
+1. **always assume**: This block describes the possible states of inputs (`total` and `e`). Since the actual conditions (like `(total < 0.75)`) are not standard TSL, they represent placeholders for where the real conditions would be checked based on external data.
+
+2. **always guarantee**: This block defines the predicates as TSL guarantees:
+    - **isLessThanPoint75(total)**, **isLessThanOne(total)**, and **isLessThanOnePoint25(total)** predicates check the value of `total` against specified thresholds.
+    - **pressD(e)** through **pressR(e)** predicates check if specific keys are pressed. The input `e` represents the event or key code from user input, and comparisons (`e == 'd'`, etc.) are conceptual, assuming a mechanism to compare `e` with character representations of key codes.
+
+These TSL expressions are thus prepared to be included in a system that interprets TSL for managing and responding to changes in a vending machine context.

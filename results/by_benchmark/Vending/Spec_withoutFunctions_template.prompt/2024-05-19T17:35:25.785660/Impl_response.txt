@@ -1,0 +1,34 @@
+In a Temporal Stream-based Logic (TSL) context, predicates are used to express conditions or states based on the system's inputs and outputs. Since the task involves defining predicates without implementing functions, we will define the TSL expressions directly. Here are the TSL assumptions for the given predicates:
+
+```tsl
+always assume {
+  // Define predicates on the total cell
+  isLessThanPoint75(total) == (total < 0.75);
+  isLessThanOne(total) == (total < 1.00);
+  isLessThanOnePoint25(total) == (total < 1.25);
+
+  // Define predicates based on the state of the input signal 'e' for various key presses
+  pressD(e) == (e == 'd');
+  pressQ(e) == (e == 'q');
+  pressO(e) == (e == 'o');
+  press1(e) == (e == '1');
+  press2(e) == (e == '2');
+  press3(e) == (e == '3');
+  pressR(e) == (e == 'r');
+}
+
+always guarantee {
+  // Action consequences or system reactions to the predicates can be defined here if needed
+}
+```
+
+### Explanation:
+1. **Predicate Definition**: Each predicate is defined as a comparison or condition check. For instance, `isLessThanPoint75(total)` checks if the value of `total` is less than 0.75. This is expressed using the comparison operator `<`.
+
+2. **Signal-State Mapping**: For predicates that involve pressing a specific key, such as `pressD(e)`, the condition checks if the input `e` (representing an event or keypress) matches a specific character ('d' in this case).
+
+3. **TSL Structure**:
+   - **`always assume`**: This section is used to define the environmental conditions or assumed states based on inputs. It's appropriate for defining how predicates evaluate based on given system states or inputs.
+   - **`always guarantee`**: This section would be used to define the system's guaranteed reactions or outputs based on the defined predicates. Since no actions are specified in the task, this section is noted but left empty.
+
+This TSL framework sets up the predicates within a temporal logic context, allowing further specifications of system behavior based on these predicates to be easily added in the `always guarantee` section as needed.

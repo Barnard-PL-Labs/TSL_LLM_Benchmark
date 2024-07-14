@@ -1,0 +1,27 @@
+To implement the predicate functions for the vending machine system in TSL (Temporal Stream Logic), you will define the predicates based on the conditions provided. Since TSL is used to specify behavior over time rather than implementing direct functionality, we will outline how these predicates can be expressed in a TSL template. The predicates will be assumed as part of the system environment for the vending machine's behavior logic.
+
+Here is how you can define these predicates within the TSL framework:
+
+```tsl
+always assume {
+    // Definitions of what each predicate entails
+    isLessThanPoint75(total) <-> (total < 0.75);
+    isLessThanOne(total) <-> (total < 1);
+    isLessThanOnePoint25(total) <-> (total < 1.25);
+
+    pressD(e) <-> (e.key == 'd');
+    pressQ(e) <-> (e.key == 'q');
+    pressO(e) <-> (e.key == 'o');
+    press1(e) <-> (e.key == '1');
+    press2(e) <-> (e.key == '2');
+    press3(e) <-> (e.key == '3');
+    pressR(e) <-> (e.key == 'r');
+}
+```
+
+In this TSL template:
+- The `always assume { }` block is used to define environmental constraints or inputs that the system may receive. In this context, it is used to define what each predicate means in terms of the system's state and inputs.
+- Each predicate is defined as a biconditional (`<->`) relation between the predicate call and the condition it checks. This means that whenever the condition on the right side of `<->` is true, the predicate on the left side is also true, and vice versa.
+- For the key press predicates, it's assumed that `e` is an event object with a property `key` that can have values corresponding to the keys pressed ('d', 'q', 'o', etc.).
+
+This TSL template does not implement functionality but specifies how conditions relate to system states or inputs. If these predicates were to be implemented in JavaScript directly, they would be simple functions returning boolean values based on the conditions described. However, in TSL, they are assumptions that define how inputs (like key presses and total amounts) relate to logical expressions used elsewhere in the system's specification.

@@ -1,0 +1,40 @@
+Here's a TSL specification based on the natural language description you provided:
+
+```tsl
+always assume {
+  // Ensure that no two button presses occur simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // If the A key is pressed three times consecutively, multiply stepsize by 3
+  // unless B or C key is pressed which resets stepsize to 1
+  pressA(e) && X(pressA(e)) && X(X(pressA(e))) && 
+  !(X(pressB(e)) || X(pressC(e)) || X(X(pressB(e))) || X(X(pressC(e)))) 
+    -> [stepsize <- multiplyByThree(stepsize)];
+
+  pressA(e) && (X(pressB(e)) || X(pressC(e))) -> [stepsize <- 1];
+  pressB(e) -> [stepsize <- 1];
+  pressC(e) -> [stepsize <- 1];
+
+  // Increment the counter by the current stepsize when A is pressed
+  pressA(e) -> [counter <- counter + stepsize];
+
+  // Increment the counter by 2 when B is pressed
+  pressB(e) -> [counter <- counter + 2];
+
+  // Increment the counter by 3 when C is pressed
+  pressC(e) -> [counter <- counter + 3];
+}
+```
+
+Explanation:
+1. **Assumptions:** This part ensures that no two button operations (A, B, or C) are performed concurrently. This is crucial as per the natural language description that no two counter operations can happen at the same time.
+
+2. **Guarantees:**
+   - The "press A" operation has special logic for handling consecutive presses. If A is pressed three times consecutively without B or C being pressed in between, we multiply the stepsize by 3. If B or C is pressed after the first press of A, the stepsize resets to 1, ensuring the correct handling of the counter increment size.
+   - The counter increments are straightforward: A by the current stepsize, B by 2, and C by 3. The stepsize reset rules for B and C ensure that the counter only increments by specified amounts when B or C are pressed.
+
+The TSL specification clearly matches the described behavior of a counter incremented differently based on button presses, with specific rules for consecutive A button presses and stepsize adjustments.

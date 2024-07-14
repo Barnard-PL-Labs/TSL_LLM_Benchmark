@@ -1,0 +1,102 @@
+// Predicates
+
+/**
+ * Checks if the total amount is less than $0.75.
+ * @param {number} total - The current total amount in the vending machine.
+ * @returns {boolean} True if the total is less than $0.75, false otherwise.
+ */
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+/**
+ * Checks if the total amount is less than $1.00.
+ * @param {number} total - The current total amount in the vending machine.
+ * @returns {boolean} True if the total is less than $1.00, false otherwise.
+ */
+function isLessThanOne(total) {
+    return total < 1.00;
+}
+
+/**
+ * Checks if the total amount is less than $1.25.
+ * @param {number} total - The current total amount in the vending machine.
+ * @returns {boolean} True if the total is less than $1.25, false otherwise.
+ */
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+/**
+ * Checks if the 'D' key was pressed.
+ * @param {object} e - The event object containing details about the key press.
+ * @returns {boolean} True if the 'D' key was pressed, false otherwise.
+ */
+function pressD(e) {
+    return getKeyState('D') === true;
+}
+
+/**
+ * Checks if the 'Q' key was pressed.
+ * @param {object} e - The event object containing details about the key press.
+ * @returns {boolean} True if the 'Q' key was pressed, false otherwise.
+ */
+function pressQ(e) {
+    return getKeyState('Q') === true;
+}
+
+/**
+ * Checks if the 'O' key was pressed.
+ * @param {object} e - The event object containing details about the key press.
+ * @returns {boolean} True if the 'O' key was pressed, false otherwise.
+ */
+function pressO(e) {
+    return getKeyState('O') === true;
+}
+
+/**
+ * Checks if the '1' key was pressed.
+ * @param {object} e - The event object containing details about the key press.
+ * @returns {boolean} True if the '1' key was pressed, false otherwise.
+ */
+function press1(e) {
+    return getKeyState('1') === true;
+}
+
+/**
+ * Checks if the '2' key was pressed.
+ * @param {object} e - The event object containing details about the key press.
+ * @returns {boolean} True if the '2' key was pressed, false otherwise.
+ */
+function press2(e) {
+    return getKeyState('2') === true;
+}
+
+/**
+ * Checks if the '3' key was pressed.
+ * @param {object} e - The event object containing details about the key press.
+ * @returns {boolean} True if the '3' key was pressed, false otherwise.
+ */
+function press3(e) {
+    return getKeyState('3') === true;
+}
+
+/**
+ * Checks if the 'R' key was pressed.
+ * @param {object} e - The event object containing details about the key press.
+ * @returns {boolean} True if the 'R' key was pressed, false otherwise.
+ */
+function pressR(e) {
+    return getKeyState('R') === true;
+}
+
+/**
+ * A helper function to simulate getting the state of a key.
+ * This should be replaced with actual API methods if available.
+ * @param {string} key - The key to check.
+ * @returns {boolean} True if the key is pressed, false otherwise.
+ */
+function getKeyState(key) {
+    // Simulated function; replace with actual API call if available.
+    return document.getElementById('key-' + key).checked; // Example using checkbox inputs to simulate key presses.
+}

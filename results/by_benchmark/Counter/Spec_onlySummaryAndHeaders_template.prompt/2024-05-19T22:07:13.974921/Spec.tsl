@@ -1,0 +1,17 @@
+always assume {
+  // Ensures exclusive key press at any time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When A is pressed, increase counter by stepsize; after 3 consecutive presses, change stepsize, unless B or C is pressed which resets stepsize to 1
+  pressA(e) -> ([counter <- counter + stepsize] && (X (pressA(e) -> (X (pressA(e) -> ([stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e))))))));
+  
+  // When B is pressed, increase counter by 2 and reset stepsize to 1
+  pressB(e) -> ([counter <- counter + 2] && [stepsize <- 1]);
+  
+  // When C is pressed, increase counter by 3 and reset stepsize to 1
+  pressC(e) -> ([counter <- counter + 3] && [stepsize <- 1]);
+}

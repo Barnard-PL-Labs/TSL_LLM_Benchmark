@@ -1,0 +1,33 @@
+always assume {
+  // Ensure that no two machine operations can be performed simultaneously
+  !(pressD && (pressQ || pressO || press1 || press2 || press3 || pressR));
+  !(pressQ && (pressD || pressO || press1 || press2 || press3 || pressR));
+  !(pressO && (pressD || pressQ || press1 || press2 || press3 || pressR));
+  !(press1 && (pressD || pressQ || pressO || press2 || press3 || pressR));
+  !(press2 && (pressD || pressQ || pressO || press1 || press3 || pressR));
+  !(press3 && (pressD || pressQ || pressO || press1 || press2 || pressR));
+  !(pressR && (pressD || pressQ || pressO || press1 || press2 || press3));
+}
+
+always guarantee {
+  // Increment total by 0.1 when pressD is pressed
+  pressD -> [total <- total + 0.1];
+  
+  // Increment total by 0.25 when pressQ is pressed
+  pressQ -> [total <- total + 0.25];
+  
+  // Increment total by 1 when pressO is pressed
+  pressO -> [total <- total + 1];
+  
+  // Decrement total by 0.75 and dispense product option 1 when press1 is pressed, if total is 0.75 or greater
+  press1 && !isLessThanPoint75(total) -> [total <- total - 0.75];
+  
+  // Decrement total by 1 and dispense product option 2 when press2 is pressed, if total is 1 or greater
+  press2 && !isLessThanOne(total) -> [total <- total - 1];
+  
+  // Decrement total by 1.25 and dispense product option 3 when press3 is pressed, if total is 1.25 or greater
+  press3 && !isLessThanOnePoint25(total) -> [total <- total - 1.25];
+  
+  // Set total to zero when pressR is pressed
+  pressR -> [total <- 0];
+}

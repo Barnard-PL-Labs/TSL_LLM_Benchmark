@@ -1,0 +1,63 @@
+Since you've specified that you're implementing these predicates directly in JavaScript without using any functions from an API, you'll need to create these predicates based on hypothetical signals and inputs. Below is an example implementation assuming that `total` and `e` are accessible global variables or passed as function parameters. Each predicate checks a condition that returns either true or false.
+
+Here are the implementations based on the descriptions:
+
+```javascript
+// Predicates that check the total
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicates that check if specific keys are pressed
+function pressD(e) {
+    return e.key === 'd';
+}
+
+function pressQ(e) {
+    return e.key === 'q';
+}
+
+function pressO(e) {
+    return e.key === 'o';
+}
+
+function press1(e) {
+    return e.key === '1';
+}
+
+function press2(e) {
+    return e.key === '2';
+}
+
+function press3(e) {
+    return e.key === '3';
+}
+
+function pressR(e) {
+    return e.key === 'r';
+}
+```
+
+These functions assume that `total` is a numeric variable, and `e` is an event parameter from an event listener that contains a property `key`. These predicates can be used in any context where `total` is a number representing the amount of money entered into a vending machine and `e` is an event from a keyboard input.
+
+Example usage:
+
+```javascript
+document.addEventListener('keypress', function(e) {
+    console.log("Press D:", pressD(e));
+    console.log("Press R:", pressR(e));
+});
+
+let machineTotal = 0.50;
+console.log("Is less than $0.75:", isLessThanPoint75(machineTotal));
+```
+
+This setup would log whether the 'd' or 'r' key is pressed whenever a keypress event occurs, and check if the machine total is less than $0.75 in the given scenario. Adjust the `machineTotal` variable and trigger keyboard events to see these functions in action.

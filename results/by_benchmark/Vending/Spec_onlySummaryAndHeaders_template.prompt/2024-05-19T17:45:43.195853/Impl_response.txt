@@ -1,0 +1,45 @@
+Based on the provided description and your request to define predicates for a vending machine environment, the necessary predicates can be implemented using TSL (Temporal Stream Logic) within the "always assume" block. Since actual JavaScript functions are not required, I will provide the TSL specification for these predicates.
+
+Here is how you might define these predicates in TSL to influence the behavior of a vending machine system:
+
+```tsl
+always assume {
+    // Predicate to check if total is less than 0.75
+    isLessThanPoint75(total) = total < 0.75;
+
+    // Predicate to check if total is less than 1
+    isLessThanOne(total) = total < 1;
+
+    // Predicate to check if total is less than 1.25
+    isLessThanOnePoint25(total) = total < 1.25;
+
+    // Predicate to check if key 'd' is pressed
+    pressD(e) = e.key == 'd';
+
+    // Predicate to check if key 'q' is pressed
+    pressQ(e) = e.key == 'q';
+
+    // Predicate to check if key 'o' is pressed
+    pressO(e) = e.key == 'o';
+
+    // Predicate to check if key '1' is pressed
+    press1(e) = e.key == '1';
+
+    // Predicate to check if key '2' is pressed
+    press2(e) = e.key == '2';
+
+    // Predicate to check if key '3' is pressed
+    press3(e) = e.key == '3';
+
+    // Predicate to check if key 'r' is pressed
+    pressR(e) = e.key == 'r';
+}
+```
+
+### Explanation:
+- Each predicate function is defined using a simple comparison operation. In the TSL environment, you would check these predicates to make decisions within the system.
+- The syntax `variable < value` is assumed to be appropriate for checking various conditions related to the `total` cell, which seems to represent some monetary value within the system.
+- The syntax `e.key == 'keyChar'` is used for checking if particular keys are pressed, assuming `e` represents an input event parameter containing a `key` attribute with the pressed key value.
+
+### Usage:
+These predicates can be used within the "always guarantee" block to define the behavior of the vending machine based on the results of these predicates. For instance, you might want to enable a certain action if the total is less than $0.75 or react to specific key presses to dispense items or return change.

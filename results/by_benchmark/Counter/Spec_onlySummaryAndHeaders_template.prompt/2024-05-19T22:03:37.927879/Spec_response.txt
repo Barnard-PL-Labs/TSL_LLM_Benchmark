@@ -1,0 +1,43 @@
+Here's the TSL specification based on the description provided:
+
+```tsl
+always assume {
+  // Ensure mutual exclusion among button presses
+  ! (pressA(e) && pressB(e));
+  ! (pressA(e) && pressC(e));
+  ! (pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Reset stepsize to 1 if B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+  
+  // Pressing A increments the counter by current stepsize; after three consecutive A presses, multiply stepsize by 3
+  pressA(e) -> (
+    [e <- e + stepsize] &&
+    (X pressA(e) -> (
+      [e <- e + stepsize] &&
+      (X pressA(e) -> (
+        [e <- e + stepsize] &&
+        X [stepsize <- multiplyByThree(stepsize)]
+      ))
+    ))
+  );
+  
+  // Pressing B increments the counter by 2
+  pressB(e) -> [e <- e + 2];
+  
+  // Pressing C increments the counter by 3
+  pressC(e) -> [e <- e + 3];
+}
+```
+
+### Explanation:
+1. **Mutual Exclusion**: The assumptions ensure that no two button presses (`A`, `B`, or `C`) can occur simultaneously. This is critical to avoid conflicts in updating the counter (`e`) and the step size (`stepsize`).
+
+2. **Counter Operations**:
+   - **Press A**: The guarantee when pressing key `A` increments the counter by the current `stepsize`. If `A` is pressed three consecutive times, the `stepsize` is then multiplied by three after the third press. If either `B` or `C` is pressed in between, the sequence resets (handled by the reset of `stepsize` to 1).
+   - **Press B**: Simply increments the counter by 2.
+   - **Press C**: Simply increments the counter by 3.
+
+3. **Resetting Stepsize**: Whenever `B` or `C` is pressed, the `stepsize` is reset to 1 to ensure that the multiplicative effect on pressing `A` three times is correctly reset.

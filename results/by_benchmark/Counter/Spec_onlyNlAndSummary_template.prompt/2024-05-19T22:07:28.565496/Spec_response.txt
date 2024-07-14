@@ -1,0 +1,15 @@
+```
+always assume {
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  pressA -> ([count <- count + stepsize] && [pressCountA <- pressCountA + 1]);
+  pressB -> ([count <- count + 2] && [stepsize <- 1] && [pressCountA <- 0]);
+  pressC -> ([count <- count + 3] && [stepsize <- 1] && [pressCountA <- 0]);
+
+  (pressCountA == 3) -> ([stepsize <- multiplyByThree(stepsize)] && [pressCountA <- 0]);
+}
+```

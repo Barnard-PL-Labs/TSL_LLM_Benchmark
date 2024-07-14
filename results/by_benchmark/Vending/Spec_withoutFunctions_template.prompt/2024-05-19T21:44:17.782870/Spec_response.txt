@@ -1,0 +1,53 @@
+Here is the TSL specification based on the provided natural language description and the constraints given about the vending machine and user interactions with the machine:
+
+```TSL
+always assume {
+    // mutual exclusion for button presses; no two buttons can be pressed simultaneously
+    !(pressD(e) && pressQ(e));
+    !(pressD(e) && pressO(e));
+    !(pressD(e) && press1(e));
+    !(pressD(e) && press2(e));
+    !(pressD(e) && press3(e));
+    !(pressD(e) && pressR(e));
+    !(pressQ(e) && pressO(e));
+    !(pressQ(e) && press1(e));
+    !(pressQ(e) && press2(e));
+    !(pressQ(e) && press3(e));
+    !(pressQ(e) && pressR(e));
+    !(pressO(e) && press1(e));
+    !(pressO(e) && press2(e));
+    !(pressO(e) && press3(e));
+    !(pressO(e) && pressR(e));
+    !(press1(e) && press2(e));
+    !(press1(e) && press3(e));
+    !(press1(e) && pressR(e));
+    !(press2(e) && press3(e));
+    !(press2(e) && pressR(e));
+    !(press3(e) && pressR(e));
+}
+
+always guarantee {
+    // Insert a dime
+    pressD(e) -> [total <- total + 0.10];
+
+    // Insert a quarter
+    pressQ(e) -> [total <- total + 0.25];
+
+    // Insert a dollar
+    pressO(e) -> [total <- total + 1];
+
+    // Purchase option 1 if total is 0.75 or more
+    press1(e) && !isLessThanPoint75(total) -> [total <- total - 0.75];
+
+    // Purchase option 2 if total is 1 or more
+    press2(e) && !isLessThanOne(total) -> [total <- total - 1];
+
+    // Purchase option 3 if total is 1.25 or more
+    press3(e) && !isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+    // Refund the money
+    pressR(e) -> [total <- 0];
+}
+```
+
+This TSL specification defines the mutual exclusions necessary to assure that no two operations (indicated via button presses) occur at the same time. It also sets the rules for adding money to the vending machine and for purchasing items or receiving a refund, depending on the total amount available and specific button presses. Each operation that modifies the total amount in the vending machine is governed by conditions that check whether sufficient funds are available, ensuring transactions are only permitted when allowed by the machine's rules.

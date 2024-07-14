@@ -1,0 +1,24 @@
+always assume {
+  // Ensure only one button can be pressed at a time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment the counter by stepsize when A is pressed
+  pressA(e) -> [count <- count + stepsize];
+
+  // Increment the counter by 2 when B is pressed
+  pressB(e) -> [count <- count + 2];
+
+  // Increment the counter by 3 when C is pressed
+  pressC(e) -> [count <- count + 3];
+
+  // If A is pressed three times consecutively, multiply stepsize by 3
+  (X(pressA(e)) && X(X(pressA(e))) && X(X(X(pressA(e))))) 
+    -> [stepsize <- multiplyByThree(stepsize)];
+
+  // Reset stepsize to 1 when B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}

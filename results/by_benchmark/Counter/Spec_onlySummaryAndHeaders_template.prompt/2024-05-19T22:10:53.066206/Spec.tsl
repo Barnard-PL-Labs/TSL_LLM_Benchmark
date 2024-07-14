@@ -1,0 +1,35 @@
+always assume {
+  // Exclusive relationship between button presses
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Initialize stepsize to 1 at the start
+  [stepsize <- 1];
+
+  // Handling button A press
+  pressA(e) -> {
+    // Increment the counter by the current stepsize
+    [counter <- counter + stepsize];
+
+    // If pressed three times consecutively, multiply stepsize by 3
+    // Reset if either B or C is pressed
+    (X (pressA(e)) && X (X pressA(e))) -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e));
+  };
+
+  // Handling button B press
+  pressB(e) -> {
+    // Increment the counter by 2 and reset stepsize to 1
+    [counter <- counter + 2];
+    [stepsize <- 1];
+  };
+
+  // Handling button C press
+  pressC(e) -> {
+    // Increment the counter by 3 and reset stepsize to 1
+    [counter <- counter + 3];
+    [stepsize <- 1];
+  };
+}

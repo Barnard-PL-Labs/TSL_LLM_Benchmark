@@ -1,0 +1,42 @@
+To define predicates for a vending machine in a Temporal Stream Logic (TSL) template, I will provide an `always assume` block to set the environment constraints and an `always guarantee` block to define the system's behavior. Here, we will only focus on the definitions of predicates as per your specified conditions and requirements.
+
+### TSL Template
+
+```tsl
+always assume {
+    // Predicates for checking the total amount in the vending machine
+    (isLessThanPoint75(total) <-> (total < 0.75));
+    (isLessThanOne(total) <-> (total < 1));
+    (isLessThanOnePoint25(total) <-> (total < 1.25));
+
+    // Predicates for checking key presses 
+    (pressD(e) <-> (e.key === 'd'));
+    (pressQ(e) <-> (e.key === 'q'));
+    (pressO(e) <-> (e.key === 'o'));
+    (press1(e) <-> (e.key === '1'));
+    (press2(e) <-> (e.key === '2'));
+    (press3(e) <-> (e.key === '3'));
+    (pressR(e) <-> (e.key === 'r'));
+}
+
+always guarantee {
+    // System behavior descriptions based on the predicates could be added here
+    // For example, if a 'd' key is pressed, something happens
+    pressD(e) -> [action <- performSomeAction];
+}
+```
+
+### Explanation
+
+1. **Variables Setup:**
+   - `total` represents the state of the total money inserted into the vending machine.
+   - `e` represents an event input from outside, particularly keypress events.
+
+2. **Predicates Definitions:**
+   - `isLessThanPoint75(total)`, `isLessThanOne(total)`, and `isLessThanOnePoint25(total)` are predicates defined to check if the total is less than specific values (0.75, 1, and 1.25 respectively).
+   - `pressD(e)`, `pressQ(e)`, `pressO(e)`, `press1(e)`, `press2(e)`, `press3(e)`, and `pressR(e)` detect if specific keys are pressed by comparing the key attribute of event `e` with the respective character.
+
+3. **System Guarantees:**
+   - The `always guarantee` block can be used to define actions based on the predicates. For instance, if the 'd' key is pressed, a certain action is triggered in the system. These actions are conceptual and should correspond to actual functions or methods in the system's API.
+
+This TSL template is a conceptual representation. The predicates will help in designing the logic flow of the vending machine system, making it robust and responsive to the inputs received from the user.

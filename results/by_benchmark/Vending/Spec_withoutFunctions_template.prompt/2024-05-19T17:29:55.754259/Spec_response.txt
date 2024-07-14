@@ -1,0 +1,52 @@
+Here is a TSL specification based on the provided natural language description and predicates:
+
+```tsl
+always assume {
+  // Mutual exclusion for all button presses - ensuring no two machine operations can be performed at the same time.
+  !(pressD(e) && pressQ(e)) &&
+  !(pressD(e) && pressO(e)) &&
+  !(pressD(e) && press1(e)) &&
+  !(pressD(e) && press2(e)) &&
+  !(pressD(e) && press3(e)) &&
+  !(pressD(e) && pressR(e)) &&
+  !(pressQ(e) && pressO(e)) &&
+  !(pressQ(e) && press1(e)) &&
+  !(pressQ(e) && press2(e)) &&
+  !(pressQ(e) && press3(e)) &&
+  !(pressQ(e) && pressR(e)) &&
+  !(pressO(e) && press1(e)) &&
+  !(pressO(e) && press2(e)) &&
+  !(pressO(e) && press3(e)) &&
+  !(pressO(e) && pressR(e)) &&
+  !(press1(e) && press2(e)) &&
+  !(press1(e) && press3(e)) &&
+  !(press1(e) && pressR(e)) &&
+  !(press2(e) && press3(e)) &&
+  !(press2(e) && pressR(e)) &&
+  !(press3(e) && pressR(e))
+}
+
+always guarantee {
+  // Incrementing value on button presses
+  pressD(e) -> [total <- total + 0.10];
+  pressQ(e) -> [total <- total + 0.25];
+  pressO(e) -> [total <- total + 1];
+
+  // Decrementing value on button presses if conditions are met
+  press1(e) && !isLessThanPoint75(total) -> [total <- total - 0.75];
+  press2(e) && !isLessThanOne(total) -> [total <- total - 1];
+  press3(e) && !isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+  // Refund operation
+  pressR(e) -> [total <- 0];
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - Mutual exclusivity is ensured between all button presses, meaning only one button can be pressed at a time, which prevents multiple operations from occurring simultaneously.
+
+2. **Guarantees**:
+   - The value in the vending machine (`total`) is incremented correctly based on the button pressed (`pressD`, `pressQ`, `pressO`).
+   - Product purchase operations (`press1`, `press2`, `press3`) are dependent on the conditions checked by predicates (`isLessThanPoint75`, `isLessThanOne`, `isLessThanOnePoint25`). The total is decremented by the respective amount if sufficient funds are available.
+   - The refund operation resets the total to zero when the `pressR` button is pressed.

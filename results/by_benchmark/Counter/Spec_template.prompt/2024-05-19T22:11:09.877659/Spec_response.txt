@@ -1,0 +1,42 @@
+```tsl
+always assume {
+  // Mutual exclusion for button presses: no two buttons can be pressed at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When the A key is pressed, increment the counter by the current stepsize
+  pressA(e) -> [count <- count + stepsize];
+  
+  // When the B key is pressed, increment the counter by 2
+  pressB(e) -> [count <- count + 2];
+  
+  // When the C key is pressed, increment the counter by 3
+  pressC(e) -> [count <- count + 3];
+  
+  // Reset the stepsize to 1 when either B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+  
+  // If the A key is pressed three times consecutively, then stepsize is multiplied by three
+  // We use a counter cell `aPressCount` to track consecutive A presses
+  pressA(e) -> (X (pressA(e) -> (X (pressA(e) -> [stepsize <- multiplyByThree(stepsize)]; [aPressCount <- 0]) && [aPressCount <- aPressCount + 1]) && [aPressCount <- aPressCount + 1]) && [aPressCount <- aPressCount + 1]);
+  
+  // Reset the aPressCount if B or C is pressed
+  (pressB(e) || pressC(e)) -> [aPressCount <- 0];
+}
+```
+
+### Explanation:
+1. **Mutual Exclusion**: This is to ensure no two buttons can be pressed simultaneously, thereby avoiding any conflict in commands or counter updates.
+
+2. **Guarantee on Button Presses**:
+   - For `pressA(e)`: The counter is incremented by the current stepsize. A counter (`aPressCount`) tracks consecutive presses of the A button to handle the stepsize multiplication after every third consecutive press.
+   - For `pressB(e)`: The counter is incremented by 2, and the stepsize is reset to 1.
+   - For `pressC(e)`: The counter is incremented by 3, and the stepsize is reset to 1.
+   
+3. **Handling Consecutive A Presses**:
+   - After three consecutive presses of the A button, the stepsize is multiplied by three using the `multiplyByThree(stepsize)` function. The counter `aPressCount` helps track the number of consecutive presses and is reset when either B or C is pressed or after multiplying the stepsize.
+
+This setup ensures that the system behaves as described: incrementing counters based on button presses and modifying the stepsize based on certain button press patterns.

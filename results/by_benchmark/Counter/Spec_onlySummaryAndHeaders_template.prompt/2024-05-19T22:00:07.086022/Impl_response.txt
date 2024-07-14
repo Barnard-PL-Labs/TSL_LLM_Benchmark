@@ -1,0 +1,60 @@
+To implement the specified functions and predicates in JavaScript, we need to define how each function operates and ensure that the predicates return a boolean value depending on the state of the input, `e`. Since there is no provided wrapper or explicit API interaction details, the functions and predicates are explained assuming `e` represents some form of event object and the `stepsize` is a global variable or contextually available within the function.
+
+Here is a basic implementation:
+
+### JavaScript Code Implementation
+
+```javascript
+// Assuming stepsize is globally defined or managed in the context where these functions are used
+let stepsize = 1; // Initialize stepsize as specified
+
+// Function to multiply the stepsize by three
+function multiplyByThree(stepsize) {
+    return stepsize * 3;
+}
+
+// Predicate to check if 'a' key was pressed
+function pressA(e) {
+    return e.key === 'a';
+}
+
+// Predicate to check if 'b' key was pressed
+function pressB(e) {
+    return e.key === 'b';
+}
+
+// Predicate to check if 'c' key was pressed
+function pressC(e) {
+    return e.key === 'c';
+}
+```
+
+### Explanation:
+
+1. **Global Variable `stepsize`**: Initialized globally. This allows it to be accessed and modified as needed without needing to pass it around functions. It starts at 1 each time the program starts as per the requirement.
+
+2. **Function `multiplyByThree`**: This function takes a numerical value as an argument (assumed to be `stepsize` or similar) and returns it multiplied by three. It's a pure function, depending only on its input.
+
+3. **Predicates `pressA`, `pressB`, `pressC`**:
+   - These functions are implemented to check if the respective keys ('a', 'b', 'c') are pressed. 
+   - They take an event object `e` as parameter, which should contain a key attribute typically available in keyboard event objects in JavaScript.
+   - Returns `true` if the specified key is the one pressed, otherwise returns `false`.
+
+### Usage Example:
+
+You might use these functions in an event listener context like so:
+
+```javascript
+document.addEventListener('keydown', function(event) {
+    if (pressA(event)) {
+        console.log("Key 'A' was pressed");
+        console.log("New step size after multiplication:", multiplyByThree(stepsize));
+    } else if (pressB(event)) {
+        console.log("Key 'B' was pressed");
+    } else if (pressC(event)) {
+        console.log("Key 'C' was pressed");
+    }
+});
+```
+
+This setup allows for interactive testing with key presses in a browser environment, showcasing how the functions and predicates operate based on user input.

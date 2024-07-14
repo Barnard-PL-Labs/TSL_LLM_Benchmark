@@ -1,0 +1,59 @@
+Here is the TSL specification for the vending machine scenario described:
+
+```tsl
+always assume {
+  // Mutual exclusion for button presses
+  !(pressD(e) && pressQ(e)) && 
+  !(pressD(e) && pressO(e)) && 
+  !(pressD(e) && press1(e)) &&
+  !(pressD(e) && press2(e)) &&
+  !(pressD(e) && press3(e)) &&
+  !(pressD(e) && pressR(e)) &&
+  !(pressQ(e) && pressO(e)) &&
+  !(pressQ(e) && press1(e)) &&
+  !(pressQ(e) && press2(e)) &&
+  !(pressQ(e) && press3(e)) &&
+  !(pressQ(e) && pressR(e)) &&
+  !(pressO(e) && press1(e)) &&
+  !(pressO(e) && press2(e)) &&
+  !(pressO(e) && press3(e)) &&
+  !(pressO(e) && pressR(e)) &&
+  !(press1(e) && press2(e)) &&
+  !(press1(e) && press3(e)) &&
+  !(press1(e) && pressR(e)) &&
+  !(press2(e) && press3(e)) &&
+  !(press2(e) && pressR(e)) &&
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Increment total by 0.1 when pressD is pushed
+  pressD(e) -> [total <- total + 0.1];
+
+  // Increment total by 0.25 when pressQ is pushed
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Increment total by 1 when pressO is pushed
+  pressO(e) -> [total <- total + 1];
+
+  // Decrement total by 0.75 and dispense product 1 if sufficient funds (press1 and total >= 0.75)
+  press1(e) && !isLessThanPoint75(total) -> [total <- total - 0.75];
+
+  // Decrement total by 1 and dispense product 2 if sufficient funds (press2 and total >= 1)
+  press2(e) && !isLessThanOne(total) -> [total <- total - 1];
+
+  // Decrement total by 1.25 and dispense product 3 if sufficient funds (press3 and total >= 1.25)
+  press3(e) && !isLessThanOnePoint25(total) -> [total <- total - 1.25];
+
+  // Reset total to 0 when pressR is pushed
+  pressR(e) -> [total <- 0];
+}
+```
+
+Explanation:
+
+1. **Assumptions**: Ensure mutual exclusivity among all button presses. This prevents simultaneous operations which can conflict with each other.
+2. **Guarantees**:
+   - For each coin input button (D, Q, O), increment the total by their respective values.
+   - For each product button (1, 2, 3), check if there is enough balance using the respective predicates, and if true, decrement the balance by the cost of the product.
+   - If the refund button (R) is pressed, reset the total to zero.

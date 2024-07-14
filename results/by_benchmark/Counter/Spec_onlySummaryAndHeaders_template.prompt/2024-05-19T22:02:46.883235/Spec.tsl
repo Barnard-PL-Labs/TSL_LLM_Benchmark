@@ -1,0 +1,21 @@
+always assume {
+  // Ensures no two button presses happen simultaneously
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Pressing A increments the counter by stepsize, which starts at 1
+  pressA(e) -> ([counter <- counter + stepsize]);
+  
+  // If A is pressed three times consecutively without B or C being pressed, multiply stepsize by 3
+  G((pressA(e) && X(pressA(e)) && X(X(pressA(e)))) -> 
+    (X(X(X (stepsize <- multiplyByThree(stepsize)))) W (pressB(e) || pressC(e))));
+  
+  // Pressing B increments the counter by 2 and resets stepsize to 1
+  pressB(e) -> ([counter <- counter + 2] && [stepsize <- 1]);
+  
+  // Pressing C increments the counter by 3 and resets stepsize to 1
+  pressC(e) -> ([counter <- counter + 3] && [stepsize <- 1]);
+}

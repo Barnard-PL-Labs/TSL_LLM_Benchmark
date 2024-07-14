@@ -1,0 +1,31 @@
+always assume {
+  // Prevent simultaneous pressing of multiple buttons
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Handle pressA behavior
+  pressA(e) -> (
+    if (X (pressA(e) && X (pressA(e) && X pressA(e))))) {
+      // If A is pressed three times sequentially, on the fourth press, multiply step size by three
+      [stepsize <- multiplyByThree(stepsize)];
+    } else {
+      // Normal behavior incrementing the counter by the current stepsize
+      [count <- count + stepsize];
+    }
+  );
+
+  // Handle pressB behavior
+  pressB(e) -> (
+    [count <- count + 2]; // Increment counter by 2 when B is pressed
+    [stepsize <- 1]; // Reset stepsize to 1
+  );
+
+  // Handle pressC behavior
+  pressC(e) -> (
+    [count <- count + 3]; // Increment counter by 3 when C is pressed
+    [stepsize <- 1]; // Reset stepsize to 1
+  );
+}

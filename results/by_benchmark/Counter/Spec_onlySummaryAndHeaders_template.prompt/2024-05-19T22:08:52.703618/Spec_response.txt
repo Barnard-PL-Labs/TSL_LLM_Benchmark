@@ -1,0 +1,28 @@
+```tsl
+always assume {
+  // Ensure that no two key presses can happen at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // When A is pressed, increment the counter by the current stepsize
+  pressA(e) -> ([counter <- counter + stepsize]);
+
+  // When B is pressed, increment the counter by 2 and reset stepsize to 1
+  pressB(e) -> ([counter <- counter + 2] && [stepsize <- 1]);
+
+  // When C is pressed, increment the counter by 3 and reset stepsize to 1
+  pressC(e) -> ([counter <- counter + 3] && [stepsize <- 1]);
+
+  // If A is pressed three times consecutively without B or C being pressed, multiply stepsize by 3
+  (X(pressA(e) && X(pressA(e) && X(pressA(e)))) && !pressB(e) && !pressC(e))
+  -> [stepsize <- multiplyByThree(stepsize)];
+
+  // Reset stepsize to 1 upon starting or pressing B or C
+  !(pressA(e) || pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+In this TSL specification, the `always assume` block establishes mutual exclusivity among the button presses, ensuring that no two actions (pressA, pressB, pressC) can be processed at the same time. The `always guarantee` block outlines the behavior when each button is pressed: incrementing the counter with different values and managing the `stepsize` state. The special condition for the A key being pressed three times consecutively without B or C being pressed is handled to modify the `stepsize` accordingly. The default reset of `stepsize` to 1 is included to ensure it is properly set upon program start or when no relevant key is pressed.

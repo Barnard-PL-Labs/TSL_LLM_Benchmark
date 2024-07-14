@@ -1,0 +1,40 @@
+Here is the TSL specification that meets the stated requirements:
+
+```tsl
+always assume {
+  // Ensure that no two button operations occur at the same time (mutual exclusion)
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Initialize stepsize to 1 at program start
+  [stepsize <- 1];
+
+  // Pressing the A key increments the counter by stepsize
+  pressA(e) -> ([stepsize <- stepsize] W (pressB(e) || pressC(e)));
+
+  // Pressing the A key three times consecutively multiplies stepsize by 3 unless interrupted by B or C
+  pressA(e) && X(pressA(e) && X(pressA(e))) -> ([stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e)));
+
+  // Pressing the B key resets stepsize to 1 and increments the counter by 2
+  pressB(e) -> ([stepsize <- 1] && [counter <- counter + 2]);
+
+  // Pressing the C key resets stepsize to 1 and increments the counter by 3
+  pressC(e) -> ([stepsize <- 1] && [counter <- counter + 3]);
+}
+```
+
+### Explanation:
+1. **Assumptions**:
+   - The mutual exclusion for button operations ensures that no two operations can happen simultaneously.
+
+2. **Guarantees**:
+   - At the start, `stepsize` is initialized to 1.
+   - Pressing the A key will increment the `counter` by the current `stepsize`.
+   - If the A key is pressed three times consecutively without interruption from pressing B or C, the `stepsize` is multiplied by 3.
+   - Pressing the B key resets the `stepsize` to 1 and increments the `counter` by 2.
+   - Pressing the C key also resets the `stepsize` to 1 and increments the `counter` by 3.
+
+This TSL code effectively handles the conditions and operations described in the natural language specification.

@@ -1,0 +1,51 @@
+```tsl
+always assume {
+  // Ensure mutual exclusion for button presses
+  !(pressD && pressQ) && 
+  !(pressD && pressO) && 
+  !(pressD && press1) && 
+  !(pressD && press2) && 
+  !(pressD && press3) && 
+  !(pressD && pressR) && 
+  !(pressQ && pressO) && 
+  !(pressQ && press1) && 
+  !(pressQ && press2) && 
+  !(pressQ && press3) && 
+  !(pressQ && pressR) && 
+  !(pressO && press1) && 
+  !(pressO && press2) && 
+  !(pressO && press3) &&
+  !(pressO && pressR) &&
+  !(press1 && press2) &&
+  !(press1 && press3) && 
+  !(press1 && pressR) &&
+  !(press2 && press3) &&
+  !(press2 && pressR) &&
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increment total by 0.1 when D is pressed
+  pressD -> [total <- total + 0.1];
+
+  // Increment total by 0.25 when Q is pressed
+  pressQ -> [total <- total + 0.25];
+
+  // Increment total by 1 when O is pressed
+  pressO -> [total <- total + 1];
+
+  // Decrement total by 0.75 when 1 is pressed, if total is 0.75 or more
+  (press1 && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+
+  // Decrement total by 1 when 2 is pressed, if total is 1 or more
+  (press2 && !isLessThanOne(total)) -> [total <- total - 1];
+
+  // Decrement total by 1.25 when 3 is pressed, if total is 1.25 or more
+  (press3 && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+
+  // Set total to 0 when R is pressed
+  pressR -> [total <- 0];
+}
+```
+
+This TSL specification ensures that each action associated with pressing a button on a vending machine modifies the `total` amount accordingly. It maintains mutual exclusion among button presses, meaning no two buttons can be pressed simultaneously, which prevents any conflict in operations.

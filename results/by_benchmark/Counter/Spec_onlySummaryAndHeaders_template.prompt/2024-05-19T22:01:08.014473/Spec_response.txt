@@ -1,0 +1,47 @@
+Here's a TSL specification based on your description. This specification formalizes the rules for pressing buttons A, B, and C, ensuring mutual exclusion between button presses, handling the increment operations associated with each button, and modifying the step size based on consecutive A key presses or resets by B or C key presses.
+
+```tsl
+always assume {
+  // Mutual exclusion between button presses
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Handling the A key press: increment counter by stepsize
+  pressA(e) -> (
+    [counter <- counter + stepsize]
+  );
+
+  // If A is pressed three times in a row without B or C being pressed, multiply stepsize by 3
+  (pressA(e) && X (pressA(e) && X pressA(e))) && !(X pressB(e)) && !(X pressC(e)) -> (
+    [stepsize <- multiplyByThree(stepsize)]
+  );
+
+  // If B or C is pressed anytime after A has been pressed less than 3 times, reset stepsize to 1
+  ((pressA(e) && X (pressB(e) || pressC(e))) || (pressA(e) && X pressA(e) && X X (pressB(e) || pressC(e)))) -> (
+    [stepsize <- 1]
+  );
+
+  // Handling the B key press: increment counter by 2
+  pressB(e) -> (
+    [counter <- counter + 2]
+  );
+
+  // Handling the C key press: increment counter by 3
+  pressC(e) -> (
+    [counter <- counter + 3]
+  );
+
+  // Reset the stepsize to 1 when B or C is pressed
+  (pressB(e) || pressC(e)) -> (
+    [stepsize <- 1]
+  );
+}
+```
+
+Explanation:
+- **Mutual Exclusion**: Ensures that no two button operations (A, B, C) are processed simultaneously.
+- **Increment Operations**: Defines how the counter is incremented based on the button pressed. A uses the `stepsize`, B adds 2, and C adds 3 to the counter.
+- **Stepsize Management**: Changes the `stepsize` when A is pressed three times consecutively without B or C being pressed in between. Resets `stepsize` to 1 if B or C is pressed.

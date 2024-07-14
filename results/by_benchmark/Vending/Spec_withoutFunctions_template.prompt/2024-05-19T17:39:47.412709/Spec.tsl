@@ -1,0 +1,39 @@
+always assume {
+  // Mutual exclusion for button presses to ensure no two operations are performed simultaneously
+  !(pressD(e) && pressQ(e)) && 
+  !(pressD(e) && pressO(e)) && 
+  !(pressD(e) && press1(e)) &&
+  !(pressD(e) && press2(e)) &&
+  !(pressD(e) && press3(e)) &&
+  !(pressD(e) && pressR(e)) &&
+  !(pressQ(e) && pressO(e)) &&
+  !(pressQ(e) && press1(e)) &&
+  !(pressQ(e) && press2(e)) &&
+  !(pressQ(e) && press3(e)) &&
+  !(pressQ(e) && pressR(e)) &&
+  !(pressO(e) && press1(e)) &&
+  !(pressO(e) && press2(e)) &&
+  !(pressO(e) && press3(e)) &&
+  !(pressO(e) && pressR(e)) &&
+  !(press1(e) && press2(e)) &&
+  !(press1(e) && press3(e)) &&
+  !(press1(e) && pressR(e)) &&
+  !(press2(e) && press3(e)) &&
+  !(press2(e) && pressR(e)) &&
+  !(press3(e) && pressR(e));
+}
+
+always guarantee {
+  // Increment total when respective money adding buttons are pressed
+  pressD(e) -> [total <- total + 0.1];
+  pressQ(e) -> [total <- total + 0.25];
+  pressO(e) -> [total <- total + 1];
+  
+  // Check conditions and decrement total only if the conditions for product purchase are met
+  (!isLessThanPoint75(total) && press1(e)) -> [total <- total - 0.75];
+  (!isLessThanOne(total) && press2(e)) -> [total <- total - 1];
+  (!isLessThanOnePoint25(total) && press3(e)) -> [total <- total - 1.25];
+  
+  // Reset total to zero when the refund button is pressed
+  pressR(e) -> [total <- 0];
+}

@@ -1,0 +1,48 @@
+Here is the TSL specification based on the provided requirements and the given functions and predicates:
+
+```tsl
+always assume {
+  // Ensure that no two counter operations are simultaneous
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // If the A key is pressed three times in a row, the step size is multiplied by 3,
+  // unless B or C is pressed, which resets the step size to 1
+  pressA(e) -> (
+    [e <- e + stepsize] && (
+      X(pressA(e) -> (
+        [e <- e + stepsize] && (
+          X(pressA(e) -> ([stepsize <- multiplyByThree(stepsize)] && [e <- e + stepsize]))
+          W (pressB(e) || pressC(e))
+        ))
+      ))
+    )
+  );
+
+  // If B is pressed, increment counter by 2 and reset stepsize to 1
+  pressB(e) -> ([e <- e + 2] && [stepsize <- 1]);
+
+  // If C is pressed, increment counter by 3 and reset stepsize to 1
+  pressC(e) -> ([e <- e + 3] && [stepsize <- 1]);
+
+  // Ensure that stepsize starts at 1 at program start
+  initially ([stepsize <- 1]);
+}
+```
+
+### Explanation:
+1. **Assumptions Section:**
+   - Prevents simultaneous pressing of any two keys among A, B, and C.
+
+2. **Guarantees Section:**
+   - Defines the behavior when the A key is pressed:
+     - Increments the counter by the current step size.
+     - If A is pressed a second time immediately after, it increments again.
+     - If A is pressed a third time consecutively, it multiplies the step size by 3 before the next increment.
+     - If either B or C is pressed before the third consecutive A press, the step size resets to 1.
+   - Sets the action for pressing B to increment the counter by 2 and resets the step size to 1.
+   - Sets the action for pressing C to increment the counter by 3 and resets the step size to 1.
+   - Initializes the step size to 1 at program start to ensure a consistent starting condition.

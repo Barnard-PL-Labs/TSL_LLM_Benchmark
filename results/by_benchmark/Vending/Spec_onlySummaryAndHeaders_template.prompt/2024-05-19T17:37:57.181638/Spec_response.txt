@@ -1,0 +1,42 @@
+Here is the TSL specification based on the provided natural language description and the information about the functions and predicates available:
+
+```tsl
+always assume {
+  // Ensure that no two operations on the vending machine are performed at the same time
+  !(pressD(e) && (pressQ(e) || pressO(e) || pressR(e) || press1(e) || press2(e) || press3(e)));
+  !(pressQ(e) && (pressD(e) || pressO(e) || pressR(e) || press1(e) || press2(e) || press3(e)));
+  !(pressO(e) && (pressD(e) || pressQ(e) || pressR(e) || press1(e) || press2(e) || press3(e)));
+  !(pressR(e) && (pressD(e) || pressQ(e) || pressO(e) || press1(e) || press2(e) || press3(e)));
+  !(press1(e) && (pressD(e) || pressQ(e) || pressO(e) || pressR(e) || press2(e) || press3(e)));
+  !(press2(e) && (pressD(e) || pressQ(e) || pressO(e) || pressR(e) || press1(e) || press3(e)));
+  !(press3(e) && (pressD(e) || pressQ(e) || pressO(e) || pressR(e) || press1(e) || press2(e)));
+}
+
+always guarantee {
+  // Insert a dime (0.10) when the d key is pressed
+  pressD(e) -> [total <- total + 0.10];
+
+  // Insert a quarter (0.25) when the q key is pressed
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Insert a dollar (1.00) when the o key is pressed
+  pressO(e) -> [total <- total + 1.00];
+
+  // Refund the money when the r key is pressed
+  pressR(e) -> [total <- 0];
+
+  // Purchase product option 1 (requires $0.75 or more)
+  press1(e) -> (!isLessThanPoint75(total) -> [total <- total - 0.75]);
+
+  // Purchase product option 2 (requires $1.00 or more)
+  press2(e) -> (!isLessThanOne(total) -> [total <- total - 1.00]);
+
+  // Purchase product option 3 (requires $1.25 or more)
+  press3(e) -> (!isLessThanOnePoint25(total) -> [total <- total - 1.25]);
+}
+```
+
+This specification ensures that:
+- Only one button can be pressed at any given time.
+- The correct amounts are added or subtracted from the total when the respective buttons are pressed.
+- Products can only be purchased if there is enough money in the machine, checked using the provided predicates.

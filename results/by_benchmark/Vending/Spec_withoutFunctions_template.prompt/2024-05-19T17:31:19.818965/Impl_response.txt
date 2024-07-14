@@ -1,0 +1,81 @@
+To implement the predicates described using JavaScript, you would usually define functions that check conditions based on the provided inputs. However, in this specific case, since the actual handling of the "total" and "e" inputs isn't specified for interaction with an HTML document or other input methods, I'll assume a basic example where these values can be passed directly to functions.
+
+Here's how you could implement these predicates in JavaScript:
+
+```javascript
+// Predicate implementations
+
+// Checks if the total is less than 0.75
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+// Checks if the total is less than 1
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+// Checks if the total is less than 1.25
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Checks if the key 'd' was pressed
+function pressD(e) {
+    return e.key === 'd';
+}
+
+// Checks if the key 'q' was pressed
+function pressQ(e) {
+    return e.key === 'q';
+}
+
+// Checks if the key 'o' was pressed
+function pressO(e) {
+    return e.key === 'o';
+}
+
+// Checks if the key '1' was pressed
+function press1(e) {
+    return e.key === '1';
+}
+
+// Checks if the key '2' was pressed
+function press2(e) {
+    return e.key === '2';
+}
+
+// Checks if the key '3' was pressed
+function press3(e) {
+    return e.key === '3';
+}
+
+// Checks if the key 'r' was pressed
+function pressR(e) {
+    return e.key === 'r';
+}
+```
+
+### Usage
+
+These functions can be used by passing the appropriate parameters. For `total`-related predicates, you would call them with a number, while for key press predicates, you would typically pass an event object that contains a `key` property.
+
+Example usage:
+
+```javascript
+// Example usage for 'total' related functions
+console.log(isLessThanPoint75(0.5)); // true
+console.log(isLessThanOne(0.99)); // true
+console.log(isLessThanOnePoint25(1.1)); // true
+
+// Simulating key press events
+console.log(pressD({ key: 'd' })); // true
+console.log(pressQ({ key: 'q' })); // true
+console.log(pressO({ key: 'o' })); // true
+console.log(press1({ key: '1' })); // true
+console.log(press2({ key: '2' })); // true
+console.log(press3({ key: '3' })); // true
+console.log(pressR({ key: 'r' })); // true
+```
+
+In a real-world scenario, these predicate functions might be called in response to user interactions or as part of a validation process to determine whether specific actions should be carried out, depending on the state of `total` and the keys pressed.

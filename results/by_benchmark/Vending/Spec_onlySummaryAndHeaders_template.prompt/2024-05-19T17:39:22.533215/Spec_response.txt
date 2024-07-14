@@ -1,0 +1,45 @@
+Here is the TSL specification based on your description:
+
+```tsl
+always assume {
+    // No two buttons can be pressed simultaneously
+    !(press1(e) && press2(e));
+    !(press1(e) && press3(e));
+    !(press1(e) && pressD(e));
+    !(press1(e) && pressQ(e));
+    !(press1(e) && pressO(e));
+    !(press1(e) && pressR(e));
+    !(press2(e) && press3(e));
+    !(press2(e) && pressD(e));
+    !(press2(e) && pressQ(e));
+    !(press2(e) && pressO(e));
+    !(press2(e) && pressR(e));
+    !(press3(e) && pressD(e));
+    !(press3(e) && pressQ(e));
+    !(press3(e) && pressO(e));
+    !(press3(e) && pressR(e));
+    !(pressD(e) && pressQ(e));
+    !(pressD(e) && pressO(e));
+    !(pressD(e) && pressR(e));
+    !(pressQ(e) && pressO(e));
+    !(pressQ(e) && pressR(e));
+    !(pressO(e) && pressR(e));
+}
+
+always guarantee {
+    // Operations for purchasing products
+    press1(e) && !isLessThanPoint75(total) -> [e <- selectProduct1()];
+    press2(e) && !isLessThanOne(total) -> [e <- selectProduct2()];
+    press3(e) && !isLessThanOnePoint25(total) -> [e <- selectProduct3()];
+
+    // Operations for inserting money
+    pressD(e) -> [total <- total + 0.10];  // Dime insertion
+    pressQ(e) -> [total <- total + 0.25];  // Quarter insertion
+    pressO(e) -> [total <- total + 1.00];  // Dollar insertion
+
+    // Operation for refunding money
+    pressR(e) -> [total <- 0];  // Reset total on refund
+}
+```
+
+This specification ensures that only one operation can be performed at a time by excluding simultaneous key presses. It also assigns actions to each key press, such as selecting a product or modifying the total amount of money in the vending machine, based on the conditions provided (like having sufficient total for different product options).

@@ -1,0 +1,47 @@
+Here's the corresponding TSL specification based on the natural language description you've provided:
+
+```tsl
+always assume {
+  // Ensure mutual exclusivity between pressing any two buttons.
+  !(pressD && pressQ);
+  !(pressD && pressO);
+  !(pressD && press1);
+  !(pressD && press2);
+  !(pressD && press3);
+  !(pressD && pressR);
+  !(pressQ && pressO);
+  !(pressQ && press1);
+  !(pressQ && press2);
+  !(pressQ && press3);
+  !(pressQ && pressR);
+  !(pressO && press1);
+  !(pressO && press2);
+  !(pressO && press3);
+  !(pressO && pressR);
+  !(press1 && press2);
+  !(press1 && press3);
+  !(press1 && pressR);
+  !(press2 && press3);
+  !(press2 && pressR);
+  !(press3 && pressR);
+}
+
+always guarantee {
+  // Increment the vending machine's total value when money is inserted.
+  pressD -> [total <- total + 0.1];
+  pressQ -> [total <- total + 0.25];
+  pressO -> [total <- total + 1];
+
+  // Decrement the vending machine's total value when a product is purchased, if the conditions are met.
+  press1 -> ((!isLessThanPoint75) -> [total <- total - 0.75]);
+  press2 -> ((!isLessThanOne) -> [total <- total - 1]);
+  press3 -> ((!isLessThanOnePoint25) -> [total <- total - 1.25]);
+
+  // Reset the vending machine's total value to zero when the refund button is pressed.
+  pressR -> [total <- 0];
+}
+```
+
+### Explanation:
+- **Assumptions:** This section confirms that no two operations (button presses) can occur at the same time, preserving the integrity of state changes.
+- **Guarantees:** This section reflects the actions taken when certain buttons are pressed. It includes increasing the machine's total when coins or bills are inserted (`pressD`, `pressQ`, `pressO`) and conditions for purchasing products (`press1`, `press2`, `press3`). When refunding (`pressR`), it resets the total to zero. The conditions for purchasing use negations of provided functions (`isLessThanPoint75`, `isLessThanOne`, `isLessThanOnePoint25`) to check if the total amount is sufficient for a transaction.

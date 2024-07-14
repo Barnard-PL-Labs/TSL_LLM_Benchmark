@@ -1,0 +1,20 @@
+always assume {
+  !(pressA(e) && pressB(e));  // Mutual exclusion between pressing A and B
+  !(pressA(e) && pressC(e));  // Mutual exclusion between pressing A and C
+  !(pressB(e) && pressC(e));  // Mutual exclusion between pressing B and C
+}
+
+always guarantee {
+  // When the A button is pressed, increment the counter by the current stepsize
+  pressA(e) -> [count <- count + stepsize];
+
+  // When the B button is pressed, increment the counter by 2 and reset stepsize to 1
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+
+  // When the C button is pressed, increment the counter by 3 and reset stepsize to 1
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+
+  // When the A button is pressed three times consecutively, increase stepsize by multiplying it by three
+  // Using a counter for A presses to trigger the multiplier after three consecutive presses
+  ((pressA(e) && X (pressA(e) && X pressA(e))) -> X X X [stepsize <- multiplyByThree(stepsize)]);
+}

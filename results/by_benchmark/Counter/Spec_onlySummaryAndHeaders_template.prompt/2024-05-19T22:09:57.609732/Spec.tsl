@@ -1,0 +1,21 @@
+always assume {
+  // Ensure mutual exclusion between pressing A, B, and C keys
+  !(pressA(e) && pressB(e)) ;
+  !(pressA(e) && pressC(e)) ;
+  !(pressB(e) && pressC(e)) ;
+}
+
+always guarantee {
+  // Pressing the A key increments the counter by the current step size
+  pressA(e) -> [counter <- counter + stepsize];
+
+  // Pressing the A key three times in a row without interruption by pressing B or C modifies the step size
+  pressA(e) && X (pressA(e) && X pressA(e)) && !(X (pressB(e) || pressC(e)) || X X (pressB(e) || pressC(e)))
+    -> X X X [stepsize <- multiplyByThree(stepsize)];
+
+  // Pressing the B key increments the counter by 2 and resets the step size to 1
+  pressB(e) -> ([counter <- counter + 2] && [stepsize <- 1]);
+
+  // Pressing the C key increments the counter by 3 and resets the step size to 1
+  pressC(e) -> ([counter <- counter + 3] && [stepsize <- 1]);
+}

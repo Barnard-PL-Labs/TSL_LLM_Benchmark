@@ -1,0 +1,34 @@
+Here is your natural language description translated into a TSL specification:
+
+```tsl
+always assume {
+  // Ensure that no two button operations can occur at the same time
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Set the initial stepsize to 1 at the start of the program
+  [stepsize <- 1];
+
+  // Pressing A key increments the counter by stepsize
+  pressA(e) -> [counter <- counter + stepsize];
+
+  // Pressing A key three times in a row multiplies stepsize by 3, unless interrupted by B or C
+  pressA(e) -> X (pressA(e) -> X (pressA(e) -> ([stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e))));
+
+  // Pressing B key sets stepsize to 1 and increments the counter by 2
+  pressB(e) -> ([stepsize <- 1] && [counter <- counter + 2]);
+
+  // Pressing C key sets stepsize to 1 and increments the counter by 3
+  pressC(e) -> ([stepsize <- 1] && [counter <- counter + 3]);
+}
+```
+
+In this specification:
+- Mutual exclusion for button presses is established using assumptions, ensuring that no two buttons are pressed simultaneously.
+- The initial stepsize is set to 1.
+- The increment operations for the A, B, and C keys are specified under guarantees, detailing how the counter should be updated based on the button pressed.
+- For the A key, a nested temporal operation checks for three consecutive presses without interruption by B or C to multiply the stepsize.
+- Pressing B or C resets the stepsize to 1 and increments the counter by a fixed value of 2 or 3 respectively.

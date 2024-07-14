@@ -1,0 +1,66 @@
+To implement the predicates as described in JavaScript for the scenario provided, you would simply define each function to perform the specific checks on the passed parameters. Since these functions are predicates, each will return a boolean value indicating whether the condition holds true.
+
+Here's a JavaScript implementation for each predicate described:
+
+```javascript
+// Predicates for total
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicates for key presses based on 'e', assuming 'e' is an event object typically from a key event
+function pressD(e) {
+    return e.key === 'd';
+}
+
+function pressQ(e) {
+    return e.key === 'q';
+}
+
+function pressO(e) {
+    return e.key === 'o';
+}
+
+function press1(e) {
+    return e.key === '1';
+}
+
+function press2(e) {
+    return e.key === '2';
+}
+
+function press3(e) {
+    return e.key === '3';
+}
+
+function pressR(e) {
+    return e.key === 'r';
+}
+```
+
+### Explanation:
+1. **For Total Checks**: Each function checks if the `total` amount is less than a specified threshold (0.75, 1, 1.25). These functions take a single `total` parameter and return `true` if `total` is less than the specified amount, otherwise `false`.
+
+2. **For Key Presses**: Each function checks if the `e` (event) object has a `key` property matching a specific value representing a keyboard key ('d', 'q', 'o', '1', '2', '3', 'r'). Typically, these functions would be used in an event listener context where `e` is the event object received from a keyboard event.
+
+### Usage Example:
+These functions would be typically used in event handlers or decision-making processes in your application. For example, to check if the total is less than 1 and handle a 'd' key press, you might write:
+
+```javascript
+document.addEventListener('keydown', function(e) {
+    if (isLessThanOne(total) && pressD(e)) {
+        console.log("Total is less than 1 and 'D' was pressed.");
+        // Add logic here for what should happen in this case
+    }
+});
+```
+
+This code listens for any key press on the document, and if the total is less than 1 and the 'D' key is pressed, it logs a message and you could perform further actions based on this check.

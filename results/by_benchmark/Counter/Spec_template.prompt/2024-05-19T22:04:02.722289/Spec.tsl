@@ -1,0 +1,17 @@
+always assume {
+  // Ensure mutual exclusion between button press actions
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Action when the A button is pressed
+  pressA(e) -> ([count <- count + stepsize] && X(pressA(e) -> X(pressA(e) -> X(pressA(e) -> [stepsize <- multiplyByThree(stepsize)]))));
+  
+  // Action when the B button is pressed
+  pressB(e) -> ([count <- count + 2] && [stepsize <- 1]);
+  
+  // Action when the C button is pressed
+  pressC(e) -> ([count <- count + 3] && [stepsize <- 1]);
+}

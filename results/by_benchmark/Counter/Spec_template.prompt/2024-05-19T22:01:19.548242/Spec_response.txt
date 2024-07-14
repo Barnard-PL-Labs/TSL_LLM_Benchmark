@@ -1,0 +1,38 @@
+```tsl
+always assume {
+    // Ensuring that no two button presses overlap
+    !(pressA(e) && pressB(e));
+    !(pressA(e) && pressC(e));
+    !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+    // Handling the counter increment when the A key is pressed
+    pressA(e) -> ([count <- count + stepsize] W (pressB(e) || pressC(e)));
+    
+    // If A is pressed three times consecutively, multiply stepsize by three
+    // This is conceptually handled; actual implementation may require additional state tracking
+    pressA(e) && X(pressA(e)) && X(X(pressA(e))) -> [stepsize <- multiplyByThree(stepsize)] W (pressB(e) || pressC(e));
+    
+    // Handling the counter increment when the B key is pressed
+    pressB(e) -> {
+        [count <- count + 2];
+        [stepsize <- 1]; // Reset stepsize to 1
+    }
+    
+    // Handling the counter increment when the C key is pressed
+    pressC(e) -> {
+        [count <- count + 3];
+        [stepsize <- 1]; // Reset stepsize to 1
+    }
+}
+```
+
+### Explanation:
+- **Assumptions:** We ensure mutually exclusive pressing of buttons A, B, and C. This prevents any overlapping operations which could lead to undefined behavior or conflicts in state changes.
+- **Guarantees:**
+  - When the A key is pressed, the counter increments by the current `stepsize`.
+  - If the A key is pressed three times consecutively, `stepsize` is multiplied by three on the fourth pressing. This logic is conceptual and assumes that tracking of three consecutive presses is managed implicitly or by additional state logic not fully expressed here.
+  - When B or C keys are pressed:
+    - The counter is incremented by a fixed 2 (for B) or 3 (for C), respectively.
+    - `stepsize` is reset to 1 to ensure the base increment state is restored after usage of either B or C keys. This action directly adheres to the requirement of resetting `stepsize` after any press of B or C.

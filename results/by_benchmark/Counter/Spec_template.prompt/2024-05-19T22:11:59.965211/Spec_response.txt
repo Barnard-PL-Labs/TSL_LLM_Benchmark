@@ -1,0 +1,36 @@
+```tsl
+always assume {
+  // Mutual exclusion for pressing buttons A, B, and C
+  !(pressA(e) && pressB(e));
+  !(pressA(e) && pressC(e));
+  !(pressB(e) && pressC(e));
+}
+
+always guarantee {
+  // Increment count by stepsize when A is pressed
+  pressA(e) -> [count <- count + stepsize];
+
+  // Increment count by 2 when B is pressed
+  pressB(e) -> [count <- count + 2];
+
+  // Increment count by 3 when C is pressed
+  pressC(e) -> [count <- count + 3];
+
+  // On the fourth consecutive press of A, multiply stepsize by 3
+  // Assuming a way to count consecutive presses is implemented elsewhere in the system
+  G(pressA(e) -> X(pressA(e) -> X(pressA(e) -> X(pressA(e) -> [stepsize <- multiplyByThree(stepsize)]))));
+
+  // Reset stepsize to 1 if either B or C is pressed
+  (pressB(e) || pressC(e)) -> [stepsize <- 1];
+}
+```
+
+In this TSL specification:
+
+- **Assumptions**: Only one of the buttons A, B, or C can be pressed at any given time (mutual exclusion).
+- **Guarantees**:
+  - **Pressing A**: Increments the counter by `stepsize`. The system needs to take care of counting consecutive presses of A and execute the multiplication of `stepsize` after the third consecutive press.
+  - **Pressing B**: Always increments the counter by 2 and resets `stepsize` to 1.
+  - **Pressing C**: Always increments the counter by 3 and resets `stepsize` to 1.
+
+Note: This specification assumes that the system or environment keeps track of consecutive button presses since TSL itself does not handle stateful counting directly without additional mechanism setup outside this specification.

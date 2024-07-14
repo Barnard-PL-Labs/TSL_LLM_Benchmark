@@ -1,0 +1,40 @@
+Here's the TSL specification based on the provided natural language description and function/predicate list:
+
+```
+always assume {
+  !(pressA(e) && pressB(e)) ;  // Mutual exclusion between pressA and pressB
+  !(pressA(e) && pressC(e)) ;  // Mutual exclusion between pressA and pressC
+  !(pressB(e) && pressC(e)) ;  // Mutual exclusion between pressB and pressC
+}
+
+always guarantee {
+  pressA(e) -> [count <- count + stepsize]; // Increment counter by stepsize when A is pressed
+
+  pressB(e) -> {
+    [count <- count + 2];  // Increment counter by 2 when B is pressed
+    [stepsize <- 1];      // Reset stepsize to 1 when B is pressed
+  };
+
+  pressC(e) -> {
+    [count <- count + 3];  // Increment counter by 3 when C is pressed
+    [stepsize <- 1];      // Reset stepsize to 1 when C is pressed
+  };
+
+  // Handling when A is pressed three consecutive times
+  // Assuming a counter or mechanism to track consecutive A presses is implemented as "aPressCount"
+  pressA(e) -> {
+    [aPressCount <- aPressCount + 1]; // Increment A press count
+    (aPressCount == 4) -> {           // If A is pressed four times in a row
+      [stepsize <- multiplyByThree(stepsize)];  // Multiply stepsize by three
+      [aPressCount <- 0];             // Reset A press count
+    };
+    (pressB(e) || pressC(e)) -> [aPressCount <- 0]; // Reset A press count if B or C is pressed
+  };
+}
+```
+
+In this specification:
+- Mutual exclusions ensure that no two buttons can be pressed at the same time.
+- Pressing A increments the counter by `stepsize`.
+- Pressing B or C increments the counter by 2 and 3, respectively, and resets `stepsize` to 1.
+- If A is pressed three times consecutively, the fourth press multiplies the `stepsize` by three using the `multiplyByThree(stepsize)` function, and resets the count of consecutive A presses. This reset also happens if B or C is pressed any time after A has been pressed, ensuring that the sequence count for A is maintained correctly.

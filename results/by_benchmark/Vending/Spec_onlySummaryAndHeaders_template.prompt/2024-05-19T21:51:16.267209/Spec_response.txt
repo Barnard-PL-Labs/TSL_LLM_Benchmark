@@ -1,0 +1,51 @@
+```
+always assume {
+  // Mutual exclusion for input operations to ensure no two machine operations occur simultaneously
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressR(e) && press1(e));
+  !(pressR(e) && press2(e));
+  !(pressR(e) && press3(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press2(e) && press3(e));
+}
+
+always guarantee {
+  // Insert dime into the machine
+  pressD(e) -> [total <- total + 0.10];
+
+  // Insert quarter into the machine
+  pressQ(e) -> [total <- total + 0.25];
+
+  // Insert dollar into the machine
+  pressO(e) -> [total <- total + 1.00];
+
+  // Refund the money
+  pressR(e) -> [total <- 0];
+
+  // Purchase product option 1 if total is >= 0.75
+  !isLessThanPoint75(total) && press1(e) -> [total <- total - 0.75];
+  
+  // Purchase product option 2 if total is >= 1
+  !isLessThanOne(total) && press2(e) -> [total <- total - 1.00];
+  
+  // Purchase product option 3 if total is >= 1.25
+  !isLessThanOnePoint25(total) && press3(e) -> [total <- total - 1.25];
+}
+``` 
+
+This TSL specification covers all the requirements described. It ensures that the vending machine reacts appropriately to the various inputs while maintaining the required conditions related to the total amount inserted before allowing the products to be purchased.

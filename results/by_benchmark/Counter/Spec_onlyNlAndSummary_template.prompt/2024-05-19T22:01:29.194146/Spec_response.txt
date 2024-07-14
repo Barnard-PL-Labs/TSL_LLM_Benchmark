@@ -1,0 +1,31 @@
+```tsl
+always assume {
+  // Assume no simultaneous button presses
+  !(pressA && pressB);
+  !(pressA && pressC);
+  !(pressB && pressC);
+}
+
+always guarantee {
+  // Increment count by stepsize when pressA is pressed
+  pressA -> [count <- count + stepsize];
+  
+  // Increment count by 2 when pressB is pressed and reset stepsize to 1
+  pressB -> ([count <- count + 2] && [stepsize <- 1]);
+  
+  // Increment count by 3 when pressC is pressed and reset stepsize to 1
+  pressC -> ([count <- count + 3] && [stepsize <- 1]);
+  
+  // Handling three consecutive A presses and then changing the increment size
+  // This requires a counter to track the number of consecutive A presses
+  pressA -> {
+    [consecutiveAPresses <- consecutiveAPresses + 1];
+    // If A was pressed three times consecutively, on the fourth press, multiply the stepsize by 3
+    (consecutiveAPresses >= 3) -> [stepsize <- multiplyByThree(stepsize)];
+  };
+  
+  // Reset consecutive A press counter when B or C is pressed
+  (pressB || pressC) -> [consecutiveAPresses <- 0];
+}
+```
+This TSL specification incorporates the mechanism for counting consecutive A button presses and updates the `stepsize` appropriately after three consecutive presses. It also ensures that pressing either B or C will reset the `stepsize` and the counter of consecutive A presses to ensure correct behavior as per the described logic. The function `multiplyByThree()` is assumed to correctly calculate three times the current `stepsize`.

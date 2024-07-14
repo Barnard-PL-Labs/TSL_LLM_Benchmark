@@ -1,0 +1,71 @@
+To implement the predicates in JavaScript for the vending machine system, we can utilize the provided cells `total` and `e` that hold the logic for determining the state of the machine or user actions (like key presses). Each predicate will be a function that accepts the relevant cell as an argument and returns a boolean based on the condition specified in the predicate's description.
+
+Here's how you can implement these predicates:
+
+```javascript
+// Predicate functions that check the total amount
+function isLessThanPoint75(total) {
+    return total < 0.75;
+}
+
+function isLessThanOne(total) {
+    return total < 1.0;
+}
+
+function isLessThanOnePoint25(total) {
+    return total < 1.25;
+}
+
+// Predicate functions that check for key presses from 'e'
+function pressD(e) {
+    return e === 'd';
+}
+
+function pressQ(e) {
+    return e === 'q';
+}
+
+function pressO(e) {
+    return e === 'o';
+}
+
+function press1(e) {
+    return e === '1';
+}
+
+function press2(e) {
+    return e === '2';
+}
+
+function press3(e) {
+    return e === '3';
+}
+
+function pressR(e) {
+    return e === 'r';
+}
+```
+
+### Usage
+
+To utilize these predicates, you would typically pass the current state of `total` and `e` to these functions. For example:
+
+```javascript
+// Example usage
+const total = 0.50;
+const e = 'd';
+
+console.log(isLessThanPoint75(total)); // true
+console.log(isLessThanOne(total));     // true
+console.log(isLessThanOnePoint25(total)); // true
+
+console.log(pressD(e));  // true
+console.log(pressQ(e));  // false
+console.log(pressO(e));  // false
+console.log(press1(e));  // false
+console.log(press2(e));  // false
+console.log(press3(e));  // false
+console.log(pressR(e));  // false
+```
+
+This implementation assumes that `total` and `e` are being updated according to the system's state changes which are not detailed here. The response from each predicate would help in controlling the flow of logic for vending machine operations, such as enabling/disabling certain functionalities or responding to user inputs. These predicates are fundamental components in larger logical structures where conditions based on these checks might dictate different outcomes in the system behavior.

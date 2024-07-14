@@ -1,0 +1,56 @@
+Here is the TSL (Temporal Stream Logic) specification based on your description of the vending machine operation:
+
+```tsl
+always assume {
+  // Mutual exclusion for pressing buttons, ensuring no two machine operations can happen at the same time
+  !(pressD(e) && pressQ(e));
+  !(pressD(e) && pressO(e));
+  !(pressD(e) && pressR(e));
+  !(pressD(e) && press1(e));
+  !(pressD(e) && press2(e));
+  !(pressD(e) && press3(e));
+  !(pressQ(e) && pressO(e));
+  !(pressQ(e) && pressR(e));
+  !(pressQ(e) && press1(e));
+  !(pressQ(e) && press2(e));
+  !(pressQ(e) && press3(e));
+  !(pressO(e) && pressR(e));
+  !(pressO(e) && press1(e));
+  !(pressO(e) && press2(e));
+  !(pressO(e) && press3(e));
+  !(pressR(e) && press1(e));
+  !(pressR(e) && press2(e));
+  !(pressR(e) && press3(e));
+  !(press1(e) && press2(e));
+  !(press1(e) && press3(e));
+  !(press2(e) && press3(e));
+}
+
+always guarantee {
+  // Inserting a dime into the machine by pressing the d key
+  pressD(e) -> [total <- total + 0.10];
+  
+  // Inserting a quarter into the machine by pressing the q key
+  pressQ(e) -> [total <- total + 0.25];
+  
+  // Inserting a dollar into the machine by pressing the o key
+  pressO(e) -> [total <- total + 1.00];
+  
+  // Refunding your money by pressing the r key
+  pressR(e) -> [total <- 0];
+  
+  // Purchasing product option 1 by pressing the 1 key, if total is 0.75 or greater
+  (press1(e) && !isLessThanPoint75(total)) -> [total <- total - 0.75];
+  
+  // Purchasing product option 2 by pressing the 2 key, if total is 1 or greater
+  (press2(e) && !isLessThanOne(total)) -> [total <- total - 1.00];
+  
+  // Purchasing product option 3 by pressing the 3 key, if total is 1.25 or greater
+  (press3(e) && !isLessThanOnePoint25(total)) -> [total <- total - 1.25];
+}
+```
+
+Explanation:
+- **Mutual Exclusion**: These conditions ensure that pressing any two buttons at the same time is not allowed, reflecting the requirement that no two machine operations can be performed at the same time.
+- **Button Actions**: For each button press (dime, quarter, dollar, and refund), the total is updated accordingly. If the button for a product is pressed and the condition regarding the total money inserted is satisfied, the corresponding amount is deducted from the total.
+- **Purchasing Conditions**: When a purchase button (1, 2, or 3) is pressed, it checks if the total value meets the required amount for that product. If it does, the corresponding amount is deducted from the total.

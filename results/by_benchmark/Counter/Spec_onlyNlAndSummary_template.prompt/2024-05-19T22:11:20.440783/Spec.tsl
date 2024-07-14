@@ -1,0 +1,22 @@
+always assume {
+  // Ensure that no two button operations are performed at the same time
+  !(pressA && pressB) && !(pressA && pressC) && !(pressB && pressC);
+}
+
+always guarantee {
+  // When pressA is pushed, increment the counter by the current stepsize
+  pressA -> [count <- count + stepsize];
+
+  // When pressB is pushed, increment the counter by 2
+  pressB -> [count <- count + 2];
+
+  // When pressC is pushed, increment the counter by 3
+  pressC -> [count <- count + 3];
+
+  // When pressA is pushed three times in a row, the fourth press increases stepsize by 3 times
+  // Use a counter to track consecutive presses of A and reset it on pressing B or C
+  pressA -> (X (pressA && X (pressA && X (pressA && [stepsize <- multiplyByThree(stepsize)])))) W (pressB || pressC);
+
+  // When either pressB or pressC is pushed, set stepsize back to 1
+  (pressB || pressC) -> [stepsize <- 1];
+}
