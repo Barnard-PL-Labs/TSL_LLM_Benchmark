@@ -1,0 +1,42 @@
+#LIA
+
+always assume {
+  // Assume that the request values are valid
+  (r_0 >= -1 && r_0 <= 1) && (r_1 >= -1 && r_1 <= 1);
+
+  // Assume that the location values are valid
+  (location(0) >= 0 && location(0) <= 1) && (location(1) >= 0 && location(1) <= 1);
+
+  // Assume that trucks only request to move to a different city
+  (!(r_0 = -1) -> !(r_0 = location(0))) && (!(r_1 = -1) -> !(r_1 = location(1)));
+
+  // Assume that at least one truck crosses when allowed
+  ((!(g_0 = -1) || !(g_1 = -1)) -> 
+    X(!(location(0) = pre(location(0))) || !(location(1) = pre(location(1)))));
+
+  // Assume trucks don't cross roads they're not allowed to cross
+  (g_0 = -1 -> X(location(0) = pre(location(0)))) &&
+  (g_1 = -1 -> X(location(1) = pre(location(1))));
+}
+
+always guarantee {
+  // Ensure that grants are valid
+  (g_0 >= -1 && g_0 <= 0) && (g_1 >= -1 && g_1 <= 0);
+
+  // Only grant movement if requested
+  (!(g_0 = -1) -> !(r_0 = -1)) && (!(g_1 = -1) -> !(r_1 = -1));
+
+  // Grant movement only to the requested destination
+  (!(g_0 = -1) -> g_0 = r_0) && (!(g_1 = -1) -> g_1 = r_1);
+
+  // Ensure that at most one truck is on the road at any time
+  !(g_0 = 0 && g_1 = 0);
+
+  // Ensure that at most two trucks are in a city at any time
+  !((location(0) = 0 && location(1) = 0 && (g_0 = 0 || g_1 = 0)) ||
+    (location(0) = 1 && location(1) = 1 && (g_0 = 0 || g_1 = 0)));
+
+  // Eventually grant movement if requested and safety conditions are met
+  (!(r_0 = -1) -> F(g_0 = r_0 || r_0 = -1)) &&
+  (!(r_1 = -1) -> F(g_1 = r_1 || r_1 = -1));
+}

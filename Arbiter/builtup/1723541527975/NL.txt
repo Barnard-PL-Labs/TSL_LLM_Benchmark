@@ -1,0 +1,1 @@
+You should make 5 assumptions: every i in 1..5, truck i will eventually make a request to go across the bridge. You should provide 5 guarantees: each i in 1..5, if truck i makes a request to go across the bridge, eventually it will be granted access to the bridge. In addition, guarantee the following:

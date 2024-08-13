@@ -1,0 +1,24 @@
+
+problems with LLMs:
+	hallucination
+	fail at complexity (context window)
+	fail at precise logic
+	they especially don't when you care about the difference between being right 99% of the time and 100% of the time
+
+problems with TSL:
+	hard to use
+	hard to write
+	#1 impediment to usage is human-computer interface
+
+marry the best of both worlds
+	1. create/demonstrate a pipeline
+	2. create benchmark
+	3. show TSL improves LLM code generation / program synthesis
+	4. provide a framework to make it easy for humans to write TSL
+
+futher work
+	improve benchmark
+	apply pipeline to other problems
+	extend pipeline
+	education (teach people to use the pipeline and see how students like it, they are the testbed for the usability and learnability of new languages).
+

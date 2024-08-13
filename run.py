@@ -25,50 +25,24 @@ from openai_helper import (
 
 file_dir = os.path.dirname(__file__)
 
-parser = argparse.ArgumentParser(description="Generate a program using TSL")
-parser.add_argument(
-    "-d", "--dir", required=True, help="Directory of the prompts to generate from"
-)
-parser.add_argument(
-    "-m",
-    "--method",
-    default="nl",
-    choices=["nl", "nl+spec", "nl+spec+synth"],
-    help='"nl" means generate using only the natural language promps, "nl+spec" means also use the TSL spec, and "nl+spec+synth" means also use the synthesized code.',
-)
-parser.add_argument(
-    "-l",
-    "--lang",
-    default="JavaScript",
-    help="Target generated implementation programming language (default: JavaScript)",
-)
-parser.add_argument(
-    "--no-openai",
-    action="store_true",
-    help="Do not query the openai api and instead output prompts for the user to paste into AI chats.",
-)
-parser.add_argument(
-    "--spec-prompt-file",
-    default="Spec_template.prompt",
-    help="filename to use for the spec prompt",
-)
-parser.add_argument(
-    "--log-results",
-    action="store_true",
-    help='Copy the affected "{Experiment}/computed" dir into "results" with the timestamp"',
-)
-parser.add_argument(
-    "--num-iter", default=1, help="repeat the experiment [num-iter] times"
-)
-parser.add_argument(
-    "--regen-html",
-    default=False,
-    action="store_true",
-    help="regenerate the template?",
-)
-
-args = parser.parse_args()
-
+class RunExperimentArgs:
+    def __init__(
+        dir,
+        num_iter = 1,
+        spec_prompt_file = "Spec_template.prompt",
+        lang = "JavaScript",
+        method = "nl",
+        no_openai = False,
+        regen_html = False,
+    ):
+        self.num_iter = num_iter
+        self.dir = dir
+        self.spec_prompt_file = spec_prompt_file
+        self.json = json
+        self.lang = lang
+        self.method = method
+        self.no_openai = no_openai
+        self.regen_html = regen_html
 
 def run_with_args(args):
     print(datetime.datetime.now(), "Running with args", args)
@@ -110,6 +84,7 @@ def run_with_args(args):
     }
 
     computed_dir = os.path.join(args.dir, "computed")
+    print('computed_dir', computed_dir)
     if not os.path.exists(computed_dir):
         os.makedirs(computed_dir)
 
@@ -170,12 +145,14 @@ def run_with_args(args):
         log_results()
 
     def log_results():
+        print('log_results')
         log_outer_dir = os.path.join(
             file_dir, "results", "by_benchmark", args.dir, spec_template
         )
         if not os.path.exists(log_outer_dir):
             os.makedirs(log_outer_dir)
         log_dir = os.path.join(log_outer_dir, datetime.datetime.now().isoformat())
+        print('call', ["mv", computed_dir, log_dir])
         check_call(["mv", computed_dir, log_dir])
 
     def extract_first_code_block(text):
@@ -317,5 +294,49 @@ def run_with_args(args):
 
     log_results()
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Generate a program using TSL")
+    parser.add_argument(
+        "-d", "--dir", required=True, help="Directory of the prompts to generate from"
+    )
+    parser.add_argument(
+        "-m",
+        "--method",
+        default="nl",
+        choices=["nl", "nl+spec", "nl+spec+synth"],
+        help='"nl" means generate using only the natural language promps, "nl+spec" means also use the TSL spec, and "nl+spec+synth" means also use the synthesized code.',
+    )
+    parser.add_argument(
+        "-l",
+        "--lang",
+        default="JavaScript",
+        help="Target generated implementation programming language (default: JavaScript)",
+    )
+    parser.add_argument(
+        "--no-openai",
+        action="store_true",
+        help="Do not query the openai api and instead output prompts for the user to paste into AI chats.",
+    )
+    parser.add_argument(
+        "--spec-prompt-file",
+        default="Spec_template.prompt",
+        help="filename to use for the spec prompt",
+    )
+    parser.add_argument(
+        "--log-results",
+        action="store_true",
+        help='Copy the affected "{Experiment}/computed" dir into "results" with the timestamp"',
+    )
+    parser.add_argument(
+        "--num-iter", default=1, help="repeat the experiment [num-iter] times"
+    )
+    parser.add_argument(
+        "--regen-html",
+        default=False,
+        action="store_true",
+        help="regenerate the template?",
+    )
 
-run_with_args(args)
+    args = parser.parse_args()
+
+    run_with_args(args)

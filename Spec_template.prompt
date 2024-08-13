@@ -17,6 +17,8 @@ always assume {
     -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
   (!(!([ cm <- makeCoffee() ]) || !(cm.ready))
     -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
+  ((p 2 3) && [ g <- 1 ] ->  ! ([ g <- 2 ]) W [ g <- 3 ]);
+  ([ g <- 1 ] -> ((! ([ g <- 2 ]) W [ g <- 3 ])));
 }
 
 always guarantee {

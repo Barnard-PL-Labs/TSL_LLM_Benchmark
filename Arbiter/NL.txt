@@ -1,0 +1,18 @@
+
+You can assume that eventually every truck will make a request. Further, guarantee that:
+
+1. for each truck 1..3, if the truck makes a request, then eventually it will be given a grant.
+2. If the coinflip between truck 2 and 3 resolves to true and truck 1 is granted the road, then truck 2 will not be granted the road until truck 3 is granted.
+3. If truck 1 is given a grant, then truck 2 won't be until truck 3 is.
+
+always assume {
+  F (r t);
+}
+always guarantee {
+    (r 1) -> F ([ g <- 1 ]);
+    (r 2) -> F ([ g <- 2 ]);
+    (r 3) -> F ([ g <- 3 ]);
+    ((p 2 3) && [ g <- 1 ] ->  ! ([ g <- 2 ]) W [ g <- 3 ]);
+    ([ g <- 1 ] -> ((! ([ g <- 2 ]) W [ g <- 3 ])));
+}
+

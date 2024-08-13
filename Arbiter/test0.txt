@@ -1,0 +1,46 @@
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume {
+  (room.somebodyEnters
+    -> (!(room.empty) W room.somebodyLeaves)) ;
+  ((room.somebodyLeaves && room.empty)
+    -> (room.empty W room.somebodyEnters)) ;
+  (cm.ready || cm.standby || cm.busy) ;
+  (cm.ready -> (!(cm.standby) && !(cm.busy))) ;
+  (cm.standby -> (!(cm.busy) && !(cm.ready))) ;
+  (cm.busy -> (!(cm.ready) && !(cm.standby))) ;
+  ([ cm <- turnOn() ] && cm.standby
+    -> X cm.busy U ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)) ;
+  ([ cm <- turnOff() ] && cm.ready
+    -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
+  (!(!([ cm <- makeCoffee() ]) || !(cm.ready))
+    -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
+}
+
+always guarantee {
+  room.somebodyEnters
+    -> F (cm.ready W (room.somebodyLeaves && room.empty));
+}
+```
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+
+Inputs:
+	for every number i in 0..1, "r_i" is a cell that represents the index of the city that truck "i" is requesting to move to. if truck "i" is not making a request, "r_i" is -1.
+Outputs:
+	for every number i in 0..1, "g_i" means that truck i is allowed to be on the road with index "g_i" during the next timestep. when truck i is not allowed to be on any road, "g_i" is -1.
+
+Functions:
+	location(i) => returns the location of truck i, as an index of the city where it is located
+
+Natural language description:
+
+Design a system to arbitrate resources between trucks. The shared resources are roads between the cities. Each road and city has a maximum number of trucks that can be on the road or in the city at any timestep. 
+
+Assumptions:
+
+1. There are 2 cities and 1 road. Road 0 connects city 0 and city 1.
+2. At every timestep where there is at least one "g_i" not equal to -1, at least one truck will cross a road it is allowed to cross.
+3. Trucks do not cross roads they are not currently allowed to cross.

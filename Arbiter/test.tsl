@@ -1,0 +1,35 @@
+
+INFO {
+  TITLE:       "Converted TSL Specification"
+  DESCRIPTION: "TSL specification, which has been converted to TLSF."
+  SEMANTICS:   Mealy
+  TARGET:      Mealy
+}
+MAIN {
+  INPUTS {
+    p1;
+    p2;
+    p3;
+  }
+
+  OUTPUTS {
+    gg;
+    g1;
+    g2;
+    g3;
+  }
+
+  ASSUME {
+
+  }
+
+  GUARANTEE {
+    G (((((((gg) && (! (g1))) && (! (g2))) && (! (g3))) || ((((g1) && (! (gg))) && (! (g2))) && (! (g3)))) || ((((g2) && (! (gg))) && (! (g1))) && (! (g3)))) || ((((g3) && (! (gg))) && (! (g1))) && (! (g2))));
+    (G ((p1) -> (F (g1))));
+    (G ((p2) -> (F (g2))));
+    (G ((p3) -> (F (g3))));
+    (G ((( (! (g3))) W (g2))));
+    (G ((( (! (g2))) W (g3))));
+
+  }
+}

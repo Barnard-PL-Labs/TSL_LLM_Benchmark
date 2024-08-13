@@ -1,0 +1,26 @@
+
+Write a python program with a function "build_nl" that takes a three arguments, "num_trucks", "max_statement", and the folder to copy from. If the script is run with the flags "--dir" and "--n-truck", it runs the function with those arguments. "n-truck" defaults to {num_trucks}.
+
+The script then looks at "{folder}/valid/*.json" and finds the json file with the highest numeric argument. Note, this may not be the highest dictionary order, because "2" precedes "10" in dictionary order, but the script should find "10". It takes the minimum of this high number and "max_statement".
+
+The script should create a file "{folder}/NL.summary.txt" with the following text:
+
+	There are {num_trucks} trucks going across a bridge. Sometimes they go one way on it, sometimes they go the other way. Only one truck can be on the bridge in a given timestep. Trucks request to go across the bridge, and they are given grants to go across the bridge by an arbiter. You are the arbiter, determining which trucks can go across the bridge.
+
+The script should create a file "{folder}/Headers.txt" with the following text:
+
+	Cells:
+		"g" is a cell that is set to the index of the truck that is granted a request to go across the road in this timestep
+	Predicates:
+		(r i) => this evaluates to true when truck "i" is requesting to go across the road in this timestep
+		(p i j) => this returns true if truck "i" wins the coinflip against truck "j". this does not have any particular meaning, other than that two trucks have chosen to flip a coin against one another because they are bored.
+
+The script should create a file "{folder}/NL.txt" with the following text:
+
+	You should make {num_trucks} assumptions: every i in 1..{num_trucks}, truck i will eventually make a request to go across the bridge. You provide these {num_trucks} guarantees: each i in 1..{num_trucks}, if truck i makes a request to go across the bridge, eventually it will be granted access to the bridge. In addition, provide these {statment count} guarantees:
+
+	1. [insert additional guarantees here]
+	2. [additional guarantee]
+	3. ...
+
+Where it says "[insert additional guarantees here]", take each of the objects in the array that is encoded in the json file, sort it by the property "tsl", take the property "nl", and then join these together, numbering them to look like a bulleted list.

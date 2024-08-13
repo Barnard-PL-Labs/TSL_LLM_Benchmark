@@ -1,0 +1,93 @@
+
+Backend
+=======
+
+Write a server with three forms of endpoint.
+
+"/run"
+--------------------
+
+The endpoint takes JSON of the form:
+
+{
+	"run": {
+		"spec_prompt_file": "...",
+		"method": "nl",
+		"files": {
+			"NL.txt": "...",
+			"NL.summary.txt": "...",
+			"Headers.txt": "...",
+			"another_file": "...",
+			...
+		},
+	}
+}
+
+Create a folder "Temp_Experiment/{timestamp in microseconds}" (called "exp_dir") and in the folder create a file for every property of "files" in the json, with the key as the filename and the value as the contents of the file. It should then run:
+	
+	from run import *
+	run_with_args(RunExperimentArgs(
+        dir = exp_dir,
+        spec_prompt_file = args.get("spec_prompt_file", "Spec_template.prompt"),
+        lang = args.get("lang", "JavaScript"),
+        method = args.get("method", "nl"),
+    ))
+
+Then it should read the file "Temp_Experiment/{timestamp in microseconds}/{timestamp in microseconds}.html"
+
+If no such file exists, it should return:
+
+	{ "error": "no such file {timestamp in microseconds}/{timestamp in microseconds}.html" }
+
+and if it does exist, it should return:
+
+	{ "html": "..." }
+
+"/run-command"
+--------------------
+
+it takes a unix command and runs it, streaming the output back to the server as a websocket
+
+"/get-benchmark"
+--------------------
+
+It should take a single argument and read the directory with that name, including all files in the directory, into a JSON object of the form:
+
+	{
+		"file1": "file1 contents",
+		"file2": "file2 contents",
+		"file3": "file3 contents",
+	}
+
+Static assets
+--------------------
+
+When you visit the bare server endpoint, it should return the text of a file "frontend/index.html", and any requests to "/asset/..." should return the file "frontend/asset/..."
+
+Frontend
+========
+
+Write a frontend with two global variables:
+
+	const EXAMPLE_BENCHMARKS = [
+		"Ball",
+		"Counter",
+		"Cube_Expansion",
+		"Cube_Rotation",
+		"Cube_and_Polygon",
+		"GameOfLife",
+		"Invaders",
+		"Notes",
+		"Vending"
+	]
+
+	const FILES_TO_EDIT = [
+		'NL.txt',
+		'Headers.txt',
+		'NL.summary.txt',
+		'Wrapper_api.js',
+		'wrapper_template.html',
+		'README',
+	]
+
+When you come to the page, there is a dropdown with each of the names in `EXAMPLE_BENCHMARKS`. When you select a benchmark, it requests the files and their contents in the directory with the same name as the benchmark, in the directory where the server process is running. It shows these files in in-browser code editors that you can switch between. Then, there is a separate button "Compile", and when you press it it runs the "/run" endpoint and passes the contents of the endpoints into JSON parameters. After it gets the response, it puts the response in an iframe where the user can see it. The page should look nice.

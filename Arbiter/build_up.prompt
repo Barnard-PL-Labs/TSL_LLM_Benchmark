@@ -1,0 +1,27 @@
+
+Write the following program in python. It should create a folder "built_up/{current_timestamp_in_ms}". That folder is called the "results_dir". If the folder already exists it should log a warning and keep trying with the current timestamp. The program should then repeatedly call the function "gen_clause", given below. Every time it calls it, it should put the result in a list of strings "clauses". It should then call "clauses_to_program(clauses)" and get a string, and write the result to f"{results_dir}/test/{auto_incrementing_id}.tsl". It should then call the following unix function:
+
+	timeout 10 tsl synthesize -i {auto_incrementing_id}.tsl --js
+
+If the function successfully exits, the program should keep trying to add clauses, as well as write the current list of clauses to as json to f"{results_dir}/valid/{number_of_clauses}.json" and "clauses_to_program(clauses)" to f"{results_dir}/valid/{number_of_clauses}.tsl". If it fails, it should pop the last clause it tried to place in "clauses". If it fails to add a clause more than EXIT_ON_NUM_FAILURES times in a row, it should exit the program.
+
+In addition, the program should take an optional argument that is a timestamp. If there is an argument it should look in the folder "built_up/{current_timestamp_in_ms}", find the file f"{results_dir}/valid/{number_of_clauses}.json" with the largest number of clauses, set the variable "clauses" equal to that, and continue writing the program.
+
+NUM_TRUCKS = 5
+def gen_clause():
+	[ x, y, z ] = random.sample(range(1, NUM_TRUCKS + 1), 3)
+	return f"[ g <- {x} ] -> ! ([ g <- {y} ]) W [ g <- {z} ];"
+
+def clauses_to_program(clauses):
+    python_is_bad = "\n".join(f"(r {i}) -> F ([ g <- {i} ]);" for i in range(1, NUM_TRUCKS + 1))
+    clauses_str = "\n".join(clauses)
+    return f"""
+        #LIA
+        always assume {{
+          F (r t);
+        }}
+        always guarantee {{
+            {python_is_bad}
+            {clauses_str}
+        }}
+    """
