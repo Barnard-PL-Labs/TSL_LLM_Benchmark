@@ -206,10 +206,12 @@ BASE_HTML = """
 
 </html>"""
 
+MODELS = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"]
 
-def ask_chatgpt(prompt):
+
+def ask_chatgpt(prompt, model="gpt-4-turbo"):
     response = client.chat.completions.create(
-        model="gpt-4-turbo",
+        model,
         messages=[
             {"role": "system", "content": PRE_PROMPT},
             {"role": "user", "content": prompt},

@@ -181,7 +181,7 @@ def run_with_args(args):
             )
             input()
         else:
-            response = ask_chatgpt(spec_prompt)
+            response = ask_chatgpt(spec_prompt, args.model)
             code_block = extract_first_code_block(response.choices[0].message.content)
             with open(spec_response_filename, "w") as file:
                 file.write(response.choices[0].message.content)
