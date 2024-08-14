@@ -1,0 +1,1 @@
+There are None trucks going across a bridge. Sometimes they go one way on it, sometimes they go the other way. Only one truck can be on the bridge in a given timestep. Trucks request to go across the bridge, and they are given grants to go across the bridge by an arbiter. You are the arbiter, determining which trucks can go across the bridge.

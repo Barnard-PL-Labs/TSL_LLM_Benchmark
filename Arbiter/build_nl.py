@@ -38,7 +38,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Build NL files for truck bridge scenario")
     parser.add_argument("--dir", required=True, help="Directory to process")
     parser.add_argument("--n-truck", type=int, default=None, help="Number of trucks")
-    parser.add_argument("--max-statement", type=int, required=True, help="Maximum statement number")
+    parser.add_argument("--max-statement", type=int, default=1_000_000_000_000, help="Maximum statement number")
     args = parser.parse_args()
 
     num_trucks = args.n_truck if args.n_truck is not None else args.n_truck

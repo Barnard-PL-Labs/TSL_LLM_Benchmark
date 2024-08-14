@@ -1,0 +1,1 @@
+[{"type": "p y z && x -> !y W z", "vars": [2, 4, 1], "nl": "if 4 wins the coinflip against 1 and 2 is granted, then 4 must not be granted until 1 is", "tsl": "((p 4 1) && [ g <- 2 ] ->  ! ([ g <- 4 ]) W [ g <- 1 ]);"}]

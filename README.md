@@ -57,3 +57,17 @@ Each folder contains a set of files that make up a benchmark. Call run.py from t
 5. The LLM outputs _Impl.js_, its javascript implementation of the functions and predicates.
 6. Finally, using _wrapper_template.html_, _Synth.js_, and _Impl.js_, the LLM fills in _<BENCHMARK_NAME>.html_ for the final benchmark implementation.
 7. OPTIONAL: Combine steps 4-6.
+
+### Extra Commands
+
+#### Arbiter
+
+The arbiter examples are generated via:
+
+    cd Arbiter
+    python3 build_up.py
+
+This generates a folder `Arbiter/builtup/{timestamp}`. Then, run:
+
+    py build_nl.py --dir builtup/{timestamp}
+    py ../run.py -d builtup/{timestamp}
