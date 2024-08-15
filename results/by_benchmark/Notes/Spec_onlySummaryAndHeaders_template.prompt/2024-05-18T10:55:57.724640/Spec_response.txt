@@ -1,9 +1,0 @@
-```tsl
-always assume {
-  // There are no specific environmental conditions to consider
-}
-
-always guarantee {
-  // There are no specific guarantees to ensure
-}
-```

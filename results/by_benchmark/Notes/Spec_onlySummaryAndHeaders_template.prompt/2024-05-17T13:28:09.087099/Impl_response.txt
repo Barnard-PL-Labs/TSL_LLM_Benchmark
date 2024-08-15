@@ -1,7 +1,0 @@
-Since there are no functions or predicates to implement, and no specific System API provided, the JavaScript code block will be empty:
-
-```javascript
-// Empty code block since there are no functions or predicates to implement
-```
-
-This concludes the task as described. If you have any further instructions or additions, please let me know!

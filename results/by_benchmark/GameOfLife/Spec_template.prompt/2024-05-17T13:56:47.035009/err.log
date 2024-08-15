@@ -1,1 +1,0 @@
-Command '['tsl', 'synthesize', '-i', 'GameOfLife/computed/Spec.tsl', '--js', '-o', 'GameOfLife/computed/Synth.js']' returned non-zero exit status 1.

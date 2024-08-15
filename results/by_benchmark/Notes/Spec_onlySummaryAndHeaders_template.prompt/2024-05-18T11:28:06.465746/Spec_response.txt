@@ -1,7 +1,0 @@
-```tsl
-always assume {
-}
-
-always guarantee {
-}
-```

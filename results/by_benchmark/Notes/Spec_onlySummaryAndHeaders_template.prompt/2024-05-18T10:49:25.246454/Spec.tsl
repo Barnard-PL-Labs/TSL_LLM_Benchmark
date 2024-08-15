@@ -1,7 +1,0 @@
-always assume {
-  // No assumptions specified, so this block is empty
-}
-
-always guarantee {
-  // No guarantees specified, so this block is empty
-}

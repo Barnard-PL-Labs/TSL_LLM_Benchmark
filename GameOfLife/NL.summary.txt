@@ -1,1 +1,2 @@
 This state machine should simulate a single cell in the game of life. The usual rules apply.
+This should use a multi cell grid.

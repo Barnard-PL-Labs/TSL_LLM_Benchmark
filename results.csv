@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ,benchmark,prompt,total,compiled,correct,unclassified
 0,Cube_Expansion,Spec_onlyNlAndSummary_template.prompt,28,26,6,19
 1,Cube_Expansion,Spec_withoutFA_template.prompt,129,118,22,96
@@ -38,3 +39,6 @@
 36,Vending,Spec_withoutFunctions_template.prompt,42,37,0,37
 37,Vending,Spec_onlySummaryAndHeaders_template.prompt,42,32,0,32
 38,Vending,No_tsl.prompt,2,2,0,2
+=======
+
+>>>>>>> big
