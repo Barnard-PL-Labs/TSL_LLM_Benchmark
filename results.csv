@@ -1,1 +1,8 @@
-
+task,num_try,total_lines_html,total_lines_synth,t_verif,t_unverif,p_unverif
+GameOfLife_True_nl,0,65,29,29,65,0.30851063829787234
+GameOfLife_True_nl,1,58,25,25,58,0.30120481927710846
+GameOfLife_True_nl,2,81,25,25,81,0.2358490566037736
+GameOfLife_True_nl,3,0,0,0,0,0.0
+GameOfLife_True_nl,4,70,29,29,70,0.29292929292929293
+GameOfLife_True_nl,5,54,29,29,54,0.3493975903614458
+GameOfLife_True_nl,6,60,25,25,60,0.29411764705882354

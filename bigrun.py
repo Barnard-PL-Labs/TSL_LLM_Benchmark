@@ -4,14 +4,14 @@ import pandas as pd
 
 
 bigargs = {
-    "tries": 1,
-    # "tsl": ["nls", "nl"],
+    "tries": 7,
     "tsl": ["nl"],
-    # "tasks": ["Ball", "Cube_Rotation", "GameOfLife", "invaders", "Vending"],
-    "tasks": ["invaders"],  # , "invaders", "Vending"],
+    # "tsl": ["nl"],
+    # "tasks": ["Cube_Rotation"],
+    "tasks": ["GameOfLife"],  # , "invaders", "Vending"],
     # "models": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"],
     "models": ["gpt-4-turbo"],
-    "trusted": [False],
+    "trusted": [True],
 }
 
 # bigargs = {
@@ -26,7 +26,8 @@ def count_lines_in_file(file_path):
     try:
         with open(file_path, "r") as file:
             lines = file.readlines()
-            return len(lines)
+            non_empty_lines = [line for line in lines if line.strip()]
+            return len(non_empty_lines)
     except FileNotFoundError:
         print(f"File {file_path} not found.")
         return 0
@@ -37,18 +38,32 @@ def grade(task, tslllm, num_try, save_dir):
     html_path = os.path.join(save_dir, f"{task}.html")
     synth_path = os.path.join(save_dir, "Synth.js")
 
+    total_lines_html = -1
+    total_lines_synth = -1
+
     if tslllm == "nls":
         p_unverif = 1.0
         t_unverif = count_lines_in_file(html_path)
+        total_lines_html = t_unverif
     elif tslllm == "nl":
         t_unverif = count_lines_in_file(html_path)
         t_verif = count_lines_in_file(synth_path)
+        total_lines_html = t_unverif
+        total_lines_synth = t_verif
         if t_unverif + t_verif > 0:
             p_unverif = t_verif / (t_unverif + t_verif)
         else:
             p_unverif = 0
 
-    return (num_try, t_verif, t_unverif, p_unverif, tslllm)
+    return (
+        num_try,
+        total_lines_html,
+        total_lines_synth,
+        t_verif,
+        t_unverif,
+        p_unverif,
+        tslllm,
+    )
 
 
 def check_only(res_dir="results"):
@@ -149,11 +164,13 @@ def results_to_dataframe(results):
         for grade in grades:
             flat_results.append(
                 {
-                    "task": f"{task}_{grade[4]}",
+                    "task": f"{task}_{grade[6]}",
                     "num_try": grade[0],
-                    "t_verif": grade[1],
-                    "t_unverif": grade[2],
-                    "p_unverif": grade[3],
+                    "total_lines_html": grade[1],
+                    "total_lines_synth": grade[2],
+                    "t_verif": grade[3],
+                    "t_unverif": grade[4],
+                    "p_unverif": grade[5],
                 }
             )
 

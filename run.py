@@ -211,6 +211,14 @@ def run_with_args(args):
         num_retries = 10
         tries = 0
         realized = False
+        prev_output = None
+        prev_err = None
+        prev_output_temp = """
+        This was the previous output
+        {}
+        This was the error message when the TSL failed to synthesize.
+        {}
+        """
 
         while tries < num_retries and not realized:
             # TODO add retry loop for ill formed specs here. Add some prompt that passes the erorr message with a tesmplate back to llm
@@ -232,6 +240,10 @@ def run_with_args(args):
                 )
                 input()
             else:
+                if tries > 0:
+                    prev_output_temp.format(prev_output, prev_err)
+                    spec_prompt = f"{spec_prompt}\n{prev_output_temp}"
+
                 response = ask_chatgpt(spec_prompt, args.model)
                 code_block = extract_first_code_block(
                     response.choices[0].message.content
@@ -264,6 +276,8 @@ def run_with_args(args):
                 tries += 1
                 if tries == num_retries:
                     return output_error(str(e))
+                prev_err = str(e)
+                prev_output = code_block
 
     elif args.method == "nls":
         # prompt_templates = (

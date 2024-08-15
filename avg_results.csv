@@ -1,2 +1,2 @@
-task,num_try,t_verif,t_unverif,p_unverif
-Ball_False_nl,0.0,192.0,61.0,0.758893280632411
+task,num_try,total_lines_html,total_lines_synth,t_verif,t_unverif,p_unverif
+GameOfLife_True_nl,3.0,55.42857142857143,23.142857142857142,23.142857142857142,55.42857142857143,0.25457272064690234
