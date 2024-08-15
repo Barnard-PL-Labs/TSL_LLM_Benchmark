@@ -1,0 +1,18 @@
+
+Take the following natural language description of a program and implement it in JavaScript, as a function:
+
+  function updateState({currentState, inputVar1, inputVar2, ..., cellVar1, cellVar2, ... }) {
+    // ... [TODO: fill this in] ...
+    
+    return { currentState, outputVar1, outputVar2, ... cellVar1, cellVar2, ... }
+  }
+
+This is a complete listing of the functions, predicates, and cells you can assume access to. Your implementation should reference nothing else.
+
+[[FUNCTIONS_AND_PREDICATES_GO_HERE]]
+
+Natural language description:
+
+[[NATURAL_LANGUAGE_SUMMARY_GOES_HERE]]
+
+[[NATURAL_LANGUAGE_DESCRIPTION_GOES_HERE]]

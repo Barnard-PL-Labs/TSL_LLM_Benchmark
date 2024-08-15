@@ -1,0 +1,49 @@
+
+Take the following natural language description of a program and implement it in JavaScript, as a function:
+
+  function updateState({currentState, inputVar1, inputVar2, ..., cellVar1, cellVar2, ... }) {
+    // ... [TODO: fill this in] ...
+    
+    return { currentState, outputVar1, outputVar2, ... cellVar1, cellVar2, ... }
+  }
+
+This is a complete listing of the functions, predicates, and cells you can assume access to. Your implementation should reference nothing else.
+
+
+Cells:
+  "ball" is a cell that represents the state of the signal that determines how the ball should move
+Functions:
+  moveLeft(ball) => returns a signal to move the ball to the left
+  moveRight(ball) => returns a signal to move the ball to the right
+Predicates:
+  leftmost(ball) => is the ball against the leftmost wall?
+  rightmost(ball) => is the ball against the rightmost wall?
+
+
+Natural language description:
+
+
+A ball is bouncing between two walls. The position of the ball can be represented as a number between 0 and 10, where 0 represents that the ball is against the leftmost wall and 10 represents that it is against the rightmost wall.
+
+
+
+Assumptions:
+
+1. If the ball is moved to the left, then in the next moment, it is guaranteed that the ball is not at the rightmost wall.
+
+2. If the ball is moved to the right, then in the next moment, it is ensured that the ball is not at the leftmost wall.
+
+3. It is always the case that the ball cannot be at both the leftmost and the rightmost wall at the same time.
+
+Guarantees:
+
+4. If the ball is at the rightmost wall, eventually it must be moved to the left.
+
+5. If the ball is at the leftmost wall, eventually it must be moved to the right.
+
+6. If the ball is neither at the leftmost nor at the rightmost wall, then eventually, it must be moved either to the left or to the right.
+
+7. If the ball is at the leftmost wall and is going to move away from it in the next moment, it must continue not moving to the left until it reaches the rightmost wall.
+
+8. If the ball is at the rightmost wall and is going to move away from it in the next moment, it must continue not moving to the right until it reaches the leftmost wall.
+

@@ -1,0 +1,27 @@
+
+Write a python function that takes a directory and a filename, and outputs a csv in the directory called "line_counts.csv" with two columns:
+
+1. The first column is the name of each subdirectory in the directory
+2. The second column is the number of lines in the filename in the subdirectory, excluding blank lines and comment lines (lines beginning with possibly whitespace and then "#" or "//"
+
+Separate out the logic for line counting into a function.
+
+If the script is called as the main script, it should take the "--dir" and "--filename" as command line arguments.
+
+If it is called with no arguments, it should read the json file "benchmarks.json" that is in the same directory as the script. For each string in the array in the json file, it should run the process for:
+
+	directory: results/by_benchmark/Ball/Spec_template.prompt
+	filename: Spec.tsl
+
+and:
+
+	directory: results/by_benchmark/Ball/No_tsl.prompt
+	filename: Impl.js
+
+For the first one ("Spec_template.prompt"), it should run the process only when the directory contains a file "good.txt".
+
+It should put all the results in csv "line_counts.csv" in the dir of the script with 4 columns: the original 2 columns, preceded by the benchmark name (like "Ball") and the prompt filename (either "Spec_template" or "No_tsl").
+
+It should also compute the average line count for each dir, filename pair and put that in a csv with 3 columns: the benchmark name, prompt filename, and the average line count.
+
+Whatever the script does, it should state that it did it and what files it wrote to.

@@ -1,0 +1,69 @@
+Given your description, I'll provide a JavaScript implementation for the `updateState` function which simulates the described behavior of a ball bouncing between two walls.
+
+```javascript
+function updateState({ currentState }) {
+    // "currentState" is expected to be an object that includes the current position of the ball
+    let { ball } = currentState;
+
+    // Check if the ball is at the leftmost wall
+    if (leftmost(ball)) {
+        // Since the ball is at the leftmost wall, move it to the right
+        ball = moveRight(ball);
+    } 
+    // Check if the ball is at the rightmost wall
+    else if (rightmost(ball)) {
+        // Since the ball is at the rightmost wall, move it to the left
+        ball = moveLeft(ball);
+    } 
+    // If the ball is not at either wall
+    else {
+        // Determine the direction based on the current state's direction attribute
+        // If no direction is specified, default to moving right
+        if (currentState.direction === 'left') {
+            ball = moveLeft(ball);
+        } else {
+            ball = moveRight(ball);
+        }
+    }
+
+    // Update the direction of movement for the next state based on current movement
+    const direction = (currentState.direction === 'left' && !leftmost(ball)) ? 'left' :
+                      (currentState.direction === 'right' && !rightmost(ball)) ? 'right' :
+                      !leftmost(ball) ? 'right' : 'left';
+
+    // Return the updated state
+    return { currentState: { ball, direction } };
+}
+
+// Helper function to simulate the leftmost check
+function leftmost(ball) {
+    return ball === 0;
+}
+
+// Helper function to simulate the rightmost check
+function rightmost(ball) {
+    return ball === 10;
+}
+
+// Function to simulate movement to the left
+function moveLeft(ball) {
+    return Math.max(0, ball - 1);
+}
+
+// Function to simulate movement to the right
+function moveRight(ball) {
+    return Math.min(10, ball + 1);
+}
+```
+
+### Explanation:
+1. **Function Structure**: The function `updateState` takes an object with `currentState` which contains the current position of the ball and its direction of movement.
+2. **Wall Checks**: It uses `leftmost` and `rightmost` functions to determine whether the ball is against either wall.
+3. **Movement Logic**:
+   - If the ball is at the leftmost position, it is moved right.
+   - If at the rightmost, it is moved left.
+   - Otherwise, the direction from the current state is used to decide the next move. If no direction is specified, it defaults to moving right.
+4. **Direction Update**: After moving, the direction for the next state is updated based on the current movement and position.
+5. **State Return**: The function returns the new `currentState` object containing the updated position and direction of the ball.
+
+The code assumes the ball's position is an integer between 0 and 10 and that the direction of the ball's movement (left or right) is tracked in the state for determining continuous movement. If no direction is specified initially, it defaults to moving to the right.

@@ -1,0 +1,57 @@
+Based on the provided natural language description and the available functions, predicates, and cells, we can implement the `updateState` function in JavaScript. The function will control the ball's movement based on its current position and its movement history, ensuring it bounces between the two walls as specified.
+
+Here's a possible implementation of the `updateState` function:
+
+```javascript
+function updateState({ currentState }) {
+    let { ball } = currentState;
+
+    // If the ball is at the rightmost wall, it must move left
+    if (rightmost(ball)) {
+        ball = moveLeft(ball);
+    }
+    // If the ball is at the leftmost wall, it must move right
+    else if (leftmost(ball)) {
+        ball = moveRight(ball);
+    }
+    // If the ball is not at either wall, decide the direction based on previous state
+    else {
+        if (currentState.direction === 'left') {
+            // Continue moving left until reaching the leftmost wall
+            ball = moveLeft(ball);
+            // Update direction if the ball reaches the leftmost wall
+            if (leftmost(ball)) {
+                currentState.direction = 'right';
+            }
+        } else {
+            // Continue moving right until reaching the rightmost wall
+            ball = moveRight(ball);
+            // Update direction if the ball reaches the rightmost wall
+            if (rightmost(ball)) {
+                currentState.direction = 'left';
+            }
+        }
+    }
+
+    // Return the updated state
+    return {
+        currentState: {
+            ball: ball,
+            direction: currentState.direction
+        }
+    };
+}
+```
+
+### Explanation:
+1. **Handling Wall Collisions**: The function checks if the ball is at either the rightmost (`rightmost(ball)`) or leftmost (`leftmost(ball)`) walls. If the ball is at the rightmost wall, it must move left (`moveLeft(ball)`), and vice versa for the leftmost wall.
+   
+2. **Direction Maintenance**: If the ball is not at any wall, the function checks the current direction stored in `currentState.direction`. If the direction is 'left', the ball continues moving left until it reaches the leftmost wall, where the direction then switches to 'right'. The same logic applies in the opposite direction.
+
+3. **State Update**: The function returns the updated state, including the ball's new position and the direction of movement.
+
+### Assumptions:
+- The initial state `currentState` includes a `direction` property which is either 'left' or 'right'. This is used to maintain the direction of the ball when it is not at any wall.
+- The `ball` object in `currentState` can be manipulated directly by the `moveLeft` and `moveRight` functions.
+
+This function logic ensures that the ball correctly bounces between the walls as per the constraints provided in the description.

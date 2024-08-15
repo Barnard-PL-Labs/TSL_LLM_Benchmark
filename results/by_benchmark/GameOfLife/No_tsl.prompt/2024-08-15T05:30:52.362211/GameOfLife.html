@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game of Life Simulation</title>
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+            }
+
+            #gameOfLifeGrid {
+                display: grid;
+                border: 2px solid #333;
+            }
+
+            .cell {
+                width: 20px;
+                /* You can adjust size here */
+                height: 20px;
+                background-color: #fff;
+                border: 1px solid #666;
+            }
+
+            .alive {
+                background-color: #000;
+                /* Color for alive cells */
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="gameOfLifeGrid"></div>
+        <script>
+
+            function updateState({ currentState, index, alive }) {
+    // Determine if the cell should come alive
+    if (comeAlive(index)) {
+        // If the predicate comeAlive returns true, change the state of the cell to alive
+        currentState = changeState(true); // Assuming changeState(true) sets the cell's state to alive
+        alive = true;
+    } else if (comeDead(index)) {
+        // If the predicate comeDead returns true, change the state of the cell to dead
+        currentState = changeState(false); // Assuming changeState(false) sets the cell's state to dead
+        alive = false;
+    }
+
+    // Return the updated state along with any other properties that need to be maintained
+    return { currentState, alive, index };
+}
+
+// Helper functions for the sake of completeness (definitions should be based on actual implementation details)
+function comeAlive(index) {
+    // Implementation based on the Game of Life rules
+    // Should return true if exactly 3 neighbors are alive, or if the cell is currently alive and has 2 or 3 living neighbors
+    // Needs access to the grid or state array to count neighbors
+}
+
+function comeDead(index) {
+    // Implementation based on the Game of Life rules
+    // Should return true if the cell has fewer than 2 or more than 3 living neighbors
+    // Needs access to the grid or state array to count neighbors
+}
+
+function changeState(isAlive) {
+    // Change the state of the cell to either alive or dead based on isAlive
+    return isAlive; // This function might interact with a global or external state management system
+}
+
+            
+        </script>
+        <script src="computed/Synth.js" type="text/javascript"></script>
+    </body>
+</html>

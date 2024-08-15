@@ -1,0 +1,42 @@
+To implement the described functionality in JavaScript, we need a function that updates the state of the ball based on its current position and direction of movement. We ensure that the ball bounces between two conceptual walls at positions 0 (leftmost wall) and 10 (rightmost wall). Below, I'll provide a JavaScript function that simulates this behavior.
+
+```javascript
+function updateState({ball}) {
+  // Define direction state for the ball if it doesn't exist
+  if (ball.direction === undefined) {
+    ball.direction = 'right';  // Initialize direction to move right
+  }
+
+  // Check if the ball is at the rightmost wall
+  if (ball.position === 10) {
+    ball.direction = 'left';  // Change direction to left
+  }
+  // Check if the ball is at the leftmost wall
+  else if (ball.position === 0) {
+    ball.direction = 'right';  // Change direction to right
+  }
+
+  // Update ball position based on direction
+  if (ball.direction === 'right') {
+    ball.position++;
+  } else {
+    ball.position--;
+  }
+
+  // Output the updated state
+  return { ball };
+}
+
+// Example usage:
+let ballState = { ball: { position: 0 } };  // Ball starting at the leftmost position
+console.log(updateState(ballState));  // Expected: { ball: { position: 1, direction: 'right' } }
+console.log(updateState(ballState));  // Expected: { ball: { position: 2, direction: 'right' } }
+```
+
+### Explanation:
+1. **Initialization**: If the `direction` property of the `ball` object is undefined, it initializes to 'right'. This is a setup for the first time the function is called.
+2. **Direction Change at Walls**: When the `ball` hits the rightmost wall (`position === 10`), the direction is set to 'left', and similarly, at the leftmost wall (`position === 0`), the direction is set to 'right'.
+3. **Position Update**: Depending on the `direction`, the `ball.position` is incremented or decremented.
+4. **Return State**: The function returns the updated state of the `ball`.
+
+This implementation ensures that the ball continuously bounces between the two walls, changing direction whenever it hits a wall, thereby fulfilling all the natural language requirements.

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game of Life Simulation</title>
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+            }
+
+            #gameOfLifeGrid {
+                display: grid;
+                border: 2px solid #333;
+            }
+
+            .cell {
+                width: 20px;
+                /* You can adjust size here */
+                height: 20px;
+                background-color: #fff;
+                border: 1px solid #666;
+            }
+
+            .alive {
+                background-color: #000;
+                /* Color for alive cells */
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="gameOfLifeGrid"></div>
+        <script>
+
+            function updateState({ currentState, index }) {
+    // newState is used to store the cell's next state, which will either be alive (true) or dead (false).
+    let newState = currentState;
+
+    // Check if the cell should come alive based on the comeAlive predicate.
+    if (comeAlive(index)) {
+        newState = true; // The cell becomes alive.
+        changeState(newState); // Apply the state change.
+    }
+    // Check if the cell should become dead based on the comeDead predicate.
+    else if (comeDead(index)) {
+        newState = false; // The cell becomes dead.
+        changeState(newState); // Apply the state change.
+    }
+
+    // Return the updated state of the cell. Here the output structure includes the new state of "alive".
+    return {
+        currentState: newState,
+        alive: newState,
+        index: index
+    };
+}
+
+// Helper functions (assumed to be given as part of the environment)
+function comeAlive(index) {
+    // This function is expected to return true if the cell at `index` should become alive.
+    // Implementation details depend on the environment and are not provided here.
+}
+
+function comeDead(index) {
+    // This function is expected to return true if the cell at `index` should die.
+    // Implementation details depend on the environment and are not provided here.
+}
+
+function changeState(newState) {
+    // This function is expected to change the state of the cell to the new state (alive or dead).
+    // Implementation details depend on the environment and are not provided here.
+}
+
+            
+        </script>
+        <script src="computed/Synth.js" type="text/javascript"></script>
+    </body>
+</html>

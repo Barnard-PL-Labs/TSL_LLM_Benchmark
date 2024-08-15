@@ -1,0 +1,41 @@
+
+Take the following natural language description of a program and implement it in JavaScript, as a function:
+
+  function updateState({currentState, inputVar1, inputVar2, ..., cellVar1, cellVar2, ... }) {
+    // ... [TODO: fill this in] ...
+    
+    return { currentState, outputVar1, outputVar2, ... cellVar1, cellVar2, ... }
+  }
+
+This is a complete listing of the functions, predicates, and cells you can assume access to. Your implementation should reference nothing else.
+
+
+Cells:
+  "cube" is a cell that represents the state of the signal that determines how the cube should move
+
+Functions:
+- rotateLeft(cube): Rotate the cube to the left.
+- rotateRight(cube): Rotate the cube to the right.
+
+Predicates:
+- pressL(e): A predicate that returns true when the left button is pressed. Event listener should be inside the function.
+- pressR(e): A predicate that returns true when the right button is pressed. Event listener should be inside the function.
+
+Natural language description:
+
+
+A control system for a cube where two buttons (left and right) influence the cube's rotation. The system ensures that both buttons are not pressed simultaneously and manages the cube's rotation based on the button pressed, maintaining the rotation direction until the opposite button is pressed.
+
+
+
+Assumptions:
+
+1. The system must assume that the left and right buttons are never pressed at the same time.
+
+Guarantees:
+
+2. If the left button is pressed, the cube should begin rotating to the left. This rotation should continue until the right button is pressed.
+
+3. Similarly, if the right button is pressed, the cube should rotate to the right until the left button is pressed.
+
+4. This specification ensures that the cube's rotation direction can be controlled smoothly and accurately by the user, without conflicts between the controls.

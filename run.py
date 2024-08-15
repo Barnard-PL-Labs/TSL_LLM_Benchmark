@@ -84,7 +84,6 @@ def run_with_args(args):
     }
 
     computed_dir = os.path.join(args.dir, "computed")
-    print('computed_dir', computed_dir)
     if not os.path.exists(computed_dir):
         os.makedirs(computed_dir)
 
@@ -145,14 +144,18 @@ def run_with_args(args):
         log_results()
 
     def log_results():
-        print('log_results')
+        if args.method == "no_tsl":
+            template_filename = "No_tsl.prompt"
+        else:
+            template_filename = spec_template            
         log_outer_dir = os.path.join(
-            file_dir, "results", "by_benchmark", args.dir, spec_template
+            file_dir, "results", "by_benchmark", args.dir, template_filename
         )
         if not os.path.exists(log_outer_dir):
             os.makedirs(log_outer_dir)
         log_dir = os.path.join(log_outer_dir, datetime.datetime.now().isoformat())
-        print('call', ["mv", computed_dir, log_dir])
+        if args.verbose:
+            print("Moving computed dir to", log_dir)
         check_call(["mv", computed_dir, log_dir])
 
     def extract_first_code_block(text):
@@ -199,35 +202,65 @@ def run_with_args(args):
             )
         except BaseException as e:
             return output_error(str(e))
+    elif args.method == "no_tsl":
+        impl_template_path = os.path.join(
+            file_dir, "No_tsl.prompt"
+        )
+        impl_response_filename = os.path.join(computed_dir, "Impl_response.txt")
+        impl_filename = os.path.join(computed_dir, "Impl.js")
+
+        impl_prompt = load_file_and_interpolate(impl_template_path)
+        impl_prompt_filename = os.path.join(computed_dir, "No_tsl.prompt")
+        with open(impl_prompt_filename, "w") as file:
+            file.write(impl_prompt)
+
+        if args.no_openai:
+            print(
+                f"Please paste the contents of this file into the TSL GPT:\n\n    {impl_prompt_filename}\n\nThen, paste the first code block in the response into:\n\n    {impl_filename}\n\nWhen you have done this, press Enter"
+            )
+            input()
+        else:
+            response = ask_chatgpt(impl_prompt, args.model)
+            code_block = extract_first_code_block(response.choices[0].message.content)
+            with open(impl_response_filename, "w") as file:
+                file.write(response.choices[0].message.content)
+            if code_block == None:
+                return output_error(
+                    f"No valid code block in response. See {impl_response_filename}"
+                )
+            else:
+                with open(impl_filename, "w") as file:
+                    file.write(code_block)
     else:
         spec_filename = os.path.join(args.dir, spec_template)
         raise Exception('the only method implemented is "nl". the others are TODO.')
 
-    impl_prompt_filename = os.path.join(computed_dir, "Impl.prompt")
-    impl_filename = os.path.join(computed_dir, "Impl.js")
-    impl_template_path = os.path.join(file_dir, impl_template)
-    impl_prompt = load_file_and_interpolate(impl_template_path)
-    impl_response_filename = os.path.join(computed_dir, "Impl_response.txt")
-    with open(impl_prompt_filename, "w") as file:
-        file.write(impl_prompt)
+    if args.method != 'no_tsl':
+        impl_prompt_filename = os.path.join(computed_dir, "Impl.prompt")
+        impl_filename = os.path.join(computed_dir, "Impl.js")
+        impl_template_path = os.path.join(file_dir, impl_template)
+        impl_prompt = load_file_and_interpolate(impl_template_path)
+        impl_response_filename = os.path.join(computed_dir, "Impl_response.txt")
+        with open(impl_prompt_filename, "w") as file:
+            file.write(impl_prompt)
 
-    if args.no_openai:
-        print(
-            f"Please paste the contents of this file into the TSL GPT:\n\n    {impl_prompt_filename}\n\nThen, paste the spec in the response into:\n\n    {impl_filename}\n\nWhen you have done this, press Enter"
-        )
-        input()
-    else:
-        response = ask_chatgpt(impl_prompt)
-        code_block = extract_first_code_block(response.choices[0].message.content)
-        with open(impl_response_filename, "w") as file:
-            file.write(response.choices[0].message.content)
-        if code_block == None:
-            return output_error(
-                f"No valid code block in response. See {impl_response_filename}"
+        if args.no_openai:
+            print(
+                f"Please paste the contents of this file into the TSL GPT:\n\n    {impl_prompt_filename}\n\nThen, paste the spec in the response into:\n\n    {impl_filename}\n\nWhen you have done this, press Enter"
             )
+            input()
         else:
-            with open(impl_filename, "w") as file:
-                file.write(code_block)
+            response = ask_chatgpt(impl_prompt)
+            code_block = extract_first_code_block(response.choices[0].message.content)
+            with open(impl_response_filename, "w") as file:
+                file.write(response.choices[0].message.content)
+            if code_block == None:
+                return output_error(
+                    f"No valid code block in response. See {impl_response_filename}"
+                )
+            else:
+                with open(impl_filename, "w") as file:
+                    file.write(code_block)
 
     dir_name = os.path.basename(os.path.normpath(args.dir))
     output_html_filename = f"{dir_name}.html"
@@ -303,7 +336,7 @@ if __name__ == '__main__':
         "-m",
         "--method",
         default="nl",
-        choices=["nl", "nl+spec", "nl+spec+synth"],
+        choices=["nl", "nl+spec", "nl+spec+synth", "no_tsl"],
         help='"nl" means generate using only the natural language promps, "nl+spec" means also use the TSL spec, and "nl+spec+synth" means also use the synthesized code.',
     )
     parser.add_argument(
@@ -316,6 +349,11 @@ if __name__ == '__main__':
         "--no-openai",
         action="store_true",
         help="Do not query the openai api and instead output prompts for the user to paste into AI chats.",
+    )
+    parser.add_argument(
+        "--model",
+        default='gpt-4-turbo',
+        help="The openai model (e.g. \"gpt-4-turbo\")",
     )
     parser.add_argument(
         "--spec-prompt-file",
@@ -335,6 +373,11 @@ if __name__ == '__main__':
         default=False,
         action="store_true",
         help="regenerate the template?",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="print messages other than errors.",
     )
 
     args = parser.parse_args()

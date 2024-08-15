@@ -1,0 +1,49 @@
+Here's the TSL specification based on your description of the arbiter managing trucks going across a bridge:
+
+```tsl
+always assume {
+  // Every truck will eventually make a request to go across the bridge
+  F (r 1) ;
+  F (r 2) ;
+  F (r 3) ;
+}
+
+always guarantee {
+  // Each truck i in 1..3, if it makes a request to go across the bridge, eventually it will be granted access
+  (r 1) -> F ([ g <- 1 ]);
+  (r 2) -> F ([ g <- 2 ]);
+  (r 3) -> F ([ g <- 3 ]);
+
+  // Coinflip and grant related guarantees
+  // if 1 wins the coinflip against 2 and 3 is granted, then 1 must not be granted until 2 is
+  ((p 1 2) && [ g <- 3 ]) -> (!([ g <- 1 ]) W [ g <- 2 ]);
+
+  // if 1 wins the coinflip against 2 and 4 is granted, then 1 must not be granted until 2 is
+  // Note: Since there are only 3 trucks as per the description, "4 is granted" seems erroneous. Skipped this one.
+
+  // if 1 wins the coinflip against 3 and 2 is granted, then 1 must not be granted until 3 is
+  ((p 1 3) && [ g <- 2 ]) -> (!([ g <- 1 ]) W [ g <- 3 ]);
+
+  // Similar error as above with "4 is granted" for truck 1 and 3. Skipping this one.
+
+  // if 1 wins the coinflip against 4 and 2 is granted, then 1 must not be granted until 4 is
+  // Again, erroneous since only three trucks are mentioned. Skipping this one.
+
+  // if 1 wins the coinflip against 4 and 3 is granted, then 1 must not be granted until 4 is
+  // Skipping because truck 4 does not exist as per provided details.
+
+  // if 2 wins the coinflip against 1 and 3 is granted, then 2 must not be granted until 1 is
+  ((p 2 1) && [ g <- 3 ]) -> (!([ g <- 2 ]) W [ g <- 1 ]);
+
+  // if 2 wins the coinflip against 1 and 4 is granted, then 2 must not be granted until 1 is
+  // Skipping due to nonexistence of truck 4.
+
+  // if 2 wins the coinflip against 3 and 1 is granted, then 2 must not be granted until 3 is
+  ((p 2 3) && [ g <- 1 ]) -> (!([ g <- 2 ]) W [ g <- 3 ]);
+
+  // if 2 wins the coinflip against 3 and 4 is granted, then 2 must not be granted until 3 is
+  // Truck 4 does not exist as per your description. Skipping this one.
+}
+```
+
+This TSL specification sets up the assumptions and guarantees needed for managing the three trucks going across the bridge, considering the mutual exclusivity of bridge access and the coinflip determinations, within the constraints of existing trucks. Note that references to truck 4 were omitted as the problem only describes trucks 1 through 3.

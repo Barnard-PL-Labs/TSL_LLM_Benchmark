@@ -1,0 +1,19 @@
+Benchmark,Prompt Type,Average Line Count
+Ball,Spec_template,12.183333333333334
+Ball,No_tsl,26.0
+Counter,Spec_template,13.025
+Counter,No_tsl,32.5
+Cube_Expansion,Spec_template,0
+Cube_Expansion,No_tsl,30.0
+Cube_Rotation,Spec_template,7.0
+Cube_Rotation,No_tsl,31.0
+Cube_and_Polygon,Spec_template,11.0
+Cube_and_Polygon,No_tsl,42.5
+GameOfLife,Spec_template,7.008928571428571
+GameOfLife,No_tsl,16.5
+Invaders,Spec_template,14.625
+Invaders,No_tsl,34.5
+Notes,Spec_template,11.903846153846153
+Notes,No_tsl,24.0
+Vending,Spec_template,0
+Vending,No_tsl,22.5

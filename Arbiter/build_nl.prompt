@@ -15,6 +15,8 @@ The script should create a file "{folder}/Headers.txt" with the following text:
 		(r i) => this evaluates to true when truck "i" is requesting to go across the road in this timestep
 		(p i j) => this returns true if truck "i" wins the coinflip against truck "j". this does not have any particular meaning, other than that two trucks have chosen to flip a coin against one another because they are bored.
 
+It should copy into the folder the files "wrapper_template.html" and "Wrapper_api.js" that are in the same directory as this script.
+
 The script should create a file "{folder}/NL.txt" with the following text:
 
 	You should make {num_trucks} assumptions: every i in 1..{num_trucks}, truck i will eventually make a request to go across the bridge. You provide these {num_trucks} guarantees: each i in 1..{num_trucks}, if truck i makes a request to go across the bridge, eventually it will be granted access to the bridge. In addition, provide these {statment count} guarantees:

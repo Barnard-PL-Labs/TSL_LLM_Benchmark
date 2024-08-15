@@ -1,0 +1,37 @@
+
+Take the following natural language description of a program and implement it in JavaScript, as a function:
+
+  function updateState({currentState, inputVar1, inputVar2, ..., cellVar1, cellVar2, ... }) {
+    // ... [TODO: fill this in] ...
+    
+    return { currentState, outputVar1, outputVar2, ... cellVar1, cellVar2, ... }
+  }
+
+This is a complete listing of the functions, predicates, and cells you can assume access to. Your implementation should reference nothing else.
+
+
+Cells:
+  "alive" is the cell alive
+  "index" index of the cell on the grid. This is initialized in the function terms 
+Functions:
+  changeState
+Predicates:
+  comeAlive(index) => are exactly 3 neighbours are living or are 2 or 3 neighbours are living?
+  comeDead(index) => does the cell have less than 2 neighbours or more than 3 neighbours?
+  
+
+Natural language description:
+
+This state machine should simulate a single cell in the game of life. The usual rules apply.
+
+
+Assumptions:
+
+1. There are two functions, comeAlive and comeDead that determine the state of the cell. comAlive and comeDead cannot both be true at the same time
+
+Guarantees:
+
+1. If comeAlive is true the cell uses changeState() to come alive
+2. If comeDead is true the cell uses changeState() to die
+
+

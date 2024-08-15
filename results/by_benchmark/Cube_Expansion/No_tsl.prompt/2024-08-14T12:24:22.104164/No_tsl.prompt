@@ -1,0 +1,36 @@
+
+Take the following natural language description of a program and implement it in JavaScript, as a function:
+
+  function updateState({currentState, inputVar1, inputVar2, ..., cellVar1, cellVar2, ... }) {
+    // ... [TODO: fill this in] ...
+    
+    return { currentState, outputVar1, outputVar2, ... cellVar1, cellVar2, ... }
+  }
+
+This is a complete listing of the functions, predicates, and cells you can assume access to. Your implementation should reference nothing else.
+
+
+Cells:
+  Cube represents the state of the signal that determines the cube's scale along the x-axis.
+
+Functions:
+
+Predicates:
+  pressUp(e) => Checks if the user presses the up arrow key on their keyboard. This requires adding an event listener in the function to listen for the keydown event. This predicate is true when the up key is pressed and false otherwise.
+
+Natural language description:
+
+
+A cube's scale along the x-axis (cube.scale.x) starts at 0.5 when the user is not pressing the up key. The cube is reactive to user input on the up key. When the user presses the up key, the scale value updates incrementally according to a counter that increases each frame the key is pressed. When the key is released, the scale value immediately returns to 0.5.
+
+
+Assumptions:
+
+
+Guarantees:
+
+1. When the user presses the up button, the counter (count) increments by 1 every frame.
+
+2. When the user is not pressing the up button, the counter (count) remains at 0.5.
+
+3. The scale value along the x-axis (cube.scale.x) is eventually updated with the value of the counter (count).
