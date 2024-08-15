@@ -4,11 +4,11 @@ import pandas as pd
 
 
 bigargs = {
-    "tries": 15,
+    "tries": 1,
     # "tsl": ["nls", "nl"],
     "tsl": ["nl"],
     # "tasks": ["Ball", "Cube_Rotation", "GameOfLife", "invaders", "Vending"],
-    "tasks": ["Ball"],  # , "invaders", "Vending"],
+    "tasks": ["invaders"],  # , "invaders", "Vending"],
     # "models": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"],
     "models": ["gpt-4-turbo"],
     "trusted": [False],
@@ -119,7 +119,14 @@ def run_command_and_check(bigargs):
                             command.append("--trusted")
 
                         try:
-                            result = run_command_with_retry(command, retries=1)
+                            # result = run_command_with_retry(command, retries=1)
+                            result = subprocess.run(
+                                command,
+                                check=True,
+                                capture_output=True,
+                                text=True,
+                            )
+
                             print("Command executed successfully:")
                             save_dir = result.stdout.strip().splitlines()[-1]
 

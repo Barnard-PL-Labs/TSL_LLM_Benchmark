@@ -208,43 +208,63 @@ def run_with_args(args):
             return match[1]
 
     if args.method == "nl":
-        # TODO add retry loop for ill formed specs here. Add some prompt that passes the erorr message with a tesmplate back to llm
-        spec_template_path = os.path.join(
-            file_dir, spec_template
-        )  # use dynamically chosen spec template
-        spec_filename = os.path.join(computed_dir, "Spec.tsl")
-        synth_filename = os.path.join(computed_dir, "Synth.js")
-        spec_response_filename = os.path.join(computed_dir, "Spec_response.txt")
+        num_retries = 10
+        tries = 0
+        realized = False
 
-        spec_prompt = load_file_and_interpolate(spec_template_path)
-        spec_prompt_filename = os.path.join(computed_dir, "Spec.prompt")
-        with open(spec_prompt_filename, "w") as file:
-            file.write(spec_prompt)
+        while tries < num_retries and not realized:
+            # TODO add retry loop for ill formed specs here. Add some prompt that passes the erorr message with a tesmplate back to llm
+            spec_template_path = os.path.join(
+                file_dir, spec_template
+            )  # use dynamically chosen spec template
+            spec_filename = os.path.join(computed_dir, "Spec.tsl")
+            synth_filename = os.path.join(computed_dir, "Synth.js")
+            spec_response_filename = os.path.join(computed_dir, "Spec_response.txt")
 
-        if args.no_openai:
-            print(
-                f"Please paste the contents of this file into the TSL GPT:\n\n    {spec_prompt_filename}\n\nThen, paste the spec in the response into:\n\n    {spec_filename}\n\nWhen you have done this, press Enter"
-            )
-            input()
-        else:
-            response = ask_chatgpt(spec_prompt, args.model)
-            code_block = extract_first_code_block(response.choices[0].message.content)
-            with open(spec_response_filename, "w") as file:
-                file.write(response.choices[0].message.content)
-            if code_block == None:
-                return output_error(
-                    f"No valid code block in response. See {spec_response_filename}"
+            spec_prompt = load_file_and_interpolate(spec_template_path)
+            spec_prompt_filename = os.path.join(computed_dir, "Spec.prompt")
+            with open(spec_prompt_filename, "w") as file:
+                file.write(spec_prompt)
+
+            if args.no_openai:
+                print(
+                    f"Please paste the contents of this file into the TSL GPT:\n\n    {spec_prompt_filename}\n\nThen, paste the spec in the response into:\n\n    {spec_filename}\n\nWhen you have done this, press Enter"
                 )
+                input()
             else:
-                with open(spec_filename, "w") as file:
-                    file.write(code_block)
+                response = ask_chatgpt(spec_prompt, args.model)
+                code_block = extract_first_code_block(
+                    response.choices[0].message.content
+                )
+                with open(spec_response_filename, "w") as file:
+                    file.write(response.choices[0].message.content)
+                if code_block == None:
+                    return output_error(
+                        f"No valid code block in response. See {spec_response_filename}"
+                    )
+                else:
+                    with open(spec_filename, "w") as file:
+                        file.write(code_block)
 
-        try:
-            check_call(
-                ["tsl", "synthesize", "-i", spec_filename, "--js", "-o", synth_filename]
-            )
-        except BaseException as e:
-            return output_error(str(e))
+            try:
+                check_call(
+                    [
+                        "tsl",
+                        "synthesize",
+                        "-i",
+                        spec_filename,
+                        "--js",
+                        "-o",
+                        synth_filename,
+                    ]
+                )
+                realized = True
+            except BaseException as e:
+                print(f"Error synthesizing: {str(e)}")
+                tries += 1
+                if tries == num_retries:
+                    return output_error(str(e))
+
     elif args.method == "nls":
         # prompt_templates = (
         #     SKELETON_REGEN.format(spec_prompt, wrapper_contents, code_block),
