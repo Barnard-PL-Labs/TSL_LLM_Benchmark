@@ -1,5 +1,0 @@
-always assume {
-}
-
-always guarantee {
-}

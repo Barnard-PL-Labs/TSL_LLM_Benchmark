@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": "-d GameOfLife"
+            "args": "-d ./Ball -m nl"
         }
     ]
 }
