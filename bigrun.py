@@ -4,7 +4,7 @@ import pandas as pd
 
 
 bigargs = {
-    "tries": 15,
+    "tries": 2,
     # "tsl": ["nls", "nl"],
     "tsl": ["nl"],
     # "tasks": ["Ball", "Cube_Rotation", "GameOfLife", "invaders", "Vending"],

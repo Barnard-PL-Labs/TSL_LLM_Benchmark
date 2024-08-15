@@ -380,9 +380,6 @@ def run_with_args(args):
                 regen_prompt = SKELETON_REGEN3.format(
                     synth_code, impl_code, spectsl, nl_summ, nl_desc
                 )
-            regen_prompt = SKELETON_REGEN3.format(
-                synth_code, impl_code, spectsl, nl_summ, nl_desc
-            )
 
             response = ask_chatgpt(
                 f"{regen_prompt}\nGenerate using the above as inspiration a working html file which implements the described program",
