@@ -68,7 +68,7 @@ parser.add_argument(
 parser.add_argument(  # defaults to 3.5-t for debug and testing
     "--model", default="gpt-3.5-turbo", help="which model to use from openai api"
 )
-parser.add_argument("--trusted", default=True, action="store_true")
+parser.add_argument("--trusted", default=False, action="store_true")
 
 parser.add_argument("--llm-only", default=False, action="store_true")
 parser.add_argument("--llmtsl", default="tsl")
@@ -189,7 +189,7 @@ def run_with_args(args):
         log_outer_dir = os.path.join(
             file_dir,
             "results",
-            f"{exp}_by_benchmark_{'trust' if trusted else ''}",
+            f"{exp}_by_benchmark_{'regen_with_import' if trusted else 'regen_no_import'}",
             args.dir,
             spec_template,
             args.model,
@@ -208,6 +208,7 @@ def run_with_args(args):
             return match[1]
 
     if args.method == "nl":
+        # TODO add retry loop for ill formed specs here. Add some prompt that passes the erorr message with a tesmplate back to llm
         spec_template_path = os.path.join(
             file_dir, spec_template
         )  # use dynamically chosen spec template
@@ -380,15 +381,11 @@ def run_with_args(args):
                 regen_prompt = SKELETON_REGEN3.format(
                     synth_code, impl_code, spectsl, nl_summ, nl_desc
                 )
-            regen_prompt = SKELETON_REGEN3.format(
-                synth_code, impl_code, spectsl, nl_summ, nl_desc
-            )
 
-            response = ask_chatgpt(
-                f"{regen_prompt}\nGenerate using the above as inspiration a working html file which implements the described program",
-                args.model,
-            )
+            response = ask_chatgpt(f"{regen_prompt}", args.model)
+
             code_block = extract_first_code_block(response.choices[0].message.content)
+
             with open(spec_response_filename, "w") as file:
                 file.write(response.choices[0].message.content)
             if code_block == None:

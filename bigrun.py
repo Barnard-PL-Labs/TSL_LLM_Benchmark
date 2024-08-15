@@ -4,14 +4,14 @@ import pandas as pd
 
 
 bigargs = {
-    "tries": 15,
+    "tries": 1,
     # "tsl": ["nls", "nl"],
     "tsl": ["nl"],
     # "tasks": ["Ball", "Cube_Rotation", "GameOfLife", "invaders", "Vending"],
-    "tasks": ["invaders"],  # , "invaders", "Vending"],
+    "tasks": ["Ball"],  # , "invaders", "Vending"],
     # "models": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"],
     "models": ["gpt-4-turbo"],
-    "trusted": [True],
+    "trusted": [False],
 }
 
 # bigargs = {
@@ -48,7 +48,7 @@ def grade(task, tslllm, num_try, save_dir):
         else:
             p_unverif = 0
 
-    return (num_try, t_verif, t_unverif, p_unverif)
+    return (num_try, t_verif, t_unverif, p_unverif, tslllm)
 
 
 def check_only(res_dir="results"):
@@ -115,7 +115,9 @@ def run_command_and_check(bigargs):
                             t,
                             "--regen-html",
                         ]
-                        command.append("--trusted") if trust else None
+                        if trust:
+                            command.append("--trusted")
+
                         try:
                             result = run_command_with_retry(command, retries=1)
                             print("Command executed successfully:")
@@ -140,7 +142,7 @@ def results_to_dataframe(results):
         for grade in grades:
             flat_results.append(
                 {
-                    "task": task,
+                    "task": f"{task}_{grade[4]}",
                     "num_try": grade[0],
                     "t_verif": grade[1],
                     "t_unverif": grade[2],
