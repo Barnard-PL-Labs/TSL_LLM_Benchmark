@@ -1,0 +1,1 @@
+[{"type": "x -> !y W z", "vars": [1, 2, 3], "nl": "if truck 1 is granted, 2 must not be granted until 3 is", "tsl": "([ g <- 1 ] -> ((! ([ g <- 2 ]) W [ g <- 3 ])));"}]

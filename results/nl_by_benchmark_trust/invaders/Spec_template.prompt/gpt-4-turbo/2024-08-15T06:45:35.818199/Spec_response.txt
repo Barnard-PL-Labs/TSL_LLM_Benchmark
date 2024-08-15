@@ -1,0 +1,41 @@
+Here is the TSL specification based on the description provided:
+
+```TSL
+always assume {
+  // Mutual exclusion for key inputs to avoid conflicting movements
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // Handling ship movement to the left
+  pressL && !leftmost(ship) -> [ship <- moveLeft(ship)];
+  // Handling ship movement to the right
+  pressR && !rightmost(ship) -> [ship <- moveRight(ship)];
+  // Handling shooting action
+  pressShoot -> [ship <- shoot(ship)];
+  // Handling the ship being hit
+  hit(ship) -> [ship <- die(ship)];
+  // Preventing movement when ship is at the boundaries or when hit
+  (leftmost(ship) && pressL) -> [ship <- ship];
+  (rightmost(ship) && pressR) -> [ship <- ship];
+  // Ensuring no action is taken when no key is pressed or in dead state
+  !(pressL || pressR || pressShoot || hit(ship)) -> [ship <- ship];
+}
+```
+
+### Explanation:
+1. **Assumptions**: 
+   - Mutual exclusion for key inputs ensures that no two directional or conflicting keys can be pressed simultaneously, which could otherwise cause ambiguous behavior in the game logic.
+
+2. **Guarantees**:
+   - **Left and Right Movement**: The ship moves left or right unless it is already at the respective boundary (`leftmost` or `rightmost`).
+   - **Shooting Action**: Triggered when the shoot key is pressed.
+   - **Hit Detection**: If the ship is hit, the game responds appropriately, possibly indicating a game over or a loss of life (`die(ship)`).
+   - **Static Actions when Conditions aren't Met**: If the ship is at a boundary or no keys are pressed, or if the ship has been hit, no change to the ship's state is made, maintaining consistency and preventing undefined behavior.
+   
+This specification uses simple conditional checks and function calls to accurately represent the desired game mechanics for a Space Invaders-like game.

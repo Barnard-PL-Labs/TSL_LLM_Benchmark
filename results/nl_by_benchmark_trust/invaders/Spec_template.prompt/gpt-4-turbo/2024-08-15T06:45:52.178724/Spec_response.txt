@@ -1,0 +1,40 @@
+Based on the provided natural language description and the example TSL format you shared, here is the TSL specification for the behavior of a player's ship in the game Space Invaders:
+
+```tsl
+always assume {
+  // Prevent simultaneous key presses for different directions
+  !(pressL && pressR);
+  !(pressL && pressUp);
+  !(pressL && pressDown);
+  !(pressR && pressUp);
+  !(pressR && pressDown);
+  !(pressUp && pressDown);
+}
+
+always guarantee {
+  // If the ship is hit, the game registers a hit and may end the game or lose a life
+  hit(ship) -> [die(ship)];
+
+  // Handling left movement
+  pressL && !leftmost(ship) -> [moveLeft(ship)];
+  
+  // Handling right movement
+  pressR && !rightmost(ship) -> [moveRight(ship)];
+  
+  // Handling shooting action
+  pressS -> [shoot(ship)];
+}
+```
+
+### Explanation:
+
+#### Assumptions:
+1. **Mutual Exclusion for Key Inputs:** This ensures that no two directional keys can be pressed simultaneously, preventing conflicting movements and simplifying control logic.
+  
+#### Guarantees:
+1. **Ship Hit Detection:** If the ship is hit (`hit(ship)`), the game will trigger the `die(ship)` function, which could mean ending the game or losing a life.
+2. **Left Movement:** The ship moves left (`moveLeft(ship)`) if the left key (`pressL`) is pressed and the ship is not against the leftmost boundary (`!leftmost(ship)`).
+3. **Right Movement:** Similarly, the ship moves right (`moveRight(ship)`) if the right key (`pressR`) is pressed and the ship is not against the rightmost boundary (`!rightmost(ship)`).
+4. **Shooting Action:** When the shoot key (`pressS`) is pressed, the ship performs a shooting action (`shoot(ship)`), which could contribute to game mechanics such as attacking enemies. 
+
+This setup ensures that the ship reacts appropriately to player inputs and game events, adhering to the rules of the game Space Invaders.

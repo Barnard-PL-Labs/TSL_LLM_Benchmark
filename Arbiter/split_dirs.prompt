@@ -1,0 +1,2 @@
+
+in python, given a list of dirs, for each dir, go into the subdir "valid", and for each json file, create a folder in the dir named the same as the json file but without the ".json" extension. inside the folder, put a folder "valid", and inside that folder, copy the json file.

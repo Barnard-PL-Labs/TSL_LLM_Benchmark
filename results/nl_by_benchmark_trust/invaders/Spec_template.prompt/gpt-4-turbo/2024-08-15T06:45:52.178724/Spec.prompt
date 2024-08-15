@@ -1,0 +1,59 @@
+
+Translate the following into a TSL specification. Remember, this is what TSL code looks like:
+
+```
+always assume {
+  (room.somebodyEnters
+    -> (!(room.empty) W room.somebodyLeaves)) ;
+  ((room.somebodyLeaves && room.empty)
+    -> (room.empty W room.somebodyEnters)) ;
+  (cm.ready || cm.standby || cm.busy) ;
+  (cm.ready -> (!(cm.standby) && !(cm.busy))) ;
+  (cm.standby -> (!(cm.busy) && !(cm.ready))) ;
+  (cm.busy -> (!(cm.ready) && !(cm.standby))) ;
+  ([ cm <- turnOn() ] && cm.standby
+    -> X cm.busy U ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)) ;
+  ([ cm <- turnOff() ] && cm.ready
+    -> X cm.busy U ([ cm <- turnOn() ] R cm.standby)) ;
+  (!(!([ cm <- makeCoffee() ]) || !(cm.ready))
+    -> X cm.busy U (cm.finished && ([ cm <- makeCoffee() ] || [ cm <- turnOff() ] R cm.ready)));
+}
+
+always guarantee {
+  room.somebodyEnters
+    -> F (cm.ready W (room.somebodyLeaves && room.empty));
+}
+```
+
+This is a complete listing of all functions and predicates you will need to use to create the spec. Everything else should be basic TSL language operators.
+
+
+Cells:
+  "ship" represents the state of the space ship
+Functions:
+  moveLeft(ship) => returns a signal to move ship to the left by one unit
+  moveRight(ship) => returns a signal to move ship to the right by one unit
+  shoot(ship) => returns a signal to shoot 
+  die(ship) => does an action, end game or lose life.
+Predicates:
+  leftmost(ship) => is the ship against the leftmost wall?
+  rightmost(ship) => is the ship against the rightmost wall?
+  hit(ship) => has the ship been hit by an incoming enemy?
+  
+
+Natural language description:
+
+ 
+This specification models the behavior of a player's ship in the game Space Invaders, dictating how the ship responds to various key inputs and interaction with game elements:
+
+Mutual Exclusion for Key Inputs:
+- No two directional keys can be pressed simultaneously. This includes combinations of left (L) and right (R), left and up, left and down, right and up, right and down, and finally up and down. This ensures that only one directional input is processed at any given time, preventing conflicting movements.
+Ship Hit Detection:
+- If the ship is hit by an enemy or an obstacle, a specific condition or flag (dead) is set to 1, indicating that the ship has been hit and possibly triggering a game over or damage sequence.
+Guarantees
+Left Movement:
+- When the left key (L) is pressed, the position of an entity (such as a player or an object) is decremented by one unit. This moves the entity one step to the left in the game space.
+Right Movement:
+- When the right key (R) is pressed, the position of the entity is incremented by one unit. This moves the entity one step to the right.
+Shooting Action:
+- When the shoot key (S) is pressed, a shooting action is triggered, which could be represented by incrementing a shooting counter or activating a shooting mechanism in the game.

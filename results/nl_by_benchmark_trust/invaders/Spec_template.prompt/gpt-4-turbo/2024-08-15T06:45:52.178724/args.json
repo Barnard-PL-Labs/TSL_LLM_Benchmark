@@ -1,0 +1,14 @@
+{
+  "dir": "invaders",
+  "method": "nl",
+  "lang": "JavaScript",
+  "no_openai": false,
+  "spec_prompt_file": "Spec_template.prompt",
+  "log_results": false,
+  "num_iter": 1,
+  "regen_html": true,
+  "model": "gpt-4-turbo",
+  "trusted": true,
+  "llm_only": false,
+  "llmtsl": "nl"
+}
