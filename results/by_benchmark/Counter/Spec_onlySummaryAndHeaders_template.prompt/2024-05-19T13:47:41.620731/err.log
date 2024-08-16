@@ -1,1 +1,0 @@
-Command '['tsl', 'synthesize', '-i', 'Counter/computed/Spec.tsl', '--js', '-o', 'Counter/computed/Synth.js']' returned non-zero exit status 1.

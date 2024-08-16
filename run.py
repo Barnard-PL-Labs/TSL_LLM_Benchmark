@@ -20,11 +20,64 @@ from openai_helper import (
     NO_CODE_GEN,
     NO_TEMPLATE_REGEN,
     SKELETON_REGEN,
+    SKELETON_REGEN2,
+    SKELETON_REGEN3,
     BASE_HTML,
 )
 
 file_dir = os.path.dirname(__file__)
 
+parser = argparse.ArgumentParser(description="Generate a program using TSL")
+parser.add_argument(
+    "-d", "--dir", required=True, help="Directory of the prompts to generate from"
+)
+parser.add_argument(
+    "-m",
+    "--method",
+    default="nl",
+    choices=["nl", "nls"],
+    help='"nl" means generate using only the natural language promps, "nls" means also use the TSL spec, and "nl+spec+synth" means also use the synthesized code.',
+)
+parser.add_argument(
+    "-l",
+    "--lang",
+    default="JavaScript",
+    help="Target generated implementation programming language (default: JavaScript)",
+)
+parser.add_argument(
+    "--no-openai",
+    action="store_true",
+    help="Do not query the openai api and instead output prompts for the user to paste into AI chats.",
+)
+parser.add_argument(
+    "--spec-prompt-file",
+    default="Spec_template.prompt",
+    help="filename to use for the spec prompt",
+)
+parser.add_argument(
+    "--log-results",
+    action="store_true",
+    help='Copy the affected "{Experiment}/computed" dir into "results" with the timestamp"',
+)
+parser.add_argument(
+    "--num-iter", default=1, help="repeat the experiment [num-iter] times"
+)
+parser.add_argument(
+    "--regen-html", default=False, action="store_true", help="regenerate the template?"
+)
+parser.add_argument(  # defaults to 3.5-t for debug and testing
+    "--model", default="gpt-3.5-turbo", help="which model to use from openai api"
+)
+parser.add_argument("--trusted", default=False, action="store_true")
+
+parser.add_argument("--llm-only", default=False, action="store_true")
+parser.add_argument("--llmtsl", default="tsl")
+
+args = parser.parse_args()
+
+>>>>>>> big
+
+>>>>>>> 5035c3b09a82170526a4fd85bf615b9e7f9269d6
 def run_with_args(args):
     print(datetime.datetime.now(), "Running with args", args)
 
@@ -56,12 +109,19 @@ def run_with_args(args):
             run_with_args(new_args)
         return
 
-    to_interpolate = {
-        #'few_shot_header': 'shotPrompt.txt',
+    to_interpolate_tsl = {
+        # "few_shot_header": "shotPrompt.txt",
         "functions_and_predicates": "Headers.txt",
         "natural_language_summary": "NL.summary.txt",
         "natural_language_description": "NL.txt",
         "wrapper_api": "Wrapper_api.js",
+    }
+
+    to_interpolate_llm = {
+        "functions_and_predicates": "Headers.txt",
+        "natural_language_summary": "NL.summary.txt",
+        "natural_language_description": "NL.txt",
+        "html_temp": "wrapper_template.html",
     }
 
     computed_dir = os.path.join(args.dir, "computed")
@@ -103,7 +163,10 @@ def run_with_args(args):
     if args.spec_prompt_file != "Spec_template.prompt":
         spec_template = args.spec_prompt_file
 
-    def load_file_and_interpolate(filename):
+    def load_file_and_interpolate(filename, llm=False):
+
+        to_interpolate = to_interpolate_llm if llm else to_interpolate_tsl
+
         with open(filename) as file:
             result = file.read()
             for name, filename in to_interpolate.items():
@@ -124,6 +187,7 @@ def run_with_args(args):
             file.writelines([message])
         log_results()
 
+<<<<<<< HEAD
     def log_results():
         if args.method == "no_tsl":
             template_filename = "No_tsl.prompt"
@@ -131,6 +195,16 @@ def run_with_args(args):
             template_filename = spec_template            
         log_outer_dir = os.path.join(
             file_dir, "results", "by_benchmark", args.dir, template_filename
+=======
+    def log_results(exp=args.llmtsl, trusted=args.trusted):
+        log_outer_dir = os.path.join(
+            file_dir,
+            "results",
+            f"{exp}_by_benchmark_{'regen_with_import' if trusted else 'regen_no_import'}",
+            args.dir,
+            spec_template,
+            args.model,
+>>>>>>> big
         )
         if not os.path.exists(log_outer_dir):
             os.makedirs(log_outer_dir)
@@ -138,6 +212,7 @@ def run_with_args(args):
         if args.verbose:
             print("Moving computed dir to", log_dir)
         check_call(["mv", computed_dir, log_dir])
+        print(f"{log_dir}")
 
     def extract_first_code_block(text):
         match = re.search(r"```.*?\n((?:.|\n)+?)```", text)
@@ -147,36 +222,112 @@ def run_with_args(args):
             return match[1]
 
     if args.method == "nl":
-        spec_template_path = os.path.join(
-            file_dir, spec_template
-        )  # use dynamically chosen spec template
+        num_retries = 10
+        tries = 0
+        realized = False
+
+        while tries < num_retries and not realized:
+            # TODO add retry loop for ill formed specs here. Add some prompt that passes the erorr message with a tesmplate back to llm
+            spec_template_path = os.path.join(
+                file_dir, spec_template
+            )  # use dynamically chosen spec template
+            spec_filename = os.path.join(computed_dir, "Spec.tsl")
+            synth_filename = os.path.join(computed_dir, "Synth.js")
+            spec_response_filename = os.path.join(computed_dir, "Spec_response.txt")
+
+            spec_prompt = load_file_and_interpolate(spec_template_path)
+            spec_prompt_filename = os.path.join(computed_dir, "Spec.prompt")
+            with open(spec_prompt_filename, "w") as file:
+                file.write(spec_prompt)
+
+            if args.no_openai:
+                print(
+                    f"Please paste the contents of this file into the TSL GPT:\n\n    {spec_prompt_filename}\n\nThen, paste the spec in the response into:\n\n    {spec_filename}\n\nWhen you have done this, press Enter"
+                )
+                input()
+            else:
+                response = ask_chatgpt(spec_prompt, args.model)
+                code_block = extract_first_code_block(
+                    response.choices[0].message.content
+                )
+                with open(spec_response_filename, "w") as file:
+                    file.write(response.choices[0].message.content)
+                if code_block == None:
+                    return output_error(
+                        f"No valid code block in response. See {spec_response_filename}"
+                    )
+                else:
+                    with open(spec_filename, "w") as file:
+                        file.write(code_block)
+
+            try:
+                check_call(
+                    [
+                        "tsl",
+                        "synthesize",
+                        "-i",
+                        spec_filename,
+                        "--js",
+                        "-o",
+                        synth_filename,
+                    ]
+                )
+                realized = True
+            except BaseException as e:
+                print(f"Error synthesizing: {str(e)}")
+                tries += 1
+                if tries == num_retries:
+                    return output_error(str(e))
+
+    elif args.method == "nls":
+        # prompt_templates = (
+        #     SKELETON_REGEN.format(spec_prompt, wrapper_contents, code_block),
+        # )
+        spec_template_path = os.path.join(file_dir, spec_template)
         spec_filename = os.path.join(computed_dir, "Spec.tsl")
         synth_filename = os.path.join(computed_dir, "Synth.js")
         spec_response_filename = os.path.join(computed_dir, "Spec_response.txt")
 
-        spec_prompt = load_file_and_interpolate(spec_template_path)
-        spec_prompt_filename = os.path.join(computed_dir, "Spec.prompt")
-        with open(spec_prompt_filename, "w") as file:
-            file.write(spec_prompt)
+        with open(os.path.join(file_dir, args.dir, "Headers.txt"), "r") as headers_file:
+            headers = headers_file.read()
 
-        if args.no_openai:
-            print(
-                f"Please paste the contents of this file into the TSL GPT:\n\n    {spec_prompt_filename}\n\nThen, paste the spec in the response into:\n\n    {spec_filename}\n\nWhen you have done this, press Enter"
+        with open(
+            os.path.join(file_dir, args.dir, "NL.summary.txt"), "r"
+        ) as nl_summ_file:
+            nl_summ = nl_summ_file.read()
+
+        with open(os.path.join(file_dir, args.dir, "NL.txt"), "r") as nl_desc_file:
+            nl_desc = nl_desc_file.read()
+
+        with open(
+            os.path.join(file_dir, args.dir, "wrapper_template.html"), "r"
+        ) as html_temp_file:
+            html_wrapp = html_temp_file.read()
+
+        spec_prompt = SKELETON_REGEN.format(nl_summ, nl_desc, headers, " ")
+
+        response = ask_chatgpt(
+            f"{spec_prompt}\nGenerate using the above as inspiration a working html file which implements the described program",
+            args.model,
+        )
+        code_block = extract_first_code_block(response.choices[0].message.content)
+        with open(spec_response_filename, "w") as file:
+            file.write(response.choices[0].message.content)
+        if code_block == None:
+            return output_error(
+                f"No valid code block in response. See {spec_response_filename}"
             )
-            input()
         else:
-            response = ask_chatgpt(spec_prompt, args.model)
-            code_block = extract_first_code_block(response.choices[0].message.content)
-            with open(spec_response_filename, "w") as file:
-                file.write(response.choices[0].message.content)
-            if code_block == None:
-                return output_error(
-                    f"No valid code block in response. See {spec_response_filename}"
-                )
-            else:
-                with open(spec_filename, "w") as file:
-                    file.write(code_block)
+            dir_name = os.path.basename(os.path.normpath(args.dir))
+            output_html_filename = f"{dir_name}.html"
+            output_html_path = os.path.join(computed_dir, output_html_filename)
 
+            with open(output_html_path, "w") as file:
+                file.write(code_block)
+        log_results()
+        return 0
+
+<<<<<<< HEAD
         try:
             check_call(
                 ["timeout", str(args.tsl_timeout), "tsl", "synthesize", "-i", spec_filename, "--js", "-o", synth_filename]
@@ -212,6 +363,8 @@ def run_with_args(args):
             else:
                 with open(impl_filename, "w") as file:
                     file.write(code_block)
+=======
+>>>>>>> big
     else:
         spec_filename = os.path.join(args.dir, spec_template)
         raise Exception('the only method implemented is "nl". the others are TODO.')
@@ -258,31 +411,69 @@ def run_with_args(args):
         # Nik - added new flag, uses code block to seed gpt generation of code
         if args.regen_html:
             print("Using synthesized code to regenerate html")
-            prompt_templates = [
-                ("summary_gen", NO_CODE_GEN.format(spec_prompt)),
-                ("code_ntregen", NO_TEMPLATE_REGEN.format(code_block)),
-                (
-                    "code_sknregen",
-                    SKELETON_REGEN.format(spec_prompt, BASE_HTML, code_block),
-                ),
-                (
-                    "code_sktregen",
-                    SKELETON_REGEN.format(spec_prompt, wrapper_contents, code_block),
-                ),
-            ]
 
-            for regen_task in prompt_templates:
+            # synth filename and impl filename
+            spec_template_path = os.path.join(file_dir, spec_template)
+            spec_filename = os.path.join(computed_dir, "Spec.tsl")
+            synth_filename = os.path.join(computed_dir, "Synth.js")
+            spec_response_filename = os.path.join(computed_dir, "Spec_response.txt")
 
-                response = ask_chatgpt(regen_task[1])
-                code_block = extract_first_code_block(
-                    response.choices[0].message.content
+            with open(
+                os.path.join(file_dir, args.dir, "Headers.txt"), "r"
+            ) as headers_file:
+                headers = headers_file.read()
+
+            with open(
+                os.path.join(file_dir, args.dir, "NL.summary.txt"), "r"
+            ) as nl_summ_file:
+                nl_summ = nl_summ_file.read()
+
+            with open(os.path.join(file_dir, args.dir, "NL.txt"), "r") as nl_desc_file:
+                nl_desc = nl_desc_file.read()
+
+            with open(
+                os.path.join(file_dir, args.dir, "computed/Synth.js"), "r"
+            ) as html_temp_file:
+                synth_code = html_temp_file.read()
+
+            with open(
+                os.path.join(file_dir, args.dir, "computed/Impl.js"), "r"
+            ) as html_temp_file:
+                impl_code = html_temp_file.read()
+
+            with open(
+                os.path.join(file_dir, args.dir, "computed/Spec.tsl"), "r"
+            ) as html_temp_file:
+                spectsl = html_temp_file.read()
+
+            if args.trusted:
+                regen_prompt = SKELETON_REGEN2.format(
+                    spec_prompt, impl_prompt, "", synth_code, spectsl
+                )
+            else:
+                regen_prompt = SKELETON_REGEN3.format(
+                    synth_code, impl_code, spectsl, nl_summ, nl_desc
                 )
 
-                regen_path = os.path.join(
-                    computed_dir, f"{dir_name}_{regen_task[0]}.html"
+            response = ask_chatgpt(f"{regen_prompt}", args.model)
+
+            code_block = extract_first_code_block(response.choices[0].message.content)
+
+            with open(spec_response_filename, "w") as file:
+                file.write(response.choices[0].message.content)
+            if code_block == None:
+                return output_error(
+                    f"No valid code block in response. See {spec_response_filename}"
                 )
-                with open(regen_path, "w") as file:
+            else:
+                dir_name = os.path.basename(os.path.normpath(args.dir))
+                output_html_filename = f"{dir_name}.html"
+                output_html_path = os.path.join(computed_dir, output_html_filename)
+
+                with open(output_html_path, "w") as file:
                     file.write(code_block)
+            log_results()
+            return 0
 
         print("Inserting generated code into base template")
         with open(impl_filename, "r") as file:
