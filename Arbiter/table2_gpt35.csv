@@ -1,0 +1,4 @@
+Model,N,Trials (M),Without Error,p,sqrt(p*(1-p)/M)
+gpt35,10,0,0,0,0
+gpt35,20,0,0,0,0
+gpt35,30,0,0,0,0

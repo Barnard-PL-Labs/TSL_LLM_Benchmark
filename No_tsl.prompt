@@ -7,6 +7,8 @@ Take the following natural language description of a program and implement it in
     return { currentState, outputVar1, outputVar2, ... cellVar1, cellVar2, ... }
   }
 
+Note: Replace the placeholders `inputVar1, inputVar2`, `outputVar1, outputVar2`, and `cellVar1, cellVar2` with the actual variable names as per the "Inputs", "Outputs", and "Cells" sections below. If there are no "Inputs", there will be no "Inputs" section. Same for "Outputs" and "Cells".
+
 This is a complete listing of the functions, predicates, and cells you can assume access to. Your implementation should reference nothing else.
 
 [[FUNCTIONS_AND_PREDICATES_GO_HERE]]

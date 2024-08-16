@@ -1,0 +1,6 @@
+#!/bin/bash -x
+
+for dir in builtup/*; do
+	python3 build_nl.py --dir $dir/$1 --max-statement 1000000000;
+	python3 ../run.py -d $dir/${1};
+done

@@ -1,0 +1,11 @@
+You should make 4 assumptions: every i in 1..4, truck i will eventually make a request to go across the bridge. You provide these 4 guarantees: each i in 1..4, if truck i makes a request to go across the bridge, eventually it will be granted access to the bridge. In addition, provide these 10 guarantees:
+1. if 1 wins the coinflip against 2 and 4 is granted, then 1 must not be granted until 2 is
+2. if 1 wins the coinflip against 3 and 2 is granted, then 1 must not be granted until 3 is
+3. if 1 wins the coinflip against 4 and 2 is granted, then 1 must not be granted until 4 is
+4. if 2 wins the coinflip against 3 and 1 is granted, then 2 must not be granted until 3 is
+5. if 2 wins the coinflip against 4 and 3 is granted, then 2 must not be granted until 4 is
+6. if 3 wins the coinflip against 1 and 4 is granted, then 3 must not be granted until 1 is
+7. if 3 wins the coinflip against 2 and 1 is granted, then 3 must not be granted until 2 is
+8. if 3 wins the coinflip against 4 and 2 is granted, then 3 must not be granted until 4 is
+9. if truck 1 is granted, 3 must not be granted until 4 is
+10. if truck 1 is granted, 4 must not be granted until 2 is

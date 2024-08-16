@@ -1,0 +1,5 @@
+Cells:
+    "g" is a cell that is set to the index of the truck that is granted a request to go across the road in this timestep
+Predicates:
+    (r i) => this evaluates to true when truck "i" is requesting to go across the road in this timestep
+    (p i j) => this returns true if truck "i" wins the coinflip against truck "j". this does not have any particular meaning, other than that two trucks have chosen to flip a coin against one another because they are bored.

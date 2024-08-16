@@ -1,0 +1,94 @@
+
+<style>
+
+</style>
+
+<canvas id=canvas width=1000 height=1000></canvas>
+
+<script>
+
+const canvas = document.getElementById('canvas');
+
+class Truck {
+  constructor(x, y, color = 'blue', text = '') {
+    this.ctx = canvas.getContext('2d');
+    this.ctx.font = '20px Arial'; // Set font size and family
+    this.color = color
+    this.ctx.fillStyle = this.color; // Set fill color
+    this.text = text
+    this.x = x;
+    this.y = y;
+    this.width = 120;
+    this.height = 40;
+    this.joinerWidth = 4;
+    this.joinerHeight = 25;
+    this.cabWidth = 30;
+    this.cabHeight = 40;
+  }
+
+  draw() {
+    if (0 < this.step) {
+      this.ctx.fillStyle = this.color
+      this.ctx.fillRect(this.x, this.y, this.width, this.height);
+      this.ctx.fillRect(this.x + this.width, this.y + (this.height - this.joinerHeight) / 2, this.joinerWidth, this.joinerHeight)
+      this.ctx.fillRect(this.x + this.width + this.joinerWidth, this.y, this.cabWidth, this.cabHeight)
+      this.ctx.fillStyle = 'white'
+      this.ctx.fillText(this.text, this.x + 55, this.y + 28)
+    } else {
+      this.ctx.fillStyle = this.color
+      this.ctx.fillRect(this.x + this.cabWidth + this.joinerWidth, this.y, this.width, this.height);
+      this.ctx.fillRect(this.x + this.cabWidth, this.y + (this.height - this.joinerHeight) / 2, this.joinerWidth, this.joinerHeight)
+      this.ctx.fillRect(this.x, this.y, this.cabWidth, this.cabHeight)
+      this.ctx.fillStyle = 'white'
+      this.ctx.fillText(this.text, this.x + 85, this.y + 28)
+    }
+  }
+
+  clear() {
+    if (0 < this.step) {
+      this.ctx.clearRect(this.x, this.y, this.width, this.height);
+      this.ctx.clearRect(this.x + this.width, this.y + (this.height - this.joinerHeight) / 2, this.joinerWidth, this.joinerHeight)
+      this.ctx.clearRect(this.x + this.width + this.joinerWidth, this.y, this.cabWidth, this.cabHeight)
+    } else {
+      this.ctx.clearRect(this.x + this.width + this.joinerWidth, this.y, this.width, this.height);
+      this.ctx.clearRect(this.x + this.cabWidth, this.y + (this.height - this.joinerHeight) / 2, this.joinerWidth, this.joinerHeight)
+      this.ctx.clearRect(this.x, this.y, this.cabWidth, this.cabHeight)
+    }
+  }
+
+  animateTo(newX) {
+    if (this.x === newX) {
+      // stop
+      return
+    }
+
+    this.clear()
+
+    cancelAnimationFrame(this.interval)
+
+    this.step = newX > this.x ? 1 : -1
+
+    this.move = () => {
+      if ((this.step > 0 && this.x < newX) || (this.step < 0 && this.x > newX)) {
+        this.clear()
+        this.x += this.step
+        this.draw()
+        this.interval = requestAnimationFrame(() => this.move())
+      }
+    };
+    
+    this.move()
+  }
+}
+
+const colors = [ 'red', 'blue', 'green', 'purple', 'orange', 'teal', 'salmon', 'grey', 'brown', 'green' ]
+
+const trucks = ' '.repeat(10).split('').map((_, i) => {
+  return new Truck(10, 50 * i, colors[i], String(i))
+})
+
+for (const truck of trucks) {
+  truck.animateTo(20)
+}
+
+</script>

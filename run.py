@@ -25,25 +25,6 @@ from openai_helper import (
 
 file_dir = os.path.dirname(__file__)
 
-class RunExperimentArgs:
-    def __init__(
-        dir,
-        num_iter = 1,
-        spec_prompt_file = "Spec_template.prompt",
-        lang = "JavaScript",
-        method = "nl",
-        no_openai = False,
-        regen_html = False,
-    ):
-        self.num_iter = num_iter
-        self.dir = dir
-        self.spec_prompt_file = spec_prompt_file
-        self.json = json
-        self.lang = lang
-        self.method = method
-        self.no_openai = no_openai
-        self.regen_html = regen_html
-
 def run_with_args(args):
     print(datetime.datetime.now(), "Running with args", args)
 
@@ -198,7 +179,7 @@ def run_with_args(args):
 
         try:
             check_call(
-                ["tsl", "synthesize", "-i", spec_filename, "--js", "-o", synth_filename]
+                ["timeout", str(args.tsl_timeout), "tsl", "synthesize", "-i", spec_filename, "--js", "-o", synth_filename]
             )
         except BaseException as e:
             return output_error(str(e))
@@ -378,6 +359,12 @@ if __name__ == '__main__':
         "--verbose",
         action="store_true",
         help="print messages other than errors.",
+    )
+    parser.add_argument(
+        "--tsl-timeout",
+        type=int,
+        default=120,
+        help="TSL synthesis timeout",
     )
 
     args = parser.parse_args()

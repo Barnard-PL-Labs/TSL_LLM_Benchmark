@@ -45,7 +45,7 @@ Predicates:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Bridge Traffic Control Script")
     parser.add_argument("--dir", required=True, help="Directory to process")
-    parser.add_argument("--n-truck", type=int, default=3, help="Number of trucks")
+    parser.add_argument("--n-truck", type=int, default=4, help="Number of trucks")
     parser.add_argument("--max-statement", type=int, default=10, help="Maximum number of statements")
     args = parser.parse_args()
 
